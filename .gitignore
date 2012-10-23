@@ -11,6 +11,9 @@
 /runtime/*
 /temp/*
 
+CHANGELOG
+LICENSE.txt
+
 /src/minecraft/*
 /src/minecraft_server/*
 /src/common/*
