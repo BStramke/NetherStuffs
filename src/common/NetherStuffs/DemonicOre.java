@@ -1,4 +1,4 @@
-package NetherStuffs.Common;
+package NetherStuffs;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
