@@ -1,13 +1,13 @@
 package NetherStuffs;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.EnumToolMaterial;
 import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-import NetherStuffs.Blocks.NetherPlank;
-import NetherStuffs.Blocks.NetherPlankItemBlock;
+import net.minecraftforge.common.EnumHelper;
 import NetherStuffs.Blocks.NetherOre;
 import NetherStuffs.Blocks.NetherOreItemBlock;
+import NetherStuffs.Blocks.NetherPlank;
+import NetherStuffs.Blocks.NetherPlankItemBlock;
 import NetherStuffs.Blocks.NetherWood;
 import NetherStuffs.Blocks.NetherWoodItemBlock;
 import NetherStuffs.Common.CommonProxyNetherStuffs;
@@ -27,6 +27,9 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class NetherStuffs {
 	@Instance
 	public static NetherStuffs instance = new NetherStuffs();
+	
+	static EnumToolMaterial EnumToolMaterialDemonicIngot = EnumHelper.addToolMaterial("DemonicIngot", 2, 400, 6.0F, 6, 15);
+	static EnumToolMaterial EnumToolMaterialObsidian = EnumHelper.addToolMaterial("Obsidian", 2, 400, 6.0F, 6, 15);
 	
 	/*
 	 * Todo (Blocks): 
@@ -54,24 +57,20 @@ public class NetherStuffs {
 		NetherOre = new NetherOre(NetherOreBlockId, 0).setBlockName("NetherOre").setHardness(1F).setResistance(5F);
 		NetherWood = new NetherWood(NetherWoodBlockId, 0).setBlockName("NetherWood");
 		NetherPlank = new NetherPlank(NetherPlankBlockId, 0).setBlockName("NetherPlank");
-		NetherOreIngot = new NetherOreIngot(NetherOreIngotItemId).setItemName("NetherOreIngot").setIconIndex(1);
+		NetherOreIngot = new NetherOreIngot(NetherOreIngotItemId).setItemName("NetherOreIngot").setIconCoord(0,0);
 		
 		Item.itemsList[NetherOreBlockId] = new NetherOreItemBlock(NetherOreBlockId-256, NetherOre).setItemName("NetherOreItemBlock");
 		Item.itemsList[NetherWoodBlockId] = new NetherWoodItemBlock(NetherWoodBlockId-256, NetherWood).setItemName("NetherWoodItemBlock");
 		Item.itemsList[NetherPlankBlockId] = new NetherPlankItemBlock(NetherPlankBlockId-256, NetherPlank).setItemName("NetherPlankItemBlock");
 		
-		/*GameRegistry.registerBlock(NetherOre);
-		GameRegistry.registerBlock(NetherWood);
-		GameRegistry.registerBlock(NetherPlank);*/
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherOre.blockID, 0, 10));
+				
+		initLanguageRegistry();
 		
-		//OreDictionary.registerOre("NetherOreIngot", new ItemStack(NetherOreIngot));
-		
-		/*LanguageRegistry.addName(NetherOre, "Nether Ore");
-		LanguageRegistry.addName(NetherWood, "NetherWood");
-		LanguageRegistry.addName(NetherOreIngot, "Nether Ore Ingot");*/
-		
-		
+		proxy.registerRenderThings();
+	}
+	
+	private void initLanguageRegistry() {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherOre.DemonicOre.name", "Demonic Ore");
 		
 		LanguageRegistry.instance().addStringLocalization("tile.NetherWood.Hellfire.name", "Hellfire Wood");
@@ -82,8 +81,6 @@ public class NetherStuffs {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherPlank.Acid.name", "Acid Log");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherPlank.Death.name", "Death Log");
 		
-		LanguageRegistry.instance().addStringLocalization("tile.NetherOreIngot.DemonicIngot.name", "Demonic Ingot");
-		
-		proxy.registerRenderThings();
+		LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot.DemonicIngot.name", "Demonic Ingot");		
 	}
 }

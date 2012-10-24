@@ -10,10 +10,6 @@ public class NetherOreItemBlock extends ItemBlock {
 		setHasSubtypes(true);
 	}
 
-	/*public String getTextureFile() {
-		return "/blocks.png";
-	}*/
-
 	public String getItemNameIS(ItemStack is) {
 		String name = "";
 		switch (is.getItemDamage()) {
@@ -23,6 +19,7 @@ public class NetherOreItemBlock extends ItemBlock {
 		default:
 			name = "DemonicOre";
 		}
+		
 		return getItemName() + "." + name;
 	}
 
