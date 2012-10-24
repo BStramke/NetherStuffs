@@ -4,6 +4,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.EnumToolMaterial;
 import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;
+import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.EnumHelper;
 import NetherStuffs.Blocks.NetherOre;
@@ -72,14 +73,24 @@ public class NetherStuffs {
 		
 		proxy.registerRenderThings();
 	}
-	
+
 	private void initRecipes() {
+
+		//FurnaceRecipes.smelting().addSmelting(NetherOre.blockID, new ItemStack(NetherOreIngot, 1, 0), 1);
+		//FurnaceRecipes.smelting().addSmelting(NetherOre.blockID, 0, new ItemStack(NetherOreIngot, 1, 0));
 		
-		FurnaceRecipes.smelting().addSmelting(NetherOre.blockID, 0, new ItemStack(NetherOreIngot,1,0));
+		addSmeltingMetaXP(NetherOre, 0, NetherOreIngot, 0, 1, 0.6F);
+		addSmeltingMetaXP(NetherOre, 1, NetherOreIngot, 1, 1, 10);
 	}
-	
+
+	private void addSmeltingMetaXP(Block block, int blockMetadata, Item item, int itemMetadata, int itemCount, float exp) {
+		FurnaceRecipes.smelting().addSmelting(block.blockID, new ItemStack(item, itemCount, itemMetadata), exp);
+		FurnaceRecipes.smelting().getSmeltingList().remove(block.blockID);
+		FurnaceRecipes.smelting().addSmelting(block.blockID, blockMetadata, new ItemStack(item, itemCount, itemMetadata));
+	}
+
 	private void initLanguageRegistry() {
-			
+
 		for(int i = 0; i<NetherOreItemBlock.getMetadataSize();i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherOre."+NetherOreItemBlock.blockNames[i]+".name", NetherOreItemBlock.blockDisplayNames[i]);	
 		}
@@ -102,6 +113,7 @@ public class NetherStuffs {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherPlank.Acid.name", "Acid Log");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherPlank.Death.name", "Death Log");
 		*/
-		LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot.DemonicIngot.name", "Demonic Ingot");		
+		LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot.DemonicIngot.name", "Demonic Ingot");
+		LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot.testingot.name", "test Ingot");	
 	}
 }

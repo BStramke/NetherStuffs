@@ -32,6 +32,9 @@ public class NetherOreIngot extends Item {
 		case 0:
 			name = "DemonicIngot";
 			break;
+		case 1:
+			name = "testingot";
+			break;
 		default:
 			name = "DemonicIngot";
 		}
@@ -42,7 +45,7 @@ public class NetherOreIngot extends Item {
 	@SideOnly(Side.CLIENT)
 		
 	public void getSubItems(int par1, CreativeTabs tab, List list) {
-		for(int metaNumber=0; metaNumber<1; metaNumber++){
+		for(int metaNumber=0; metaNumber<2; metaNumber++){
 			list.add(new ItemStack(par1, 1, metaNumber));
 		}
 	}
