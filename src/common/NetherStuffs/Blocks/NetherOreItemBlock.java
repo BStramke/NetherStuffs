@@ -6,8 +6,8 @@ import net.minecraft.src.ItemStack;
 
 public class NetherOreItemBlock extends ItemBlock {
 	
-	public static String[] blockNames = new String[] {"DemonicOre", "testore"};
-	public static String[] blockDisplayNames = new String[] {"Demonic Ore", "testore"}; 
+	public static String[] blockNames = new String[] {"DemonicOre"};
+	public static String[] blockDisplayNames = new String[] {"Demonic Ore"}; 
 	
 	public NetherOreItemBlock(int id, Block block) {
 		super(id);

@@ -24,96 +24,74 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-
-@Mod(modid="NetherStuffs",name="NetherStuffs",version="1.0.0")
-@NetworkMod(clientSideRequired=true,serverSideRequired=false)
+@Mod(modid = "NetherStuffs", name = "NetherStuffs", version = "1.0.0")
+@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class NetherStuffs {
 	@Instance
 	public static NetherStuffs instance = new NetherStuffs();
-	
+
 	static EnumToolMaterial EnumToolMaterialDemonicIngot = EnumHelper.addToolMaterial("DemonicIngot", 2, 400, 6.0F, 6, 15);
 	static EnumToolMaterial EnumToolMaterialObsidian = EnumHelper.addToolMaterial("Obsidian", 2, 400, 6.0F, 6, 15);
-	
+
 	/*
-	 * Todo (Blocks): 
-	 * - Demonic Furnace
-	 * - Soulglass & Soulglass Panels
-	 * - NetherTree Saplings
-	 * - NetherStone
+	 * Todo (Blocks): - Demonic Furnace - Soulglass & Soulglass Panels - NetherTree Saplings - NetherStone
 	 */
 	public static Block NetherOre;
 	public static Block NetherWood;
 	public static Block NetherPlank;
-	
+
 	public static Item NetherOreIngot;
-	
+
 	public static int NetherOreBlockId = 230;
 	public static int NetherWoodBlockId = 231;
 	public static int NetherPlankBlockId = 232;
 	public static int NetherOreIngotItemId = 5000;
-	
-	@SidedProxy(clientSide="NetherStuffs.Client.ClientProxy", serverSide="NetherStuffs.Common.CommonProxyNetherStuffs")
+
+	@SidedProxy(clientSide = "NetherStuffs.Client.ClientProxy", serverSide = "NetherStuffs.Common.CommonProxyNetherStuffs")
 	public static CommonProxyNetherStuffs proxy;
-	
+
 	@Init
 	public void load(FMLInitializationEvent event) {
 		NetherOre = new NetherOre(NetherOreBlockId, 0).setBlockName("NetherOre").setHardness(1F).setResistance(5F);
 		NetherWood = new NetherWood(NetherWoodBlockId, 0).setBlockName("NetherWood");
 		NetherPlank = new NetherPlank(NetherPlankBlockId, 0).setBlockName("NetherPlank");
-		NetherOreIngot = new NetherOreIngot(NetherOreIngotItemId).setItemName("NetherOreIngot").setIconCoord(0,0);
-		
-		Item.itemsList[NetherOreBlockId] = new NetherOreItemBlock(NetherOreBlockId-256, NetherOre).setItemName("NetherOreItemBlock");
-		Item.itemsList[NetherWoodBlockId] = new NetherWoodItemBlock(NetherWoodBlockId-256, NetherWood).setItemName("NetherWoodItemBlock");
-		Item.itemsList[NetherPlankBlockId] = new NetherPlankItemBlock(NetherPlankBlockId-256, NetherPlank).setItemName("NetherPlankItemBlock");
-		
+		NetherOreIngot = new NetherOreIngot(NetherOreIngotItemId).setItemName("NetherOreIngot").setIconCoord(0, 0);
+
+		Item.itemsList[NetherOreBlockId] = new NetherOreItemBlock(NetherOreBlockId - 256, NetherOre).setItemName("NetherOreItemBlock");
+		Item.itemsList[NetherWoodBlockId] = new NetherWoodItemBlock(NetherWoodBlockId - 256, NetherWood).setItemName("NetherWoodItemBlock");
+		Item.itemsList[NetherPlankBlockId] = new NetherPlankItemBlock(NetherPlankBlockId - 256, NetherPlank).setItemName("NetherPlankItemBlock");
+
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherOre.blockID, 0, 10));
-		
+
 		initRecipes();
 		initLanguageRegistry();
-		
+
 		proxy.registerRenderThings();
 	}
 
 	private void initRecipes() {
-
-		//FurnaceRecipes.smelting().addSmelting(NetherOre.blockID, new ItemStack(NetherOreIngot, 1, 0), 1);
-		//FurnaceRecipes.smelting().addSmelting(NetherOre.blockID, 0, new ItemStack(NetherOreIngot, 1, 0));
-		
-		addSmeltingMetaXP(NetherOre, 0, NetherOreIngot, 0, 1, 0.6F);
-		addSmeltingMetaXP(NetherOre, 1, NetherOreIngot, 1, 1, 10);
+		addSmeltingMeta(NetherOre, 0, NetherOreIngot, 0, 1);
+		addSmeltingMeta(NetherOre, 1, NetherOreIngot, 1, 1);
 	}
 
-	private void addSmeltingMetaXP(Block block, int blockMetadata, Item item, int itemMetadata, int itemCount, float exp) {
-		FurnaceRecipes.smelting().addSmelting(block.blockID, new ItemStack(item, itemCount, itemMetadata), exp);
-		FurnaceRecipes.smelting().getSmeltingList().remove(block.blockID);
+	private void addSmeltingMeta(Block block, int blockMetadata, Item item, int itemMetadata, int itemCount) {
 		FurnaceRecipes.smelting().addSmelting(block.blockID, blockMetadata, new ItemStack(item, itemCount, itemMetadata));
 	}
 
 	private void initLanguageRegistry() {
 
-		for(int i = 0; i<NetherOreItemBlock.getMetadataSize();i++) {
-			LanguageRegistry.instance().addStringLocalization("tile.NetherOre."+NetherOreItemBlock.blockNames[i]+".name", NetherOreItemBlock.blockDisplayNames[i]);	
+		for (int i = 0; i < NetherOreItemBlock.getMetadataSize(); i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherOre." + NetherOreItemBlock.blockNames[i] + ".name", NetherOreItemBlock.blockDisplayNames[i]);
 		}
-			
-		for(int i = 0; i<NetherWoodItemBlock.getMetadataSize();i++) {
-			LanguageRegistry.instance().addStringLocalization("tile.NetherWood."+NetherWoodItemBlock.blockNames[i]+".name", NetherWoodItemBlock.blockDisplayNames[i]);	
+
+		for (int i = 0; i < NetherWoodItemBlock.getMetadataSize(); i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherWood." + NetherWoodItemBlock.blockNames[i] + ".name", NetherWoodItemBlock.blockDisplayNames[i]);
 		}
-		
-		for(int i = 0; i<NetherPlankItemBlock.getMetadataSize();i++) {
-			LanguageRegistry.instance().addStringLocalization("tile.NetherPlank."+NetherPlankItemBlock.blockNames[i]+".name", NetherPlankItemBlock.blockDisplayNames[i]);	
+
+		for (int i = 0; i < NetherPlankItemBlock.getMetadataSize(); i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherPlank." + NetherPlankItemBlock.blockNames[i] + ".name", NetherPlankItemBlock.blockDisplayNames[i]);
 		}
-		
-		/*LanguageRegistry.instance().addStringLocalization("tile.NetherOre.DemonicOre.name", "Demonic Ore");
-		
-		LanguageRegistry.instance().addStringLocalization("tile.NetherWood.Hellfire.name", "Hellfire Wood");
-		LanguageRegistry.instance().addStringLocalization("tile.NetherWood.Acid.name", "Acid Wood");
-		LanguageRegistry.instance().addStringLocalization("tile.NetherWood.Death.name", "Death Wood");
-		
-		LanguageRegistry.instance().addStringLocalization("tile.NetherPlank.Hellfire.name", "Hellfire Log");
-		LanguageRegistry.instance().addStringLocalization("tile.NetherPlank.Acid.name", "Acid Log");
-		LanguageRegistry.instance().addStringLocalization("tile.NetherPlank.Death.name", "Death Log");
-		*/
+
 		LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot.DemonicIngot.name", "Demonic Ingot");
-		LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot.testingot.name", "test Ingot");	
 	}
 }
