@@ -5,20 +5,25 @@ import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 
 public class NetherOreItemBlock extends ItemBlock {
+	
+	public static String[] blockNames = new String[] {"DemonicOre"};
+	public static String[] blockDisplayNames = new String[] {"Demonic Ore"}; 
+	
 	public NetherOreItemBlock(int id, Block block) {
 		super(id);
 		setHasSubtypes(true);
 	}
 
+	public static int getMetadataSize() {
+		return blockNames.length;
+	}
+	
 	public String getItemNameIS(ItemStack is) {
 		String name = "";
-		switch (is.getItemDamage()) {
-		case 0:
-			name = "DemonicOre";
-			break;
-		default:
-			name = "DemonicOre";
-		}
+		if(is.getItemDamage()<getMetadataSize() && is.getItemDamage()>=0)
+			name = blockNames[is.getItemDamage()];
+		else
+			name = blockNames[0];
 		
 		return getItemName() + "." + name;
 	}

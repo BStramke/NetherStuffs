@@ -2,7 +2,9 @@ package NetherStuffs;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.EnumToolMaterial;
+import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.EnumHelper;
 import NetherStuffs.Blocks.NetherOre;
 import NetherStuffs.Blocks.NetherOreItemBlock;
@@ -64,13 +66,26 @@ public class NetherStuffs {
 		Item.itemsList[NetherPlankBlockId] = new NetherPlankItemBlock(NetherPlankBlockId-256, NetherPlank).setItemName("NetherPlankItemBlock");
 		
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherOre.blockID, 0, 10));
-				
+		
+		initRecipes();
 		initLanguageRegistry();
 		
 		proxy.registerRenderThings();
 	}
 	
+	private void initRecipes() {
+		
+		FurnaceRecipes.smelting().addSmelting(NetherOre.blockID, 0, new ItemStack(NetherOreIngot,1,0));
+	}
+	
 	private void initLanguageRegistry() {
+			
+		for(int i = 0; i<NetherOreItemBlock.getMetadataSize();i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherOre"+NetherOreItemBlock.blockNames[i]+"name", NetherOreItemBlock.blockDisplayNames[i]);	
+		}
+			
+		
+		
 		LanguageRegistry.instance().addStringLocalization("tile.NetherOre.DemonicOre.name", "Demonic Ore");
 		
 		LanguageRegistry.instance().addStringLocalization("tile.NetherWood.Hellfire.name", "Hellfire Wood");
