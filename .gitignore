@@ -15,6 +15,7 @@ CHANGELOG
 LICENSE.txt
 
 /src/minecraft/*
+!/src/minecraft/NetherStuffs/
 /src/minecraft_server/*
 /src/common/*
 !/src/common/NetherStuffs/
