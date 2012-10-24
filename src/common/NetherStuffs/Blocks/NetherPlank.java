@@ -21,16 +21,21 @@ public class NetherPlank extends Block {
 		return "/blocks.png";
 	}
 
+	public int getMetadataSize() {
+		return NetherPlankItemBlock.blockNames.length;
+	}
+	
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
+		int nRowDiff = 48;
 		switch (meta) {
 		case 0:
-			return 0;
+			return 0+nRowDiff;
 		case 1:
-			return 1;
+			return 1+nRowDiff;
 		case 2:
-			return 2;
+			return 2+nRowDiff;
 		default:
-			return 0;
+			return 0+nRowDiff;
 		}
 	}
 
@@ -41,7 +46,7 @@ public class NetherPlank extends Block {
 
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
-		for (int metaNumber = 0; metaNumber < 3; metaNumber++) {
+		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));
 		}
 	}

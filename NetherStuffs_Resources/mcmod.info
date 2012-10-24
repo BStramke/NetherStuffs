@@ -1,0 +1,15 @@
+[{
+  "modid": "NetherStuffs",
+  "name": "NetherStuffs",
+  "description": "Extending the Nether and adding Hellish stuff",
+  "version": "",
+  "credits": "Created by BStramke",
+  "logoFile": "",
+  "mcversion": "",
+  "url": "",
+  "updateUrl": "",
+  "authors": [ "BStramke" ],
+  "parent":"",
+  "screenshots": [],
+  "dependencies": ["mod_MinecraftForge"]
+}]

@@ -81,12 +81,18 @@ public class NetherStuffs {
 	private void initLanguageRegistry() {
 			
 		for(int i = 0; i<NetherOreItemBlock.getMetadataSize();i++) {
-			LanguageRegistry.instance().addStringLocalization("tile.NetherOre"+NetherOreItemBlock.blockNames[i]+"name", NetherOreItemBlock.blockDisplayNames[i]);	
+			LanguageRegistry.instance().addStringLocalization("tile.NetherOre."+NetherOreItemBlock.blockNames[i]+".name", NetherOreItemBlock.blockDisplayNames[i]);	
 		}
 			
+		for(int i = 0; i<NetherWoodItemBlock.getMetadataSize();i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherWood."+NetherWoodItemBlock.blockNames[i]+".name", NetherWoodItemBlock.blockDisplayNames[i]);	
+		}
 		
+		for(int i = 0; i<NetherPlankItemBlock.getMetadataSize();i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherPlank."+NetherPlankItemBlock.blockNames[i]+".name", NetherPlankItemBlock.blockDisplayNames[i]);	
+		}
 		
-		LanguageRegistry.instance().addStringLocalization("tile.NetherOre.DemonicOre.name", "Demonic Ore");
+		/*LanguageRegistry.instance().addStringLocalization("tile.NetherOre.DemonicOre.name", "Demonic Ore");
 		
 		LanguageRegistry.instance().addStringLocalization("tile.NetherWood.Hellfire.name", "Hellfire Wood");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherWood.Acid.name", "Acid Wood");
@@ -95,7 +101,7 @@ public class NetherStuffs {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherPlank.Hellfire.name", "Hellfire Log");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherPlank.Acid.name", "Acid Log");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherPlank.Death.name", "Death Log");
-		
+		*/
 		LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot.DemonicIngot.name", "Demonic Ingot");		
 	}
 }
