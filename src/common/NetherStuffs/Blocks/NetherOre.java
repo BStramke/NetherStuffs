@@ -12,8 +12,8 @@ import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
 public class NetherOre extends Block {
-	
-	//public static String[] blockNames = NetherOreItemBlock.blockNames; //basically wastes ram 
+	public static final int demonicOre = 0;
+	public static final int netherStone = 1;
 	
 	public NetherOre(int par1, int par2) {
 		super(par1, par2, Material.rock);
@@ -32,8 +32,10 @@ public class NetherOre extends Block {
 	
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (meta) {
-		case 0:
+		case demonicOre: 
 			return 0;
+		case netherStone:
+			return 1;
 		default:
 			return 0;
 		}

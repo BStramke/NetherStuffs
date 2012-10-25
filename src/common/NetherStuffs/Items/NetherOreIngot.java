@@ -17,6 +17,9 @@ import net.minecraft.src.World;
 
 public class NetherOreIngot extends Item {
 
+	public static String[] itemNames = new String[] { "DemonicOre" };
+	public static String[] itemDisplayNames = new String[] { "Demonic Ore" };
+
 	public NetherOreIngot(int par1) {
 		super(par1);
 		maxStackSize = 64;
@@ -69,25 +72,23 @@ public class NetherOreIngot extends Item {
 		par3EntityPlayer.addExperience(var4);
 	}
 
+	public static int getMetadataSize() {
+		return itemNames.length;
+	}
+
 	public String getItemNameIS(ItemStack is) {
 		String name = "";
-		switch (is.getItemDamage()) {
-			case 0:
-				name = "DemonicIngot";
-				break;
-			case 1:
-				name = "testingot";
-				break;
-			default:
-				name = "DemonicIngot";
-		}
+		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
+			name = itemNames[is.getItemDamage()];
+		else
+			name = itemNames[0];
 
 		return getItemName() + "." + name;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs tab, List list) {
-		for (int metaNumber = 0; metaNumber < 2; metaNumber++) {
+		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));
 		}
 	}

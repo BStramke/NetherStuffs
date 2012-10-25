@@ -1,4 +1,4 @@
-package NetherStuffs;
+package NetherStuffs.WorldGen;
 
 import java.util.Random;
 

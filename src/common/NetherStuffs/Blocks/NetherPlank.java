@@ -10,7 +10,10 @@ import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
 public class NetherPlank extends Block {
-
+	public static final int hellfire = 0;
+	public static final int acid = 1;
+	public static final int death = 2;
+	
 	public NetherPlank(int par1, int par2) {
 		super(par1, par2, Material.wood);
 		this.setCreativeTab(CreativeTabs.tabBlock);
@@ -28,14 +31,14 @@ public class NetherPlank extends Block {
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		int nRowDiff = 48;
 		switch (meta) {
-		case 0:
-			return 0+nRowDiff;
-		case 1:
-			return 1+nRowDiff;
-		case 2:
-			return 2+nRowDiff;
+		case hellfire:
+			return hellfire+nRowDiff;
+		case acid:
+			return acid+nRowDiff;
+		case death:
+			return death+nRowDiff;
 		default:
-			return 0+nRowDiff;
+			return hellfire+nRowDiff;
 		}
 	}
 

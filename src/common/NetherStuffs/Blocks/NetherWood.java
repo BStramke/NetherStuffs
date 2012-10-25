@@ -6,15 +6,25 @@ import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
+import net.minecraft.src.World;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
 public class NetherWood extends Block {
 
+	public static final int hellfire = 0;
+	public static final int acid = 1;
+	public static final int death = 2;
+
 	public NetherWood(int par1, int par2) {
 		super(par1, par2, Material.wood);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setRequiresSelfNotify();
+	}
+
+	@Override
+	public boolean canSustainLeaves(World world, int x, int y, int z) {
+		return true;
 	}
 
 	public String getTextureFile() {
@@ -24,23 +34,22 @@ public class NetherWood extends Block {
 	public int getMetadataSize() {
 		return NetherWoodItemBlock.blockNames.length;
 	}
-	
+
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		int nRowDiff = 32;
-		//side: 1=top, 0=bottom
-		if(side==1 || side==0)
-		{
-			nRowDiff = nRowDiff-16;//look one row above
+		// side: 1=top, 0=bottom
+		if (side == 1 || side == 0) {
+			nRowDiff = nRowDiff - 16;// look one row above
 		}
 		switch (meta) {
-		case 0:
-			return 0+nRowDiff;
-		case 1:
-			return 1+nRowDiff;
-		case 2:
-			return 2+nRowDiff;
-		default:
-			return 0+nRowDiff;
+			case hellfire:
+				return hellfire + nRowDiff;
+			case acid:
+				return acid + nRowDiff;
+			case death:
+				return death + nRowDiff;
+			default:
+				return hellfire + nRowDiff;
 		}
 	}
 

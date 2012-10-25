@@ -4,12 +4,12 @@ import net.minecraft.src.Block;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 
-public class NetherOreItemBlock extends ItemBlock {
+public class NetherLeavesItemBlock extends ItemBlock {
 	
-	public static String[] blockNames = new String[] {"DemonicOre", "NetherStone"};
-	public static String[] blockDisplayNames = new String[] {"Demonic Ore", "Nether Stone"}; 
+	public static String[] blockNames = new String[] {"Hellfire", "Acid", "Death"};
+	public static String[] blockDisplayNames = new String[] {"Hellfire Leaves", "Acid Leaves", "Death Leaves"}; 
 	
-	public NetherOreItemBlock(int id, Block block) {
+	public NetherLeavesItemBlock(int id, Block block) {
 		super(id);
 		setHasSubtypes(true);
 	}
