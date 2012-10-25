@@ -17,8 +17,8 @@ import net.minecraft.src.World;
 
 public class NetherOreIngot extends Item {
 
-	public static String[] itemNames = new String[] { "DemonicOre" };
-	public static String[] itemDisplayNames = new String[] { "Demonic Ore" };
+	public static String[] itemNames = new String[] { "DemonicIngot" };
+	public static String[] itemDisplayNames = new String[] { "Demonic Ingot" };
 
 	public NetherOreIngot(int par1) {
 		super(par1);

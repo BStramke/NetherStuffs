@@ -14,7 +14,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 public class NetherOre extends Block {
 	public static final int demonicOre = 0;
 	public static final int netherStone = 1;
-	
+
 	public NetherOre(int par1, int par2) {
 		super(par1, par2, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabBlock);
@@ -28,19 +28,18 @@ public class NetherOre extends Block {
 	public int getMetadataSize() {
 		return NetherOreItemBlock.blockNames.length;
 	}
-	
-	
+
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (meta) {
-		case demonicOre: 
-			return 0;
-		case netherStone:
-			return 1;
-		default:
-			return 0;
+			case demonicOre:
+				return 0;
+			case netherStone:
+				return 1;
+			default:
+				return 0;
 		}
 	}
-	
+
 	@Override
 	public int damageDropped(int meta) {
 		return meta;

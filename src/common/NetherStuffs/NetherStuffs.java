@@ -10,11 +10,10 @@ import NetherStuffs.Blocks.NetherBlocks;
 import NetherStuffs.Blocks.NetherDemonicFurnace;
 import NetherStuffs.Blocks.NetherLeavesItemBlock;
 import NetherStuffs.Blocks.NetherOreItemBlock;
-import NetherStuffs.Blocks.NetherPlank;
 import NetherStuffs.Blocks.NetherPlankItemBlock;
+import NetherStuffs.Blocks.NetherSaplingItemBlock;
 import NetherStuffs.Blocks.NetherWoodItemBlock;
 import NetherStuffs.Common.CommonProxyNetherStuffs;
-import NetherStuffs.Common.NetherLeavesMaterial;
 import NetherStuffs.Items.NetherDemonicBarHandle;
 import NetherStuffs.Items.NetherObsidianSword;
 import NetherStuffs.Items.NetherOreIngot;
@@ -39,7 +38,7 @@ public class NetherStuffs {
 
 	static EnumToolMaterial EnumToolMaterialDemonicIngot = EnumHelper.addToolMaterial("DemonicIngot", 2, 400, 6.0F, 6, 15);
 	static EnumToolMaterial EnumToolMaterialObsidian = EnumHelper.addToolMaterial("Obsidian", 2, 400, 7.0F, 4, 15);
-	
+
 	public static Block NetherDemonicFurnace;
 
 	public static Item NetherOreIngot;
@@ -54,11 +53,13 @@ public class NetherStuffs {
 	public static int NetherPlankBlockId = 232;
 	public static int NetherDemonicFurnaceBlockId = 233;
 	public static int NetherLeavesBlockId = 234;
+	public static int NetherSaplingBlockId = 235;
 	public static int NetherOreIngotItemId = 5000;
 	public static int NetherDemonicBarHandleItemId = 5001;
 	public static int NetherObsidianSwordItemId = 5002;
 	public static int NetherWoodStickItemId = 5003;
 	public static int NetherStoneBowlItemId = 5004;
+	
 
 	@SidedProxy(clientSide = "NetherStuffs.Client.ClientProxy", serverSide = "NetherStuffs.Common.CommonProxyNetherStuffs")
 	public static CommonProxyNetherStuffs proxy;
@@ -78,6 +79,7 @@ public class NetherStuffs {
 		Item.itemsList[NetherPlankBlockId] = new NetherPlankItemBlock(NetherPlankBlockId - 256, NetherBlocks.netherPlank).setItemName("NetherPlankItemBlock");
 		Item.itemsList[NetherDemonicFurnaceBlockId] = new NetherPlankItemBlock(NetherDemonicFurnaceBlockId - 256, NetherDemonicFurnace).setItemName("NetherDemonicFurnaceItemBlock");
 		Item.itemsList[NetherLeavesBlockId] = new NetherLeavesItemBlock(NetherLeavesBlockId - 256, NetherBlocks.netherLeaves).setItemName("NetherLeavesItemBlock");
+		Item.itemsList[NetherSaplingBlockId] = new NetherSaplingItemBlock(NetherSaplingBlockId - 256).setItemName("NetherSaplingItemBlock");
 
 		registerWorldGenerators();
 		initRecipes();
@@ -149,6 +151,14 @@ public class NetherStuffs {
 
 		for (int i = 0; i < NetherPlankItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherPlank." + NetherPlankItemBlock.blockNames[i] + ".name", NetherPlankItemBlock.blockDisplayNames[i]);
+		}
+		
+		for (int i = 0; i < NetherLeavesItemBlock.getMetadataSize(); i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherLeaves." + NetherLeavesItemBlock.blockNames[i] + ".name", NetherLeavesItemBlock.blockDisplayNames[i]);
+		}
+		
+		for (int i = 0; i < NetherSaplingItemBlock.getMetadataSize(); i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherSapling." + NetherSaplingItemBlock.blockNames[i] + ".name", NetherSaplingItemBlock.blockDisplayNames[i]);
 		}
 
 		for (int i = 0; i < ((NetherOreIngot) NetherOreIngot).getMetadataSize(); i++) {

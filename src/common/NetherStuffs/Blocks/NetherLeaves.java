@@ -66,7 +66,11 @@ public class NetherLeaves extends Block implements IShearable {
 		if (!par1World.isRemote) {
 			int var6 = par1World.getBlockMetadata(par2, par3, par4);
 
-			if ((var6 & 8) != 0 && (var6 & 4) == 0) {
+			if (isUserPlaced(var6) || !isDecaying(var6))
+				return;
+
+			// if ((var6 & 8) != 0 && (var6 & 4) == 0)
+			{
 				byte var7 = 4;
 				int var8 = var7 + 1;
 				byte var9 = 32;
@@ -140,7 +144,7 @@ public class NetherLeaves extends Block implements IShearable {
 				var12 = this.adjacentTreeBlocks[var11 * var10 + var11 * var9 + var11];
 
 				if (var12 >= 0) {
-					par1World.setBlockMetadata(par2, par3, par4, var6 & -9);
+					par1World.setBlockMetadata(par2, par3, par4, clearDecayOnMetadata(var6));
 				} else {
 					this.removeLeaves(par1World, par2, par3, par4);
 				}
@@ -153,12 +157,14 @@ public class NetherLeaves extends Block implements IShearable {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		/*if (par1World.canLightningStrikeAt(par2, par3 + 1, par4) && !par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && par5Random.nextInt(15) == 1) {
+		// if (par1World.canLightningStrikeAt(par2, par3 + 1, par4) && !par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && par5Random.nextInt(15) == 1) {
+		if (par1World.provider.dimensionId == -1 && par5Random.nextInt(15) == 1) {
 			double var6 = (double) ((float) par2 + par5Random.nextFloat());
 			double var8 = (double) par3 - 0.05D;
 			double var10 = (double) ((float) par4 + par5Random.nextFloat());
-			par1World.spawnParticle("dripWater", var6, var8, var10, 0.0D, 0.0D, 0.0D);
-		}*/
+			par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+		}
+
 	}
 
 	private void removeLeaves(World par1World, int par2, int par3, int par4) {
@@ -177,7 +183,7 @@ public class NetherLeaves extends Block implements IShearable {
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	public int idDropped(int par1, Random par2Random, int par3) {
-		return Block.sapling.blockID; // TODO: replace with new Nether Sapling
+		return NetherBlocks.netherSapling.blockID;
 	}
 
 	/**
@@ -191,7 +197,7 @@ public class NetherLeaves extends Block implements IShearable {
 	 * Determines the damage on the item the block drops. Used in cloth and wood.
 	 */
 	public int damageDropped(int meta) {
-		return meta;
+		return unmarkedMetadata(meta);
 	}
 
 	public int getMetadataSize() {
@@ -202,9 +208,13 @@ public class NetherLeaves extends Block implements IShearable {
 		return "/blocks.png";
 	}
 
+	public boolean isOpaqueCube() {
+		return false;
+	}
+
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		int nRowDiff = 64;
-		switch (meta) {
+		switch (unmarkedMetadata(meta)) {
 			case hellfire:
 				return hellfire + nRowDiff;
 			case acid:
@@ -231,14 +241,13 @@ public class NetherLeaves extends Block implements IShearable {
 	@Override
 	public ArrayList<ItemStack> onSheared(ItemStack item, World world, int x, int y, int z, int fortune) {
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-		ret.add(new ItemStack(this, 1, world.getBlockMetadata(x, y, z) & 3));
+		ret.add(new ItemStack(this, 1, unmarkedMetadata(world.getBlockMetadata(x, y, z))));
 		return ret;
 	}
 
-	@Override
-	public void beginLeavesDecay(World world, int x, int y, int z) {
-		world.setBlockMetadata(x, y, z, world.getBlockMetadata(x, y, z) | 8);
-	}
+	/*
+	 * @Override public void beginLeavesDecay(World world, int x, int y, int z) { world.setBlockMetadata(x, y, z, world.getBlockMetadata(x, y, z)); }
+	 */
 
 	@Override
 	public boolean isLeaves(World world, int x, int y, int z) {
@@ -247,11 +256,42 @@ public class NetherLeaves extends Block implements IShearable {
 
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-		int var6 = par1IBlockAccess.getBlockId(par2, par3, par4);
-		if (var6 == NetherBlocks.netherLeaves.blockID) {
-			return false;
-		} else {
-			return super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
-		}
+		/*
+		 * int var6 = par1IBlockAccess.getBlockId(par2, par3, par4); if (var6 == NetherStuffs.NetherStuffs.NetherLeavesBlockId) { return false; } else { return
+		 * super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5); }
+		 */
+
+		return super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
 	}
+
+	private static final int METADATA_BITMASK = 0x3;
+	private static final int METADATA_USERPLACEDBIT = 0x4;
+	private static final int METADATA_DECAYBIT = 0x8;
+	private static final int METADATA_CLEARDECAYBIT = -METADATA_DECAYBIT - 1;
+
+	private static int clearDecayOnMetadata(int metadata) {
+		return metadata & METADATA_CLEARDECAYBIT;
+	}
+
+	private static boolean isDecaying(int metadata) {
+		return (metadata & METADATA_DECAYBIT) != 0;
+	}
+
+	private static boolean isUserPlaced(int metadata) {
+		return (metadata & METADATA_USERPLACEDBIT) != 0;
+	}
+
+	@Override
+	public void beginLeavesDecay(World world, int x, int y, int z) {
+		world.setBlockMetadata(x, y, z, setDecayOnMetadata(world.getBlockMetadata(x, y, z)));
+	}
+
+	private static int setDecayOnMetadata(int metadata) {
+		return metadata | METADATA_DECAYBIT;
+	}
+
+	private static int unmarkedMetadata(int metadata) {
+		return metadata & METADATA_BITMASK;
+	}
+
 }

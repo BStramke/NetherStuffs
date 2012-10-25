@@ -26,8 +26,10 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 	/** The metadata value of the leaves to use in tree generation. */
 	private int metaLeaves;
 
-	public WorldGenNetherStuffsTrees(boolean par1) {
+	public WorldGenNetherStuffsTrees(boolean par1, int metaWood) {
 		this(par1, 4, false);
+		this.metaWood = metaWood;
+		this.metaLeaves = metaWood;
 	}
 
 	public WorldGenNetherStuffsTrees(boolean par1, int par2, boolean par5) {

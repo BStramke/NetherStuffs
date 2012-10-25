@@ -23,6 +23,20 @@ public class NetherWood extends Block {
 	}
 
 	@Override
+   public boolean isWood(World world, int x, int y, int z)
+   {
+       return true;
+   }
+	
+   /**
+    * The type of render function that is called for this block
+    */
+   public int getRenderType()
+   {
+       return 31;
+   }
+	
+	@Override
 	public boolean canSustainLeaves(World world, int x, int y, int z) {
 		return true;
 	}
@@ -52,7 +66,7 @@ public class NetherWood extends Block {
 				return hellfire + nRowDiff;
 		}
 	}
-
+	
 	@Override
 	public int damageDropped(int meta) {
 		return meta;

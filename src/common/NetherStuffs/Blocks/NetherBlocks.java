@@ -1,8 +1,9 @@
 package NetherStuffs.Blocks;
 
-import NetherStuffs.NetherStuffs;
 import net.minecraft.src.Block;
-import net.minecraft.src.BlockLeaves;
+import net.minecraft.src.BlockFlower;
+import net.minecraft.src.BlockSapling;
+import NetherStuffs.NetherStuffs;
 
 public class NetherBlocks {
 	public static final Block netherOre = new NetherOre(NetherStuffs.NetherOreBlockId, 0).setBlockName("NetherOre").setHardness(1F).setResistance(5F);
@@ -20,5 +21,9 @@ public class NetherBlocks {
 	public static final int netherPlankHellfire = NetherPlank.hellfire;
 	public static final int netherPlankAcid = NetherPlank.acid;
 	public static final int netherPlankDeath = NetherPlank.death;
+	public static final BlockSapling netherSapling = (BlockSapling) new NetherSapling(NetherStuffs.NetherSaplingBlockId, 0).setBlockName("NetherSapling");
+	public static final int netherSaplingHellfire = NetherSapling.hellfire;
+	public static final int netherSaplingAcid = NetherSapling.acid;
+	public static final int netherSaplingDeath = NetherSapling.death;	
 
 }
