@@ -2,10 +2,18 @@ package NetherStuffs.Blocks;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFlower;
+import net.minecraft.src.BlockGlass;
 import net.minecraft.src.BlockSapling;
 import NetherStuffs.NetherStuffs;
 
 public class NetherBlocks {
+	public static final int sideBottom = 0; //fact?
+	public static final int sideTop = 1; //fact?
+	public static final int sideFront = 3; //fact?
+	public static final int sideBack = 2; //fact? 
+	public static final int sideRight = 5;
+	public static final int sideLeft = 4;	
+	
 	public static final Block netherOre = new NetherOre(NetherStuffs.NetherOreBlockId, 0).setBlockName("NetherOre").setHardness(1F).setResistance(5F);
 	public static final int demonicOre = NetherOre.demonicOre;
 	public static final int netherStone = NetherOre.netherStone;
@@ -25,5 +33,4 @@ public class NetherBlocks {
 	public static final int netherSaplingHellfire = NetherSapling.hellfire;
 	public static final int netherSaplingAcid = NetherSapling.acid;
 	public static final int netherSaplingDeath = NetherSapling.death;	
-
 }

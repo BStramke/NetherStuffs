@@ -1,6 +1,6 @@
 package NetherStuffs.Common;
 
-public class CommonProxyNetherStuffs {
+public class CommonProxy {
 	public void registerRenderThings(){
 		
 	}

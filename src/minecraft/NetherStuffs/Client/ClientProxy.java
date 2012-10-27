@@ -1,12 +1,13 @@
 package NetherStuffs.Client;
 
 import net.minecraftforge.client.MinecraftForgeClient;
-import NetherStuffs.Common.CommonProxyNetherStuffs;
+import NetherStuffs.Common.CommonProxy;
 
-public class ClientProxy extends CommonProxyNetherStuffs{
+public class ClientProxy extends CommonProxy{
 	@Override
 	public void registerRenderThings(){
 		MinecraftForgeClient.preloadTexture("/blocks.png");
 		MinecraftForgeClient.preloadTexture("/items.png");
+		MinecraftForgeClient.preloadTexture("/furnace.png");
 	}
 }
