@@ -9,5 +9,9 @@ public class NetherSoulGlassBottle extends ItemGlassBottle {
 		super(par1);
 		this.setCreativeTab(CreativeTabs.tabBrewing);
 	}
+	
+	public String getTextureFile() {
+		return "/items.png";
+	}
 
 }

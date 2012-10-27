@@ -26,5 +26,9 @@ public class NetherSoulGlassPane extends BlockPane {
 	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
 		list.add(new ItemStack(par1, 1, 0));
 	}
+	
+	public String getTextureFile() {
+		return "/blocks.png";
+	}
 
 }

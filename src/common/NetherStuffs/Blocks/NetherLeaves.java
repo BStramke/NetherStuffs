@@ -4,23 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import NetherStuffs.Common.NetherLeavesMaterial;
-
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-
 import net.minecraft.src.Block;
-import net.minecraft.src.BlockLeavesBase;
-import net.minecraft.src.ColorizerFoliage;
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.EntityFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.MapColor;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraftforge.common.IShearable;
+import NetherStuffs.Common.NetherLeavesMaterial;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class NetherLeaves extends Block implements IShearable {
 	public static final int hellfire = 0;
@@ -145,6 +141,9 @@ public class NetherLeaves extends Block implements IShearable {
 
 				if (var12 >= 0) {
 					par1World.setBlockMetadata(par2, par3, par4, clearDecayOnMetadata(var6));
+					//TODO: Add generator for Puddles on block Bottom
+					
+					
 				} else {
 					this.removeLeaves(par1World, par2, par3, par4);
 				}
@@ -157,12 +156,26 @@ public class NetherLeaves extends Block implements IShearable {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		// if (par1World.canLightningStrikeAt(par2, par3 + 1, par4) && !par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && par5Random.nextInt(15) == 1) {
-		if (par1World.provider.dimensionId == -1 && par5Random.nextInt(15) == 1) {
+		if (par1World.provider.dimensionId == -1 && par5Random.nextInt(15) == 1 && par1World.isAirBlock(par2, par3 -1, par4)) {
 			double var6 = (double) ((float) par2 + par5Random.nextFloat());
 			double var8 = (double) par3 - 0.05D;
 			double var10 = (double) ((float) par4 + par5Random.nextFloat());
-			par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+			int metadata = par1World.getBlockMetadata(par2, par3, par4);
+			switch (metadata) {
+				case hellfire:
+					par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+					break;
+				case acid:
+						//EntityDropParticleFXNetherStuffs(par1World, par2, par3, par4, Material.lava);
+					par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+					break;
+				case death:
+					par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+					break;
+				default:
+					par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+					break;
+			}
 		}
 
 	}
@@ -290,7 +303,7 @@ public class NetherLeaves extends Block implements IShearable {
 		return metadata | METADATA_DECAYBIT;
 	}
 
-	private static int unmarkedMetadata(int metadata) {
+	protected static int unmarkedMetadata(int metadata) {
 		return metadata & METADATA_BITMASK;
 	}
 

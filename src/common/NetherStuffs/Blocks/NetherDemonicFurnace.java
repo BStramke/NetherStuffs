@@ -55,13 +55,14 @@ public class NetherDemonicFurnace extends BlockContainer {
 	 */
 	private static boolean keepFurnaceInventory = false;
 
-	public NetherDemonicFurnace(int par1, int par2) {
-		super(par1, par2, Material.rock);
+	public NetherDemonicFurnace(int par1) {
+		super(par1, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setRequiresSelfNotify();
 		this.setTickRandomly(true);
 	}
 
+	
 	public String getItemNameIS(ItemStack is) {
 		String name = "NetherDemonicFurnace";
 		return getBlockName() + "." + name;

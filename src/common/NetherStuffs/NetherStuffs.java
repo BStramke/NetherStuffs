@@ -6,12 +6,14 @@ import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
+import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.EnumHelper;
 import NetherStuffs.Blocks.NetherBlocks;
 import NetherStuffs.Blocks.NetherDemonicFurnace;
 import NetherStuffs.Blocks.NetherLeavesItemBlock;
 import NetherStuffs.Blocks.NetherOreItemBlock;
 import NetherStuffs.Blocks.NetherPlankItemBlock;
+import NetherStuffs.Blocks.NetherPuddleItemBlock;
 import NetherStuffs.Blocks.NetherSaplingItemBlock;
 import NetherStuffs.Blocks.NetherSoulGlass;
 import NetherStuffs.Blocks.NetherSoulGlassPane;
@@ -33,8 +35,10 @@ import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -67,45 +71,70 @@ public class NetherStuffs {
 	public static Item NetherStoneBowl;
 	public static Item NetherSoulGlassBottle;
 
-	public static int NetherOreBlockId = 230;
-	public static int NetherWoodBlockId = 231;
-	public static int NetherPlankBlockId = 232;
-	public static int NetherDemonicFurnaceBlockId = 233;
-	public static int NetherLeavesBlockId = 234;
-	public static int NetherSaplingBlockId = 235;
-	public static int NetherSoulGlassBlockid = 236;
-	public static int NetherSoulGlassPaneBlockid = 237;
+	public static int NetherOreBlockId;
+	public static int NetherWoodBlockId;
+	public static int NetherPlankBlockId;
+	public static int NetherDemonicFurnaceBlockId;
+	public static int NetherLeavesBlockId;
+	public static int NetherSaplingBlockId;
+	public static int NetherSoulGlassBlockid;
+	public static int NetherSoulGlassPaneBlockid;
+	public static int NetherPuddleBlockId;
 
-	public static int NetherOreIngotItemId = 5000;
-	public static int NetherDemonicBarHandleItemId = 5001;
-	public static int NetherObsidianSwordItemId = 5002;
-	public static int NetherWoodStickItemId = 5003;
-	public static int NetherStoneBowlItemId = 5004;
-	public static int NetherSoulGlassBottleItemId = 5005;
+	public static int NetherOreIngotItemId;
+	public static int NetherDemonicBarHandleItemId;
+	public static int NetherObsidianSwordItemId;
+	public static int NetherWoodStickItemId;
+	public static int NetherStoneBowlItemId;
+	public static int NetherSoulGlassBottleItemId;
 
+	@PreInit
+	public void PreLoad(FMLPreInitializationEvent event) {
+		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		config.load();
+		NetherOreBlockId = config.get(Configuration.CATEGORY_BLOCK, "NetherOre", 1230).getInt();
+		NetherWoodBlockId = config.get(Configuration.CATEGORY_BLOCK, "NetherWood", 1231).getInt();
+		NetherPlankBlockId = config.get(Configuration.CATEGORY_BLOCK, "NetherPlank", 1232).getInt();
+		NetherDemonicFurnaceBlockId = config.get(Configuration.CATEGORY_BLOCK, "DemonicFurnace", 1233).getInt();
+		NetherLeavesBlockId = config.get(Configuration.CATEGORY_BLOCK, "Leaves", 1234).getInt();
+		NetherSaplingBlockId = config.get(Configuration.CATEGORY_BLOCK, "Saplings", 1235).getInt();
+		NetherSoulGlassBlockid = config.get(Configuration.CATEGORY_BLOCK, "Glass", 1236).getInt();
+		NetherSoulGlassPaneBlockid = config.get(Configuration.CATEGORY_BLOCK, "GlassPane", 1237).getInt();
+		NetherPuddleBlockId = config.get(Configuration.CATEGORY_BLOCK, "Puddle", 1238).getInt();
+		
+		NetherOreIngotItemId = config.get(Configuration.CATEGORY_ITEM, "NetherIngots", 5000).getInt();
+		NetherDemonicBarHandleItemId = config.get(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5001).getInt();
+		NetherObsidianSwordItemId = config.get(Configuration.CATEGORY_ITEM, "ObsidianSword", 5002).getInt();
+		NetherWoodStickItemId = config.get(Configuration.CATEGORY_ITEM, "NetherWoodStick", 5003).getInt();
+		NetherStoneBowlItemId = config.get(Configuration.CATEGORY_ITEM, "NetherStoneBowl", 5004).getInt();
+		NetherSoulGlassBottleItemId = config.get(Configuration.CATEGORY_ITEM, "SoulGlassBottle", 5005).getInt();
+		config.save();
+	}
+	
 	@Init
 	public void load(FMLInitializationEvent event) {
-		NetherDemonicFurnace = new NetherDemonicFurnace(NetherDemonicFurnaceBlockId, 0).setBlockName("NetherDemonicFurnace");
-		NetherSoulGlass = new NetherSoulGlass(NetherSoulGlassBlockid, 49, Material.glass, false).setBlockName("NetherSoulGlass");
-		NetherSoulGlassPane = new NetherSoulGlassPane(NetherSoulGlassPaneBlockid, 49, 148, Material.glass, false).setBlockName("NetherSoulGlassPane");
+		NetherDemonicFurnace = new NetherDemonicFurnace(NetherDemonicFurnaceBlockId).setBlockName("NetherDemonicFurnace");
+		NetherSoulGlass = new NetherSoulGlass(NetherSoulGlassBlockid, 112, Material.glass, false).setBlockName("NetherSoulGlass");
+		NetherSoulGlassPane = new NetherSoulGlassPane(NetherSoulGlassPaneBlockid, 112, 113, Material.glass, false).setBlockName("NetherSoulGlassPane");
 
 		GameRegistry.registerBlock(NetherSoulGlass);
 		GameRegistry.registerBlock(NetherSoulGlassPane);
+		GameRegistry.registerBlock(NetherDemonicFurnace);
 
 		NetherOreIngot = new NetherOreIngot(NetherOreIngotItemId).setItemName("NetherOreIngot").setIconCoord(0, 0);
 
-		NetherStoneBowl = new NetherStoneBowl(NetherStoneBowlItemId).setItemName("NetherStoneBowl").setIconCoord(1, 0);
-		NetherWoodStick = new NetherWoodStick(NetherWoodStickItemId).setItemName("NetherWoodStick").setIconCoord(1, 0);
-		NetherObsidianSword = new NetherObsidianSword(NetherObsidianSwordItemId, EnumToolMaterialObsidian).setItemName("NetherObsidianSword").setIconCoord(1, 0);
-		NetherDemonicBarHandle = new NetherDemonicBarHandle(NetherDemonicBarHandleItemId).setItemName("NetherDemonicBarHandle").setIconCoord(1, 0);
-		NetherSoulGlassBottle = new NetherSoulGlassBottle(NetherSoulGlassBottleItemId).setItemName("NetherSoulGlassBottle").setIconCoord(1, 0);
+		NetherStoneBowl = new NetherStoneBowl(NetherStoneBowlItemId).setItemName("NetherStoneBowl").setIconCoord(3, 1);
+		NetherWoodStick = new NetherWoodStick(NetherWoodStickItemId).setItemName("NetherWoodStick").setIconCoord(2, 1);
+		NetherObsidianSword = new NetherObsidianSword(NetherObsidianSwordItemId, EnumToolMaterialObsidian).setItemName("NetherObsidianSword").setIconCoord(1, 1);
+		NetherDemonicBarHandle = new NetherDemonicBarHandle(NetherDemonicBarHandleItemId).setItemName("NetherDemonicBarHandle").setIconCoord(4, 1);
+		NetherSoulGlassBottle = new NetherSoulGlassBottle(NetherSoulGlassBottleItemId).setItemName("NetherSoulGlassBottle").setIconCoord(0, 1);
 
 		Item.itemsList[NetherOreBlockId] = new NetherOreItemBlock(NetherOreBlockId - 256, NetherBlocks.netherOre).setItemName("NetherOreItemBlock");
 		Item.itemsList[NetherWoodBlockId] = new NetherWoodItemBlock(NetherWoodBlockId - 256, NetherBlocks.netherWood).setItemName("NetherWoodItemBlock");
 		Item.itemsList[NetherPlankBlockId] = new NetherPlankItemBlock(NetherPlankBlockId - 256, NetherBlocks.netherPlank).setItemName("NetherPlankItemBlock");
-		Item.itemsList[NetherDemonicFurnaceBlockId] = new NetherPlankItemBlock(NetherDemonicFurnaceBlockId - 256, NetherDemonicFurnace).setItemName("NetherDemonicFurnaceItemBlock");
 		Item.itemsList[NetherLeavesBlockId] = new NetherLeavesItemBlock(NetherLeavesBlockId - 256, NetherBlocks.netherLeaves).setItemName("NetherLeavesItemBlock");
 		Item.itemsList[NetherSaplingBlockId] = new NetherSaplingItemBlock(NetherSaplingBlockId - 256).setItemName("NetherSaplingItemBlock");
+		Item.itemsList[NetherPuddleBlockId] = new NetherPuddleItemBlock(NetherPuddleBlockId - 256).setItemName("NetherPuddleItemBlock");
 
 		GameRegistry.registerTileEntity(TileDemonicFurnace.class, "tileEntityNetherStuffs");
 
@@ -196,6 +225,10 @@ public class NetherStuffs {
 		for (int i = 0; i < NetherSaplingItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherSapling." + NetherSaplingItemBlock.blockNames[i] + ".name", NetherSaplingItemBlock.blockDisplayNames[i]);
 		}
+		
+		for (int i = 0; i < NetherPuddleItemBlock.getMetadataSize(); i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherPuddle." + NetherPuddleItemBlock.blockNames[i] + ".name", NetherPuddleItemBlock.blockDisplayNames[i]);
+		}
 
 		for (int i = 0; i < ((NetherOreIngot) NetherOreIngot).getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot." + ((NetherOreIngot) NetherOreIngot).itemNames[i] + ".name",
@@ -205,7 +238,8 @@ public class NetherStuffs {
 		LanguageRegistry.instance().addStringLocalization("item.NetherObsidianSword.name", "Obsidian Sword");
 		LanguageRegistry.instance().addStringLocalization("item.NetherDemonicBarHandle.name", "Demonic Haft");
 		LanguageRegistry.instance().addStringLocalization("item.NetherWoodStick.name", "Nether Stick");
-		LanguageRegistry.instance().addStringLocalization("item.NetherStoneBowl.name", "Nether Stone Bowl");
+		LanguageRegistry.instance().addStringLocalization("item.NetherStoneBowl.name", "Netherstone Bowl");
+		LanguageRegistry.instance().addStringLocalization("item.NetherSoulGlassBottle.name", "Soul Glass Bottle");
 
 		LanguageRegistry.instance().addStringLocalization("tile.NetherDemonicFurnace.name", "Demonic Furnace");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlass.name", "Soul Glass");

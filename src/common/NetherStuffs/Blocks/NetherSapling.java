@@ -8,15 +8,12 @@ import java.util.Random;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockSapling;
 import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
 import net.minecraft.src.World;
-import net.minecraft.src.WorldGenerator;
 import net.minecraftforge.common.EnumPlantType;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.event.Event.Result;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.player.BonemealEvent;
 import NetherStuffs.NetherStuffs;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.Side;
@@ -24,6 +21,21 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class NetherSapling extends BlockSapling /* implements IPlantable */{
 
+	private static final int	METADATA_BITMASK	= 0x7;
+	private static final int	METADATA_MARKBIT	= 0x8;
+	
+	private static boolean isMarkedMetadata(int metadata) {
+		return (metadata & METADATA_MARKBIT) != 0;
+	}
+
+	private static int markedMetadata(int metadata) {
+		return metadata | METADATA_MARKBIT;
+	}
+
+	private static int unmarkedMetadata(int metadata) {
+		return metadata & METADATA_BITMASK;
+	}
+	
 	public static final int hellfire = 0;
 	public static final int acid = 1;
 	public static final int death = 2;
@@ -35,7 +47,7 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 
 	@Override
 	public int damageDropped(int meta) {
-		return meta;
+		return unmarkedMetadata(meta);
 	}
 
 	@Override
@@ -52,7 +64,7 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 	 */
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		int nRowDiff = 80;
-		switch (meta) {
+		switch (unmarkedMetadata(meta)) {
 			case hellfire:
 				return hellfire + nRowDiff;
 			case acid:
@@ -88,25 +100,59 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 			return false;
 	}
 
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int sideClicked, float par7, float par8, float par9) {
+	@ForgeSubscribe
+	public void onBonemealEvent(BonemealEvent e) {
+		if (e.getResult() == Result.DEFAULT && e.ID == this.blockID) {
+			if (!e.world.isRemote)
+				this.growTree(e.world, e.X, e.Y, e.Z, e.world.rand);
+			e.setResult(Result.ALLOW);
+		}
+	}
+	
+	/*public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int sideClicked, float par7, float par8, float par9) {
 
 		if (par5EntityPlayer.getHeldItem() != null && par5EntityPlayer.getHeldItem().getItemDamage() == 15 && par1World.getBlockId(par2, par3, par4) == this.blockID) {
 			par5EntityPlayer.getHeldItem().stackSize--;
 			fertilize(par1World, par2, par3, par4);
 		}
 		return false;
-	}
+	}*/
 
 	public void fertilize(World par1World, int par2, int par3, int par4) {
 		Random random = new Random();
 		growTree(par1World, par2, par3, par4, random);
 	}
 
+   /**
+    * Ticks the block if it's been scheduled
+    */
+   public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+   {
+       if (!par1World.isRemote)
+       {
+           super.updateTick(par1World, par2, par3, par4, par5Random);
+
+           if (par5Random.nextInt(7) == 0)
+           {
+               int var6 = par1World.getBlockMetadata(par2, par3, par4);
+
+               if (!isMarkedMetadata(var6))
+               {
+                   par1World.setBlockMetadataWithNotify(par2, par3, par4, markedMetadata(var6));
+               }
+               else
+               {
+                   this.growTree(par1World, par2, par3, par4, par5Random);
+               }
+           }
+       }
+   }
+	
 	/**
 	 * Attempts to grow a sapling into a tree
 	 */
 	public void growTree(World par1World, int par2, int par3, int par4, Random par5Random) {
-		int meta = par1World.getBlockMetadata(par2, par3, par4);
+		int meta = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
 
 		par1World.setBlock(par2, par3, par4, 0);
 		if ((new WorldGenNetherStuffsTrees(true,meta)).generate(par1World, par5Random, par2, par3, par4)) {

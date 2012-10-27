@@ -1,8 +1,6 @@
 package NetherStuffs.Blocks;
 
 import net.minecraft.src.Block;
-import net.minecraft.src.BlockFlower;
-import net.minecraft.src.BlockGlass;
 import net.minecraft.src.BlockSapling;
 import NetherStuffs.NetherStuffs;
 
@@ -33,4 +31,8 @@ public class NetherBlocks {
 	public static final int netherSaplingHellfire = NetherSapling.hellfire;
 	public static final int netherSaplingAcid = NetherSapling.acid;
 	public static final int netherSaplingDeath = NetherSapling.death;	
+	public static final Block netherPuddle = new NetherPuddle(NetherStuffs.NetherPuddleBlockId, 0).setBlockName("NetherPuddle");
+	public static final int netherPuddleHellfire = NetherPuddle.hellfire;
+	public static final int netherPuddleAcid = NetherPuddle.acid;
+	public static final int netherPuddleDeath = NetherPuddle.death;	
 }
