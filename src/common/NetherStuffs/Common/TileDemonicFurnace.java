@@ -1,7 +1,6 @@
 package NetherStuffs.Common;
 
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
@@ -9,6 +8,7 @@ import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
+import NetherStuffs.NetherStuffs;
 import NetherStuffs.Blocks.NetherDemonicFurnace;
 import NetherStuffs.Blocks.NetherWood;
 import NetherStuffs.Blocks.NetherWoodItemBlock;
@@ -168,10 +168,11 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 
 			if (var1 != this.furnaceBurnTime > 0) {
 				var2 = true;
+				int metadata = NetherDemonicFurnace.unmarkedMetadata(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
 				if (this.furnaceBurnTime > 0)
-					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherDemonicFurnace.active);
+					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherDemonicFurnace.setActiveOnMetadata(metadata));
 				else
-					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherDemonicFurnace.inactive);
+					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherDemonicFurnace.clearActiveOnMetadata(metadata));
 			}
 		}
 

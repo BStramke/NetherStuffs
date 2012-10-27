@@ -30,6 +30,26 @@ public class NetherDemonicFurnace extends BlockContainer {
 	public static final int active = 10; // TODO: This has to be handled similar to the leaves as this block already has metadata
 	public static final int inactive = 11; // TODO: This has to be handled similar to the leaves as this block already has metadata
 
+	private static final int METADATA_BITMASK = 0x7;
+	private static final int METADATA_ACTIVEBIT = 0x8;
+	private static final int METADATA_CLEARACTIVEBIT = -METADATA_ACTIVEBIT - 1;
+
+	public static int clearActiveOnMetadata(int metadata) {
+		return metadata & METADATA_CLEARACTIVEBIT;
+	}
+
+	public static boolean isActiveSet(int metadata) {
+		return (metadata & METADATA_ACTIVEBIT) != 0;
+	}
+
+	public static int setActiveOnMetadata(int metadata) {
+		return metadata | METADATA_ACTIVEBIT;
+	}
+
+	public static int unmarkedMetadata(int metadata) {
+		return metadata & METADATA_BITMASK;
+	}
+	
 	/**
 	 * This flag is used to prevent the furnace inventory to be dropped upon block removal, is used internally when the furnace block changes from idle to active and vice-versa.
 	 */
@@ -38,6 +58,8 @@ public class NetherDemonicFurnace extends BlockContainer {
 	public NetherDemonicFurnace(int par1, int par2) {
 		super(par1, par2, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setRequiresSelfNotify();
+		this.setTickRandomly(true);
 	}
 
 	public String getItemNameIS(ItemStack is) {
@@ -58,7 +80,9 @@ public class NetherDemonicFurnace extends BlockContainer {
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
 		super.onBlockAdded(par1World, par2, par3, par4);
 		this.setDefaultDirection(par1World, par2, par3, par4);
-		par1World.setBlockMetadataWithNotify(par2, par3, par4, NetherDemonicFurnace.inactive);
+		
+		//int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
+		//par1World.setBlockMetadataWithNotify(par2, par3, par4, clearActiveOnMetadata(metadata));
 	}
 
 	/**
@@ -88,6 +112,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 				var9 = 4;
 			}
 
+			
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
 		}
 	}
@@ -98,7 +123,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 
 	private boolean isActive(World par1World, int par2, int par3, int par4) {
 		int meta = par1World.getBlockMetadata(par2, par3, par4);
-		if (meta == NetherDemonicFurnace.active)
+		if (isActiveSet(meta))
 			return true;
 		else
 			return false;
@@ -106,7 +131,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 
 	private boolean isActive(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
 		int meta = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-		if (meta == NetherDemonicFurnace.active)
+		if (isActiveSet(meta))
 			return true;
 		else
 			return false;
@@ -117,18 +142,20 @@ public class NetherDemonicFurnace extends BlockContainer {
 	 * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
 	 */
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
+		
 		switch (side) {
 			case NetherBlocks.sideBottom:
 				return 98; // bottom
 			case NetherBlocks.sideTop:
 				return 98; // top
 			default: {
+				
 				int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-				if (side != var6)
+				if (side != unmarkedMetadata(var6))
 					return 97;
 				else {
-					if (this.isActive(par1IBlockAccess, par2, par3, par4))
-						return 97;
+					if (this.isActiveSet(var6))
+						return 99;
 					else
 						return 96;
 				}
@@ -143,7 +170,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 	 */
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		if (this.isActive(par1World, par2, par3, par4)) {
-			int var6 = par1World.getBlockMetadata(par2, par3, par4);
+			int var6 = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
 			float var7 = (float) par2 + 0.5F;
 			float var8 = (float) par3 + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
 			float var9 = (float) par4 + 0.5F;
