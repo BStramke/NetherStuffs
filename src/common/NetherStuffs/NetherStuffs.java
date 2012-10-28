@@ -234,12 +234,22 @@ public class NetherStuffs {
 			LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot." + ((NetherOreIngot) NetherOreIngot).itemNames[i] + ".name",
 					((NetherOreIngot) NetherOreIngot).itemDisplayNames[i]);
 		}
+		
+		for (int i = 0; i < ((NetherStoneBowl) NetherStoneBowl).getMetadataSize(); i++) {
+			LanguageRegistry.instance().addStringLocalization("item.NetherStoneBowl." + ((NetherStoneBowl) NetherStoneBowl).itemNames[i] + ".name",
+					((NetherStoneBowl) NetherStoneBowl).itemDisplayNames[i]);
+		}
+		
+		for (int i = 0; i < ((NetherSoulGlassBottle) NetherSoulGlassBottle).getMetadataSize(); i++) {
+			LanguageRegistry.instance().addStringLocalization("item.NetherSoulGlassBottle." + ((NetherSoulGlassBottle) NetherSoulGlassBottle).itemNames[i] + ".name",
+					((NetherSoulGlassBottle) NetherSoulGlassBottle).itemDisplayNames[i]);
+		}
 
 		LanguageRegistry.instance().addStringLocalization("item.NetherObsidianSword.name", "Obsidian Sword");
 		LanguageRegistry.instance().addStringLocalization("item.NetherDemonicBarHandle.name", "Demonic Haft");
 		LanguageRegistry.instance().addStringLocalization("item.NetherWoodStick.name", "Nether Stick");
-		LanguageRegistry.instance().addStringLocalization("item.NetherStoneBowl.name", "Netherstone Bowl");
-		LanguageRegistry.instance().addStringLocalization("item.NetherSoulGlassBottle.name", "Soul Glass Bottle");
+		//LanguageRegistry.instance().addStringLocalization("item.NetherStoneBowl.name", "Netherstone Bowl");
+		//LanguageRegistry.instance().addStringLocalization("item.NetherSoulGlassBottle.name", "Soul Glass Bottle");
 
 		LanguageRegistry.instance().addStringLocalization("tile.NetherDemonicFurnace.name", "Demonic Furnace");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlass.name", "Soul Glass");
