@@ -57,7 +57,9 @@ public class NetherDemonicFurnace extends BlockContainer {
 
 	public NetherDemonicFurnace(int par1) {
 		super(par1, Material.rock);
-		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setCreativeTab(CreativeTabs.tabDecorations);
+		this.setHardness(3.5F);
+		this.setStepSound(soundStoneFootstep);
 		this.setRequiresSelfNotify();
 		this.setTickRandomly(true);
 	}

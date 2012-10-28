@@ -35,7 +35,7 @@ public class WorldGenNetherStuffsMinable implements IWorldGenerator {
 	}
 
 	private void generateNether(World world, Random random, int i, int j) {
-		for (int j1 = 0; j1 < 90; j1++) {
+		for (int j1 = 0; j1 < 50; j1++) {
 			int Xcoordinate = i + random.nextInt(16);
 			int Zcoordinate = j + random.nextInt(16);
 			int Ycoordinate = random.nextInt(256);

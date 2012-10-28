@@ -12,10 +12,10 @@ public class NetherBlocks {
 	public static final int sideRight = 5;
 	public static final int sideLeft = 4;	
 	
-	public static final Block netherOre = new NetherOre(NetherStuffs.NetherOreBlockId, 0).setBlockName("NetherOre").setHardness(1F).setResistance(5F);
+	public static final Block netherOre = new NetherOre(NetherStuffs.NetherOreBlockId, 0).setBlockName("NetherOre").setHardness(10.0F).setResistance(5.0F);
 	public static final int demonicOre = NetherOre.demonicOre;
 	public static final int netherStone = NetherOre.netherStone;
-	public static final Block netherWood = new NetherWood(NetherStuffs.NetherWoodBlockId, 0).setBlockName("NetherWood");
+	public static final Block netherWood = new NetherWood(NetherStuffs.NetherWoodBlockId, 0).setBlockName("NetherWood").setHardness(4.0F);
 	public static final int netherWoodHellfire = NetherWood.hellfire;
 	public static final int netherWoodAcid = NetherWood.acid;
 	public static final int netherWoodDeath = NetherWood.death;
@@ -27,7 +27,7 @@ public class NetherBlocks {
 	public static final int netherPlankHellfire = NetherPlank.hellfire;
 	public static final int netherPlankAcid = NetherPlank.acid;
 	public static final int netherPlankDeath = NetherPlank.death;
-	public static final BlockSapling netherSapling = (BlockSapling) new NetherSapling(NetherStuffs.NetherSaplingBlockId, 0).setBlockName("NetherSapling");
+	public static final BlockSapling netherSapling = (BlockSapling) new NetherSapling(NetherStuffs.NetherSaplingBlockId, 0).setBlockName("NetherSapling").setHardness(0.0F);
 	public static final int netherSaplingHellfire = NetherSapling.hellfire;
 	public static final int netherSaplingAcid = NetherSapling.acid;
 	public static final int netherSaplingDeath = NetherSapling.death;	

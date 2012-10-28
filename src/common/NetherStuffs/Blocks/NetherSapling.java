@@ -8,12 +8,10 @@ import java.util.Random;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockSapling;
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 import net.minecraftforge.common.EnumPlantType;
-import net.minecraftforge.event.Event.Result;
-import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.entity.player.BonemealEvent;
 import NetherStuffs.NetherStuffs;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.Side;
@@ -43,6 +41,7 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 	public NetherSapling(int par1, int par2) {
 		super(par1, par2);
 		this.setRequiresSelfNotify();
+		this.setStepSound(soundGrassFootstep);
 	}
 
 	@Override
@@ -100,23 +99,15 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 			return false;
 	}
 
-	@ForgeSubscribe
-	public void onBonemealEvent(BonemealEvent e) {
-		if (e.getResult() == Result.DEFAULT && e.ID == this.blockID) {
-			if (!e.world.isRemote)
-				this.growTree(e.world, e.X, e.Y, e.Z, e.world.rand);
-			e.setResult(Result.ALLOW);
-		}
-	}
 	
-	/*public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int sideClicked, float par7, float par8, float par9) {
+	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int sideClicked, float par7, float par8, float par9) {
 
 		if (par5EntityPlayer.getHeldItem() != null && par5EntityPlayer.getHeldItem().getItemDamage() == 15 && par1World.getBlockId(par2, par3, par4) == this.blockID) {
 			par5EntityPlayer.getHeldItem().stackSize--;
 			fertilize(par1World, par2, par3, par4);
 		}
 		return false;
-	}*/
+	}
 
 	public void fertilize(World par1World, int par2, int par3, int par4) {
 		Random random = new Random();

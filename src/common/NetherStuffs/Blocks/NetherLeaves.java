@@ -59,18 +59,16 @@ public class NetherLeaves extends Block implements IShearable {
 		if (!par1World.isRemote) {
 			int var6 = par1World.getBlockMetadata(par2, par3, par4);
 
-			if (!isDecaying(var6) && par5Random.nextInt(10) == 0) {
+			if (!isDecaying(var6) && par5Random.nextInt(10) == 0 && par1World.provider.isHellWorld) {
 				for (int yCoord = par3 - 1; yCoord > 0; yCoord--) {
 					int nNextBlockId = par1World.getBlockId(par2, yCoord, par4);
 					if (nNextBlockId != 0) {
 						if (nNextBlockId == NetherBlocks.netherPuddle.blockID) {
 							NetherPuddle.growPuddle(par1World, par2, yCoord, par4);
 							break;
-						} else if (NetherPuddle.canBlockStay(par1World, par2, yCoord+1, par4, NetherLeaves.unmarkedMetadata(var6), true)) {
+						} else {							
 							int metadata = NetherLeaves.unmarkedMetadata(var6);
 							NetherPuddle.placePuddleWithType(par1World, par2, yCoord+1, par4, metadata);
-							break;
-						} else {
 							break;
 						}
 					}

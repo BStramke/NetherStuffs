@@ -181,7 +181,7 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 							}
 
 							if (bValid) {
-								this.metaWood = random.nextInt(2); // random guess what wood we will place
+								this.metaWood = random.nextInt(3); // random guess what wood we will place
 								this.metaLeaves = this.metaWood; //this should contain the matching Leaves Damage Value
 								//System.out.println(Xcoordinate+","+ y+","+ Zcoordinate);
 								generate(world, random, Xcoordinate, y, Zcoordinate);

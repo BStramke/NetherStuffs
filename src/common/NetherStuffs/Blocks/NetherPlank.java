@@ -18,6 +18,7 @@ public class NetherPlank extends Block {
 		super(par1, par2, Material.wood);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setRequiresSelfNotify();
+		this.setStepSound(soundWoodFootstep);
 	}
 
 	public String getTextureFile() {
