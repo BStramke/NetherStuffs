@@ -1,33 +1,54 @@
 package NetherStuffs.Blocks;
 
 import java.util.List;
+import java.util.Random;
+
+import NetherStuffs.Common.NetherPuddleMaterial;
 
 import net.minecraft.src.Block;
-import net.minecraft.src.BlockFlower;
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.MapColor;
 import net.minecraft.src.Material;
+import net.minecraft.src.MaterialLogic;
 import net.minecraft.src.World;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
-public class NetherPuddle extends BlockFlower {
+public class NetherPuddle extends Block {
 	public static final int hellfire = 0;
 	public static final int acid = 1;
 	public static final int death = 2;
 
 	public NetherPuddle(int par1, int par2) {
-		super(par1, par2);
+		super(par1, par2, NetherPuddleMaterial.netherPuddle);
+		this.blockMaterial.setGroundCover();
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setRequiresSelfNotify();
 		this.setHardness(0.1F);
-      this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
-      this.setTickRandomly(true);
+		this.setLightOpacity(0);
+		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.015625F, 1.0F);
+		this.setTickRandomly(true);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
+	public int getRenderType() {
+		return 0;
+	}
+
 	public String getTextureFile() {
-		return "/blocks.png";
+		return "/puddles.png";
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
+		return true;
+	}
+
+	public static void placePuddleWithType(World par1World, int par2, int par3, int par4, int type) {
+		par1World.setBlockAndMetadataWithNotify(par2, par3, par4, NetherBlocks.netherPuddle.blockID, type);
 	}
 
 	public int getMetadataSize() {
@@ -38,33 +59,105 @@ public class NetherPuddle extends BlockFlower {
 		return par1 == Block.netherrack.blockID || par1 == Block.slowSand.blockID || par1 == NetherBlocks.netherOre.blockID;
 	}
 
+	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
+		int blockId = par1World.getBlockId(par2, par3 - 1, par4);
+		return canBlockStay(par1World, par2, par3, par4) && canThisPlantGrowOnThisBlockID(blockId);
+	}
+
+	private static final int METADATA_BITMASK = 0x7; // Differences between Hellfire, Acid, Death
+	private static final int METADATA_SIZEBITMASK = 0x18; // Bits 8&9 to Store the Size Value (0-3)
+	private static final int METADATA_SIZEBITSOFFSET = 0x3; // the Shifting Amount to convert the Size from 0-3 to 0/8/16/24
+
+	private static final int METADATA_CLEARSIZEBITMASK = -METADATA_SIZEBITMASK - 1;
+
+	private static int clearSizeOnMetadata(int metadata) {
+		return metadata & METADATA_CLEARSIZEBITMASK;
+	}
+
+	private static int getSizeForMetadata(int size) {
+		return size << METADATA_SIZEBITSOFFSET;
+	}
+
+	private static int getSizeFromMetadata(int metadata) {
+		return (metadata & METADATA_SIZEBITMASK) >> METADATA_SIZEBITSOFFSET;
+	}
+
+	private static int setMetadataSize(int metadata, int size) {
+		return metadata | (METADATA_SIZEBITMASK & getSizeForMetadata(size));
+	}
+
+	protected static int unmarkedMetadata(int metadata) {
+		return metadata & METADATA_BITMASK;
+	}
+
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		int nRowDiff = 48;
-		switch (meta) {
+		switch (clearSizeOnMetadata(meta)) {
 			case hellfire:
-				return hellfire + nRowDiff;
+				return hellfire * 16 + getSizeFromMetadata(meta);
 			case acid:
-				return acid + nRowDiff;
+				return acid * 16 + getSizeFromMetadata(meta);
 			case death:
-				return death + nRowDiff;
+				return death * 16 + getSizeFromMetadata(meta);
 			default:
-				return hellfire + nRowDiff;
+				return hellfire * 16 + getSizeFromMetadata(meta);
+		}
+	}
+	
+   /*public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+   {
+       int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 7;
+       float var6 = (float)(2 * (1 + var5)) / 16.0F;
+       this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, var6, 1.0F);
+   }*/
+
+	private void removePuddle(World par1World, int par2, int par3, int par4) {
+		// int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
+		par1World.setBlockWithNotify(par2, par3, par4, 0);
+		// dropBlockAsItem(par1World, par2, par3, par4, metadata, 0);
+	}
+
+	@Override
+	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
+		if (!par1World.isRemote) {
+			if (!canBlockStay(par1World, par2, par3, par4, true))
+				removePuddle(par1World, par2, par3, par4);
+
+			/*
+			 * if(par5Random.nextInt(100)<=50) growPuddle(par1World, par2, par3, par4);
+			 */
 		}
 	}
 
-	public boolean canBlockStay(World par1World, int par2, int par3, int par4) {
+	public static void growPuddle(World par1World, int par2, int par3, int par4) {
+		if (par1World.provider.isHellWorld) {
+			int metadata = par1World.getBlockMetadata(par2, par3, par4);
+			int type = unmarkedMetadata(metadata);
+			int size = getSizeFromMetadata(metadata) + 1;
+			if (size < 4)
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, setMetadataSize(metadata, size));
+		}
+	}
+
+	protected static boolean canBlockStay(World par1World, int par2, int par3, int par4, int puddleMeta, boolean checkPuddleMeta) {
 		boolean bValid = true;
-		int puddleMeta = par1World.getBlockMetadata(par2, par3, par4);
-		if (par1World.provider.dimensionId != -1) // only allow in Nether
+		if (!par1World.provider.isHellWorld) // only allow in Nether
 			return false;
 		if (par3 >= 0 && par3 < 256) {
 
-			for (int y = par3 + 1; y < 256 && bValid; y++) {
+			if (par1World.isAirBlock(par2, par3 - 1, par4))
+				return false;
+
+			for (int y = par3 + 1; y < 256 && bValid; y++) { // search for netherleaves
 				if (!par1World.isAirBlock(par2, y, par4)) {
-					if (par1World.getBlockId(par2, y, par3) == NetherBlocks.netherLeaves.blockID
-							&& NetherLeaves.unmarkedMetadata(par1World.getBlockMetadata(par2, y, par3)) == puddleMeta)
-						break; // we found a valid Top for the Puddle
-					else
+					if (par1World.getBlockId(par2, y, par4) == NetherBlocks.netherLeaves.blockID) {
+						if (checkPuddleMeta) {
+							if (NetherLeaves.unmarkedMetadata(par1World.getBlockMetadata(par2, y, par3)) != puddleMeta)
+								bValid = false;
+							else
+								break;
+						} else
+							break; // we found a valid Top for the Puddle
+					} else
 						bValid = false;
 				}
 			}
@@ -76,10 +169,38 @@ public class NetherPuddle extends BlockFlower {
 	}
 
 	@Override
+	public boolean canBlockStay(World par1World, int par2, int par3, int par4) {
+		if (par1World.isAirBlock(par2, par3 - 1, par4))
+			return false;
+		int puddleMeta = NetherPuddle.unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
+		return canBlockStay(par1World, par2, par3, par4, puddleMeta, false);
+	}
+
+	public static boolean canBlockStay(World par1World, int par2, int par3, int par4, boolean CheckPuddleMeta) {
+		if (par1World.isAirBlock(par2, par3 - 1, par4))
+			return false;
+		int puddleMeta = NetherPuddle.unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
+		return canBlockStay(par1World, par2, par3, par4, puddleMeta, CheckPuddleMeta);
+	}
+
+	@Override
 	public int damageDropped(int meta) {
 		return meta;
 	}
 
+   public boolean isOpaqueCube()
+   {
+       return false;
+   }
+
+   /**
+    * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
+    */
+   public boolean renderAsNormalBlock()
+   {
+       return false;
+   }
+	
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
 		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {

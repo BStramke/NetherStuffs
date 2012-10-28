@@ -38,7 +38,7 @@ public class NetherPuddleItemBlock  extends ItemBlock {
 	}
 
 	public String getTextureFile() {
-		return "/blocks.png";
+		return "/puddles.png";
 	}
 
 	public int getMetadata(int meta) {

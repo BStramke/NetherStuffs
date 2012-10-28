@@ -28,12 +28,9 @@ public class WorldGenNetherStuffsMinable implements IWorldGenerator {
 	}
 
 	@Override
-	public void generate(Random random, int chunkX, int chunkZ, World world,
-			IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-		switch (world.provider.dimensionId) {
-		case -1:
+	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+		if (world.provider.isHellWorld)
 			generateNether(world, random, chunkX * 16, chunkZ * 16);
-		}
 
 	}
 
@@ -42,9 +39,7 @@ public class WorldGenNetherStuffsMinable implements IWorldGenerator {
 			int Xcoordinate = i + random.nextInt(16);
 			int Zcoordinate = j + random.nextInt(16);
 			int Ycoordinate = random.nextInt(256);
-			new GenerateNetherStuffsMinable(minableBlockId, minableBlockMeta,
-					numberOfBlocks).generate(world, random, Xcoordinate,
-					Ycoordinate, Zcoordinate);
+			new GenerateNetherStuffsMinable(minableBlockId, minableBlockMeta, numberOfBlocks).generate(world, random, Xcoordinate, Ycoordinate, Zcoordinate);
 		}
 
 	}

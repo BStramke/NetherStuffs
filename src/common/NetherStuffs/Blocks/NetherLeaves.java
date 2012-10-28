@@ -6,17 +6,14 @@ import java.util.Random;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.EntityFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraftforge.common.IShearable;
 import NetherStuffs.Common.NetherLeavesMaterial;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class NetherLeaves extends Block implements IShearable {
 	public static final int hellfire = 0;
@@ -62,6 +59,25 @@ public class NetherLeaves extends Block implements IShearable {
 		if (!par1World.isRemote) {
 			int var6 = par1World.getBlockMetadata(par2, par3, par4);
 
+			if (!isDecaying(var6) && par5Random.nextInt(10) == 0) {
+				for (int yCoord = par3 - 1; yCoord > 0; yCoord--) {
+					int nNextBlockId = par1World.getBlockId(par2, yCoord, par4);
+					if (nNextBlockId != 0) {
+						if (nNextBlockId == NetherBlocks.netherPuddle.blockID) {
+							NetherPuddle.growPuddle(par1World, par2, yCoord, par4);
+							break;
+						} else if (NetherPuddle.canBlockStay(par1World, par2, yCoord+1, par4, NetherLeaves.unmarkedMetadata(var6), true)) {
+							int metadata = NetherLeaves.unmarkedMetadata(var6);
+							NetherPuddle.placePuddleWithType(par1World, par2, yCoord+1, par4, metadata);
+							break;
+						} else {
+							break;
+						}
+					}
+				}
+			}
+			
+			
 			if (isUserPlaced(var6) || !isDecaying(var6))
 				return;
 
@@ -141,9 +157,6 @@ public class NetherLeaves extends Block implements IShearable {
 
 				if (var12 >= 0) {
 					par1World.setBlockMetadata(par2, par3, par4, clearDecayOnMetadata(var6));
-					//TODO: Add generator for Puddles on block Bottom
-					
-					
 				} else {
 					this.removeLeaves(par1World, par2, par3, par4);
 				}
@@ -156,7 +169,7 @@ public class NetherLeaves extends Block implements IShearable {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		if (par1World.provider.dimensionId == -1 && par5Random.nextInt(15) == 1 && par1World.isAirBlock(par2, par3 -1, par4)) {
+		if (par1World.provider.isHellWorld && par5Random.nextInt(15) == 1 && par1World.isAirBlock(par2, par3 - 1, par4)) {
 			double var6 = (double) ((float) par2 + par5Random.nextFloat());
 			double var8 = (double) par3 - 0.05D;
 			double var10 = (double) ((float) par4 + par5Random.nextFloat());
@@ -166,7 +179,7 @@ public class NetherLeaves extends Block implements IShearable {
 					par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
 					break;
 				case acid:
-						//EntityDropParticleFXNetherStuffs(par1World, par2, par3, par4, Material.lava);
+					// EntityDropParticleFXNetherStuffs(par1World, par2, par3, par4, Material.lava);
 					par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
 					break;
 				case death:

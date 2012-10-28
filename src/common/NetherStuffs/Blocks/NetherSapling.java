@@ -94,7 +94,7 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 	 * Can this block stay at this position. Similar to canPlaceBlockAt except gets checked often with plants.
 	 */
 	public boolean canBlockStay(World par1World, int par2, int par3, int par4) {
-		if (par1World.provider.dimensionId == -1)
+		if (par1World.provider.isHellWorld)
 			return this.canThisPlantGrowOnThisBlockID(par1World.getBlockId(par2, par3 - 1, par4));
 		else
 			return false;

@@ -165,7 +165,7 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-		if (world.provider.dimensionId == -1) {
+		if (world.provider.isHellWorld) {
 			if (random.nextInt(9) < 2) // chance of 20% to spawn a tree group in that chunk at all
 			{
 				for (int j1 = 0; j1 < 3; j1++) { // groups of 3 trees (may spawn if appropriate!)
