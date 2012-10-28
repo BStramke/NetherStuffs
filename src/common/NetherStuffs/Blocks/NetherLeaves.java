@@ -66,16 +66,15 @@ public class NetherLeaves extends Block implements IShearable {
 						if (nNextBlockId == NetherBlocks.netherPuddle.blockID) {
 							NetherPuddle.growPuddle(par1World, par2, yCoord, par4);
 							break;
-						} else {							
+						} else {
 							int metadata = NetherLeaves.unmarkedMetadata(var6);
-							NetherPuddle.placePuddleWithType(par1World, par2, yCoord+1, par4, metadata);
+							NetherPuddle.placePuddleWithType(par1World, par2, yCoord + 1, par4, metadata);
 							break;
 						}
 					}
 				}
 			}
-			
-			
+
 			if (isUserPlaced(var6) || !isDecaying(var6))
 				return;
 
@@ -173,19 +172,19 @@ public class NetherLeaves extends Block implements IShearable {
 			double var10 = (double) ((float) par4 + par5Random.nextFloat());
 			int metadata = par1World.getBlockMetadata(par2, par3, par4);
 			switch (metadata) {
-				case hellfire:
-					par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
-					break;
-				case acid:
-					// EntityDropParticleFXNetherStuffs(par1World, par2, par3, par4, Material.lava);
-					par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
-					break;
-				case death:
-					par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
-					break;
-				default:
-					par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
-					break;
+			case hellfire:
+				par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+				break;
+			case acid:
+				// EntityDropParticleFXNetherStuffs(par1World, par2, par3, par4, Material.lava);
+				par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+				break;
+			case death:
+				par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+				break;
+			default:
+				par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+				break;
 			}
 		}
 
@@ -239,14 +238,14 @@ public class NetherLeaves extends Block implements IShearable {
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		int nRowDiff = 64;
 		switch (unmarkedMetadata(meta)) {
-			case hellfire:
-				return hellfire + nRowDiff;
-			case acid:
-				return acid + nRowDiff;
-			case death:
-				return death + nRowDiff;
-			default:
-				return hellfire + nRowDiff;
+		case hellfire:
+			return hellfire + nRowDiff;
+		case acid:
+			return acid + nRowDiff;
+		case death:
+			return death + nRowDiff;
+		default:
+			return hellfire + nRowDiff;
 		}
 	}
 
