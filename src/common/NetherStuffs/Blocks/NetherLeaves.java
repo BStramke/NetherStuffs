@@ -66,6 +66,8 @@ public class NetherLeaves extends Block implements IShearable {
 						if (nNextBlockId == NetherBlocks.netherPuddle.blockID) {
 							NetherPuddle.growPuddle(par1World, par2, yCoord, par4);
 							break;
+						} else if (nNextBlockId != Block.netherrack.blockID && nNextBlockId != NetherBlocks.netherOre.blockID) {
+							break;
 						} else {
 							int metadata = NetherLeaves.unmarkedMetadata(var6);
 							NetherPuddle.placePuddleWithType(par1World, par2, yCoord + 1, par4, metadata);

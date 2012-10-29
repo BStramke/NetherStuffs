@@ -36,55 +36,7 @@ public class NetherPuddle extends Block {
 	public int getRenderType() {
 		return 0;
 	}
-
-	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int sideClicked, float par7, float par8, float par9) {
-		if (par5EntityPlayer.getHeldItem() != null && getSizeFromMetadata(par1World.getBlockMetadata(par2, par3, par4)) == 3
-				&& (par5EntityPlayer.getHeldItem().itemID == NetherStuffs.NetherSoulGlassBottle.shiftedIndex || par5EntityPlayer.getHeldItem().itemID == NetherStuffs.NetherStoneBowl.shiftedIndex)) {
-
-			int usedItem = par5EntityPlayer.getHeldItem().itemID;
-			int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
-			int bottleMetaData = 0;
-			if (usedItem == NetherStuffs.NetherSoulGlassBottleItemId) {
-				switch (metadata) {
-				case hellfire:
-					bottleMetaData = NetherSoulGlassBottle.hellfire;
-					break;
-				case acid:
-					bottleMetaData = NetherSoulGlassBottle.acid;
-					break;
-				case death:
-					bottleMetaData = NetherSoulGlassBottle.death;
-					break;
-				default:
-					return false; // --> as this means its a unknown type, exit
-				}
-			} else {
-				switch (metadata) {
-				case hellfire:
-					bottleMetaData = NetherStoneBowl.hellfire;
-					break;
-				case acid:
-					bottleMetaData = NetherStoneBowl.acid;
-					break;
-				case death:
-					bottleMetaData = NetherStoneBowl.death;
-					break;
-				default:
-					return false; // --> as this means its a unknown type, exit
-				}
-			}
-
-			par5EntityPlayer.getHeldItem().stackSize--;
-			if (par5EntityPlayer.inventory.addItemStackToInventory(new ItemStack(usedItem, 1, bottleMetaData)))
-				removePuddle(par1World, par2, par3, par4);
-			else
-				par5EntityPlayer.getHeldItem().stackSize++;
-
-		}
-		return false;
-	}
-
+	
 	public String getTextureFile() {
 		return "/puddles.png";
 	}
@@ -132,17 +84,19 @@ public class NetherPuddle extends Block {
 		return size << METADATA_SIZEBITSOFFSET;
 	}
 
-	private static int getSizeFromMetadata(int metadata) {
+	public static int getSizeFromMetadata(int metadata) {
 		return (metadata & METADATA_SIZEBITMASK) >> METADATA_SIZEBITSOFFSET;
 	}
 
-	private static int setMetadataSize(int metadata, int size) {
+	public static int setMetadataSize(int metadata, int size) {
 		return metadata | (METADATA_SIZEBITMASK & getSizeForMetadata(size));
 	}
 
-	protected static int unmarkedMetadata(int metadata) {
+	public static int unmarkedMetadata(int metadata) {
 		return metadata & METADATA_BITMASK;
 	}
+	
+	
 
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (clearSizeOnMetadata(meta)) {
@@ -157,12 +111,7 @@ public class NetherPuddle extends Block {
 		}
 	}
 
-	/*
-	 * public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) { int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 7;
-	 * float var6 = (float)(2 * (1 + var5)) / 16.0F; this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, var6, 1.0F); }
-	 */
-
-	private void removePuddle(World par1World, int par2, int par3, int par4) {
+	public static void removePuddle(World par1World, int par2, int par3, int par4) {
 		// int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2,
 		// par3, par4));
 		par1World.setBlockWithNotify(par2, par3, par4, 0);
@@ -183,7 +132,6 @@ public class NetherPuddle extends Block {
 			int metadata = par1World.getBlockMetadata(par2, par3, par4);
 			int type = unmarkedMetadata(metadata);
 			int size = getSizeFromMetadata(metadata) + 1;
-			//System.out.println(metadata+ " --- " + size);
 			if (size < 4)
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, setMetadataSize(metadata, size));
 		}
@@ -194,8 +142,7 @@ public class NetherPuddle extends Block {
 		if (!par1World.provider.isHellWorld) // only allow in Nether
 			return false;
 		if (par3 >= 0 && par3 < 256) {
-
-			if (par1World.isAirBlock(par2, par3 - 1, par4))
+			if (par1World.getBlockId(par2, par3 - 1, par4) != Block.netherrack.blockID) //If its anything else than netherrack as base it wont work
 				return false;
 
 			for (int y = par3 + 1; y < 256 && bValid; y++) { // search for netherleaves

@@ -2,24 +2,26 @@ package NetherStuffs.Items;
 
 import java.util.List;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EnumMovingObjectType;
 import net.minecraft.src.ItemGlassBottle;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.MovingObjectPosition;
+import net.minecraft.src.World;
+import NetherStuffs.Blocks.NetherBlocks;
+import NetherStuffs.Blocks.NetherPuddle;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class NetherSoulGlassBottle extends ItemGlassBottle {
-	public static String[] itemNames = new String[] { "SoulglassBottle", "SoulglassBottleHellfire", "SoulglassBottleAcid", "SoulglassBottleDeath" };
-	public static String[] itemDisplayNames = new String[] { "Soulglass Bottle", "Soulglass Bottle Hellfire", "Soulglass Bottle Acid", "Soulglass Bottle Death" };
-	public static final int empty = 0;
-	public static final int hellfire = 1;
-	public static final int acid = 2;
-	public static final int death = 3;
+	public static String[] itemNames = new String[] { "SoulglassBottle" };
+	public static String[] itemDisplayNames = new String[] { "Soulglass Bottle" };
 
 	public NetherSoulGlassBottle(int par1) {
 		super(par1);
 		this.setCreativeTab(CreativeTabs.tabBrewing);
-		this.setHasSubtypes(true);
+		// this.setHasSubtypes(true);
 	}
 
 	public String getTextureFile() {
@@ -27,18 +29,7 @@ public class NetherSoulGlassBottle extends ItemGlassBottle {
 	}
 
 	public int getIconFromDamage(int par1) {
-		switch (par1) {
-		case empty:
-			return 16;
-		case hellfire:
-			return 32;
-		case acid:
-			return 33;
-		case death:
-			return 34;
-		default:
-			return 16;
-		}
+		return 16;
 	}
 
 	public static int getMetadataSize() {
@@ -58,11 +49,55 @@ public class NetherSoulGlassBottle extends ItemGlassBottle {
 	public int getMetadata(int meta) {
 		return meta;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs tab, List list) {
 		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));
+		}
+	}
+
+	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+		MovingObjectPosition var4 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+
+		if (var4 == null) {
+			return par1ItemStack;
+		} else {
+			if (var4.typeOfHit == EnumMovingObjectType.TILE) {
+				int var5 = var4.blockX;
+				int var6 = var4.blockY;
+				int var7 = var4.blockZ;
+
+				if (par2World.getBlockId(var5, var6, var7) == NetherBlocks.netherPuddle.blockID && NetherPuddle.getSizeFromMetadata(par2World.getBlockMetadata(var5, var6, var7)) == 3) {
+					int metadata = NetherPuddle.unmarkedMetadata(par2World.getBlockMetadata(var5, var6, var7));
+					int bottleMetaData = 0;
+					switch (metadata) {
+					case NetherPuddle.hellfire:
+						bottleMetaData = NetherPotionBottle.hellfire;
+						break;
+					case NetherPuddle.acid:
+						bottleMetaData = NetherPotionBottle.acid;
+						break;
+					case NetherPuddle.death:
+						bottleMetaData = NetherPotionBottle.death;
+						break;
+					default:
+						return par1ItemStack; // --> as this means its a unknown type, exit
+					}
+					--par1ItemStack.stackSize;
+					NetherPuddle.removePuddle(par2World, var5, var6, var7);
+
+					if (par1ItemStack.stackSize <= 0) {
+						return new ItemStack(NetherItems.NetherPotionBottle.shiftedIndex, 1, bottleMetaData);
+					}
+
+					if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(NetherItems.NetherPotionBottle.shiftedIndex, 1, bottleMetaData))) {
+						par3EntityPlayer.dropPlayerItem(new ItemStack(NetherItems.NetherPotionBottle.shiftedIndex, 1, bottleMetaData));
+					}
+				}
+			}
+
+			return par1ItemStack;
 		}
 	}
 }
