@@ -16,9 +16,11 @@ LICENSE.txt
 
 /src/minecraft/*
 !/src/minecraft/NetherStuffs/
+!/src/minecraft/NetherStuffsCore/
 /src/minecraft_server/*
 /src/common/*
 !/src/common/NetherStuffs/
+!/src/common/NetherStuffsCore/
 
 
 
