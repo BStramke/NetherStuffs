@@ -1,5 +1,7 @@
 package NetherStuffs;
 
+import java.util.Arrays;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.EnumToolMaterial;
 import net.minecraft.src.FurnaceRecipes;
@@ -37,7 +39,9 @@ import NetherStuffs.Items.NetherStonePotionBowl;
 import NetherStuffs.Items.NetherWoodStick;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
+import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PreInit;
@@ -50,9 +54,9 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid = "NetherStuffs", name = "NetherStuffs", version = "1.0.0")
+@Mod(name="NetherStuffs", version="1.0.1", modid = "NetherStuffs")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
-public class NetherStuffs {
+public class NetherStuffs extends DummyModContainer {	
 	@Instance
 	public static NetherStuffs instance = new NetherStuffs();
 
@@ -93,7 +97,7 @@ public class NetherStuffs {
 	public static int NetherStonePotionBowlItemId;
 	public static int NetherSoulGlassBottleItemId;
 	public static int NetherPotionBottleItemId;
-
+	
 	@PreInit
 	public void PreLoad(FMLPreInitializationEvent event) {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());

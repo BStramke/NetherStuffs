@@ -2,7 +2,7 @@
   "modid": "NetherStuffs",
   "name": "NetherStuffs",
   "description": "Extending the Nether and adding Hellish stuff",
-  "version": "0.2 Preview",
+  "version": "0.2",
   "credits": "Created by BStramke",
   "logoFile": "",
   "mcversion": "",
@@ -11,5 +11,5 @@
   "authors": [ "BStramke" ],
   "parent":"NetherStuffsCore",
   "screenshots": [],
-  "dependencies": ["mod_MinecraftForge"]
+  "dependencies": ["mod_MinecraftForge", "NetherStuffsCore"]
 }]
