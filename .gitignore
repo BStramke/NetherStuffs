@@ -21,6 +21,7 @@ LICENSE.txt
 /src/common/*
 !/src/common/NetherStuffs/
 !/src/common/NetherStuffsCore/
+!/src/common/netherstuffs_at.cfg
 
 
 
