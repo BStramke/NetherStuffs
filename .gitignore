@@ -26,4 +26,5 @@ LICENSE.txt
 
 
 *.bat
+!build_netherstuffs.bat
 *.sh

@@ -3,8 +3,10 @@ package NetherStuffsCore;
 import java.util.Map;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
-public class NetherStuffsCore implements IFMLLoadingPlugin {
+@TransformerExclusions({"NetherStuffsCore"})
+public class NetherStuffsCorePlugin implements IFMLLoadingPlugin {
 
 	@Override
 	public String[] getLibraryRequestClass() {
