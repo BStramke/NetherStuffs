@@ -1,17 +1,18 @@
 package NetherStuffs.WorldGen;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Random;
 
-import NetherStuffs.NetherStuffs;
-import NetherStuffs.Blocks.NetherBlocks;
-
-import cpw.mods.fml.common.IWorldGenerator;
-
 import net.minecraft.src.Block;
-import net.minecraft.src.Direction;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldGenerator;
+import NetherStuffs.NetherStuffs;
+import NetherStuffs.Blocks.NetherBlocks;
+import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldGenerator {
 	/** The minimum height of a generated tree. */
@@ -90,6 +91,8 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 					int var14;
 					int var15;
 
+					ArrayList leavePositions = new ArrayList();
+
 					for (var11 = yCoord - var9 + nMaxHeight; var11 <= yCoord + nMaxHeight; ++var11) {
 						var12 = var11 - (yCoord + nMaxHeight);
 						var13 = var18 + 1 - var12 / 2;
@@ -104,9 +107,27 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 
 								if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0)
 										&& (block == null || block.canBeReplacedByLeaves(par1World, var14, var11, var16))) {
-									this.setBlockAndMetadata(par1World, var14, var11, var16,  NetherStuffs.NetherLeavesBlockId, this.metaLeaves);
+									this.setBlockAndMetadata(par1World, var14, var11, var16, NetherStuffs.NetherLeavesBlockId, this.metaLeaves);
+									if (this.metaWood == NetherBlocks.netherWoodHellfire)
+										leavePositions.add(Arrays.asList(var14, var11, var16));
 								}
 							}
+						}
+					}
+
+					int nCountFirespawn = 0;
+					int nFirespawnMax = 4;
+					for (int index = 0; index < leavePositions.size() && nCountFirespawn < nFirespawnMax; index++) {
+						int x = (Integer) ((List) leavePositions.get(index)).get(0);
+						int y = (Integer) ((List) leavePositions.get(index)).get(1);
+						int z = (Integer) ((List) leavePositions.get(index)).get(2);
+
+						if (par1World.getBlockId(x, y + 1, z) != 0)
+							continue;
+
+						if (par2Random.nextInt(5) == 0) {
+							par1World.setBlockWithNotify(x, y + 1, z, Block.fire.blockID);
+							nCountFirespawn++;
 						}
 					}
 
@@ -168,22 +189,22 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 		if (world.provider.isHellWorld) {
 			if (random.nextInt(9) < 2) // chance of 20% to spawn a tree group in that chunk at all
 			{
-				for (int j1 = 0; j1 < 3; j1++) { // groups of 3 trees (may spawn if appropriate!)
+				for (int j1 = 0; j1 < 2; j1++) { // groups of 2 trees (may spawn if appropriate!)
 					int Xcoordinate = chunkX * 16 + random.nextInt(16);
 					int Zcoordinate = chunkZ * 16 + random.nextInt(16);
 					for (int y = 1; y < 128; y++) // will determine the lowest block in the height level that is capable of holding the tree
 					{
 						if (world.getBlockId(Xcoordinate, y - 1, Zcoordinate) == Block.netherrack.blockID && world.getBlockId(Xcoordinate, y, Zcoordinate) == 0) {
 							boolean bValid = true;
-							for (int y1 = y+1; y1 < y+this.minTreeHeight && bValid && y1<128; y1++) {
+							for (int y1 = y + 1; y1 < y + this.minTreeHeight && bValid && y1 < 128; y1++) {
 								if (world.getBlockId(Xcoordinate, y1, Zcoordinate) != 0)
 									bValid = false;
 							}
 
 							if (bValid) {
 								this.metaWood = random.nextInt(3); // random guess what wood we will place
-								this.metaLeaves = this.metaWood; //this should contain the matching Leaves Damage Value
-								//System.out.println(Xcoordinate+","+ y+","+ Zcoordinate);
+								this.metaLeaves = this.metaWood; // this should contain the matching Leaves Damage Value
+								// System.out.println(Xcoordinate+","+ y+","+ Zcoordinate);
 								generate(world, random, Xcoordinate, y, Zcoordinate);
 								y = 256; // exit the loop
 							}

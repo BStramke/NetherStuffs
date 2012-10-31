@@ -1,5 +1,7 @@
 package NetherStuffs.Blocks;
 
+import static net.minecraftforge.common.ForgeDirection.UP;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,6 +12,7 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IShearable;
 import NetherStuffs.Common.NetherLeavesMaterial;
 import cpw.mods.fml.common.Side;
@@ -28,6 +31,14 @@ public class NetherLeaves extends Block implements IShearable {
 		this.setStepSound(Block.soundGrassFootstep);
 		this.setTickRandomly(true);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
+		this.setBurnProperties(this.blockID, 0, 0);
+	}
+
+	public boolean isFireSource(World world, int x, int y, int z, int metadata, ForgeDirection side) {
+		if (side == UP) {
+			return true;
+		}
+		return false;
 	}
 
 	/*

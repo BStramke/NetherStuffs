@@ -1,5 +1,7 @@
 package NetherStuffs.Blocks;
 
+import static net.minecraftforge.common.ForgeDirection.UP;
+
 import java.util.List;
 
 import net.minecraft.src.Block;
@@ -7,6 +9,8 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
+import net.minecraft.src.WorldProviderEnd;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -21,6 +25,14 @@ public class NetherWood extends Block {
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setStepSound(soundWoodFootstep);
 		this.setRequiresSelfNotify();
+		this.setBurnProperties(this.blockID, 0, 0);
+	}
+
+	public boolean isFireSource(World world, int x, int y, int z, int metadata, ForgeDirection side) {
+		if (side == UP) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override

@@ -11,15 +11,7 @@ public class NetherLeavesMaterial extends Material {
 	public NetherLeavesMaterial() {
 		super(MapColor.airColor);
 		this.setNoPushMobility();
+		this.setBurning();
+		this.isTranslucent = true;
 	}
-   
-   /**
-    * Indicate if the material is opaque
-    */
-   @Override
-   public boolean isOpaque()
-   {
-       return this.isTranslucent ? false : this.blocksMovement();
-   }
-
 }
