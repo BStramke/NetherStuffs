@@ -15,32 +15,10 @@ import net.minecraft.src.ItemSword;
 import net.minecraft.src.Potion;
 import net.minecraft.src.PotionEffect;
 
-public class NetherObsidianSwordAcid extends ItemSword {
+public class NetherObsidianSwordAcid extends NetherSword {
 
 	public NetherObsidianSwordAcid(int itemId, EnumToolMaterial par2EnumToolMaterial) {
-		super(itemId, par2EnumToolMaterial);
+		super(itemId, par2EnumToolMaterial, Types.acid);
 		this.setCreativeTab(CreativeTabs.tabCombat);
-	}
-
-	public String getTextureFile() {
-		return "/items.png";
-	}
-
-	@Override
-	public int getDamageVsEntity(Entity par1Entity) {
-		//System.out.println(((EntityLiving) par1Entity).getActivePotionEffects());
-		//if (((EntityLiving) par1Entity).isEntityUndead()) {} else
-		
-		((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.field_82731_v.id, 20*15, 4));
-		return super.getDamageVsEntity(par1Entity);
-	}
-	
-
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		// TODO Auto-generated method stub
-		par3List.add("Acid Blade");
 	}
 }

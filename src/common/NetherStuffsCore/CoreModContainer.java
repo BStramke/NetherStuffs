@@ -11,6 +11,7 @@ import com.google.common.eventbus.Subscribe;
 
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
@@ -31,7 +32,7 @@ public class CoreModContainer extends DummyModContainer {
 		bus.register(this);
 		return true;
 	}
-
+	
 	/*
 	 * Use this in place of @Init, @Preinit, @Postinit in the file.
 	 */
@@ -42,5 +43,4 @@ public class CoreModContainer extends DummyModContainer {
 	 * 
 	 * }
 	 */
-
 }

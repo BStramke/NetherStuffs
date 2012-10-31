@@ -9,6 +9,11 @@ copy NetherStuffs_Resources\gui\* reobf\minecraft\NetherStuffsBase
 mkdir reobf\minecraft\NetherStuffsCoreBase\META-INF
 copy src\common\netherstuffs_at.cfg reobf\minecraft\NetherStuffsCoreBase\netherstuffs_at.cfg
 copy src\common\NetherStuffsCore\META-INF\MANIFEST.MF reobf\minecraft\NetherStuffsCoreBase\META-INF\MANIFEST.MF
+rem copy Custom Class Files
+rem BlockBreakable
+copy reobf\minecraft\ajb.class reobf\minecraft\NetherStuffsCoreBase\ajb.class 
+rem BlockPane
+copy reobf\minecraft\ale.class reobf\minecraft\NetherStuffsCoreBase\ale.class 
 cd reobf\minecraft\NetherStuffsBase
 "C:\Program Files\7-Zip\7z.exe" a -tzip mod_NetherStuffs.zip *
 cd..
