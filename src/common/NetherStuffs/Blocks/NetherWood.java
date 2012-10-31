@@ -4,9 +4,12 @@ import static net.minecraftforge.common.ForgeDirection.UP;
 
 import java.util.List;
 
+import NetherStuffs.Common.NetherWoodMaterial;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.MapColor;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldProviderEnd;
@@ -15,13 +18,12 @@ import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
 public class NetherWood extends Block {
-
 	public static final int hellfire = 0;
 	public static final int acid = 1;
 	public static final int death = 2;
 
 	public NetherWood(int par1, int par2) {
-		super(par1, par2, Material.wood);
+		super(par1, par2, NetherWoodMaterial.netherWood);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setStepSound(soundWoodFootstep);
 		this.setRequiresSelfNotify();
