@@ -20,11 +20,10 @@ LICENSE.txt
 /src/minecraft_server/*
 /src/common/*
 !/src/common/NetherStuffs/
+!/src/common/net/minecraft/src/BlockPane.java
+!/src/common/net/minecraft/src/BlockBreakable.java
 !/src/common/NetherStuffsCore/
 !/src/common/netherstuffs_at.cfg
-
-
-
 
 *.bat
 !build_netherstuffs.bat
