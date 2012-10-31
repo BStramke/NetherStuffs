@@ -24,19 +24,17 @@ public class NetherWood extends Block {
 	}
 
 	@Override
-   public boolean isWood(World world, int x, int y, int z)
-   {
-       return true;
-   }
-	
-   /**
-    * The type of render function that is called for this block
-    */
-   public int getRenderType()
-   {
-       return 31;
-   }
-	
+	public boolean isWood(World world, int x, int y, int z) {
+		return true;
+	}
+
+	/**
+	 * The type of render function that is called for this block
+	 */
+	public int getRenderType() {
+		return 31;
+	}
+
 	@Override
 	public boolean canSustainLeaves(World world, int x, int y, int z) {
 		return true;
@@ -51,26 +49,74 @@ public class NetherWood extends Block {
 	}
 
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		int nRowDiff = 32;
-		// side: 1=top, 0=bottom
-		if (side == 1 || side == 0) {
-			nRowDiff = nRowDiff - 16;// look one row above
+
+		/*
+		 * int nRowDiff = 32; // side: 1=top, 0=bottom if (side == 1 || side == 0) { nRowDiff = nRowDiff - 16;// look one row above } switch (var4) { case hellfire: return hellfire +
+		 * nRowDiff; case acid: return acid + nRowDiff; case death: return death + nRowDiff; default: return hellfire + nRowDiff; }
+		 */
+		int orientation = meta & 12;
+		int type = meta & 3;
+
+		if (orientation == 0 && (side == 1 || side == 0)) {
+			if (type == hellfire)
+				return 16;
+			if (type == acid)
+				return 17;
+			if (type == death)
+				return 18;
 		}
-		switch (meta) {
-			case hellfire:
-				return hellfire + nRowDiff;
-			case acid:
-				return acid + nRowDiff;
-			case death:
-				return death + nRowDiff;
-			default:
-				return hellfire + nRowDiff;
+		if (orientation == 4 && (side == 5 || side == 4)) {
+			if (type == hellfire)
+				return 16;
+			if (type == acid)
+				return 17;
+			if (type == death)
+				return 18;
 		}
+		if (orientation == 8 && (side == 2 || side == 3)) {
+			if (type == hellfire)
+				return 16;
+			if (type == acid)
+				return 17;
+			if (type == death)
+				return 18;
+		}
+
+		if (type == hellfire)
+			return 32;
+		if (type == acid)
+			return 33;
+		if (type == death)
+			return 34;
+
+		return 16;
+
 	}
-	
+
+	public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8) {
+		int var9 = par1World.getBlockMetadata(par2, par3, par4) & 3;
+		byte var10 = 0;
+
+		switch (par5) {
+		case 0:
+		case 1:
+			var10 = 0;
+			break;
+		case 2:
+		case 3:
+			var10 = 8;
+			break;
+		case 4:
+		case 5:
+			var10 = 4;
+		}
+
+		par1World.setBlockMetadataWithNotify(par2, par3, par4, var9 | var10);
+	}
+
 	@Override
 	public int damageDropped(int meta) {
-		return meta;
+		return meta & 3;
 	}
 
 	@SideOnly(Side.CLIENT)
