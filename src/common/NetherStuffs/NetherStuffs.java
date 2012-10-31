@@ -1,15 +1,11 @@
 package NetherStuffs;
 
-import java.util.Arrays;
-
 import net.minecraft.src.Block;
-import net.minecraft.src.EnumToolMaterial;
 import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.EnumHelper;
 import NetherStuffs.Blocks.NetherBlocks;
 import NetherStuffs.Blocks.NetherDemonicFurnace;
 import NetherStuffs.Blocks.NetherLeavesItemBlock;
@@ -24,13 +20,11 @@ import NetherStuffs.Client.ClientPacketHandler;
 import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.Common.DemonicFurnaceRecipes;
 import NetherStuffs.Common.GuiHandler;
+import NetherStuffs.Common.NetherStuffsFuel;
 import NetherStuffs.Common.ServerPacketHandler;
 import NetherStuffs.Common.TileDemonicFurnace;
 import NetherStuffs.Items.NetherDemonicBarHandle;
 import NetherStuffs.Items.NetherItems;
-import NetherStuffs.Items.NetherObsidianSword;
-import NetherStuffs.Items.NetherObsidianSwordAcid;
-import NetherStuffs.Items.NetherObsidianSwordDeath;
 import NetherStuffs.Items.NetherOreIngot;
 import NetherStuffs.Items.NetherPotionBottle;
 import NetherStuffs.Items.NetherSoulGlassBottle;
@@ -41,7 +35,6 @@ import NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PreInit;
@@ -90,6 +83,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherObsidianSwordDeathItemId;
 
 	public static int NetherOreIngotItemId;
+	public static int NetherWoodCharcoalItemId;
 	public static int NetherDemonicBarHandleItemId;
 	public static int NetherObsidianSwordItemId;
 	public static int NetherWoodStickItemId;
@@ -134,6 +128,9 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulglassSwordAcidItemId = config.get(Configuration.CATEGORY_ITEM, "SoulglassSwordAcid", 5011).getInt();
 		NetherSoulglassSwordDeathItemId = config.get(Configuration.CATEGORY_ITEM, "SoulglassSwordDeath", 5012).getInt();
 		NetherSoulglassSwordHellfireItemId = config.get(Configuration.CATEGORY_ITEM, "SoulglassSwordHellfire", 5013).getInt();
+
+		NetherWoodCharcoalItemId = config.get(Configuration.CATEGORY_ITEM, "NetherWood Charcoal", 5014).getInt();
+
 		config.save();
 	}
 
@@ -163,6 +160,8 @@ public class NetherStuffs extends DummyModContainer {
 
 		GameRegistry.registerTileEntity(TileDemonicFurnace.class, "tileEntityNetherStuffs");
 
+		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
+
 		registerWorldGenerators();
 		initRecipes();
 		initLanguageRegistry();
@@ -179,7 +178,8 @@ public class NetherStuffs extends DummyModContainer {
 		addSmeltingMeta(Block.netherrack, 0, NetherBlocks.netherOre, NetherBlocks.netherStone); // this actually is the basic recipe to get started
 
 		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, 0, new ItemStack(NetherOreIngot, 1, 0), 1.0F);
-		DemonicFurnaceRecipes.smelting().addSmelting(Block.slowSand.blockID, 0, new ItemStack(NetherStuffs.NetherSoulGlass, 1, 0), 1.0F);
+		DemonicFurnaceRecipes.smelting().addSmelting(Block.slowSand.blockID, 0, new ItemStack(NetherStuffs.NetherSoulGlass, 1, 0), 0.5F);
+		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherWood.blockID, 0, new ItemStack(NetherItems.NetherWoodCharcoal, 1, 0), 0.25F);
 
 		GameRegistry.addRecipe(new ItemStack(NetherDemonicFurnace, 1), new Object[] { "NNN", "N N", "NNN", 'N', new ItemStack(NetherBlocks.netherOre, 1, NetherBlocks.netherStone) });
 
@@ -265,7 +265,7 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	private void addSmeltingMeta(Block block, int blockMetadata, Item result, int itemMetadata, int itemCount) {
-		FurnaceRecipes.smelting().addSmelting(block.blockID, blockMetadata, new ItemStack(result, itemCount, itemMetadata));
+		FurnaceRecipes.smelting().addSmelting(block.blockID, blockMetadata, new ItemStack(result, itemCount, itemMetadata), 0);
 	}
 
 	private void addSmeltingMeta(Block block, int blockMetadata, Block result, int itemMetadata) {
@@ -273,7 +273,7 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	private void addSmeltingMeta(Block block, int blockMetadata, Block result, int itemMetadata, int itemCount) {
-		FurnaceRecipes.smelting().addSmelting(block.blockID, blockMetadata, new ItemStack(result, itemCount, itemMetadata));
+		FurnaceRecipes.smelting().addSmelting(block.blockID, blockMetadata, new ItemStack(result, itemCount, itemMetadata), 0);
 	}
 
 	private void initLanguageRegistry() {
@@ -336,5 +336,7 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherDemonicFurnace.name", "Demonic Furnace");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlass.name", "Soul Glass");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlassPane.name", "Soul Glass Pane");
+
+		LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name", "Nether Charcoal");
 	}
 }

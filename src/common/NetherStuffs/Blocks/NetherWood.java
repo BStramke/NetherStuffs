@@ -25,7 +25,7 @@ public class NetherWood extends Block {
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setStepSound(soundWoodFootstep);
 		this.setRequiresSelfNotify();
-		this.setBurnProperties(this.blockID, 0, 0);
+		this.setBurnProperties(this.blockID, 0, 0);		
 	}
 
 	public boolean isFireSource(World world, int x, int y, int z, int metadata, ForgeDirection side) {

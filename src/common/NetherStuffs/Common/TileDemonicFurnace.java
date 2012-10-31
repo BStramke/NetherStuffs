@@ -8,16 +8,19 @@ import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
-import NetherStuffs.NetherStuffs;
 import NetherStuffs.Blocks.NetherDemonicFurnace;
 import NetherStuffs.Blocks.NetherWood;
 import NetherStuffs.Blocks.NetherWoodItemBlock;
+import NetherStuffs.Items.NetherWoodCharcoal;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
 public class TileDemonicFurnace extends TileEntity implements IInventory, ISidedInventory {
 
 	private ItemStack[] inventory = new ItemStack[3];
+	
+	private int nFurnaceTicksToComplete = 400;
+	
 	/** The number of ticks that the furnace will keep burning */
 	public int furnaceBurnTime = 0;
 
@@ -79,7 +82,7 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 	 * cooked
 	 */
 	public int getCookProgressScaled(int par1) {
-		return this.furnaceCookTime * par1 / 200;
+		return this.furnaceCookTime * par1 / nFurnaceTicksToComplete;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -89,7 +92,7 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 	 */
 	public int getBurnTimeRemainingScaled(int par1) {
 		if (this.currentItemBurnTime == 0) {
-			this.currentItemBurnTime = 200;
+			this.currentItemBurnTime = nFurnaceTicksToComplete;
 		}
 
 		return this.furnaceBurnTime * par1 / this.currentItemBurnTime;
@@ -157,7 +160,7 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 			if (this.isBurning() && this.canSmelt()) {
 				++this.furnaceCookTime;
 
-				if (this.furnaceCookTime == 200) {
+				if (this.furnaceCookTime == nFurnaceTicksToComplete) {
 					this.furnaceCookTime = 0;
 					this.smeltItem();
 					var2 = true;
@@ -242,9 +245,13 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 
 			if (par0ItemStack.getItem() instanceof NetherWoodItemBlock) {
 				if (par0ItemStack.getItemDamage() == NetherWood.hellfire)
-					return 1600;
+					return 2400;
 				else
-					return 800;
+					return 1600;
+			}
+			
+			if(par0ItemStack.getItem() instanceof NetherWoodCharcoal){
+				return 6400;
 			}
 
 			return 0;
