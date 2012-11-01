@@ -11,7 +11,7 @@ import net.minecraft.src.ItemStack;
 public class NetherStonePotionBowl extends Item {
 
 	public static String[] itemNames = new String[] { "NetherStonePotionBowlHellfire", "NetherStonePotionBowlAcid", "NetherStonePotionBowlDeath" };
-	public static String[] itemDisplayNames = new String[] { "Hellfire Potion", "Acid Potion", "Death Potion" };
+	public static String[] itemDisplayNames = new String[] { "Hellfire Bowl", "Acid Bowl", "Death Bowl" };
 
 	public static final int hellfire = 0;
 	public static final int acid = 1;
