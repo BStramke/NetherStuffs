@@ -77,7 +77,6 @@ public class NetherSword extends ItemSword {
 			for (int i = 0; i < inventoryPlayer.mainInventory.length && nAmountToAdd > 0; i++) {
 				if (inventoryPlayer.mainInventory[i] != null && inventoryPlayer.mainInventory[i].itemID == new ItemStack(NetherItems.SoulEnergyBottle.shiftedIndex, 1, 0).itemID) {
 					nAmountToAdd = SoulEnergyBottle.addSoulEnergy(nAmountToAdd, inventoryPlayer.mainInventory[i]);
-					System.out.println(nAmountToAdd);
 				}
 			}
 		}
