@@ -26,7 +26,6 @@ public class NetherSword extends ItemSword {
 		public int getValue() {
 			return value;
 		}
-
 	}
 
 	public String getTextureFile() {
@@ -74,17 +73,17 @@ public class NetherSword extends ItemSword {
 
 		if (!par3EntityLiving.worldObj.isRemote) {
 			InventoryPlayer inventoryPlayer = ((EntityPlayer) par3EntityLiving).inventory;
-			
-			for (int i = 0; i < inventoryPlayer.mainInventory.length; i++) {
+			int nAmountToAdd = getDamageVsEntity(par2EntityLiving);
+			for (int i = 0; i < inventoryPlayer.mainInventory.length && nAmountToAdd > 0; i++) {
 				if (inventoryPlayer.mainInventory[i] != null && inventoryPlayer.mainInventory[i].itemID == new ItemStack(NetherItems.SoulEnergyBottle.shiftedIndex, 1, 0).itemID) {
-					SoulEnergyBottle.addSoulEnergy(getDamageVsEntity(par2EntityLiving), inventoryPlayer.mainInventory[i]);
-					break;
+					nAmountToAdd = SoulEnergyBottle.addSoulEnergy(nAmountToAdd, inventoryPlayer.mainInventory[i]);
+					System.out.println(nAmountToAdd);
 				}
 			}
 		}
 		return true;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {

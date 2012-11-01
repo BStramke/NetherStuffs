@@ -36,16 +36,9 @@ public class SoulEnergyBottle extends Item {
 	}
 
 	public int getIconFromDamage(int par1) {
-		/*switch (par1) {
-		case small:
-			return 48;
-		case medium:
-			return 49;
-		case large:
-			return 50;
-		default:
-			return 19;
-		}*/
+		/*
+		 * switch (par1) { case small: return 48; case medium: return 49; case large: return 50; default: return 19; }
+		 */
 		return 16;
 	}
 
@@ -53,8 +46,12 @@ public class SoulEnergyBottle extends Item {
 		return itemNames.length;
 	}
 
-	public static boolean addSoulEnergy(int nAmount, ItemStack item) {
+	public static int addSoulEnergy(int nAmount, ItemStack item) {
+		if (nAmount == 0)
+			return 0;
 		int nExistingAmount = 0;
+		int nLimit = 100000;
+		int nRest = 0;
 
 		if (!item.hasTagCompound())
 			item.stackTagCompound = new NBTTagCompound();
@@ -62,14 +59,27 @@ public class SoulEnergyBottle extends Item {
 			nExistingAmount = item.getTagCompound().getInteger("SoulEnergyAmount");
 		}
 
-		nExistingAmount += nAmount;
+		switch (item.getItemDamage()) {
+		case small:
+			nLimit = 1000;
+			break;
+		case medium:
+			nLimit = 10000;
+			break;
+		case large:
+			nLimit = 100000;
+			break;
+		}
+
+		if (nExistingAmount + nAmount > nLimit) {
+			nRest = (nExistingAmount + nAmount) - nLimit;
+			nExistingAmount = nLimit;
+		} else {
+			nExistingAmount += nAmount;
+		}
+
 		item.getTagCompound().setInteger("SoulEnergyAmount", nExistingAmount);
-
-		/*
-		 * { item.setTagCompound(nbt) }
-		 */
-
-		return true;
+		return nRest;
 	}
 
 	public String getItemNameIS(ItemStack is) {
@@ -99,7 +109,7 @@ public class SoulEnergyBottle extends Item {
 		int nExistingAmount = 0;
 		if (par1ItemStack.hasTagCompound() && par1ItemStack.stackTagCompound.hasKey("SoulEnergyAmount")) {
 			nExistingAmount = par1ItemStack.getTagCompound().getInteger("SoulEnergyAmount");
-			par3List.add("Contains Soulenergy: "+((Integer) nExistingAmount).toString());
+			par3List.add("Contains Soulenergy: " + ((Integer) nExistingAmount).toString());
 		}
 	}
 
