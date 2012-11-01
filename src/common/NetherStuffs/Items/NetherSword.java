@@ -2,17 +2,17 @@ package NetherStuffs.Items;
 
 import java.util.List;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumToolMaterial;
+import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ItemSword;
 import net.minecraft.src.Potion;
 import net.minecraft.src.PotionEffect;
-import net.minecraftforge.common.EnumHelper;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class NetherSword extends ItemSword {
 	public static enum Types {
@@ -32,17 +32,26 @@ public class NetherSword extends ItemSword {
 	public String getTextureFile() {
 		return "/items.png";
 	}
-	
+
 	protected Types nType = Types.undefined;
 
 	public NetherSword(int par1, EnumToolMaterial par2EnumToolMaterial) {
 		super(par1, par2EnumToolMaterial);
 		this.nType = Types.undefined;
 	}
-	
+
 	public NetherSword(int par1, EnumToolMaterial par2EnumToolMaterial, Types nType) {
 		super(par1, par2EnumToolMaterial);
 		this.nType = nType;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean hasEffect(ItemStack par1ItemStack) {
+		if (this.nType != Types.undefined)
+			return true;
+		else
+			return false;
 	}
 
 	@Override
@@ -57,6 +66,25 @@ public class NetherSword extends ItemSword {
 		return super.getDamageVsEntity(par1Entity);
 	}
 
+	@Override
+	public boolean hitEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving) {
+		super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
+		// par3EntityLiving == attacking entity
+		// par2EntityLiving == attacked entity
+
+		if (!par3EntityLiving.worldObj.isRemote) {
+			InventoryPlayer inventoryPlayer = ((EntityPlayer) par3EntityLiving).inventory;
+			
+			for (int i = 0; i < inventoryPlayer.mainInventory.length; i++) {
+				if (inventoryPlayer.mainInventory[i] != null && inventoryPlayer.mainInventory[i].itemID == new ItemStack(NetherItems.SoulEnergyBottle.shiftedIndex, 1, 0).itemID) {
+					SoulEnergyBottle.addSoulEnergy(getDamageVsEntity(par2EntityLiving), inventoryPlayer.mainInventory[i]);
+					break;
+				}
+			}
+		}
+		return true;
+	}
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {

@@ -4,6 +4,8 @@ import static net.minecraftforge.common.ForgeDirection.UP;
 
 import java.util.List;
 
+import NetherStuffs.Common.NetherWoodMaterial;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemStack;
@@ -19,7 +21,7 @@ public class NetherPlank extends Block {
 	public static final int death = 2;
 	
 	public NetherPlank(int par1, int par2) {
-		super(par1, par2, Material.wood);
+		super(par1, par2, NetherWoodMaterial.netherWood);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setRequiresSelfNotify();
 		this.setStepSound(soundWoodFootstep);

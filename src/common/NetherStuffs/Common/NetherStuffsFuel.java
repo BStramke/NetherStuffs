@@ -2,6 +2,7 @@ package NetherStuffs.Common;
 
 import net.minecraft.src.ItemStack;
 import NetherStuffs.Blocks.NetherBlocks;
+import NetherStuffs.Blocks.NetherPlank;
 import NetherStuffs.Blocks.NetherWood;
 import NetherStuffs.Items.NetherItems;
 import cpw.mods.fml.common.IFuelHandler;
@@ -19,6 +20,9 @@ public class NetherStuffsFuel implements IFuelHandler {
 			else
 				return 400;
 		}
+
+		if (fuel.itemID == new ItemStack(NetherBlocks.netherPlank, 0, NetherPlank.hellfire).itemID)
+			return 100;
 
 		return 0;
 	}

@@ -14,6 +14,8 @@ public class NetherItems {
 	public static Item NetherPotionBottle = new NetherPotionBottle(NetherStuffs.NetherPotionBottleItemId).setItemName("NetherPotionBottle").setIconCoord(0, 0);
 	public static Item NetherStonePotionBowl = new NetherStonePotionBowl(NetherStuffs.NetherStonePotionBowlItemId).setItemName("NetherStonePotionBowl").setIconCoord(0, 0);
 	public static Item NetherWoodCharcoal = new NetherWoodCharcoal(NetherStuffs.NetherWoodCharcoalItemId).setItemName("NetherWoodCharcoal").setIconCoord(6, 1);
+
+	public static Item SoulEnergyBottle = new SoulEnergyBottle(NetherStuffs.SoulEnergyBottleItemId).setItemName("SoulEnergyBottle").setIconCoord(0, 1);
 	/**
 	 * Swords
 	 */
