@@ -46,6 +46,14 @@ public class SoulEnergyBottle extends Item {
 		return itemNames.length;
 	}
 
+	public static int getSoulEnergyAmount(ItemStack item) {
+		if (!item.hasTagCompound())
+			return 0;
+		else {
+			return item.getTagCompound().getInteger("SoulEnergyAmount");
+		}
+	}
+
 	public static int addSoulEnergy(int nAmount, ItemStack item) {
 		if (nAmount == 0)
 			return 0;
@@ -109,8 +117,17 @@ public class SoulEnergyBottle extends Item {
 		int nExistingAmount = 0;
 		if (par1ItemStack.hasTagCompound() && par1ItemStack.stackTagCompound.hasKey("SoulEnergyAmount")) {
 			nExistingAmount = par1ItemStack.getTagCompound().getInteger("SoulEnergyAmount");
-			par3List.add("Contains Soulenergy: " + ((Integer) nExistingAmount).toString());
+			if(nExistingAmount > 0)
+				par3List.add("Contains Soulenergy: " + ((Integer) nExistingAmount).toString());
 		}
 	}
 
+	public static void setSoulEnergyAmount(ItemStack item, int i) {
+		if (i >= 0) {
+			if (!item.hasTagCompound())
+				item.stackTagCompound = new NBTTagCompound();
+
+			item.getTagCompound().setInteger("SoulEnergyAmount", i);
+		}
+	}
 }
