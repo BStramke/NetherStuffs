@@ -1,4 +1,4 @@
-package NetherStuffs.Common;
+package NetherStuffs.DemonicFurnace;
 
 import java.util.Arrays;
 import java.util.HashMap;

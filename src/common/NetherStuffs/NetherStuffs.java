@@ -18,11 +18,11 @@ import NetherStuffs.Blocks.NetherSoulGlassPane;
 import NetherStuffs.Blocks.NetherWoodItemBlock;
 import NetherStuffs.Client.ClientPacketHandler;
 import NetherStuffs.Common.CommonProxy;
-import NetherStuffs.Common.DemonicFurnaceRecipes;
 import NetherStuffs.Common.GuiHandler;
 import NetherStuffs.Common.NetherStuffsFuel;
 import NetherStuffs.Common.ServerPacketHandler;
-import NetherStuffs.Common.TileDemonicFurnace;
+import NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
+import NetherStuffs.DemonicFurnace.TileDemonicFurnace;
 import NetherStuffs.Items.NetherDemonicBarHandle;
 import NetherStuffs.Items.NetherItems;
 import NetherStuffs.Items.NetherOreIngot;
@@ -32,6 +32,7 @@ import NetherStuffs.Items.NetherStoneBowl;
 import NetherStuffs.Items.NetherStonePotionBowl;
 import NetherStuffs.Items.NetherWoodStick;
 import NetherStuffs.Items.SoulEnergyBottle;
+import NetherStuffs.SoulWorkBench.TileSoulWorkBench;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.DummyModContainer;
@@ -79,6 +80,8 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherSoulGlassBlockid;
 	public static int NetherSoulGlassPaneBlockid;
 	public static int NetherPuddleBlockId;
+	
+	public static int SoulWorkBenchBlockId;
 
 	public static int NetherObsidianSwordAcidItemId;
 	public static int NetherObsidianSwordDeathItemId;
@@ -113,6 +116,7 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulGlassBlockid = config.get(Configuration.CATEGORY_BLOCK, "Glass", 1236).getInt();
 		NetherSoulGlassPaneBlockid = config.get(Configuration.CATEGORY_BLOCK, "GlassPane", 1237).getInt();
 		NetherPuddleBlockId = config.get(Configuration.CATEGORY_BLOCK, "Puddle", 1238).getInt();
+		SoulWorkBenchBlockId = config.get(Configuration.CATEGORY_BLOCK, "Soul Workbench", 1239).getInt();
 
 		NetherOreIngotItemId = config.get(Configuration.CATEGORY_ITEM, "NetherIngots", 5000).getInt();
 		NetherDemonicBarHandleItemId = config.get(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5001).getInt();
@@ -147,6 +151,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(NetherSoulGlass);
 		GameRegistry.registerBlock(NetherSoulGlassPane);
 		GameRegistry.registerBlock(NetherDemonicFurnace);
+		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench);
 
 		NetherOreIngot = new NetherOreIngot(NetherOreIngotItemId).setItemName("NetherOreIngot").setIconCoord(0, 0);
 
@@ -162,7 +167,8 @@ public class NetherStuffs extends DummyModContainer {
 		Item.itemsList[NetherSaplingBlockId] = new NetherSaplingItemBlock(NetherSaplingBlockId - 256).setItemName("NetherSaplingItemBlock");
 		Item.itemsList[NetherPuddleBlockId] = new NetherPuddleItemBlock(NetherPuddleBlockId - 256).setItemName("NetherPuddleItemBlock");
 
-		GameRegistry.registerTileEntity(TileDemonicFurnace.class, "tileEntityNetherStuffs");
+		GameRegistry.registerTileEntity(TileDemonicFurnace.class, "tileEntityNetherStuffsDemonicFurnace");
+		GameRegistry.registerTileEntity(TileSoulWorkBench.class, "tileEntityNetherStuffsSoulWorkBench");
 
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 
@@ -353,6 +359,7 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("item.NetherWoodStick.name", "Nether Stick");
 
 		LanguageRegistry.instance().addStringLocalization("tile.NetherDemonicFurnace.name", "Demonic Furnace");
+		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulWorkBench.name", "Soul Workbench");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlass.name", "Soul Glass");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlassPane.name", "Soul Glass Pane");
 

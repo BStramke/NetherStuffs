@@ -34,5 +34,6 @@ public class NetherBlocks {
 	public static final Block netherPuddle = new NetherPuddle(NetherStuffs.NetherPuddleBlockId, 0).setBlockName("NetherPuddle");
 	public static final int netherPuddleHellfire = NetherPuddle.hellfire;
 	public static final int netherPuddleAcid = NetherPuddle.acid;
-	public static final int netherPuddleDeath = NetherPuddle.death;	
+	public static final int netherPuddleDeath = NetherPuddle.death;
+	public static final Block netherSoulWorkBench = new SoulWorkBench(NetherStuffs.SoulWorkBenchBlockId).setBlockName("NetherSoulWorkBench");
 }

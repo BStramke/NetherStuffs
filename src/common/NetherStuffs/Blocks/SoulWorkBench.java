@@ -9,28 +9,23 @@ import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
-import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.World;
-import net.minecraftforge.common.ForgeDirection;
 import NetherStuffs.NetherStuffs;
-import NetherStuffs.DemonicFurnace.TileDemonicFurnace;
+import NetherStuffs.SoulWorkBench.TileSoulWorkBench;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
-public class NetherDemonicFurnace extends BlockContainer {
-
-	/** True if this is an active furnace, false if idle */
-	private Random furnaceRand = new Random();
-
+public class SoulWorkBench extends BlockContainer {
 	private static final int METADATA_BITMASK = 0x7;
 	private static final int METADATA_ACTIVEBIT = 0x8;
 	private static final int METADATA_CLEARACTIVEBIT = -METADATA_ACTIVEBIT - 1;
+	private Random rand = new Random();
+	private static boolean keepFurnaceInventory = false;
 
 	public static int clearActiveOnMetadata(int metadata) {
 		return metadata & METADATA_CLEARACTIVEBIT;
@@ -47,13 +42,8 @@ public class NetherDemonicFurnace extends BlockContainer {
 	public static int unmarkedMetadata(int metadata) {
 		return metadata & METADATA_BITMASK;
 	}
-	
-	/**
-	 * This flag is used to prevent the furnace inventory to be dropped upon block removal, is used internally when the furnace block changes from idle to active and vice-versa.
-	 */
-	private static boolean keepFurnaceInventory = false;
 
-	public NetherDemonicFurnace(int par1) {
+	protected SoulWorkBench(int par1) {
 		super(par1, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		this.setHardness(3.5F);
@@ -62,17 +52,16 @@ public class NetherDemonicFurnace extends BlockContainer {
 		this.setTickRandomly(true);
 	}
 
-	
 	public String getItemNameIS(ItemStack is) {
-		String name = "NetherDemonicFurnace";
+		String name = "NetherSoulWorkBench";
 		return getBlockName() + "." + name;
 	}
-	
+
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	public int idDropped(int par1, Random par2Random, int par3) {
-		return NetherStuffs.NetherDemonicFurnaceBlockId;
+		return NetherStuffs.SoulWorkBenchBlockId;
 	}
 
 	/**
@@ -81,9 +70,9 @@ public class NetherDemonicFurnace extends BlockContainer {
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
 		super.onBlockAdded(par1World, par2, par3, par4);
 		this.setDefaultDirection(par1World, par2, par3, par4);
-		
-		//int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
-		//par1World.setBlockMetadataWithNotify(par2, par3, par4, clearActiveOnMetadata(metadata));
+
+		// int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
+		// par1World.setBlockMetadataWithNotify(par2, par3, par4, clearActiveOnMetadata(metadata));
 	}
 
 	/**
@@ -113,7 +102,6 @@ public class NetherDemonicFurnace extends BlockContainer {
 				var9 = 4;
 			}
 
-			
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
 		}
 	}
@@ -143,25 +131,25 @@ public class NetherDemonicFurnace extends BlockContainer {
 	 * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
 	 */
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
-		
-		switch (side) {
-			case NetherBlocks.sideBottom:
-				return 98; // bottom
-			case NetherBlocks.sideTop:
-				return 98; // top
-			default: {
-				
-				int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-				if (side != unmarkedMetadata(var6))
-					return 97;
-				else {
-					if (this.isActiveSet(var6))
-						return 99;
-					else
-						return 96;
-				}
 
+		switch (side) {
+		case NetherBlocks.sideBottom:
+			return 98; // bottom
+		case NetherBlocks.sideTop:
+			return 98; // top
+		default: {
+
+			int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+			if (side != unmarkedMetadata(var6))
+				return 97;
+			else {
+				if (this.isActiveSet(var6))
+					return 99;
+				else
+					return 96;
 			}
+
+		}
 		}
 	}
 
@@ -200,20 +188,20 @@ public class NetherDemonicFurnace extends BlockContainer {
 	public int getBlockTextureFromSide(int side) // pretty similar to getBlockTexture
 	{
 		switch (side) {
-			case NetherBlocks.sideBottom:
-				return 98; // bottom
-			case NetherBlocks.sideTop:
-				return 98; // top
-			case NetherBlocks.sideFront:
-				return 96; // front
-			case NetherBlocks.sideBack:
-				return 97; // back 97
-			case NetherBlocks.sideRight:
-				return 97; // right
-			case NetherBlocks.sideLeft:
-				return 97; // left
-			default:
-				return 98;
+		case NetherBlocks.sideBottom:
+			return 98; // bottom
+		case NetherBlocks.sideTop:
+			return 98; // top
+		case NetherBlocks.sideFront:
+			return 96; // front
+		case NetherBlocks.sideBack:
+			return 97; // back 97
+		case NetherBlocks.sideRight:
+			return 97; // right
+		case NetherBlocks.sideLeft:
+			return 97; // left
+		default:
+			return 98;
 		}
 	}
 
@@ -259,19 +247,19 @@ public class NetherDemonicFurnace extends BlockContainer {
 	// public void breakBlock(World world, int x, int y, int z, int i, int j)
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6) {
 		if (!keepFurnaceInventory) {
-			TileDemonicFurnace var7 = (TileDemonicFurnace) par1World.getBlockTileEntity(par2, par3, par4);
+			TileSoulWorkBench var7 = (TileSoulWorkBench) par1World.getBlockTileEntity(par2, par3, par4);
 
 			if (var7 != null) {
 				for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8) {
 					ItemStack var9 = var7.getStackInSlot(var8);
 
 					if (var9 != null) {
-						float var10 = this.furnaceRand.nextFloat() * 0.8F + 0.1F;
-						float var11 = this.furnaceRand.nextFloat() * 0.8F + 0.1F;
-						float var12 = this.furnaceRand.nextFloat() * 0.8F + 0.1F;
+						float var10 = this.rand.nextFloat() * 0.8F + 0.1F;
+						float var11 = this.rand.nextFloat() * 0.8F + 0.1F;
+						float var12 = this.rand.nextFloat() * 0.8F + 0.1F;
 
 						while (var9.stackSize > 0) {
-							int var13 = this.furnaceRand.nextInt(21) + 10;
+							int var13 = this.rand.nextInt(21) + 10;
 
 							if (var13 > var9.stackSize) {
 								var13 = var9.stackSize;
@@ -286,9 +274,9 @@ public class NetherDemonicFurnace extends BlockContainer {
 							}
 
 							float var15 = 0.05F;
-							var14.motionX = (double) ((float) this.furnaceRand.nextGaussian() * var15);
-							var14.motionY = (double) ((float) this.furnaceRand.nextGaussian() * var15 + 0.2F);
-							var14.motionZ = (double) ((float) this.furnaceRand.nextGaussian() * var15);
+							var14.motionX = (double) ((float) this.rand.nextGaussian() * var15);
+							var14.motionY = (double) ((float) this.rand.nextGaussian() * var15 + 0.2F);
+							var14.motionZ = (double) ((float) this.rand.nextGaussian() * var15);
 							par1World.spawnEntityInWorld(var14);
 						}
 					}
@@ -300,31 +288,9 @@ public class NetherDemonicFurnace extends BlockContainer {
 
 	}
 
-	/*
-	 * private void dropItems(World world, int x, int y, int z) { Random rand = new Random();
-	 * 
-	 * TileEntity tile_entity = world.getBlockTileEntity(x, y, z);
-	 * 
-	 * if (!(tile_entity instanceof IInventory)) { return; }
-	 * 
-	 * IInventory inventory = (IInventory) tile_entity;
-	 * 
-	 * for (int i = 0; i < inventory.getSizeInventory(); i++) { ItemStack item = inventory.getStackInSlot(i);
-	 * 
-	 * if (item != null && item.stackSize > 0) { float rx = rand.nextFloat() * 0.6F + 0.1F; float ry = rand.nextFloat() * 0.6F + 0.1F; float rz = rand.nextFloat() * 0.6F + 0.1F;
-	 * 
-	 * EntityItem entity_item = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.itemID, item.stackSize, item.getItemDamage()));
-	 * 
-	 * if (item.hasTagCompound()) { entity_item.item.setTagCompound((NBTTagCompound) item.getTagCompound().copy()); }
-	 * 
-	 * float factor = 0.5F;
-	 * 
-	 * entity_item.motionX = rand.nextGaussian() * factor; entity_item.motionY = rand.nextGaussian() * factor + 0.2F; entity_item.motionZ = rand.nextGaussian() * factor;
-	 * world.spawnEntityInWorld(entity_item); item.stackSize = 0; } } }
-	 */
-
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		return new TileDemonicFurnace();
+		return new TileSoulWorkBench();
 	}
+
 }

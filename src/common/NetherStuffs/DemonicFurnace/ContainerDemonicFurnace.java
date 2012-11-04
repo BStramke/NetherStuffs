@@ -1,6 +1,7 @@
-package NetherStuffs.Common;
+package NetherStuffs.DemonicFurnace;
 
 import java.util.Iterator;
+
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;

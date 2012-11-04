@@ -1,6 +1,7 @@
-package NetherStuffs.Common;
+package NetherStuffs.SoulWorkBench;
 
 import NetherStuffs.NetherStuffs;
+import NetherStuffs.Items.NetherItems;
 import NetherStuffs.Items.SoulEnergyBottle;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -13,7 +14,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileSacrificationAltar extends TileEntity implements IInventory, ISidedInventory {
+public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedInventory {
 
 	public static final int nTankFillSlot = 0;
 	public static final int nOutputSlot = 10;
@@ -76,19 +77,26 @@ public class TileSacrificationAltar extends TileEntity implements IInventory, IS
 	 * cooked
 	 */
 	public int getProgressScaled(int par1) {
-		return this.processTime * par1 / this.nTicksToComplete;
+		return (int)(((float)this.processTime / (float)this.nTicksToComplete) * par1);
 	}
 
-	public void fillFuelToTank() {
-		if (this.inventory[this.nTankFillSlot] != null && this.inventory[this.nTankFillSlot].itemID == NetherStuffs.SoulEnergyBottleItemId
-				&& this.currentTankLevel < this.maxTankLevel) {
-			if (this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
-				SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot],
-						this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) - this.maxTankLevel);
-				this.currentTankLevel = this.maxTankLevel;
-			} else {
-				this.currentTankLevel += SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]);
-				SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot], 0);
+	@SideOnly(Side.CLIENT)
+	public int getFillingScaled(int nPixelMax) {
+		return (int)(((float)this.currentTankLevel / (float)this.maxTankLevel) * nPixelMax);
+	}
+
+	private void fillFuelToTank() {
+		if (!this.worldObj.isRemote) {
+			if (this.inventory[this.nTankFillSlot] != null && this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.shiftedIndex
+					&& this.currentTankLevel < this.maxTankLevel) {
+				if (this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
+					SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot],
+							this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) - this.maxTankLevel);
+					this.currentTankLevel = this.maxTankLevel;
+				} else {
+					this.currentTankLevel += SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]);
+					SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot], 0);
+				}
 			}
 		}
 	}
@@ -131,6 +139,7 @@ public class TileSacrificationAltar extends TileEntity implements IInventory, IS
 	public void updateEntity() {
 		if (!this.worldObj.isRemote) {
 			fillFuelToTank();
+			//this.onInventoryChanged();
 		}
 	}
 

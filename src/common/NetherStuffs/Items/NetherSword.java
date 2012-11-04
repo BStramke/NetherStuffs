@@ -71,9 +71,9 @@ public class NetherSword extends ItemSword {
 		// par3EntityLiving == attacking entity
 		// par2EntityLiving == attacked entity
 
-		if (!par3EntityLiving.worldObj.isRemote) {
+		if (!par3EntityLiving.worldObj.isRemote && this.nType != Types.undefined) {
 			InventoryPlayer inventoryPlayer = ((EntityPlayer) par3EntityLiving).inventory;
-			int nAmountToAdd = getDamageVsEntity(par2EntityLiving);
+			int nAmountToAdd = getDamageVsEntity(par2EntityLiving) / 2;
 			for (int i = 0; i < inventoryPlayer.mainInventory.length && nAmountToAdd > 0; i++) {
 				if (inventoryPlayer.mainInventory[i] != null && inventoryPlayer.mainInventory[i].itemID == new ItemStack(NetherItems.SoulEnergyBottle.shiftedIndex, 1, 0).itemID) {
 					nAmountToAdd = SoulEnergyBottle.addSoulEnergy(nAmountToAdd, inventoryPlayer.mainInventory[i]);

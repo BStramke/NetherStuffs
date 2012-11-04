@@ -1,4 +1,4 @@
-package NetherStuffs.Common;
+package NetherStuffs.DemonicFurnace;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;

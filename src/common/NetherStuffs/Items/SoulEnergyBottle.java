@@ -58,7 +58,7 @@ public class SoulEnergyBottle extends Item {
 		if (nAmount == 0)
 			return 0;
 		int nExistingAmount = 0;
-		int nLimit = 100000;
+		int nLimit = 10000;
 		int nRest = 0;
 
 		if (!item.hasTagCompound())
@@ -69,13 +69,13 @@ public class SoulEnergyBottle extends Item {
 
 		switch (item.getItemDamage()) {
 		case small:
-			nLimit = 1000;
+			nLimit = 100;
 			break;
 		case medium:
-			nLimit = 10000;
+			nLimit = 1000;
 			break;
 		case large:
-			nLimit = 100000;
+			nLimit = 10000;
 			break;
 		}
 
