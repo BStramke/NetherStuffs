@@ -5,13 +5,13 @@ import net.minecraft.src.BlockSapling;
 import NetherStuffs.NetherStuffs;
 
 public class NetherBlocks {
-	public static final int sideBottom = 0; //fact?
-	public static final int sideTop = 1; //fact?
-	public static final int sideFront = 3; //fact?
-	public static final int sideBack = 2; //fact? 
+	public static final int sideBottom = 0; // fact?
+	public static final int sideTop = 1; // fact?
+	public static final int sideFront = 3; // fact?
+	public static final int sideBack = 2; // fact?
 	public static final int sideRight = 5;
-	public static final int sideLeft = 4;	
-	
+	public static final int sideLeft = 4;
+
 	public static final Block netherOre = new NetherOre(NetherStuffs.NetherOreBlockId, 0).setBlockName("NetherOre").setHardness(10.0F).setResistance(5.0F);
 	public static final int demonicOre = NetherOre.demonicOre;
 	public static final int netherStone = NetherOre.netherStone;
@@ -30,10 +30,11 @@ public class NetherBlocks {
 	public static final BlockSapling netherSapling = (BlockSapling) new NetherSapling(NetherStuffs.NetherSaplingBlockId, 0).setBlockName("NetherSapling").setHardness(0.0F);
 	public static final int netherSaplingHellfire = NetherSapling.hellfire;
 	public static final int netherSaplingAcid = NetherSapling.acid;
-	public static final int netherSaplingDeath = NetherSapling.death;	
+	public static final int netherSaplingDeath = NetherSapling.death;
 	public static final Block netherPuddle = new NetherPuddle(NetherStuffs.NetherPuddleBlockId, 0).setBlockName("NetherPuddle");
 	public static final int netherPuddleHellfire = NetherPuddle.hellfire;
 	public static final int netherPuddleAcid = NetherPuddle.acid;
 	public static final int netherPuddleDeath = NetherPuddle.death;
 	public static final Block netherSoulWorkBench = new SoulWorkBench(NetherStuffs.SoulWorkBenchBlockId).setBlockName("NetherSoulWorkBench");
+	public static final Block netherSoulBomb = new SoulBomb(NetherStuffs.NetherSoulBombBlockId, 8).setBlockName("NetherSoulBomb").setHardness(0.0F);
 }

@@ -16,6 +16,7 @@ import NetherStuffs.Blocks.NetherSaplingItemBlock;
 import NetherStuffs.Blocks.NetherSoulGlass;
 import NetherStuffs.Blocks.NetherSoulGlassPane;
 import NetherStuffs.Blocks.NetherWoodItemBlock;
+import NetherStuffs.Blocks.SoulBombItemBlock;
 import NetherStuffs.Client.ClientPacketHandler;
 import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.Common.GuiHandler;
@@ -82,6 +83,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherPuddleBlockId;
 	
 	public static int SoulWorkBenchBlockId;
+	public static int NetherSoulBombBlockId;
 
 	public static int NetherObsidianSwordAcidItemId;
 	public static int NetherObsidianSwordDeathItemId;
@@ -117,6 +119,7 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulGlassPaneBlockid = config.get(Configuration.CATEGORY_BLOCK, "GlassPane", 1237).getInt();
 		NetherPuddleBlockId = config.get(Configuration.CATEGORY_BLOCK, "Puddle", 1238).getInt();
 		SoulWorkBenchBlockId = config.get(Configuration.CATEGORY_BLOCK, "Soul Workbench", 1239).getInt();
+		NetherSoulBombBlockId = config.get(Configuration.CATEGORY_BLOCK, "Soul Bomb", 1240).getInt();
 
 		NetherOreIngotItemId = config.get(Configuration.CATEGORY_ITEM, "NetherIngots", 5000).getInt();
 		NetherDemonicBarHandleItemId = config.get(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5001).getInt();
@@ -166,10 +169,11 @@ public class NetherStuffs extends DummyModContainer {
 		Item.itemsList[NetherLeavesBlockId] = new NetherLeavesItemBlock(NetherLeavesBlockId - 256, NetherBlocks.netherLeaves).setItemName("NetherLeavesItemBlock");
 		Item.itemsList[NetherSaplingBlockId] = new NetherSaplingItemBlock(NetherSaplingBlockId - 256).setItemName("NetherSaplingItemBlock");
 		Item.itemsList[NetherPuddleBlockId] = new NetherPuddleItemBlock(NetherPuddleBlockId - 256).setItemName("NetherPuddleItemBlock");
+		Item.itemsList[NetherSoulBombBlockId] = new SoulBombItemBlock(NetherSoulBombBlockId - 256).setItemName("NetherSoulBombItemBlock");
 
 		GameRegistry.registerTileEntity(TileDemonicFurnace.class, "tileEntityNetherStuffsDemonicFurnace");
 		GameRegistry.registerTileEntity(TileSoulWorkBench.class, "tileEntityNetherStuffsSoulWorkBench");
-
+		
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 
 		registerWorldGenerators();
