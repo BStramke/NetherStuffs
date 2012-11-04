@@ -2,16 +2,22 @@ package NetherStuffs.SoulWorkBench;
 
 import java.util.Iterator;
 
+import net.minecraft.src.Container;
+import net.minecraft.src.CraftingManager;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.ICrafting;
+import net.minecraft.src.IInventory;
+import net.minecraft.src.InventoryCraftResult;
+import net.minecraft.src.InventoryCrafting;
+import net.minecraft.src.InventoryPlayer;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.Slot;
+import net.minecraft.src.SlotCrafting;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
-import net.minecraft.src.Container;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.ICrafting;
-import net.minecraft.src.InventoryPlayer;
-import net.minecraft.src.Slot;
-
 public class ContainerSoulWorkBench extends Container {
+	public IInventory craftResult = new InventoryCraftResult();
 	protected TileSoulWorkBench soulworkbench;
 	private int lastTankLevel = 0;
 	private int lastProcessTime = 0;
@@ -19,20 +25,29 @@ public class ContainerSoulWorkBench extends Container {
 	public ContainerSoulWorkBench(TileSoulWorkBench tile_entity, InventoryPlayer player_inventory) {
 		this.soulworkbench = tile_entity;
 
-		this.addSlotToContainer(new SlotSoulEnergyContainer(soulworkbench, tile_entity.nTankFillSlot, 12, 9));
 		// Crafting Grid
-		for (int i = 1; i <= 9; i++) {
-			if (i <= 3)
-				this.addSlotToContainer(new Slot(soulworkbench, i, 46 + (i - 1) * 18, 17));
-			else if (i <= 6)
-				this.addSlotToContainer(new Slot(soulworkbench, i, 46 + (i - 4) * 18, 35));
-			else if (i <= 9)
-				this.addSlotToContainer(new Slot(soulworkbench, i, 46 + (i - 7) * 18, 53));
+		for (int i = 0; i < 9; i++) {
+			if (i < 3)
+				this.addSlotToContainer(new Slot(this.soulworkbench, i, 46 + (i) * 18, 17));
+			else if (i < 6)
+				this.addSlotToContainer(new Slot(this.soulworkbench, i, 46 + (i - 3) * 18, 35));
+			else if (i < 9)
+				this.addSlotToContainer(new Slot(this.soulworkbench, i, 46 + (i - 6) * 18, 53));
 		}
 
-		this.addSlotToContainer(new SlotSoulWorkBenchOutput(player_inventory.player, soulworkbench, 2, 140, 35));
+		this.addSlotToContainer(new SlotSoulEnergyContainer(soulworkbench, tile_entity.nTankFillSlot, 12, 9));
+		this.addSlotToContainer(new SlotCrafting(player_inventory.player, this.soulworkbench, this.craftResult, 2, 140, 35));
 
 		bindPlayerInventory(player_inventory);
+	}
+
+	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
+		/*
+		 * super.onCraftGuiClosed(par1EntityPlayer);
+		 * 
+		 * if (!this.soulworkbench.worldObj.isRemote) { for (int var2 = 0; var2 < 9; ++var2) { ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2); if (var3 != null) {
+		 * par1EntityPlayer.dropPlayerItem(var3); } } }
+		 */
 	}
 
 	@Override
@@ -66,31 +81,29 @@ public class ContainerSoulWorkBench extends Container {
 		}
 	}
 
-	public void updateCraftingResults() {
-
-		super.updateCraftingResults();
-		Iterator var1 = this.crafters.iterator();
-
-		while (var1.hasNext()) {
-			ICrafting var2 = (ICrafting) var1.next();
-
-			if (this.lastTankLevel != this.soulworkbench.currentTankLevel) {
-				var2.updateCraftingInventoryInfo(this, 0, this.soulworkbench.currentTankLevel);
-			}
-
-			if (this.lastProcessTime != this.soulworkbench.processTime) {
-				var2.updateCraftingInventoryInfo(this, 1, this.soulworkbench.processTime);
-			}
-
-		}
-
-		this.lastTankLevel = this.soulworkbench.currentTankLevel;
-		this.lastProcessTime = this.soulworkbench.processTime;
-	}
+	/*
+	 * public void updateCraftingResults() { super.updateCraftingResults(); Iterator var1 = this.crafters.iterator();
+	 * 
+	 * while (var1.hasNext()) { ICrafting var2 = (ICrafting) var1.next();
+	 * 
+	 * if (this.lastTankLevel != this.soulworkbench.currentTankLevel) { var2.updateCraftingInventoryInfo(this, 0, this.soulworkbench.currentTankLevel); }
+	 * 
+	 * if (this.lastProcessTime != this.soulworkbench.processTime) { var2.updateCraftingInventoryInfo(this, 1, this.soulworkbench.processTime); } }
+	 * 
+	 * this.lastTankLevel = this.soulworkbench.currentTankLevel; this.lastProcessTime = this.soulworkbench.processTime; }
+	 */
 
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
 		par1ICrafting.updateCraftingInventoryInfo(this, 0, this.soulworkbench.currentTankLevel);
 		par1ICrafting.updateCraftingInventoryInfo(this, 1, this.soulworkbench.processTime);
 	}
+
+	/**
+	 * Callback for when the crafting matrix is changed.
+	 */
+	public void onCraftMatrixChanged(IInventory par1IInventory) {
+		this.craftResult.setInventorySlotContents(0, SoulWorkBenchRecipes.getInstance().getCraftingResult(this.soulworkbench));
+	}
+
 }

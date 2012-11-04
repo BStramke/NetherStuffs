@@ -6,13 +6,12 @@ import net.minecraft.src.World;
 import NetherStuffs.SoulBomb.EntitySoulBombPrimed;
 
 public class SoulBomb extends BlockTNT {
-
+	
 	public SoulBomb(int par1, int par2) {
 		super(par1, par2);
 		this.setCreativeTab(CreativeTabs.tabRedstone);
 		this.setStepSound(soundGrassFootstep);
 		this.setRequiresSelfNotify();
-
 	}
 
    /**
@@ -40,7 +39,10 @@ public class SoulBomb extends BlockTNT {
 	}*/
 
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		return 8;
+		if(side==NetherBlocks.sideBottom || side == NetherBlocks.sideTop)
+			return 9;
+		else
+			return 8;
 	}
 
 	@Override

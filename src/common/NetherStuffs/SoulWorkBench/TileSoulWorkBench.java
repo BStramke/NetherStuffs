@@ -1,22 +1,22 @@
 package NetherStuffs.SoulWorkBench;
 
-import NetherStuffs.NetherStuffs;
-import NetherStuffs.Items.NetherItems;
-import NetherStuffs.Items.SoulEnergyBottle;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
+import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
+import NetherStuffs.Items.NetherItems;
+import NetherStuffs.Items.SoulEnergyBottle;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedInventory {
-
-	public static final int nTankFillSlot = 0;
+	public static final int nTankFillSlot = 9;
 	public static final int nOutputSlot = 10;
 
 	private ItemStack[] inventory = new ItemStack[11]; // 9 Crafting Grid, 1 Output, 1 as "fill source" for internal Tank Level
@@ -77,12 +77,12 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 	 * cooked
 	 */
 	public int getProgressScaled(int par1) {
-		return (int)(((float)this.processTime / (float)this.nTicksToComplete) * par1);
+		return (int) (((float) this.processTime / (float) this.nTicksToComplete) * par1);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public int getFillingScaled(int nPixelMax) {
-		return (int)(((float)this.currentTankLevel / (float)this.maxTankLevel) * nPixelMax);
+		return (int) (((float) this.currentTankLevel / (float) this.maxTankLevel) * nPixelMax);
 	}
 
 	private void fillFuelToTank() {
@@ -139,7 +139,7 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 	public void updateEntity() {
 		if (!this.worldObj.isRemote) {
 			fillFuelToTank();
-			//this.onInventoryChanged();
+			this.onInventoryChanged();
 		}
 	}
 
@@ -172,7 +172,6 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 		NBTTagList itemList = new NBTTagList();
 
 		for (int i = 0; i < inventory.length; i++) {
-
 			if (this.inventory[i] != null) {
 				NBTTagCompound tag = new NBTTagCompound();
 
@@ -181,7 +180,6 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 				itemList.appendTag(tag);
 			}
 		}
-
 		tagCompound.setTag("Items", itemList);
 	}
 
