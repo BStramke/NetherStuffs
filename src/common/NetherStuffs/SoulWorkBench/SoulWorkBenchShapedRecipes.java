@@ -91,10 +91,6 @@ public class SoulWorkBenchShapedRecipes implements IRecipe /* extends ShapedReci
 		return this.getRecipeOutput().copy();
 	}
 
-	public InventoryCrafting getCraftingInventory() {
-		return;
-	}
-
 	/**
 	 * Returns the size of the recipe area
 	 */

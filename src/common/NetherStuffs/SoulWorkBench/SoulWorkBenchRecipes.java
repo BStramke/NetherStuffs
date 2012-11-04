@@ -19,7 +19,7 @@ public class SoulWorkBenchRecipes {
 	private List recipes = new ArrayList();
 
 	SoulWorkBenchRecipes() {
-		this.addRecipe(new ItemStack(NetherBlocks.netherSoulBomb, 0, 1), 10, new Object[] { "DID", "IDI", "DID", 'D', new ItemStack(Item.lightStoneDust, 1, 0), 'I',
+		this.addRecipe(new ItemStack(NetherBlocks.netherSoulBomb, 1, 0), 10, new Object[] { "DID", "IDI", "DID", 'D', new ItemStack(Item.lightStoneDust, 1, 0), 'I',
 				new ItemStack(NetherStuffs.NetherStuffs.NetherOreIngot, 1, 0) });
 	}
 
@@ -91,12 +91,12 @@ public class SoulWorkBenchRecipes {
 	}
 
 	public ItemStack getCraftingResult(TileSoulWorkBench soulworkbench) {
-
+		InventoryCrafting InventoryCraftingSoulWorkBench = soulworkbench.getCraftingInventory();
 		int var3 = 0;
 		ItemStack var4 = null;
 		ItemStack var5 = null;
 
-		for (int var6 = 0; var6 < 9/*soulworkbench.getSizeInventory()*/; ++var6) {
+		for (int var6 = 0; var6 < 9/*container.getSizeInventory()*/; ++var6) {
 			ItemStack var7 = soulworkbench.getStackInSlot(var6);
 
 			if (var7 != null) {
@@ -126,17 +126,17 @@ public class SoulWorkBenchRecipes {
 			return new ItemStack(var4.itemID, 1, var10);
 		} else */{
 			Iterator var11 = this.recipes.iterator();
-			SoulWorkBenchShapedRecipes var12;
+			IRecipe var12;
 
 			do {
 				if (!var11.hasNext()) {
 					return null;
 				}
 
-				//var12 = (IRecipe) var11.next();
-			} while (!var12.matches(soulworkbench, null));
+				var12 = (IRecipe) var11.next();
+			} while (!var12.matches(InventoryCraftingSoulWorkBench, null));
 
-			return var12.getCraftingResult(soulworkbench.getCraftingInventory());
+			return var12.getCraftingResult(InventoryCraftingSoulWorkBench);
 		}
 	}
 

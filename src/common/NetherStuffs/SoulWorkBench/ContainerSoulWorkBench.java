@@ -35,11 +35,13 @@ public class ContainerSoulWorkBench extends Container {
 				this.addSlotToContainer(new Slot(this.soulworkbench, i, 46 + (i - 6) * 18, 53));
 		}
 
-		this.addSlotToContainer(new SlotSoulEnergyContainer(soulworkbench, tile_entity.nTankFillSlot, 12, 9));
+		this.addSlotToContainer(new SlotSoulEnergyContainer(this.soulworkbench, tile_entity.nTankFillSlot, 12, 9));
 		this.addSlotToContainer(new SlotCrafting(player_inventory.player, this.soulworkbench, this.craftResult, 2, 140, 35));
 
 		bindPlayerInventory(player_inventory);
 	}
+
+	public ContainerSoulWorkBench() {}
 
 	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
 		/*
@@ -99,11 +101,9 @@ public class ContainerSoulWorkBench extends Container {
 		par1ICrafting.updateCraftingInventoryInfo(this, 1, this.soulworkbench.processTime);
 	}
 
-	/**
-	 * Callback for when the crafting matrix is changed.
+	/*
+	 * public void onCraftMatrixChanged(IInventory par1IInventory) { this.craftResult.setInventorySlotContents(0,
+	 * SoulWorkBenchRecipes.getInstance().getCraftingResult(this.soulworkbench, this)); }
 	 */
-	public void onCraftMatrixChanged(IInventory par1IInventory) {
-		this.craftResult.setInventorySlotContents(0, SoulWorkBenchRecipes.getInstance().getCraftingResult(this.soulworkbench));
-	}
 
 }

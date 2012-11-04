@@ -202,4 +202,16 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 		this.currentTankLevel = tagCompound.getShort("TankLevel");
 		this.processTime = tagCompound.getShort("ProcessTime");
 	}
+
+	public InventoryCrafting getCraftingInventory() {
+		Container tmpContainer = new ContainerSoulWorkBench();
+		InventoryCrafting tmpCraftingInventory = new InventoryCrafting(tmpContainer, 3, 3);
+		for (int i = 0; i < 9; i++)
+			tmpCraftingInventory.setInventorySlotContents(i, this.getStackInSlot(i));
+		return tmpCraftingInventory;
+	}
+
+	public void onInventoryChanged() {
+		this.setInventorySlotContents(this.nOutputSlot, SoulWorkBenchRecipes.getInstance().getCraftingResult(this));
+	}
 }
