@@ -180,7 +180,7 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 				itemList.appendTag(tag);
 			}
 		}
-		tagCompound.setTag("Items", itemList);
+		tagCompound.setTag("Inventory", itemList);
 	}
 
 	@Override

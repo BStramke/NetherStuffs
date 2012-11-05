@@ -56,7 +56,7 @@ public class NetherSword extends ItemSword {
 	@Override
 	public int getDamageVsEntity(Entity par1Entity) {
 		if (this.nType == Types.acid) {
-			((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.field_82731_v.id, 20 * 15, 4));
+			((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.wither.id, 20 * 15, 4));
 		} else if (this.nType == Types.death) {
 			((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.hunger.id, 20 * 60, 8));
 			((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.poison.id, 20 * 5, 8));

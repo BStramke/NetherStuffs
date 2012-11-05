@@ -305,7 +305,7 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 			}
 		}
 
-		tagCompound.setTag("Items", itemList);
+		tagCompound.setTag("Inventory", itemList);
 	}
 
 	@Override
