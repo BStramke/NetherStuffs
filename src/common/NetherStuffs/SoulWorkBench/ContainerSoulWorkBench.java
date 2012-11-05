@@ -36,7 +36,7 @@ public class ContainerSoulWorkBench extends Container {
 		}
 
 		this.addSlotToContainer(new SlotSoulEnergyContainer(this.soulworkbench, tile_entity.nTankFillSlot, 12, 9));
-		this.addSlotToContainer(new SlotCraftingSoulWorkBench(player_inventory.player, this.soulworkbench, this.craftResult, this.soulworkbench.nOutputSlot, 140, 35));
+		this.addSlotToContainer(new SlotCraftingSoulWorkBench(player_inventory.player, this.soulworkbench, this.soulworkbench, this.soulworkbench.nOutputSlot, 140, 35));
 
 		bindPlayerInventory(player_inventory);
 	}
@@ -106,4 +106,29 @@ public class ContainerSoulWorkBench extends Container {
 	 * SoulWorkBenchRecipes.getInstance().getCraftingResult(this.soulworkbench, this)); }
 	 */
 
+	public ItemStack transferStackInSlot(int slot_index) {
+		ItemStack stack = null;
+		Slot slot_object = (Slot) inventorySlots.get(slot_index);
+
+		if (slot_object != null && slot_object.getHasStack()) {
+			ItemStack stack_in_slot = slot_object.getStack();
+			stack = stack_in_slot.copy();
+
+			if (slot_index == 0) {
+				if (!mergeItemStack(stack_in_slot, 1, inventorySlots.size(), true)) {
+					return null;
+				}
+			} else if (!mergeItemStack(stack_in_slot, 0, 1, false)) {
+				return null;
+			}
+
+			if (stack_in_slot.stackSize == 0) {
+				slot_object.putStack(null);
+			} else {
+				slot_object.onSlotChanged();
+			}
+		}
+
+		return stack;
+	}
 }

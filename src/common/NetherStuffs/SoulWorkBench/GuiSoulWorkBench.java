@@ -1,13 +1,10 @@
 package NetherStuffs.SoulWorkBench;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.src.GuiContainer;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.StatCollector;
-import net.minecraft.src.Tessellator;
-import NetherStuffs.DemonicFurnace.ContainerDemonicFurnace;
-import NetherStuffs.DemonicFurnace.TileDemonicFurnace;
+
+import org.lwjgl.opengl.GL11;
 
 public class GuiSoulWorkBench extends GuiContainer {
 
@@ -18,10 +15,10 @@ public class GuiSoulWorkBench extends GuiContainer {
 		this.benchInventory = tile_entity;
 	}
 
-	protected void drawGuiContainerForegroundLayer() {
-		fontRenderer.drawString("Soul Workbench Gui", 6, 6, 0xffffff);
-		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 6, ySize - 96, 0xffffff);
-	}
+	/*
+	 * @Override protected void drawGuiContainerForegroundLayer() { fontRenderer.drawString("Soul Workbench Gui", 6, 6, 0xffffff);
+	 * fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 6, ySize - 96, 0xffffff); }
+	 */
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
@@ -36,11 +33,18 @@ public class GuiSoulWorkBench extends GuiContainer {
 		var7 = this.benchInventory.getProgressScaled(24);
 		this.drawTexturedModalRect(var5 + 106, var6 + 34, 176, 0, var7, 16);
 
-		//draw fill state from bottom to top
+		// draw fill state from bottom to top
 		int nBottomLeftY = var6 + 68;
 		int nFillState = this.benchInventory.getFillingScaled(32);
 		for (int i = 0; i < 32 && i < nFillState; i++) {
 			this.drawTexturedModalRect(var5 + 9, nBottomLeftY - i, 176, 48 - i, 21, 1);
 		}
+
+		int nRequired = this.benchInventory.getSoulEnergyRequired();
+		if (nRequired > 0)
+			fontRenderer.drawString("+ " + nRequired + " Energy", var5 + 39, var6 + 72, 0x000000);
+
+		Integer nCurrent = this.benchInventory.currentTankLevel;
+		fontRenderer.drawString(nCurrent.toString(), var5 + 13, var6 + 49, 0x000000);
 	}
 }

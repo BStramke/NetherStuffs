@@ -16,6 +16,7 @@ import NetherStuffs.Blocks.NetherBlocks;
 public class SoulWorkBenchRecipes {
 	private static final SoulWorkBenchRecipes instance = new SoulWorkBenchRecipes();
 	private List recipes = new ArrayList();
+	public int nSoulEnergyRequired = 0;
 
 	SoulWorkBenchRecipes() {
 		this.addRecipe(new ItemStack(NetherBlocks.netherSoulBomb, 1, 0), 10,
@@ -135,20 +136,23 @@ public class SoulWorkBenchRecipes {
 
 			do {
 				if (!var11.hasNext()) {
+					this.nSoulEnergyRequired = 0;
 					return null;
 				}
 
 				var12 = (IRecipe) var11.next();
 			} while (!var12.matches(InventoryCraftingSoulWorkBench, null));
 
+			this.nSoulEnergyRequired = ((SoulWorkBenchShapedRecipes) var12).getCraftingResultSoulEnergy();
+			
 			return var12.getCraftingResult(InventoryCraftingSoulWorkBench);
 		}
 	}
 
 	public int getCraftingSoulEnergyRequired(ItemStack item) {
-		if (item.itemID == new ItemStack(NetherBlocks.netherSoulBomb, 1, 0).itemID)
-			return 1;
-		else
-			return 0;
+		//if (item.itemID == new ItemStack(NetherBlocks.netherSoulBomb, 1, 0).itemID)
+			return this.nSoulEnergyRequired;
+		/*else
+			return 0;*/
 	}
 }
