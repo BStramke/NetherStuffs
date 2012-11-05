@@ -16,7 +16,7 @@ import NetherStuffs.Blocks.NetherBlocks;
 public class SoulWorkBenchRecipes {
 	private static final SoulWorkBenchRecipes instance = new SoulWorkBenchRecipes();
 	private List recipes = new ArrayList();
-	public int nSoulEnergyRequired = 0;
+	public static int nSoulEnergyRequired = 0;
 
 	SoulWorkBenchRecipes() {
 		this.addRecipe(new ItemStack(NetherBlocks.netherSoulBomb, 1, 0), 10,
@@ -136,7 +136,7 @@ public class SoulWorkBenchRecipes {
 
 			do {
 				if (!var11.hasNext()) {
-					this.nSoulEnergyRequired = 0;
+					//this.nSoulEnergyRequired = 0;
 					return null;
 				}
 

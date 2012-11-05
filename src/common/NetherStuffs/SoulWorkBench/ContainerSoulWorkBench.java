@@ -21,7 +21,7 @@ public class ContainerSoulWorkBench extends Container {
 	protected TileSoulWorkBench soulworkbench;
 	private int lastTankLevel = 0;
 	private int lastProcessTime = 0;
-
+	
 	public ContainerSoulWorkBench(TileSoulWorkBench tile_entity, InventoryPlayer player_inventory) {
 		this.soulworkbench = tile_entity;
 

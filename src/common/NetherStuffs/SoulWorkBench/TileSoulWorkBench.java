@@ -227,13 +227,12 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 	public void onInventoryChanged() {
 		ItemStack tmpStack = SoulWorkBenchRecipes.getInstance().getCraftingResult(this);
 		this.nSoulEnergyRequired = SoulWorkBenchRecipes.getInstance().nSoulEnergyRequired;
-
-		//if (tmpStack != null) {
-			this.setInventorySlotContents(this.nOutputSlot, tmpStack);
-		//}
+		if(tmpStack==null)
+			this.nSoulEnergyRequired = 0;
+		this.setInventorySlotContents(this.nOutputSlot, tmpStack);
 	}
 
-	public int getSoulEnergyRequired() {
+	public int getSoulEnergyRequired() {		
 		return this.nSoulEnergyRequired;
 	}
 }
