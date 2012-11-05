@@ -2,6 +2,9 @@ package NetherStuffs.SoulWorkBench;
 
 import java.util.Iterator;
 
+import NetherStuffs.DemonicFurnace.TileDemonicFurnace;
+import NetherStuffs.Items.NetherItems;
+
 import net.minecraft.src.Container;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.EntityPlayer;
@@ -105,21 +108,30 @@ public class ContainerSoulWorkBench extends Container {
 	 * public void onCraftMatrixChanged(IInventory par1IInventory) { this.craftResult.setInventorySlotContents(0,
 	 * SoulWorkBenchRecipes.getInstance().getCraftingResult(this.soulworkbench, this)); }
 	 */
-
-	public ItemStack transferStackInSlot(int slot_index) {
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot_index) {
 		ItemStack stack = null;
 		Slot slot_object = (Slot) inventorySlots.get(slot_index);
 
 		if (slot_object != null && slot_object.getHasStack()) {
 			ItemStack stack_in_slot = slot_object.getStack();
-			stack = stack_in_slot.copy();
+			if (slot_object.inventory instanceof TileSoulWorkBench) {
 
-			if (slot_index == 0) {
+				stack = stack_in_slot.copy();
+
 				if (!mergeItemStack(stack_in_slot, 1, inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if (!mergeItemStack(stack_in_slot, 0, 1, false)) {
-				return null;
+
+			} else if (slot_object.inventory instanceof InventoryPlayer) {
+
+				if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
+					if (!mergeItemStack(stack_in_slot, 9, inventorySlots.size(), false))
+						return null;
+				} else {
+					if (!mergeItemStack(stack_in_slot, 0, 9, false))
+						return null;					
+				}
 			}
 
 			if (stack_in_slot.stackSize == 0) {

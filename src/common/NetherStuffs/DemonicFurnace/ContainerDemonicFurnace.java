@@ -2,6 +2,8 @@ package NetherStuffs.DemonicFurnace;
 
 import java.util.Iterator;
 
+import NetherStuffs.Items.NetherItems;
+
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 import net.minecraft.src.Container;
@@ -99,20 +101,30 @@ public class ContainerDemonicFurnace extends Container {
 		par1ICrafting.updateCraftingInventoryInfo(this, 2, this.furnace.currentItemBurnTime);
 	}
 
-	public ItemStack transferStackInSlot(int slot_index) {
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot_index) {
 		ItemStack stack = null;
 		Slot slot_object = (Slot) inventorySlots.get(slot_index);
 
 		if (slot_object != null && slot_object.getHasStack()) {
 			ItemStack stack_in_slot = slot_object.getStack();
-			stack = stack_in_slot.copy();
+			if (slot_object.inventory instanceof TileDemonicFurnace) {
 
-			if (slot_index == 0) {
+				stack = stack_in_slot.copy();
+
 				if (!mergeItemStack(stack_in_slot, 1, inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if (!mergeItemStack(stack_in_slot, 0, 1, false)) {
-				return null;
+
+			} else if (slot_object.inventory instanceof InventoryPlayer) {
+
+				if (stack_in_slot.itemID == new ItemStack(NetherStuffs.NetherStuffs.NetherOreBlockId, 0, 0).itemID) {
+					if (!mergeItemStack(stack_in_slot, 0, inventorySlots.size(), false))
+						return null;
+				} else if (stack_in_slot.itemID == NetherItems.NetherWoodCharcoal.shiftedIndex) {
+					if (!mergeItemStack(stack_in_slot, 1, inventorySlots.size(), false))
+						return null;
+				}
 			}
 
 			if (stack_in_slot.stackSize == 0) {
