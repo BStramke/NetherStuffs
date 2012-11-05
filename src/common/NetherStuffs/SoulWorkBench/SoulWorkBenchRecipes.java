@@ -10,8 +10,7 @@ import net.minecraft.src.IRecipe;
 import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.ShapedRecipes;
-import net.minecraft.src.World;
+import NetherStuffs.NetherStuffs;
 import NetherStuffs.Blocks.NetherBlocks;
 
 public class SoulWorkBenchRecipes {
@@ -19,8 +18,10 @@ public class SoulWorkBenchRecipes {
 	private List recipes = new ArrayList();
 
 	SoulWorkBenchRecipes() {
-		this.addRecipe(new ItemStack(NetherBlocks.netherSoulBomb, 1, 0), 10, new Object[] { "DID", "IDI", "DID", 'D', new ItemStack(Item.lightStoneDust, 1, 0), 'I',
-				new ItemStack(NetherStuffs.NetherStuffs.NetherOreIngot, 1, 0) });
+		this.addRecipe(new ItemStack(NetherBlocks.netherSoulBomb, 1, 0), 10,
+				new Object[] { "DID", "IDI", "DID", 'D',
+						new ItemStack(Item.lightStoneDust, 1, 0), 'I',
+						new ItemStack(NetherStuffs.NetherOreIngot, 1, 0) });
 	}
 
 	public List getRecipeList() {
@@ -31,7 +32,8 @@ public class SoulWorkBenchRecipes {
 		return instance;
 	}
 
-	public void addRecipe(ItemStack par1ItemStack, int nSoulEnergyAmount, Object... par2ArrayOfObj) {
+	public void addRecipe(ItemStack par1ItemStack, int nSoulEnergyAmount,
+			Object... par2ArrayOfObj) {
 		String var3 = "";
 		int var4 = 0;
 		int var5 = 0;
@@ -81,23 +83,26 @@ public class SoulWorkBenchRecipes {
 			char var18 = var3.charAt(var9);
 
 			if (var14.containsKey(Character.valueOf(var18))) {
-				var15[var9] = ((ItemStack) var14.get(Character.valueOf(var18))).copy();
+				var15[var9] = ((ItemStack) var14.get(Character.valueOf(var18)))
+						.copy();
 			} else {
 				var15[var9] = null;
 			}
 		}
 
-		this.recipes.add(new SoulWorkBenchShapedRecipes(var5, var6, var15, par1ItemStack, nSoulEnergyAmount));
+		this.recipes.add(new SoulWorkBenchShapedRecipes(var5, var6, var15,
+				par1ItemStack, nSoulEnergyAmount));
 	}
 
 	public ItemStack getCraftingResult(TileSoulWorkBench soulworkbench) {
-		InventoryCrafting InventoryCraftingSoulWorkBench = soulworkbench.getCraftingInventory();
-		int var3 = 0;
-		ItemStack var4 = null;
-		ItemStack var5 = null;
+		InventoryCrafting InventoryCraftingSoulWorkBench = soulworkbench
+				.getCraftingInventory();
+		//int var3 = 0;
+		//ItemStack var4 = null;
+		//ItemStack var5 = null;
 
-		for (int var6 = 0; var6 < 9/*container.getSizeInventory()*/; ++var6) {
-			ItemStack var7 = soulworkbench.getStackInSlot(var6);
+		/*for (int var6 = 0; var6 < InventoryCraftingSoulWorkBench.getSizeInventory(); ++var6) {
+			ItemStack var7 = InventoryCraftingSoulWorkBench.getStackInSlot(var6);
 
 			if (var7 != null) {
 				if (var3 == 0) {
@@ -110,21 +115,21 @@ public class SoulWorkBenchRecipes {
 
 				++var3;
 			}
-		}
+		}*/
 
-		/*if (var3 == 2 && var4.itemID == var5.itemID && var4.stackSize == 1 && var5.stackSize == 1 && Item.itemsList[var4.itemID].isRepairable()) {
-			Item var13 = Item.itemsList[var4.itemID];
-			int var14 = var13.getMaxDamage() - var4.getItemDamageForDisplay();
-			int var8 = var13.getMaxDamage() - var5.getItemDamageForDisplay();
-			int var9 = var14 + var8 + var13.getMaxDamage() * 5 / 100;
-			int var10 = var13.getMaxDamage() - var9;
-
-			if (var10 < 0) {
-				var10 = 0;
-			}
-
-			return new ItemStack(var4.itemID, 1, var10);
-		} else */{
+		/*
+		 * if (var3 == 2 && var4.itemID == var5.itemID && var4.stackSize == 1 &&
+		 * var5.stackSize == 1 && Item.itemsList[var4.itemID].isRepairable()) {
+		 * Item var13 = Item.itemsList[var4.itemID]; int var14 =
+		 * var13.getMaxDamage() - var4.getItemDamageForDisplay(); int var8 =
+		 * var13.getMaxDamage() - var5.getItemDamageForDisplay(); int var9 =
+		 * var14 + var8 + var13.getMaxDamage() * 5 / 100; int var10 =
+		 * var13.getMaxDamage() - var9;
+		 * 
+		 * if (var10 < 0) { var10 = 0; }
+		 * 
+		 * return new ItemStack(var4.itemID, 1, var10); } else
+		 */{
 			Iterator var11 = this.recipes.iterator();
 			IRecipe var12;
 
@@ -140,4 +145,10 @@ public class SoulWorkBenchRecipes {
 		}
 	}
 
+	public int getCraftingSoulEnergyRequired(ItemStack item) {
+		if (item.itemID == new ItemStack(NetherBlocks.netherSoulBomb, 1, 0).itemID)
+			return 1;
+		else
+			return 0;
+	}
 }

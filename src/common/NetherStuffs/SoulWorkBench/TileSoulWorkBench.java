@@ -15,11 +15,15 @@ import NetherStuffs.Items.SoulEnergyBottle;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
-public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedInventory {
+public class TileSoulWorkBench extends TileEntity implements IInventory,
+		ISidedInventory {
 	public static final int nTankFillSlot = 9;
 	public static final int nOutputSlot = 10;
 
-	private ItemStack[] inventory = new ItemStack[11]; // 9 Crafting Grid, 1 Output, 1 as "fill source" for internal Tank Level
+	private ItemStack[] inventory = new ItemStack[11]; // 9 Crafting Grid, 1
+														// Output, 1 as
+														// "fill source" for
+														// internal Tank Level
 	private int nTicksToComplete = 400;
 	public int currentTankLevel = 0;
 	public int processTime = 0;
@@ -85,17 +89,43 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 		return (int) (((float) this.currentTankLevel / (float) this.maxTankLevel) * nPixelMax);
 	}
 
+	public boolean consumeFuelFromTank(ItemStack item) {
+		return consumeFuelFromTank(SoulWorkBenchRecipes.getInstance()
+				.getCraftingSoulEnergyRequired(item));
+
+	}
+
+	public boolean consumeFuelFromTank(int nConsumedFuel) {
+		if (!this.worldObj.isRemote) {
+			if (this.currentTankLevel - nConsumedFuel >= 0)
+				this.currentTankLevel = this.currentTankLevel - nConsumedFuel;
+			else
+				return false;
+		}
+		return true;
+	}
+
 	private void fillFuelToTank() {
 		if (!this.worldObj.isRemote) {
-			if (this.inventory[this.nTankFillSlot] != null && this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.shiftedIndex
+			if (this.inventory[this.nTankFillSlot] != null
+					&& this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.shiftedIndex
 					&& this.currentTankLevel < this.maxTankLevel) {
-				if (this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
-					SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot],
-							this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) - this.maxTankLevel);
+				if (this.currentTankLevel
+						+ SoulEnergyBottle
+								.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
+					SoulEnergyBottle
+							.setSoulEnergyAmount(
+									this.inventory[this.nTankFillSlot],
+									this.currentTankLevel
+											+ SoulEnergyBottle
+													.getSoulEnergyAmount(this.inventory[this.nTankFillSlot])
+											- this.maxTankLevel);
 					this.currentTankLevel = this.maxTankLevel;
 				} else {
-					this.currentTankLevel += SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]);
-					SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot], 0);
+					this.currentTankLevel += SoulEnergyBottle
+							.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]);
+					SoulEnergyBottle.setSoulEnergyAmount(
+							this.inventory[this.nTankFillSlot], 0);
 				}
 			}
 		}
@@ -133,7 +163,9 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
+		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this
+				&& player.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
+						zCoord + 0.5) < 64;
 	}
 
 	public void updateEntity() {
@@ -144,25 +176,32 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 	}
 
 	private boolean canProcess() {
-		if (this.inventory[nOutputSlot].stackSize + 1 > this.getInventoryStackLimit())
+		if (this.inventory[nOutputSlot].stackSize + 1 > this
+				.getInventoryStackLimit())
 			return false;
 
 		if (this.currentTankLevel == 0 && this.inventory[nTankFillSlot] == null)
 			return false;
 		/*
-		 * if (this.inventory[0] == null) { return false; } else { ItemStack var1 = DemonicFurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]); if (var1 == null) return
-		 * false; if (this.inventory[2] == null) return true; if (!this.inventory[2].isItemEqual(var1)) return false; int result = inventory[2].stackSize + var1.stackSize; return
-		 * (result <= getInventoryStackLimit() && result <= var1.getMaxStackSize()); }
+		 * if (this.inventory[0] == null) { return false; } else { ItemStack
+		 * var1 =
+		 * DemonicFurnaceRecipes.smelting().getSmeltingResult(this.inventory
+		 * [0]); if (var1 == null) return false; if (this.inventory[2] == null)
+		 * return true; if (!this.inventory[2].isItemEqual(var1)) return false;
+		 * int result = inventory[2].stackSize + var1.stackSize; return (result
+		 * <= getInventoryStackLimit() && result <= var1.getMaxStackSize()); }
 		 */
 
 		return true;
 	}
 
 	@Override
-	public void openChest() {}
+	public void openChest() {
+	}
 
 	@Override
-	public void closeChest() {}
+	public void closeChest() {
+	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
@@ -205,13 +244,19 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 
 	public InventoryCrafting getCraftingInventory() {
 		Container tmpContainer = new ContainerSoulWorkBench();
-		InventoryCrafting tmpCraftingInventory = new InventoryCrafting(tmpContainer, 3, 3);
+		InventoryCrafting tmpCraftingInventory = new InventoryCrafting(
+				tmpContainer, 3, 3);
 		for (int i = 0; i < 9; i++)
-			tmpCraftingInventory.setInventorySlotContents(i, this.getStackInSlot(i));
+			tmpCraftingInventory.setInventorySlotContents(i,
+					this.getStackInSlot(i));
 		return tmpCraftingInventory;
 	}
 
 	public void onInventoryChanged() {
-		this.setInventorySlotContents(this.nOutputSlot, SoulWorkBenchRecipes.getInstance().getCraftingResult(this));
+		ItemStack tmpStack = SoulWorkBenchRecipes.getInstance()
+				.getCraftingResult(this);
+		if (tmpStack != null) {
+			this.setInventorySlotContents(this.nOutputSlot, tmpStack);
+		}
 	}
 }

@@ -36,7 +36,7 @@ public class ContainerSoulWorkBench extends Container {
 		}
 
 		this.addSlotToContainer(new SlotSoulEnergyContainer(this.soulworkbench, tile_entity.nTankFillSlot, 12, 9));
-		this.addSlotToContainer(new SlotCrafting(player_inventory.player, this.soulworkbench, this.craftResult, 2, 140, 35));
+		this.addSlotToContainer(new SlotCraftingSoulWorkBench(player_inventory.player, this.soulworkbench, this.craftResult, this.soulworkbench.nOutputSlot, 140, 35));
 
 		bindPlayerInventory(player_inventory);
 	}
