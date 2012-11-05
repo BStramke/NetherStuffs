@@ -252,6 +252,8 @@ public class TileSoulWorkBench extends TileEntity implements IInventory,
 		return tmpCraftingInventory;
 	}
 
+	
+	
 	public void onInventoryChanged() {
 		ItemStack tmpStack = SoulWorkBenchRecipes.getInstance()
 				.getCraftingResult(this);
