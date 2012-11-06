@@ -2,6 +2,7 @@ package NetherStuffs.Blocks;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockSapling;
+import net.minecraft.src.Material;
 import NetherStuffs.NetherStuffs;
 
 public class NetherBlocks {
@@ -37,4 +38,8 @@ public class NetherBlocks {
 	public static final int netherPuddleDeath = NetherPuddle.death;
 	public static final Block netherSoulWorkBench = new SoulWorkBench(NetherStuffs.SoulWorkBenchBlockId).setBlockName("NetherSoulWorkBench");
 	public static final Block netherSoulBomb = new SoulBomb(NetherStuffs.NetherSoulBombBlockId, 8).setBlockName("NetherSoulBomb").setHardness(0.0F);
+	
+	public static final Block NetherDemonicFurnace = new NetherDemonicFurnace(NetherStuffs.NetherDemonicFurnaceBlockId).setBlockName("NetherDemonicFurnace");
+	public static final Block NetherSoulGlass = new NetherSoulGlass(NetherStuffs.NetherSoulGlassBlockid, 112, Material.glass, false).setBlockName("NetherSoulGlass");
+	public static final Block NetherSoulGlassPane = new NetherSoulGlassPane(NetherStuffs.NetherSoulGlassPaneBlockid, 112, 113, Material.glass, false).setBlockName("NetherSoulGlassPane");
 }

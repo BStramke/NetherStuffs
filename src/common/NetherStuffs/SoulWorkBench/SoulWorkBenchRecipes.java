@@ -12,6 +12,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import NetherStuffs.NetherStuffs;
 import NetherStuffs.Blocks.NetherBlocks;
+import NetherStuffs.Items.NetherItems;
 
 public class SoulWorkBenchRecipes {
 	private static final SoulWorkBenchRecipes instance = new SoulWorkBenchRecipes();
@@ -22,7 +23,7 @@ public class SoulWorkBenchRecipes {
 		this.addRecipe(new ItemStack(NetherBlocks.netherSoulBomb, 1, 0), 10,
 				new Object[] { "DID", "IDI", "DID", 'D',
 						new ItemStack(Item.lightStoneDust, 1, 0), 'I',
-						new ItemStack(NetherStuffs.NetherOreIngot, 1, 0) });
+						new ItemStack(NetherItems.NetherOreIngot, 1, 0) });
 	}
 
 	public List getRecipeList() {
