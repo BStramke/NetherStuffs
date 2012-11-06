@@ -17,6 +17,7 @@ import NetherStuffs.Blocks.NetherSoulGlass;
 import NetherStuffs.Blocks.NetherSoulGlassPane;
 import NetherStuffs.Blocks.NetherWoodItemBlock;
 import NetherStuffs.Blocks.SoulBombItemBlock;
+import NetherStuffs.Blocks.SoulDetectorItemBlock;
 import NetherStuffs.Blocks.SoulWorkBench;
 import NetherStuffs.Client.ClientPacketHandler;
 import NetherStuffs.Common.CommonProxy;
@@ -95,6 +96,8 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherSoulglassSwordAcidItemId;
 	public static int NetherSoulglassSwordDeathItemId;
 	public static int NetherSoulglassSwordHellfireItemId;
+	
+	public static int NetherSoulDetectorBlockId;
 
 	@PreInit
 	public void PreLoad(FMLPreInitializationEvent event) {
@@ -109,8 +112,9 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulGlassBlockid = config.get(Configuration.CATEGORY_BLOCK, "Glass", 1236).getInt();
 		NetherSoulGlassPaneBlockid = config.get(Configuration.CATEGORY_BLOCK, "GlassPane", 1237).getInt();
 		NetherPuddleBlockId = config.get(Configuration.CATEGORY_BLOCK, "Puddle", 1238).getInt();
-		SoulWorkBenchBlockId = config.get(Configuration.CATEGORY_BLOCK, "Soul Workbench", 1239).getInt();
-		NetherSoulBombBlockId = config.get(Configuration.CATEGORY_BLOCK, "Soul Bomb", 1240).getInt();
+		SoulWorkBenchBlockId = config.get(Configuration.CATEGORY_BLOCK, "SoulWorkbench", 1239).getInt();
+		NetherSoulBombBlockId = config.get(Configuration.CATEGORY_BLOCK, "SoulBomb", 1240).getInt();
+		NetherSoulDetectorBlockId = config.get(Configuration.CATEGORY_BLOCK, "SoulDetector", 1241).getInt();
 
 		NetherOreIngotItemId = config.get(Configuration.CATEGORY_ITEM, "NetherIngots", 5000).getInt();
 		NetherDemonicBarHandleItemId = config.get(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5001).getInt();
@@ -130,8 +134,8 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulglassSwordDeathItemId = config.get(Configuration.CATEGORY_ITEM, "SoulglassSwordDeath", 5012).getInt();
 		NetherSoulglassSwordHellfireItemId = config.get(Configuration.CATEGORY_ITEM, "SoulglassSwordHellfire", 5013).getInt();
 
-		NetherWoodCharcoalItemId = config.get(Configuration.CATEGORY_ITEM, "NetherWood Charcoal", 5014).getInt();
-		SoulEnergyBottleItemId = config.get(Configuration.CATEGORY_ITEM, "Soul Energy Potion", 5015).getInt();
+		NetherWoodCharcoalItemId = config.get(Configuration.CATEGORY_ITEM, "NetherWoodCharcoal", 5014).getInt();
+		SoulEnergyBottleItemId = config.get(Configuration.CATEGORY_ITEM, "SoulEnergyPotion", 5015).getInt();
 
 		config.save();
 	}
@@ -151,6 +155,7 @@ public class NetherStuffs extends DummyModContainer {
 		Item.itemsList[NetherSaplingBlockId] = new NetherSaplingItemBlock(NetherSaplingBlockId - 256).setItemName("NetherSaplingItemBlock");
 		Item.itemsList[NetherPuddleBlockId] = new NetherPuddleItemBlock(NetherPuddleBlockId - 256).setItemName("NetherPuddleItemBlock");
 		Item.itemsList[NetherSoulBombBlockId] = new SoulBombItemBlock(NetherSoulBombBlockId - 256).setItemName("NetherSoulBombItemBlock");
+		Item.itemsList[NetherSoulDetectorBlockId] = new SoulDetectorItemBlock(NetherSoulDetectorBlockId - 256).setItemName("NetherSoulDetectorItemBlock");
 
 		GameRegistry.registerTileEntity(TileDemonicFurnace.class, "tileEntityNetherStuffsDemonicFurnace");
 		GameRegistry.registerTileEntity(TileSoulWorkBench.class, "tileEntityNetherStuffsSoulWorkBench");
@@ -353,6 +358,8 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlassPane.name", "Soul Glass Pane");
 		
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulBomb.NetherSoulBomb.name", "Soul Bomb");
+		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulDetector.NetherSoulDetector.name", "Soul Detector");
+		
 
 		LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name", "Nether Charcoal");
 
