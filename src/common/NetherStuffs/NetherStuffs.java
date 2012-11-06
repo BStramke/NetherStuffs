@@ -32,6 +32,7 @@ import NetherStuffs.Items.NetherPotionBottle;
 import NetherStuffs.Items.NetherSoulGlassBottle;
 import NetherStuffs.Items.NetherStoneBowl;
 import NetherStuffs.Items.NetherStonePotionBowl;
+import NetherStuffs.Items.NetherWoodCharcoal;
 import NetherStuffs.Items.NetherWoodStick;
 import NetherStuffs.Items.SoulEnergyBottle;
 import NetherStuffs.SoulWorkBench.TileSoulWorkBench;
@@ -224,6 +225,7 @@ public class NetherStuffs extends DummyModContainer {
 		// Torches out of Netherwood Sticks
 		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 6), new Object[] { "X", "#", 'X', Item.coal, '#', NetherWoodStick });
 		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 6), new Object[] { "X", "#", 'X', new ItemStack(Item.coal, 1, 1), '#', NetherWoodStick });
+		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 10), new Object[] { "X", "#", 'X', new ItemStack(NetherItems.NetherWoodCharcoal, 1, 0), '#', NetherWoodStick });
 
 		GameRegistry.addRecipe(new ItemStack(NetherDemonicBarHandle, 1), new Object[] { "NIN", " S ", 'N', new ItemStack(NetherBlocks.netherOre, 1, NetherBlocks.netherStone), 'I',
 				new ItemStack(NetherOreIngot, 1, 0), 'S', NetherWoodStick });
