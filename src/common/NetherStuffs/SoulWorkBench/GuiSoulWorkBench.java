@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiSoulWorkBench extends GuiContainer {
 
+	private int ySize = 178;
 	private TileSoulWorkBench benchInventory;
 
 	public GuiSoulWorkBench(InventoryPlayer player_inventory, TileSoulWorkBench tile_entity) {
@@ -15,10 +16,11 @@ public class GuiSoulWorkBench extends GuiContainer {
 		this.benchInventory = tile_entity;
 	}
 
-	/*
-	 * @Override protected void drawGuiContainerForegroundLayer() { fontRenderer.drawString("Soul Workbench Gui", 6, 6, 0xffffff);
-	 * fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 6, ySize - 96, 0xffffff); }
-	 */
+	@Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+		this.fontRenderer.drawString("Soul Workbench Gui", 38, 0, 4210752);
+		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2 - 4, 4210752);
+	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
@@ -31,7 +33,7 @@ public class GuiSoulWorkBench extends GuiContainer {
 		int var7;
 
 		var7 = this.benchInventory.getProgressScaled(24);
-		this.drawTexturedModalRect(var5 + 106, var6 + 34, 176, 0, var7, 16);
+		this.drawTexturedModalRect(var5 + 106, var6 + 34, this.ySize, 0, var7, 16);
 
 		// draw fill state from bottom to top
 		int nBottomLeftY = var6 + 68;
@@ -45,6 +47,9 @@ public class GuiSoulWorkBench extends GuiContainer {
 			fontRenderer.drawString("+ " + nRequired + " Energy", var5 + 39, var6 + 72, 0x000000);
 
 		Integer nCurrent = this.benchInventory.currentTankLevel;
-		fontRenderer.drawString(nCurrent.toString(), var5 + 13, var6 + 49, 0x000000);
+		if(nCurrent>=100)
+			fontRenderer.drawString(nCurrent.toString(), var5 + 11, var6 + 49, 0x000000);
+		else
+			fontRenderer.drawString(nCurrent.toString(), var5 + 13, var6 + 49, 0x000000);
 	}
 }

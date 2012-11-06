@@ -16,11 +16,12 @@ public class GuiDemonicFurnace extends GuiContainer {
 		this.furnaceInventory = tile_entity;
 	}
 
-	protected void drawGuiContainerForegroundLayer() {
-		fontRenderer.drawString("Demonic Furnace Gui", 6, 6, 0xffffff);
-		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 6, ySize - 96, 0xffffff);
+	@Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+		this.fontRenderer.drawString("Demonic Furnace Gui", 38, 6, 4210752);
+      this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
-
+	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		int var4 = this.mc.renderEngine.getTexture("/furnace.png");
@@ -29,6 +30,7 @@ public class GuiDemonicFurnace extends GuiContainer {
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
+		
 		int var7;
 
 		if (this.furnaceInventory.isBurning()) {
