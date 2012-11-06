@@ -26,6 +26,11 @@ public class SoulBombItemBlock extends ItemBlock {
 	public String getTextureFile() {
 		return "/blocks.png";
 	}*/
+	
+	public String getItemNameIS(ItemStack is) {
+		String name = "NetherSoulBomb";		
+		return getItemName() + "." + name;
+	}
 
 	public int getMetadata(int meta) {
 		return meta;

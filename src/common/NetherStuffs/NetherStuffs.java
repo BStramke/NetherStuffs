@@ -17,6 +17,7 @@ import NetherStuffs.Blocks.NetherSoulGlass;
 import NetherStuffs.Blocks.NetherSoulGlassPane;
 import NetherStuffs.Blocks.NetherWoodItemBlock;
 import NetherStuffs.Blocks.SoulBombItemBlock;
+import NetherStuffs.Blocks.SoulWorkBench;
 import NetherStuffs.Client.ClientPacketHandler;
 import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.Common.GuiHandler;
@@ -195,6 +196,9 @@ public class NetherStuffs extends DummyModContainer {
 		DemonicFurnaceRecipes.smelting().addSmelting(Block.slowSand.blockID, 0, new ItemStack(NetherStuffs.NetherSoulGlass, 1, 0), 0.5F);
 		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherWood.blockID, 0, new ItemStack(NetherItems.NetherWoodCharcoal, 1, 0), 0.25F);
 
+		GameRegistry.addRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[]{"I#I","#W#","I#I", '#', new ItemStack(NetherBlocks.netherOre, 1, NetherBlocks.netherStone), 'W', new ItemStack(Block.workbench), 'I', new ItemStack(NetherOreIngot, 1, 0)});
+		GameRegistry.addRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[]{"#I#","IWI","#I#", '#', new ItemStack(NetherBlocks.netherOre, 1, NetherBlocks.netherStone), 'W', new ItemStack(Block.workbench), 'I', new ItemStack(NetherOreIngot, 1, 0)});
+		
 		GameRegistry.addRecipe(new ItemStack(NetherDemonicFurnace, 1), new Object[] { "NNN", "N N", "NNN", 'N', new ItemStack(NetherBlocks.netherOre, 1, NetherBlocks.netherStone) });
 
 		GameRegistry.addRecipe(new ItemStack(NetherWoodStick, 4), new Object[] { "#", "#", '#', NetherBlocks.netherPlank });
@@ -366,6 +370,8 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulWorkBench.name", "Soul Workbench");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlass.name", "Soul Glass");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlassPane.name", "Soul Glass Pane");
+		
+		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulBomb.NetherSoulBomb.name", "Soul Bomb");
 
 		LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name", "Nether Charcoal");
 
