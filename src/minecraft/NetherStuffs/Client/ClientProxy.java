@@ -11,5 +11,6 @@ public class ClientProxy extends CommonProxy{
 		MinecraftForgeClient.preloadTexture("/furnace.png");
 		MinecraftForgeClient.preloadTexture("/puddles.png");
 		MinecraftForgeClient.preloadTexture("/soulworkbench.png");
+		MinecraftForgeClient.preloadTexture("/souldetector.png");
 	}
 }

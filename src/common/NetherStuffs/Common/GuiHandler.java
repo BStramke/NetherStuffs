@@ -6,6 +6,9 @@ import net.minecraft.src.World;
 import NetherStuffs.DemonicFurnace.ContainerDemonicFurnace;
 import NetherStuffs.DemonicFurnace.GuiDemonicFurnace;
 import NetherStuffs.DemonicFurnace.TileDemonicFurnace;
+import NetherStuffs.SoulDetector.ContainerSoulDetector;
+import NetherStuffs.SoulDetector.GuiSoulDetector;
+import NetherStuffs.SoulDetector.TileSoulDetector;
 import NetherStuffs.SoulWorkBench.ContainerSoulWorkBench;
 import NetherStuffs.SoulWorkBench.GuiSoulWorkBench;
 import NetherStuffs.SoulWorkBench.TileSoulWorkBench;
@@ -22,6 +25,8 @@ public class GuiHandler implements IGuiHandler {
 			return new ContainerDemonicFurnace((TileDemonicFurnace) tile_entity, player.inventory);
 		} else if (tile_entity instanceof TileSoulWorkBench) {
 			return new ContainerSoulWorkBench((TileSoulWorkBench) tile_entity, player.inventory);
+		} else if(tile_entity instanceof TileSoulDetector) {
+			return new ContainerSoulDetector((TileSoulDetector) tile_entity);
 		}
 
 		return null;
@@ -36,6 +41,8 @@ public class GuiHandler implements IGuiHandler {
 			return new GuiDemonicFurnace(player.inventory, (TileDemonicFurnace) tile_entity);
 		} else if (tile_entity instanceof TileSoulWorkBench) {
 			return new GuiSoulWorkBench(player.inventory, (TileSoulWorkBench) tile_entity);
+		}else if (tile_entity instanceof TileSoulDetector) {
+			return new GuiSoulDetector((TileSoulDetector) tile_entity);
 		}
 
 		return null;

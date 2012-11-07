@@ -4,21 +4,16 @@ import net.minecraft.src.Block;
 import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
 import net.minecraftforge.common.Configuration;
 import NetherStuffs.Blocks.NetherBlocks;
-import NetherStuffs.Blocks.NetherDemonicFurnace;
 import NetherStuffs.Blocks.NetherLeavesItemBlock;
 import NetherStuffs.Blocks.NetherOreItemBlock;
 import NetherStuffs.Blocks.NetherPlankItemBlock;
 import NetherStuffs.Blocks.NetherPuddleItemBlock;
 import NetherStuffs.Blocks.NetherSaplingItemBlock;
-import NetherStuffs.Blocks.NetherSoulGlass;
-import NetherStuffs.Blocks.NetherSoulGlassPane;
 import NetherStuffs.Blocks.NetherWoodItemBlock;
 import NetherStuffs.Blocks.SoulBombItemBlock;
 import NetherStuffs.Blocks.SoulDetectorItemBlock;
-import NetherStuffs.Blocks.SoulWorkBench;
 import NetherStuffs.Client.ClientPacketHandler;
 import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.Common.GuiHandler;
@@ -26,16 +21,14 @@ import NetherStuffs.Common.NetherStuffsFuel;
 import NetherStuffs.Common.ServerPacketHandler;
 import NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import NetherStuffs.DemonicFurnace.TileDemonicFurnace;
-import NetherStuffs.Items.NetherDemonicBarHandle;
 import NetherStuffs.Items.NetherItems;
 import NetherStuffs.Items.NetherOreIngot;
 import NetherStuffs.Items.NetherPotionBottle;
 import NetherStuffs.Items.NetherSoulGlassBottle;
 import NetherStuffs.Items.NetherStoneBowl;
 import NetherStuffs.Items.NetherStonePotionBowl;
-import NetherStuffs.Items.NetherWoodCharcoal;
-import NetherStuffs.Items.NetherWoodStick;
 import NetherStuffs.Items.SoulEnergyBottle;
+import NetherStuffs.SoulDetector.TileSoulDetector;
 import NetherStuffs.SoulWorkBench.TileSoulWorkBench;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
@@ -159,6 +152,7 @@ public class NetherStuffs extends DummyModContainer {
 
 		GameRegistry.registerTileEntity(TileDemonicFurnace.class, "tileEntityNetherStuffsDemonicFurnace");
 		GameRegistry.registerTileEntity(TileSoulWorkBench.class, "tileEntityNetherStuffsSoulWorkBench");
+		GameRegistry.registerTileEntity(TileSoulDetector.class, "tileEntityNetherStuffsSoulDetector");
 		
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 

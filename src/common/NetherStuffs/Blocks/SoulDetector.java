@@ -3,19 +3,18 @@ package NetherStuffs.Blocks;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-import NetherStuffs.Common.NetherWoodMaterial;
 import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
+import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
+import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import NetherStuffs.NetherStuffs;
+import NetherStuffs.SoulDetector.TileSoulDetector;
 
-public class SoulDetector extends Block {
+public class SoulDetector extends BlockContainer {
 
 	public SoulDetector(int par1, int par2) {
 		super(par1, par2, Material.circuits);
@@ -63,6 +62,18 @@ public class SoulDetector extends Block {
 	}
 
 	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int i, float f, float g, float t) {
+		TileEntity tile_entity = world.getBlockTileEntity(x, y, z);
+
+		if (tile_entity == null || player.isSneaking()) {
+			return false;
+		}
+
+		player.openGui(NetherStuffs.instance, 0, world, x, y, z);
+		return true;
+	}
+	
+	@Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		if (!par1World.isRemote) {
 			int nRadius = 5;
@@ -93,4 +104,8 @@ public class SoulDetector extends Block {
 		setEmittingSignal(false, par1World, par2, par3, par4);
 	}
 
+	@Override
+	public TileEntity createNewTileEntity(World world) {
+		return new TileSoulDetector();
+	}
 }
