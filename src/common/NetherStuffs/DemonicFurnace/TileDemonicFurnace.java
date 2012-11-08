@@ -49,7 +49,6 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 		if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
 			stack.stackSize = this.getInventoryStackLimit();
 		}
-
 	}
 
 	@Override

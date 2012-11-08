@@ -3,6 +3,8 @@ package NetherStuffs.Blocks;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.common.network.FMLNetworkHandler;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
@@ -69,7 +71,8 @@ public class SoulDetector extends BlockContainer {
 			return false;
 		}
 
-		player.openGui(NetherStuffs.instance, 0, world, x, y, z);
+		//player.openGui(NetherStuffs.instance, 0, world, x, y, z);
+		FMLNetworkHandler.openGui(player, NetherStuffs.instance, 0, world, x, y, z);
 		return true;
 	}
 	

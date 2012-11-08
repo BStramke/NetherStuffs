@@ -136,7 +136,7 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 
 	@Override
 	public String getInvName() {
-		return "container.sacirifactionaltar";
+		return "container.soulworkbench";
 	}
 
 	@Override

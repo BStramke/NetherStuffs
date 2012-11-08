@@ -3,6 +3,9 @@ package NetherStuffs.SoulDetector;
 import java.util.HashMap;
 import java.util.List;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Side;
+
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
@@ -13,16 +16,15 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class TileSoulDetector extends TileEntity implements IInventory {
 
-	private HashMap<String, Integer> detectionRanges = new HashMap<String, Integer>();
+	private static final int nRangeNorth = 0;
+	private static final int nRangeSouth = 1;
+	private static final int nRangeWest = 2;
+	private static final int nRangeEast = 3;
+	private static final int nRangeDown = 4;
+	private static final int nRangeUp = 5;
 
-	public TileSoulDetector() {
-		//initialize the basic Hashmap
-		String[] Directions = new String[] { "North", "South", "West", "East", "Down", "Up" };
-		for (String dir : Directions) {
-			detectionRanges.put(dir, 0);
-			detectionRanges.put(dir + "Max", 20);
-		}
-	}
+	protected int[] detectionRanges = new int[] { 0, 0, 0, 0, 0, 0 };
+	protected int[] detectionRangesMax = new int[] { 20, 20, 20, 20, 20, 20 };
 
 	@Override
 	public int getSizeInventory() {
@@ -66,79 +68,132 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
+		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this
+				&& player.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
+						zCoord + 0.5) < 64;
 	}
 
 	@Override
-	public void openChest() {}
+	public void openChest() {
+	}
 
 	protected int getRange(ForgeDirection dir) {
 		switch (dir) {
 		case NORTH:
-			return detectionRanges.get("North");
+			return this.detectionRanges[this.nRangeNorth];
 		case SOUTH:
-			return detectionRanges.get("South");
+			return this.detectionRanges[this.nRangeSouth];
 		case EAST:
-			return detectionRanges.get("East");
+			return this.detectionRanges[this.nRangeEast];
 		case WEST:
-			return detectionRanges.get("West");
+			return this.detectionRanges[this.nRangeWest];
 		case DOWN:
-			return detectionRanges.get("Down");
+			return this.detectionRanges[this.nRangeDown];
 		case UP:
-			return detectionRanges.get("Up");
+			return this.detectionRanges[this.nRangeUp];
 		default:
 			return 0;
 		}
 	}
-	
+
 	protected int getRangeMax(ForgeDirection dir) {
 		switch (dir) {
 		case NORTH:
-			return detectionRanges.get("NorthMax");
+			return this.detectionRangesMax[this.nRangeNorth];
 		case SOUTH:
-			return detectionRanges.get("SouthMax");
+			return this.detectionRangesMax[this.nRangeSouth];
 		case EAST:
-			return detectionRanges.get("EastMax");
+			return this.detectionRangesMax[this.nRangeEast];
 		case WEST:
-			return detectionRanges.get("WestMax");
+			return this.detectionRangesMax[this.nRangeWest];
 		case DOWN:
-			return detectionRanges.get("DownMax");
+			return this.detectionRangesMax[this.nRangeDown];
 		case UP:
-			return detectionRanges.get("UpMax");
+			return this.detectionRangesMax[this.nRangeUp];
 		default:
 			return 0;
 		}
 	}
 
-	@Override
-	public void closeChest() {}
+	protected int setRange(ForgeDirection dir, int nRange) {
+		switch (dir) {
+		case NORTH:
+			this.detectionRanges[this.nRangeNorth] = nRange;
+			break;
+		case SOUTH:
+			this.detectionRanges[this.nRangeSouth] = nRange;
+			break;
+		case EAST:
+			this.detectionRanges[this.nRangeEast] = nRange;
+			break;
+		case WEST:
+			this.detectionRanges[this.nRangeWest] = nRange;
+			break;
+		case DOWN:
+			this.detectionRanges[this.nRangeDown] = nRange;
+			break;
+		case UP:
+			this.detectionRanges[this.nRangeUp] = nRange;
+			break;
+		default:
+			break;
+		}
+		return nRange;
+	}
 
+	public int incRange(ForgeDirection dir) {
+		int nMaxRange = this.getRangeMax(dir);
+		int nCurRange = this.getRange(dir);
+		if (nCurRange + 1 < nMaxRange)
+			return this.setRange(dir, nCurRange + 1);
+		else
+			return this.getRange(dir);
+	}
+
+	public int decRange(ForgeDirection dir) {
+		int nCurRange = this.getRange(dir);
+		if (nCurRange - 1 >= 0)
+			return this.setRange(dir, nCurRange - 1);
+		else
+			return this.getRange(dir);
+	}
+
+	@Override
+	public void closeChest() {
+	}
+
+	@Override
+	public void receiveClientEvent(int par1, int par2) {
+		// TODO Auto-generated method stub
+		super.receiveClientEvent(par1, par2);
+		System.out.println(par1+","+ par2);
+	}	
+	
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		/*
-		 * tagCompound.setShort("TankLevel", (short) this.currentTankLevel); tagCompound.setShort("ProcessTime", (short) this.processTime); NBTTagList itemList = new NBTTagList();
-		 * 
-		 * for (int i = 0; i < inventory.length; i++) { if (this.inventory[i] != null) { NBTTagCompound tag = new NBTTagCompound();
-		 * 
-		 * tag.setByte("Slot", (byte) i); this.inventory[i].writeToNBT(tag); itemList.appendTag(tag); } } tagCompound.setTag("Inventory", itemList);
-		 */
+		for (int i = 0; i < this.detectionRanges.length; i++) {
+			tagCompound.setShort("Current_ID_" + i,
+					(short) this.detectionRanges[i]);
+		}
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
+		for (int i = 0; i < this.detectionRanges.length; i++) {
+			this.detectionRanges[i] = tagCompound.getShort("Current_ID_" + i);
+		}
+	}
 
-		/*
-		 * NBTTagList tagList = tagCompound.getTagList("Inventory");
-		 * 
-		 * for (int i = 0; i < tagList.tagCount(); i++) { NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
-		 * 
-		 * byte slot = tag.getByte("Slot");
-		 * 
-		 * if (slot >= 0 && slot < inventory.length) { inventory[slot] = ItemStack.loadItemStackFromNBT(tag); } }
-		 * 
-		 * this.currentTankLevel = tagCompound.getShort("TankLevel"); this.processTime = tagCompound.getShort("ProcessTime");
-		 */
+	
+	
+	@Override
+	public void updateEntity() {
+		/*Side side = FMLCommonHandler.instance().getEffectiveSide();
+		System.out.println(this.getRange(ForgeDirection.UP)+" " + side);*/
+		if(!worldObj.isRemote){
+		
+		}
 	}
 }
