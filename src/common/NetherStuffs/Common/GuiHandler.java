@@ -42,7 +42,7 @@ public class GuiHandler implements IGuiHandler {
 		} else if (tile_entity instanceof TileSoulWorkBench) {
 			return new GuiSoulWorkBench(player.inventory, (TileSoulWorkBench) tile_entity);
 		}else if (tile_entity instanceof TileSoulDetector) {
-			return new GuiSoulDetector((TileSoulDetector) tile_entity);
+			return new GuiSoulDetector((TileSoulDetector) tile_entity, player);
 		}
 
 		return null;

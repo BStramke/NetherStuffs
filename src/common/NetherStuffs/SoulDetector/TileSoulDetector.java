@@ -1,30 +1,35 @@
 package NetherStuffs.SoulDetector;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.HashMap;
 import java.util.List;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
 public class TileSoulDetector extends TileEntity implements IInventory {
 
-	private static final int nRangeNorth = 0;
-	private static final int nRangeSouth = 1;
-	private static final int nRangeWest = 2;
-	private static final int nRangeEast = 3;
-	private static final int nRangeDown = 4;
-	private static final int nRangeUp = 5;
+	public static final int nRangeNorth = 0;
+	public static final int nRangeSouth = 1;
+	public static final int nRangeWest = 2;
+	public static final int nRangeEast = 3;
+	public static final int nRangeDown = 4;
+	public static final int nRangeUp = 5;
 
-	protected int[] detectionRanges = new int[] { 0, 0, 0, 0, 0, 0 };
-	protected int[] detectionRangesMax = new int[] { 20, 20, 20, 20, 20, 20 };
+	public short[] detectionRanges = new short[] { 0, 0, 0, 0, 0, 0 };
+	public short[] detectionRangesMax = new short[] { 20, 20, 20, 20, 20, 20 };
 
 	@Override
 	public int getSizeInventory() {
@@ -68,14 +73,11 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this
-				&& player.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
-						zCoord + 0.5) < 64;
+		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
 	}
 
 	@Override
-	public void openChest() {
-	}
+	public void openChest() {}
 
 	protected int getRange(ForgeDirection dir) {
 		switch (dir) {
@@ -115,25 +117,25 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		}
 	}
 
-	protected int setRange(ForgeDirection dir, int nRange) {
+	public int setRange(ForgeDirection dir, int nRange) {
 		switch (dir) {
 		case NORTH:
-			this.detectionRanges[this.nRangeNorth] = nRange;
+			this.detectionRanges[this.nRangeNorth] = (short) nRange;
 			break;
 		case SOUTH:
-			this.detectionRanges[this.nRangeSouth] = nRange;
+			this.detectionRanges[this.nRangeSouth] = (short) nRange;
 			break;
 		case EAST:
-			this.detectionRanges[this.nRangeEast] = nRange;
+			this.detectionRanges[this.nRangeEast] = (short) nRange;
 			break;
 		case WEST:
-			this.detectionRanges[this.nRangeWest] = nRange;
+			this.detectionRanges[this.nRangeWest] = (short) nRange;
 			break;
 		case DOWN:
-			this.detectionRanges[this.nRangeDown] = nRange;
+			this.detectionRanges[this.nRangeDown] = (short) nRange;
 			break;
 		case UP:
-			this.detectionRanges[this.nRangeUp] = nRange;
+			this.detectionRanges[this.nRangeUp] = (short) nRange;
 			break;
 		default:
 			break;
@@ -144,37 +146,106 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 	public int incRange(ForgeDirection dir) {
 		int nMaxRange = this.getRangeMax(dir);
 		int nCurRange = this.getRange(dir);
+		int nRetRange = nCurRange;
 		if (nCurRange + 1 < nMaxRange)
-			return this.setRange(dir, nCurRange + 1);
-		else
-			return this.getRange(dir);
+			nRetRange = this.setRange(dir, nCurRange + 1);
+
+		if (this.worldObj.isRemote) {
+			sendToServer(nRetRange, dir);
+		}
+		return nRetRange;
 	}
 
 	public int decRange(ForgeDirection dir) {
 		int nCurRange = this.getRange(dir);
+		int nRetRange = nCurRange;
 		if (nCurRange - 1 >= 0)
-			return this.setRange(dir, nCurRange - 1);
-		else
-			return this.getRange(dir);
+			nRetRange = this.setRange(dir, nCurRange - 1);
+
+		if (this.worldObj.isRemote) {
+			sendToServer(nRetRange, dir);
+		}
+		return nRetRange;
 	}
 
-	@Override
-	public void closeChest() {
+	@SideOnly(Side.CLIENT)
+	private void sendToServer(int nRange, ForgeDirection dir) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream outputStream = new DataOutputStream(bos);
+		int nDirection = -1;
+		switch (dir) {
+		case NORTH:
+			nDirection = this.nRangeNorth;
+			break;
+		case SOUTH:
+			nDirection = this.nRangeSouth;
+			break;
+		case EAST:
+			nDirection = this.nRangeEast;
+			break;
+		case WEST:
+			nDirection = this.nRangeWest;
+			break;
+		case DOWN:
+			nDirection = this.nRangeDown;
+			break;
+		case UP:
+			nDirection = this.nRangeUp;
+			break;
+		default:
+			nDirection = -1;
+		}
+
+		try {
+			outputStream.writeShort(1);
+			outputStream.writeShort(nRange);
+			outputStream.writeShort(nDirection);
+			outputStream.writeInt(this.xCoord);
+			outputStream.writeInt(this.yCoord);
+			outputStream.writeInt(this.zCoord);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = "NetherStuffs";
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+		PacketDispatcher.sendPacketToServer(packet);
 	}
 
+	/*private void sendToClient() {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream outputStream = new DataOutputStream(bos);
+
+		try {
+			outputStream.writeShort(1);
+			outputStream.writeInt(this.xCoord);
+			outputStream.writeInt(this.yCoord);
+			outputStream.writeInt(this.zCoord);
+			for (int i = 0; i < detectionRanges.length; i++)
+				outputStream.writeShort(detectionRanges[i]);
+			for (int i = 0; i < detectionRangesMax.length; i++)
+				outputStream.writeShort(detectionRangesMax[i]);
+			
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = "NetherStuffs";
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+		PacketDispatcher.sendPacketToServer(packet);
+	}*/
+
 	@Override
-	public void receiveClientEvent(int par1, int par2) {
-		// TODO Auto-generated method stub
-		super.receiveClientEvent(par1, par2);
-		System.out.println(par1+","+ par2);
-	}	
-	
+	public void closeChest() {}
+
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
 		for (int i = 0; i < this.detectionRanges.length; i++) {
-			tagCompound.setShort("Current_ID_" + i,
-					(short) this.detectionRanges[i]);
+			tagCompound.setShort("Current_ID_" + i, (short) this.detectionRanges[i]);
 		}
 	}
 
@@ -186,14 +257,17 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		}
 	}
 
-	
-	
+	private static int updatecounter = 0;
+
 	@Override
 	public void updateEntity() {
-		/*Side side = FMLCommonHandler.instance().getEffectiveSide();
-		System.out.println(this.getRange(ForgeDirection.UP)+" " + side);*/
-		if(!worldObj.isRemote){
-		
+
+		if (!this.worldObj.isRemote) {
+			/*updatecounter++;
+			if (updatecounter >= 10) {
+				sendToClient();
+				updatecounter = 0;
+			}*/
 		}
 	}
 }

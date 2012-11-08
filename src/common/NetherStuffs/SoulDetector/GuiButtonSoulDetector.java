@@ -13,14 +13,6 @@ public class GuiButtonSoulDetector extends GuiButton {
 
 	public GuiButtonSoulDetector(int par1, int par2, int par3, int par4, int par5, boolean isMinus) {
 		super(par1, par2, par3, par4, par5, "");
-		/*this.enabled = true;
-		this.drawButton = true;
-		this.id = par1;
-		this.xPosition = par2;
-		this.yPosition = par3;
-		this.width = par4;
-		this.height = par5;
-		this.displayString = "";*/
 		if (isMinus)
 			this.xButtonOffset = 0;
 		else
