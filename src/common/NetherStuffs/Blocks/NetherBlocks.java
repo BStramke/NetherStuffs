@@ -6,12 +6,21 @@ import net.minecraft.src.Material;
 import NetherStuffs.NetherStuffs;
 
 public class NetherBlocks {
-	public static final int sideBottom = 0; // fact?
-	public static final int sideTop = 1; // fact?
-	public static final int sideFront = 3; // fact?
-	public static final int sideBack = 2; // fact?
+	public static final int sideBottom = 0; 
+	public static final int sideTop = 1;
+	public static final int sideNorth = 2;
+	public static final int sideSouth = 3;
+	public static final int sideWest = 4;
+	public static final int sideEast = 5;
+	
+	@Deprecated
+	public static final int sideFront = 3; 
+	@Deprecated
+	public static final int sideBack = 2; 
+	@Deprecated
 	public static final int sideRight = 5;
-	public static final int sideLeft = 4;
+	@Deprecated
+	public static final int sideLeft = 4;	
 
 	public static final Block netherOre = new NetherOre(NetherStuffs.NetherOreBlockId, 0).setBlockName("NetherOre").setHardness(10.0F).setResistance(5.0F);
 	public static final int demonicOre = NetherOre.demonicOre;

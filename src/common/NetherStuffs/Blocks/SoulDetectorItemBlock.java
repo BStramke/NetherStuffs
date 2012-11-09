@@ -22,10 +22,10 @@ public class SoulDetectorItemBlock extends ItemBlock {
 		
 		return getItemName() + "." + name;
 	}
-	
+	*/
 	public String getTextureFile() {
-		return "/blocks.png";
-	}*/
+		return "/block_detector.png";
+	}
 	
 	public String getItemNameIS(ItemStack is) {
 		String name = "NetherSoulDetector";		

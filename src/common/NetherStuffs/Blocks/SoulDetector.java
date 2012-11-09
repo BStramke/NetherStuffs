@@ -3,8 +3,6 @@ package NetherStuffs.Blocks;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.network.FMLNetworkHandler;
-
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
@@ -13,8 +11,10 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import net.minecraftforge.common.ForgeDirection;
 import NetherStuffs.NetherStuffs;
 import NetherStuffs.SoulDetector.TileSoulDetector;
+import cpw.mods.fml.common.network.FMLNetworkHandler;
 
 public class SoulDetector extends BlockContainer {
 
@@ -43,15 +43,17 @@ public class SoulDetector extends BlockContainer {
 		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0;
 	}
 
-	/*
-	 * public String getTextureFile() { return "/blocks.png"; }
-	 * 
-	 * public int getMetadataSize() { return SoulDetectorItemBlock.blockNames.length; }
-	 */
+	public String getTextureFile() {
+		return "/block_detector.png";
+	}
 
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		return 59;
+		return side;
 	}
+
+	/*
+	 * public int getMetadataSize() { return SoulDetectorItemBlock.blockNames.length; }
+	 */
 
 	@Override
 	public int damageDropped(int meta) {
@@ -71,26 +73,60 @@ public class SoulDetector extends BlockContainer {
 			return false;
 		}
 
-		//player.openGui(NetherStuffs.instance, 0, world, x, y, z);
 		FMLNetworkHandler.openGui(player, NetherStuffs.instance, 0, world, x, y, z);
+
+		if (!world.isRemote) {
+			((TileSoulDetector) tile_entity).sendToClient(player);
+		}
 		return true;
 	}
-	
+
 	@Override
-	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
+	public void updateTick(World par1World, int xCoord, int yCoord, int zCoord, Random par5Random) {
 		if (!par1World.isRemote) {
 			int nRadius = 5;
-			List tmp = par1World.getEntitiesWithinAABBExcludingEntity(null,
-					AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(par2 - nRadius, par3 - nRadius, par4 - nRadius, par2 + nRadius, par3 + nRadius, par4 + nRadius));
-			//System.out.println(tmp);
 
-			if (tmp.size() >= 1) {
-				setEmittingSignal(true, par1World, par2, par3, par4);
-			} else {
-				setEmittingSignal(false, par1World, par2, par3, par4);
+			TileEntity tile_entity = par1World.getBlockTileEntity(xCoord, yCoord, zCoord);
+			if (tile_entity instanceof TileSoulDetector) {
+				
+				int nRangeUp = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.UP);
+				int nRangeDown = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.DOWN);
+				int nRangeNorth = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.NORTH);
+				int nRangeSouth = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.SOUTH);
+				int nRangeEast = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.EAST);
+				int nRangeWest = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.WEST);
+				// west&east = xcoord
+				// up&down=ycoord
+				// south&north = zcoord
+				// south = +
+				// north = -
+				// east=+
+				// west=-
+				
+				
+
+				Integer nLowerX = xCoord - nRangeWest;
+				Integer nLowerY = yCoord - nRangeDown;
+				Integer nLowerZ = zCoord - nRangeNorth;
+				Integer nUpperX = xCoord + nRangeEast;
+				Integer nUpperY = yCoord + nRangeUp;
+				Integer nUpperZ = zCoord + nRangeSouth;
+
+				List tmp = par1World.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ));
+
+				System.out.println(nLowerX.toString() + "," + nLowerY.toString()+ "," + nLowerZ.toString() + "," + nUpperX.toString() + "," + nUpperY.toString() + "," + nUpperZ.toString());
+
+				// System.out.println("Lower Corner: " + par1World.getBlockId(xCoord - nRangeWest, yCoord - nRangeDown, zCoord - nRangeNorth));
+				// System.out.println("Upper Corner: " + par1World.getBlockId(xCoord + nRangeEast, yCoord + nRangeUp, zCoord + nRangeSouth));
+
+				if (tmp.size() >= 1) {
+					setEmittingSignal(true, par1World, xCoord, yCoord, zCoord);
+				} else {
+					setEmittingSignal(false, par1World, xCoord, yCoord, zCoord);
+				}
 			}
 
-			par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
+			par1World.scheduleBlockUpdate(xCoord, yCoord, zCoord, this.blockID, this.tickRate());
 		}
 	}
 

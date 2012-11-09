@@ -2,22 +2,21 @@ package NetherStuffs.SoulDetector;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.util.HashMap;
-import java.util.List;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import NetherStuffs.NetherStuffs;
+import NetherStuffs.Blocks.NetherBlocks;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.NBTTagList;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
 public class TileSoulDetector extends TileEntity implements IInventory {
 
@@ -79,7 +78,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 	@Override
 	public void openChest() {}
 
-	protected int getRange(ForgeDirection dir) {
+	public int getRange(ForgeDirection dir) {
 		switch (dir) {
 		case NORTH:
 			return this.detectionRanges[this.nRangeNorth];
@@ -98,7 +97,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		}
 	}
 
-	protected int getRangeMax(ForgeDirection dir) {
+	public int getRangeMax(ForgeDirection dir) {
 		switch (dir) {
 		case NORTH:
 			return this.detectionRangesMax[this.nRangeNorth];
@@ -140,6 +139,9 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		default:
 			break;
 		}
+		
+		//this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, NetherBlocks.NetherSoulDetector.blockID);
+		//this.onInventoryChanged(); 
 		return nRange;
 	}
 
@@ -152,7 +154,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 
 		if (this.worldObj.isRemote) {
 			sendToServer(nRetRange, dir);
-		}
+		} 
 		return nRetRange;
 	}
 
@@ -164,7 +166,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 
 		if (this.worldObj.isRemote) {
 			sendToServer(nRetRange, dir);
-		}
+		} 			
 		return nRetRange;
 	}
 
@@ -213,7 +215,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		PacketDispatcher.sendPacketToServer(packet);
 	}
 
-	/*private void sendToClient() {
+	public void sendToClient(EntityPlayer player) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
@@ -235,18 +237,19 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		packet.channel = "NetherStuffs";
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
-		PacketDispatcher.sendPacketToServer(packet);
-	}*/
-
+		PacketDispatcher.sendPacketToPlayer(packet, (Player)player);		
+	}
+	
 	@Override
 	public void closeChest() {}
-
+	
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
 		for (int i = 0; i < this.detectionRanges.length; i++) {
 			tagCompound.setShort("Current_ID_" + i, (short) this.detectionRanges[i]);
-		}
+		}		
+		//System.out.println("written");
 	}
 
 	@Override
@@ -254,20 +257,15 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		super.readFromNBT(tagCompound);
 		for (int i = 0; i < this.detectionRanges.length; i++) {
 			this.detectionRanges[i] = tagCompound.getShort("Current_ID_" + i);
+			
 		}
+		//System.out.println("read");
 	}
-
-	private static int updatecounter = 0;
 
 	@Override
 	public void updateEntity() {
-
 		if (!this.worldObj.isRemote) {
-			/*updatecounter++;
-			if (updatecounter >= 10) {
-				sendToClient();
-				updatecounter = 0;
-			}*/
+			
 		}
 	}
 }
