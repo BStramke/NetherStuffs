@@ -20,7 +20,7 @@ public class NetherStuffsAccessTransformer implements IClassTransformer {
 
 	public static void addClassOverride(String name, String description) {
 		override.put(name, description);
-		System.out.println("list:"+override);
+		//System.out.println("list:"+override);
 	}
 
 	@Override

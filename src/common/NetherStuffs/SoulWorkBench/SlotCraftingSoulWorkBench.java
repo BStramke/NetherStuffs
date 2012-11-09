@@ -26,6 +26,12 @@ public class SlotCraftingSoulWorkBench extends SlotCrafting {
 	}
 
 	@Override
+	public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
+		ItemStack var4 = this.craftMatrix.getStackInSlot(((TileSoulWorkBench)this.craftMatrix).nOutputSlot);
+		return ((TileSoulWorkBench) this.craftMatrix).hasEnoughFuel(var4);
+	}
+
+	@Override
 	public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
 
 		if (((TileSoulWorkBench) this.craftMatrix).consumeFuelFromTank(par2ItemStack)) {
@@ -56,6 +62,8 @@ public class SlotCraftingSoulWorkBench extends SlotCrafting {
 					}
 				}
 			}
+		} else {
+
 		}
 	}
 }

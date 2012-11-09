@@ -89,6 +89,10 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 		return (int) (((float) this.currentTankLevel / (float) this.maxTankLevel) * nPixelMax);
 	}
 
+	public boolean hasEnoughFuel(ItemStack item) {
+		return this.currentTankLevel >= SoulWorkBenchRecipes.getInstance().getCraftingSoulEnergyRequired(item);
+	}
+	
 	public boolean consumeFuelFromTank(ItemStack item) {
 		return consumeFuelFromTank(SoulWorkBenchRecipes.getInstance().getCraftingSoulEnergyRequired(item));
 	}

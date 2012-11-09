@@ -36,7 +36,7 @@ public class NetherStuffsCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 		if(data.containsKey("coremodLocation"))
 		{
 			myLocation = (File) data.get("coremodLocation");
-			System.out.println("Location: " + myLocation);
+			//System.out.println("Location: " + myLocation);
 		}
 	}
 
