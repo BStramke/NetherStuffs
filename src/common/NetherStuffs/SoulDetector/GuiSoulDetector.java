@@ -11,6 +11,7 @@ import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
 import net.minecraft.src.Packet250CustomPayload;
+import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -47,35 +48,23 @@ public class GuiSoulDetector extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 
-		this.controlList.add(this.btnRangeIncZUp = new GuiButtonSoulDetector(1,
-				this.guiLeft + 57, this.guiTop + 15, 9, 9, false));
-		this.controlList.add(this.btnRangeDecZUp = new GuiButtonSoulDetector(2,
-				this.guiLeft + 57 + 9, this.guiTop + 15, 9, 9, true));
+		this.controlList.add(this.btnRangeIncZUp = new GuiButtonSoulDetector(1, this.guiLeft + 57, this.guiTop + 15, 9, 9, false));
+		this.controlList.add(this.btnRangeDecZUp = new GuiButtonSoulDetector(2, this.guiLeft + 57 + 9, this.guiTop + 15, 9, 9, true));
 
-		this.controlList.add(this.btnRangeIncNorth = new GuiButtonSoulDetector(
-				3, this.guiLeft + 96, this.guiTop + 15, 9, 9, false));
-		this.controlList.add(this.btnRangeDecNorth = new GuiButtonSoulDetector(
-				4, this.guiLeft + 96 + 9, this.guiTop + 15, 9, 9, true));
+		this.controlList.add(this.btnRangeIncNorth = new GuiButtonSoulDetector(3, this.guiLeft + 96, this.guiTop + 15, 9, 9, false));
+		this.controlList.add(this.btnRangeDecNorth = new GuiButtonSoulDetector(4, this.guiLeft + 96 + 9, this.guiTop + 15, 9, 9, true));
 
-		this.controlList.add(this.btnRangeIncWest = new GuiButtonSoulDetector(
-				5, this.guiLeft + 57, this.guiTop + 33, 9, 9, false));
-		this.controlList.add(this.btnRangeDecWest = new GuiButtonSoulDetector(
-				6, this.guiLeft + 57 + 9, this.guiTop + 33, 9, 9, true));
+		this.controlList.add(this.btnRangeIncWest = new GuiButtonSoulDetector(5, this.guiLeft + 57, this.guiTop + 33, 9, 9, false));
+		this.controlList.add(this.btnRangeDecWest = new GuiButtonSoulDetector(6, this.guiLeft + 57 + 9, this.guiTop + 33, 9, 9, true));
 
-		this.controlList.add(this.btnRangeIncEast = new GuiButtonSoulDetector(
-				7, this.guiLeft + 117, this.guiTop + 33, 9, 9, false));
-		this.controlList.add(this.btnRangeDecEast = new GuiButtonSoulDetector(
-				8, this.guiLeft + 117 + 9, this.guiTop + 33, 9, 9, true));
+		this.controlList.add(this.btnRangeIncEast = new GuiButtonSoulDetector(7, this.guiLeft + 117, this.guiTop + 33, 9, 9, false));
+		this.controlList.add(this.btnRangeDecEast = new GuiButtonSoulDetector(8, this.guiLeft + 117 + 9, this.guiTop + 33, 9, 9, true));
 
-		this.controlList.add(this.btnRangeIncZDown = new GuiButtonSoulDetector(
-				9, this.guiLeft + 57, this.guiTop + 51, 9, 9, false));
-		this.controlList.add(this.btnRangeDecZDown = new GuiButtonSoulDetector(
-				10, this.guiLeft + 57 + 9, this.guiTop + 51, 9, 9, true));
+		this.controlList.add(this.btnRangeIncZDown = new GuiButtonSoulDetector(9, this.guiLeft + 57, this.guiTop + 51, 9, 9, false));
+		this.controlList.add(this.btnRangeDecZDown = new GuiButtonSoulDetector(10, this.guiLeft + 57 + 9, this.guiTop + 51, 9, 9, true));
 
-		this.controlList.add(this.btnRangeIncSouth = new GuiButtonSoulDetector(
-				11, this.guiLeft + 96, this.guiTop + 51, 9, 9, false));
-		this.controlList.add(this.btnRangeDecSouth = new GuiButtonSoulDetector(
-				12, this.guiLeft + 96 + 9, this.guiTop + 51, 9, 9, true));
+		this.controlList.add(this.btnRangeIncSouth = new GuiButtonSoulDetector(11, this.guiLeft + 96, this.guiTop + 51, 9, 9, false));
+		this.controlList.add(this.btnRangeDecSouth = new GuiButtonSoulDetector(12, this.guiLeft + 96 + 9, this.guiTop + 51, 9, 9, true));
 	}
 
 	/*
@@ -85,32 +74,20 @@ public class GuiSoulDetector extends GuiContainer {
 	private void drawRangeNumbers() {
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
+		
+		Integer nRangeUp = ((Integer) this.tile_entity.getRange(ForgeDirection.UP));
+		Integer nRangeNorth = ((Integer) this.tile_entity.getRange(ForgeDirection.NORTH));
+		Integer nRangeWest = ((Integer) this.tile_entity.getRange(ForgeDirection.WEST));
+		Integer nRangeEast = ((Integer) this.tile_entity.getRange(ForgeDirection.EAST));
+		Integer nRangeDown = ((Integer) this.tile_entity.getRange(ForgeDirection.DOWN));
+		Integer nRangeSouth = ((Integer) this.tile_entity.getRange(ForgeDirection.SOUTH));
 
-		Integer nRangeUp = ((Integer) this.tile_entity
-				.getRange(ForgeDirection.UP));
-		Integer nRangeNorth = ((Integer) this.tile_entity
-				.getRange(ForgeDirection.NORTH));
-		Integer nRangeWest = ((Integer) this.tile_entity
-				.getRange(ForgeDirection.WEST));
-		Integer nRangeEast = ((Integer) this.tile_entity
-				.getRange(ForgeDirection.EAST));
-		Integer nRangeDown = ((Integer) this.tile_entity
-				.getRange(ForgeDirection.DOWN));
-		Integer nRangeSouth = ((Integer) this.tile_entity
-				.getRange(ForgeDirection.SOUTH));
-
-		this.fontRenderer.drawString(nRangeUp.toString(), var5 + 57
-				- nRangeUp.toString().length() * 7, var6 + 16, 0xffffff);
-		this.fontRenderer.drawString(nRangeNorth.toString(), var5 + 96
-				- nRangeNorth.toString().length() * 7, var6 + 16, 0xffffff);
-		this.fontRenderer.drawString(nRangeWest.toString(), var5 + 57
-				- nRangeWest.toString().length() * 7, var6 + 34, 0xffffff);
-		this.fontRenderer.drawString(nRangeEast.toString(), var5 + 117
-				- nRangeEast.toString().length() * 7, var6 + 34, 0xffffff);
-		this.fontRenderer.drawString(nRangeDown.toString(), var5 + 57
-				- nRangeDown.toString().length() * 7, var6 + 52, 0xffffff);
-		this.fontRenderer.drawString(nRangeSouth.toString(), var5 + 96
-				- nRangeSouth.toString().length() * 7, var6 + 52, 0xffffff);
+		this.fontRenderer.drawString(nRangeUp.toString(), var5 + 57 - nRangeUp.toString().length() * 7, var6 + 16, 0xffffff);
+		this.fontRenderer.drawString(nRangeNorth.toString(), var5 + 96 - nRangeNorth.toString().length() * 7, var6 + 16, 0xffffff);
+		this.fontRenderer.drawString(nRangeWest.toString(), var5 + 57 - nRangeWest.toString().length() * 7, var6 + 34, 0xffffff);
+		this.fontRenderer.drawString(nRangeEast.toString(), var5 + 117 - nRangeEast.toString().length() * 7, var6 + 34, 0xffffff);
+		this.fontRenderer.drawString(nRangeDown.toString(), var5 + 57 - nRangeDown.toString().length() * 7, var6 + 52, 0xffffff);
+		this.fontRenderer.drawString(nRangeSouth.toString(), var5 + 96 - nRangeSouth.toString().length() * 7, var6 + 52, 0xffffff);
 	}
 
 	protected void actionPerformed(GuiButton par1GuiButton) {

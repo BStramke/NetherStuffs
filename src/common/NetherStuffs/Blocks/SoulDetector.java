@@ -1,11 +1,14 @@
 package NetherStuffs.Blocks;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
@@ -25,7 +28,7 @@ public class SoulDetector extends BlockContainer {
 	}
 
 	public int tickRate() {
-		return 40;
+		return 20;
 	}
 
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
@@ -48,7 +51,10 @@ public class SoulDetector extends BlockContainer {
 	}
 
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		return side;
+		if ((meta & 8) > 0) {
+			return side + 16;
+		} else
+			return side;
 	}
 
 	/*
@@ -84,11 +90,9 @@ public class SoulDetector extends BlockContainer {
 	@Override
 	public void updateTick(World par1World, int xCoord, int yCoord, int zCoord, Random par5Random) {
 		if (!par1World.isRemote) {
-			int nRadius = 5;
-
 			TileEntity tile_entity = par1World.getBlockTileEntity(xCoord, yCoord, zCoord);
 			if (tile_entity instanceof TileSoulDetector) {
-				
+
 				int nRangeUp = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.UP);
 				int nRangeDown = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.DOWN);
 				int nRangeNorth = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.NORTH);
@@ -102,22 +106,38 @@ public class SoulDetector extends BlockContainer {
 				// north = -
 				// east=+
 				// west=-
-				
-				
 
 				Integer nLowerX = xCoord - nRangeWest;
 				Integer nLowerY = yCoord - nRangeDown;
 				Integer nLowerZ = zCoord - nRangeNorth;
-				Integer nUpperX = xCoord + nRangeEast;
-				Integer nUpperY = yCoord + nRangeUp;
-				Integer nUpperZ = zCoord + nRangeSouth;
+				Integer nUpperX = xCoord + nRangeEast + 1;
+				Integer nUpperY = yCoord + nRangeUp + 1;// height has to be 1 more for upwards detection (detects Head Position)
+				Integer nUpperZ = zCoord + nRangeSouth + 1;
 
-				List tmp = par1World.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ));
+				AxisAlignedBB axis = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ);
 
-				System.out.println(nLowerX.toString() + "," + nLowerY.toString()+ "," + nLowerZ.toString() + "," + nUpperX.toString() + "," + nUpperY.toString() + "," + nUpperZ.toString());
+				/*
+				 * int var3 = MathHelper.floor_double((axis.minX - World.MAX_ENTITY_RADIUS) / 16.0D); int var4 = MathHelper.floor_double((axis.maxX + World.MAX_ENTITY_RADIUS) / 16.0D); int var5 =
+				 * MathHelper.floor_double((axis.minZ - World.MAX_ENTITY_RADIUS) / 16.0D); int var6 = MathHelper.floor_double((axis.maxZ + World.MAX_ENTITY_RADIUS) / 16.0D);
+				 */
+
+				List tmp = par1World.getEntitiesWithinAABBExcludingEntity((Entity) null, axis);
+
+				/*
+				 * System.out.println(nLowerX.toString() + "," + nLowerY.toString() + "," + nLowerZ.toString() + "," + nUpperX.toString() + "," + nUpperY.toString() + "," + nUpperZ.toString());
+				 * System.out.println(var3 + "," + var4 + "," + var5 + "," + var6);
+				 */
 
 				// System.out.println("Lower Corner: " + par1World.getBlockId(xCoord - nRangeWest, yCoord - nRangeDown, zCoord - nRangeNorth));
 				// System.out.println("Upper Corner: " + par1World.getBlockId(xCoord + nRangeEast, yCoord + nRangeUp, zCoord + nRangeSouth));
+
+				Iterator it = tmp.iterator();
+				while (it.hasNext()) {
+					Object data = it.next();
+					if (data instanceof EntityLiving || data instanceof EntityPlayer) {} else {
+						it.remove();
+					}
+				}
 
 				if (tmp.size() >= 1) {
 					setEmittingSignal(true, par1World, xCoord, yCoord, zCoord);
@@ -140,6 +160,7 @@ public class SoulDetector extends BlockContainer {
 	}
 
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6) {
+		super.breakBlock(par1World, par2, par3, par4, par5, par6);
 		setEmittingSignal(false, par1World, par2, par3, par4);
 	}
 

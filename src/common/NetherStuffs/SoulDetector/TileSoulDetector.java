@@ -28,7 +28,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 	public static final int nRangeUp = 5;
 
 	public short[] detectionRanges = new short[] { 0, 0, 0, 0, 0, 0 };
-	public short[] detectionRangesMax = new short[] { 20, 20, 20, 20, 20, 20 };
+	public short[] detectionRangesMax = new short[] { 10, 10, 10, 10, 10, 10 };
 
 	@Override
 	public int getSizeInventory() {
