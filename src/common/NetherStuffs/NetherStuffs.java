@@ -169,6 +169,8 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	private void initRecipes() {
+		initDefaultMinecraftRecipes();
+		
 		addSmeltingMeta(Block.netherrack, 0, NetherBlocks.netherOre, NetherBlocks.netherStone); // this actually is the basic recipe to get started
 
 		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, 0, new ItemStack(NetherItems.NetherOreIngot, 1, 0), 1.0F);
@@ -265,7 +267,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.addRecipe(new ItemStack(Item.bed, 1), new Object[] { "###", "XXX", '#', Block.cloth, 'X', NetherBlocks.netherPlank });
 		GameRegistry.addRecipe(new ItemStack(Block.chest), new Object[] { "###", "# #", "###", '#', NetherBlocks.netherPlank });
 		GameRegistry.addRecipe(new ItemStack(Block.workbench), new Object[] { "##", "##", '#', NetherBlocks.netherPlank });
-		GameRegistry.addRecipe(new ItemStack(Block.netherBrick, 4), new Object[] { "##", "##", '#', NetherBlocks.netherStone }); // this actually is not existant in MC yet
+		GameRegistry.addRecipe(new ItemStack(Block.netherBrick, 2), new Object[] { "NN", "NN", 'N', new ItemStack(NetherBlocks.netherOre, 1, NetherBlocks.netherStone) }); // this actually is not existant in MC yet
 	}
 
 	private void addSmeltingMeta(Block block, int blockMetadata, Item result, int itemMetadata) {
