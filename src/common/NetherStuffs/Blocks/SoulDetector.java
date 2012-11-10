@@ -11,15 +11,23 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import NetherStuffs.NetherStuffs;
 import NetherStuffs.SoulDetector.TileSoulDetector;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.network.FMLNetworkHandler;
 
 public class SoulDetector extends BlockContainer {
+
+	public static final int mk1 = 0;
+	public static final int mk2 = 1;
+	public static final int mk3 = 2;
+	public static final int mk4 = 3;
 
 	public SoulDetector(int par1, int par2) {
 		super(par1, par2, Material.circuits);
@@ -51,19 +59,19 @@ public class SoulDetector extends BlockContainer {
 	}
 
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		if ((meta & 8) > 0) {
+		if ((meta & 8) > 0)
 			return side + 16;
-		} else
+		else
 			return side;
 	}
 
-	/*
-	 * public int getMetadataSize() { return SoulDetectorItemBlock.blockNames.length; }
-	 */
+	public int getMetadataSize() {
+		return SoulDetectorItemBlock.blockNames.length;
+	}
 
 	@Override
 	public int damageDropped(int meta) {
-		return meta;
+		return meta & 7;
 	}
 
 	@Override
@@ -152,10 +160,11 @@ public class SoulDetector extends BlockContainer {
 
 	private void setEmittingSignal(boolean active, World par1World, int par2, int par3, int par4) {
 		if (!par1World.isRemote) {
-			if (par1World.getBlockMetadata(par2, par3, par4) > 0 && active == false) // it is active, sets to non active
-				par1World.setBlockMetadataWithNotify(par2, par3, par4, 0);
-			else if (par1World.getBlockMetadata(par2, par3, par4) == 0 && active == true) // it is not active, sets to active
-				par1World.setBlockMetadataWithNotify(par2, par3, par4, 8);
+			int nMeta = par1World.getBlockMetadata(par2, par3, par4);
+			if ((nMeta & 8) > 0 && active == false) // it is active, sets to non active
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, (nMeta & 7));
+			else if ((nMeta & 8) == 0 && active == true) // it is not active, sets to active
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, (nMeta | 8));
 		}
 	}
 
@@ -167,5 +176,12 @@ public class SoulDetector extends BlockContainer {
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileSoulDetector();
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
+		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
+			list.add(new ItemStack(par1, 1, metaNumber));
+		}
 	}
 }

@@ -20,6 +20,7 @@ import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
+import NetherStuffs.Blocks.SoulDetector;
 import NetherStuffs.Client.ClientProxy;
 
 public class GuiSoulDetector extends GuiContainer {
@@ -65,16 +66,25 @@ public class GuiSoulDetector extends GuiContainer {
 
 		this.controlList.add(this.btnRangeIncSouth = new GuiButtonSoulDetector(11, this.guiLeft + 96, this.guiTop + 51, 9, 9, false));
 		this.controlList.add(this.btnRangeDecSouth = new GuiButtonSoulDetector(12, this.guiLeft + 96 + 9, this.guiTop + 51, 9, 9, true));
-	}
 
-	/*
-	 * public void updateScreen() { super.updateScreen(); }
-	 */
+		int nMeta = this.tile_entity.getBlockMetadata() & 7;
+		switch (nMeta) {
+		case SoulDetector.mk1:
+			drawDetectionMark1();
+			break;
+		case SoulDetector.mk2:
+			drawDetectionMark2();
+		case SoulDetector.mk3:
+			drawDetectionMark3();
+		case SoulDetector.mk4:
+			drawDetectionMark4();
+		}
+	}
 
 	private void drawRangeNumbers() {
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
-		
+
 		Integer nRangeUp = ((Integer) this.tile_entity.getRange(ForgeDirection.UP));
 		Integer nRangeNorth = ((Integer) this.tile_entity.getRange(ForgeDirection.NORTH));
 		Integer nRangeWest = ((Integer) this.tile_entity.getRange(ForgeDirection.WEST));
@@ -88,6 +98,22 @@ public class GuiSoulDetector extends GuiContainer {
 		this.fontRenderer.drawString(nRangeEast.toString(), var5 + 117 - nRangeEast.toString().length() * 7, var6 + 34, 0xffffff);
 		this.fontRenderer.drawString(nRangeDown.toString(), var5 + 57 - nRangeDown.toString().length() * 7, var6 + 52, 0xffffff);
 		this.fontRenderer.drawString(nRangeSouth.toString(), var5 + 96 - nRangeSouth.toString().length() * 7, var6 + 52, 0xffffff);
+	}
+
+	private void drawDetectionMark1() {
+		// no settings needed as far as i know
+	}
+
+	private void drawDetectionMark2() {
+		// Hostile / Non-Hostile Setting
+	}
+
+	private void drawDetectionMark3() {
+		// Mob-Selector
+	}
+
+	private void drawDetectionMark4() {
+		// Players / Playerlists
 	}
 
 	protected void actionPerformed(GuiButton par1GuiButton) {
@@ -131,7 +157,12 @@ public class GuiSoulDetector extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		this.fontRenderer.drawString("Soul Detector", 6, 6, 4210752);
+		int nMeta = this.tile_entity.getBlockMetadata() & 7;
+
+		if (nMeta == SoulDetector.mk1 || nMeta == SoulDetector.mk2 || nMeta == SoulDetector.mk3 || nMeta == SoulDetector.mk4)
+			this.fontRenderer.drawString("Soul Detector MK " + (nMeta + 1), 6, 6, 4210752);
+		else
+			this.fontRenderer.drawString("Soul Detector", 6, 6, 4210752);
 	}
 
 	@Override
