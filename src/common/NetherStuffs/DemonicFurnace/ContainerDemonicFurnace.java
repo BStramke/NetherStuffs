@@ -54,6 +54,7 @@ public class ContainerDemonicFurnace extends Container {
 	/**
 	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
 	 */
+	@Override
 	public void updateCraftingResults() {
 		super.updateCraftingResults();
 		Iterator var1 = this.crafters.iterator();
@@ -80,6 +81,7 @@ public class ContainerDemonicFurnace extends Container {
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void updateProgressBar(int par1, int par2) {
 		if (par1 == 0) {
 			this.furnace.furnaceCookTime = par2;
@@ -94,6 +96,7 @@ public class ContainerDemonicFurnace extends Container {
 		}
 	}
 
+	@Override
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
 		par1ICrafting.updateCraftingInventoryInfo(this, 0, this.furnace.furnaceCookTime);

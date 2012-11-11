@@ -12,6 +12,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import NetherStuffs.NetherStuffs;
 import NetherStuffs.Blocks.NetherBlocks;
+import NetherStuffs.Blocks.SoulDetector;
 import NetherStuffs.Items.NetherItems;
 
 public class SoulWorkBenchRecipes {
@@ -23,8 +24,17 @@ public class SoulWorkBenchRecipes {
 		this.addRecipe(new ItemStack(NetherBlocks.netherSoulBomb, 1, 0), 10, new Object[] { "DID", "IDI", "DID", 'D', new ItemStack(Item.lightStoneDust, 1, 0), 'I',
 				new ItemStack(NetherItems.NetherOreIngot, 1, 0) });
 
-		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, 0), 25, new Object[] { "IBI", "BTB", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'B',
+		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk1), 25, new Object[] { "IBI", "BTB", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'B',
 				new ItemStack(Block.netherBrick, 1, 0), 'T', new ItemStack(Block.torchRedstoneActive, 1, 0) });
+
+		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk2), 50, new Object[] { "IGI", "GDG", "IGI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'G',
+				new ItemStack(Item.ingotIron, 1, 0), 'D', new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk1) });
+
+		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk3), 75, new Object[] { "IGI", "GDG", "IGI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'G',
+				new ItemStack(Item.ingotGold, 1, 0), 'D', new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk2) });
+
+		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk4), 100, new Object[] { "IBI", "BDB", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'B',
+				new ItemStack(Item.diamond, 1, 0), 'D', new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk3) });
 	}
 
 	public List getRecipeList() {

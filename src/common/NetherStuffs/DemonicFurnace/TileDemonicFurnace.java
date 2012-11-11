@@ -18,9 +18,9 @@ import cpw.mods.fml.common.asm.SideOnly;
 public class TileDemonicFurnace extends TileEntity implements IInventory, ISidedInventory {
 
 	private ItemStack[] inventory = new ItemStack[3];
-	
+
 	private int nFurnaceTicksToComplete = 400;
-	
+
 	/** The number of ticks that the furnace will keep burning */
 	public int furnaceBurnTime = 0;
 
@@ -131,6 +131,7 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 	@Override
 	public void closeChest() {}
 
+	@Override
 	public void updateEntity() {
 		boolean var1 = this.furnaceBurnTime > 0;
 		boolean var2 = false;
@@ -248,8 +249,8 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 				else
 					return 1600;
 			}
-			
-			if(par0ItemStack.getItem() instanceof NetherWoodCharcoal){
+
+			if (par0ItemStack.getItem() instanceof NetherWoodCharcoal) {
 				return 6400;
 			}
 
@@ -258,10 +259,10 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 			/*
 			 * if (var3 == Block.woodSingleSlab) { return 150; }
 			 * 
-			 * if (var3.blockMaterial == Material.wood) { return 300; } } if (var2 instanceof ItemTool && ((ItemTool) var2).func_77861_e().equals("WOOD")) return 200; if (var2
-			 * instanceof ItemSword && ((ItemSword) var2).func_77825_f().equals("WOOD")) return 200; if (var2 instanceof ItemHoe && ((ItemHoe) var2).func_77842_f().equals("WOOD"))
-			 * return 200; if (var1 == Item.stick.shiftedIndex) return 100; if (var1 == Item.coal.shiftedIndex) return 1600; if (var1 == Item.bucketLava.shiftedIndex) return 20000; if
-			 * (var1 == Block.sapling.blockID) return 100; if (var1 == Item.blazeRod.shiftedIndex) return 2400; return GameRegistry.getFuelValue(par0ItemStack);
+			 * if (var3.blockMaterial == Material.wood) { return 300; } } if (var2 instanceof ItemTool && ((ItemTool) var2).func_77861_e().equals("WOOD")) return 200; if (var2 instanceof ItemSword &&
+			 * ((ItemSword) var2).func_77825_f().equals("WOOD")) return 200; if (var2 instanceof ItemHoe && ((ItemHoe) var2).func_77842_f().equals("WOOD")) return 200; if (var1 ==
+			 * Item.stick.shiftedIndex) return 100; if (var1 == Item.coal.shiftedIndex) return 1600; if (var1 == Item.bucketLava.shiftedIndex) return 20000; if (var1 == Block.sapling.blockID) return 100;
+			 * if (var1 == Item.blazeRod.shiftedIndex) return 2400; return GameRegistry.getFuelValue(par0ItemStack);
 			 */
 
 		}

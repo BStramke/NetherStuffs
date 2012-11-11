@@ -27,14 +27,17 @@ public class SoulEnergyBottle extends Item {
 		this.setCreativeTab(CreativeTabs.tabMisc);
 	}
 
+	@Override
 	public boolean getShareTag() {
 		return true;
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/items.png";
 	}
 
+	@Override
 	public int getIconFromDamage(int par1) {
 		/*
 		 * switch (par1) { case small: return 48; case medium: return 49; case large: return 50; default: return 19; }
@@ -90,6 +93,7 @@ public class SoulEnergyBottle extends Item {
 		return nRest;
 	}
 
+	@Override
 	public String getItemNameIS(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
@@ -100,11 +104,13 @@ public class SoulEnergyBottle extends Item {
 		return getItemName() + "." + name;
 	}
 
+	@Override
 	public int getMetadata(int meta) {
 		return meta;
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void getSubItems(int par1, CreativeTabs tab, List list) {
 		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));
@@ -117,7 +123,7 @@ public class SoulEnergyBottle extends Item {
 		int nExistingAmount = 0;
 		if (par1ItemStack.hasTagCompound() && par1ItemStack.stackTagCompound.hasKey("SoulEnergyAmount")) {
 			nExistingAmount = par1ItemStack.getTagCompound().getInteger("SoulEnergyAmount");
-			if(nExistingAmount > 0)
+			if (nExistingAmount > 0)
 				par3List.add("Contains Soulenergy: " + ((Integer) nExistingAmount).toString());
 		}
 	}

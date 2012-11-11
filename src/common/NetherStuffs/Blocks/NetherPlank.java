@@ -19,7 +19,7 @@ public class NetherPlank extends Block {
 	public static final int hellfire = 0;
 	public static final int acid = 1;
 	public static final int death = 2;
-	
+
 	public NetherPlank(int par1, int par2) {
 		super(par1, par2, NetherWoodMaterial.netherWood);
 		this.setCreativeTab(CreativeTabs.tabBlock);
@@ -28,13 +28,15 @@ public class NetherPlank extends Block {
 		this.setBurnProperties(this.blockID, 0, 0);
 	}
 
+	@Override
 	public boolean isFireSource(World world, int x, int y, int z, int metadata, ForgeDirection side) {
 		if (side == UP) {
 			return true;
 		}
 		return false;
 	}
-	
+
+	@Override
 	public String getTextureFile() {
 		return "/blocks.png";
 	}
@@ -42,18 +44,19 @@ public class NetherPlank extends Block {
 	public int getMetadataSize() {
 		return NetherPlankItemBlock.blockNames.length;
 	}
-	
+
+	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		int nRowDiff = 48;
 		switch (meta) {
 		case hellfire:
-			return hellfire+nRowDiff;
+			return hellfire + nRowDiff;
 		case acid:
-			return acid+nRowDiff;
+			return acid + nRowDiff;
 		case death:
-			return death+nRowDiff;
+			return death + nRowDiff;
 		default:
-			return hellfire+nRowDiff;
+			return hellfire + nRowDiff;
 		}
 	}
 
@@ -63,6 +66,7 @@ public class NetherPlank extends Block {
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
 		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));

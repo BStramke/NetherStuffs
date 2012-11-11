@@ -47,7 +47,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 	public static int unmarkedMetadata(int metadata) {
 		return metadata & METADATA_BITMASK;
 	}
-	
+
 	/**
 	 * This flag is used to prevent the furnace inventory to be dropped upon block removal, is used internally when the furnace block changes from idle to active and vice-versa.
 	 */
@@ -62,15 +62,15 @@ public class NetherDemonicFurnace extends BlockContainer {
 		this.setTickRandomly(true);
 	}
 
-	
 	public String getItemNameIS(ItemStack is) {
 		String name = "NetherDemonicFurnace";
 		return getBlockName() + "." + name;
 	}
-	
+
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
+	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
 		return NetherStuffs.NetherDemonicFurnaceBlockId;
 	}
@@ -78,12 +78,13 @@ public class NetherDemonicFurnace extends BlockContainer {
 	/**
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
+	@Override
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
 		super.onBlockAdded(par1World, par2, par3, par4);
 		this.setDefaultDirection(par1World, par2, par3, par4);
-		
-		//int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
-		//par1World.setBlockMetadataWithNotify(par2, par3, par4, clearActiveOnMetadata(metadata));
+
+		// int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
+		// par1World.setBlockMetadataWithNotify(par2, par3, par4, clearActiveOnMetadata(metadata));
 	}
 
 	/**
@@ -113,11 +114,11 @@ public class NetherDemonicFurnace extends BlockContainer {
 				var9 = 4;
 			}
 
-			
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
 		}
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/blocks.png";
 	}
@@ -142,26 +143,27 @@ public class NetherDemonicFurnace extends BlockContainer {
 	/**
 	 * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
 	 */
+	@Override
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
-		
-		switch (side) {
-			case NetherBlocks.sideBottom:
-				return 98; // bottom
-			case NetherBlocks.sideTop:
-				return 98; // top
-			default: {
-				
-				int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-				if (side != unmarkedMetadata(var6))
-					return 97;
-				else {
-					if (this.isActiveSet(var6))
-						return 99;
-					else
-						return 96;
-				}
 
+		switch (side) {
+		case NetherBlocks.sideBottom:
+			return 98; // bottom
+		case NetherBlocks.sideTop:
+			return 98; // top
+		default: {
+
+			int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+			if (side != unmarkedMetadata(var6))
+				return 97;
+			else {
+				if (this.isActiveSet(var6))
+					return 99;
+				else
+					return 96;
 			}
+
+		}
 		}
 	}
 
@@ -169,6 +171,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 	/**
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
+	@Override
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		if (this.isActive(par1World, par2, par3, par4)) {
 			int var6 = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
@@ -197,23 +200,24 @@ public class NetherDemonicFurnace extends BlockContainer {
 	/**
 	 * Returns the block texture based on the side being looked at. Args: side
 	 */
+	@Override
 	public int getBlockTextureFromSide(int side) // pretty similar to getBlockTexture
 	{
 		switch (side) {
-			case NetherBlocks.sideBottom:
-				return 98; // bottom
-			case NetherBlocks.sideTop:
-				return 98; // top
-			case NetherBlocks.sideFront:
-				return 96; // front
-			case NetherBlocks.sideBack:
-				return 97; // back 97
-			case NetherBlocks.sideRight:
-				return 97; // right
-			case NetherBlocks.sideLeft:
-				return 97; // left
-			default:
-				return 98;
+		case NetherBlocks.sideBottom:
+			return 98; // bottom
+		case NetherBlocks.sideTop:
+			return 98; // top
+		case NetherBlocks.sideFront:
+			return 96; // front
+		case NetherBlocks.sideBack:
+			return 97; // back 97
+		case NetherBlocks.sideRight:
+			return 97; // right
+		case NetherBlocks.sideLeft:
+			return 97; // left
+		default:
+			return 98;
 		}
 	}
 
@@ -235,6 +239,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 	/**
 	 * Called when the block is placed in the world.
 	 */
+	@Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving) {
 		int var6 = MathHelper.floor_double((double) (par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
@@ -278,8 +283,8 @@ public class NetherDemonicFurnace extends BlockContainer {
 							}
 
 							var9.stackSize -= var13;
-							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(
-									var9.itemID, var13, var9.getItemDamage()));
+							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(var9.itemID, var13,
+									var9.getItemDamage()));
 
 							if (var9.hasTagCompound()) {
 								var14.item.setTagCompound((NBTTagCompound) var9.getTagCompound().copy());

@@ -33,10 +33,12 @@ public class NetherPuddle extends Block {
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
+	@Override
 	public int getRenderType() {
 		return 0;
 	}
-	
+
+	@Override
 	public String getTextureFile() {
 		return "/puddles.png";
 	}
@@ -59,6 +61,7 @@ public class NetherPuddle extends Block {
 		return par1 == Block.netherrack.blockID || par1 == Block.slowSand.blockID || par1 == NetherBlocks.netherOre.blockID;
 	}
 
+	@Override
 	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
 		int blockId = par1World.getBlockId(par2, par3 - 1, par4);
 		return canBlockStay(par1World, par2, par3, par4) && canThisPlantGrowOnThisBlockID(blockId);
@@ -95,9 +98,8 @@ public class NetherPuddle extends Block {
 	public static int unmarkedMetadata(int metadata) {
 		return metadata & METADATA_BITMASK;
 	}
-	
-	
 
+	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (clearSizeOnMetadata(meta)) {
 		case hellfire:
@@ -142,7 +144,7 @@ public class NetherPuddle extends Block {
 		if (!par1World.provider.isHellWorld) // only allow in Nether
 			return false;
 		if (par3 >= 0 && par3 < 256) {
-			if (par1World.getBlockId(par2, par3 - 1, par4) != Block.netherrack.blockID) //If its anything else than netherrack as base it wont work
+			if (par1World.getBlockId(par2, par3 - 1, par4) != Block.netherrack.blockID) // If its anything else than netherrack as base it wont work
 				return false;
 
 			for (int y = par3 + 1; y < 256 && bValid; y++) { // search for netherleaves
@@ -186,6 +188,7 @@ public class NetherPuddle extends Block {
 		return meta;
 	}
 
+	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
@@ -193,6 +196,7 @@ public class NetherPuddle extends Block {
 	/**
 	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
 	 */
+	@Override
 	public boolean renderAsNormalBlock() {
 		return false;
 	}

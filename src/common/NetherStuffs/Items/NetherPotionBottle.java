@@ -10,9 +10,9 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class NetherPotionBottle extends Item {
 
-	public static String[] itemNames = new String[] { "NetherPotionBottleHellfire" , "NetherPotionBottleAcid", "NetherPotionBottleDeath"};
-	public static String[] itemDisplayNames = new String[] { "Hellfire Potion" , "Acid Potion", "Death Potion"};
-	
+	public static String[] itemNames = new String[] { "NetherPotionBottleHellfire", "NetherPotionBottleAcid", "NetherPotionBottleDeath" };
+	public static String[] itemDisplayNames = new String[] { "Hellfire Potion", "Acid Potion", "Death Potion" };
+
 	public static final int hellfire = 0;
 	public static final int acid = 1;
 	public static final int death = 2;
@@ -24,11 +24,13 @@ public class NetherPotionBottle extends Item {
 		this.setMaxDamage(0);
 		this.setCreativeTab(CreativeTabs.tabBrewing);
 	}
-	
+
+	@Override
 	public String getTextureFile() {
 		return "/items.png";
 	}
 
+	@Override
 	public int getIconFromDamage(int par1) {
 		switch (par1) {
 		case hellfire:
@@ -41,17 +43,18 @@ public class NetherPotionBottle extends Item {
 			return 16;
 		}
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean hasEffect(ItemStack par1ItemStack) {
 		return true;
 	}
-	
+
 	public static int getMetadataSize() {
 		return itemNames.length;
 	}
 
+	@Override
 	public String getItemNameIS(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
@@ -62,11 +65,13 @@ public class NetherPotionBottle extends Item {
 		return getItemName() + "." + name;
 	}
 
+	@Override
 	public int getMetadata(int meta) {
 		return meta;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void getSubItems(int par1, CreativeTabs tab, List list) {
 		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));

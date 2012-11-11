@@ -23,7 +23,8 @@ public class NetherOre extends Block {
 		this.setRequiresSelfNotify();
 		this.setStepSound(soundStoneFootstep);
 	}
-	
+
+	@Override
 	public String getTextureFile() {
 		return "/blocks.png";
 	}
@@ -31,15 +32,16 @@ public class NetherOre extends Block {
 	public int getMetadataSize() {
 		return NetherOreItemBlock.blockNames.length;
 	}
-	
+
+	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (meta) {
-			case demonicOre:
-				return 0;
-			case netherStone:
-				return 1;
-			default:
-				return 0;
+		case demonicOre:
+			return 0;
+		case netherStone:
+			return 1;
+		default:
+			return 0;
 		}
 	}
 
@@ -49,6 +51,7 @@ public class NetherOre extends Block {
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
 		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));

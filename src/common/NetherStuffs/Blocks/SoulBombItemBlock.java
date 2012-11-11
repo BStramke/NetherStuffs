@@ -8,30 +8,23 @@ public class SoulBombItemBlock extends ItemBlock {
 		super(par1);
 		setHasSubtypes(true);
 	}
-	
-	/*public static int getMetadataSize() {
-		return blockNames.length;
-	}
-	
+
+	/*
+	 * public static int getMetadataSize() { return blockNames.length; }
+	 * 
+	 * public String getItemNameIS(ItemStack is) { String name = ""; if(is.getItemDamage()<getMetadataSize() && is.getItemDamage()>=0) name = blockNames[is.getItemDamage()]; else name = blockNames[0];
+	 * 
+	 * return getItemName() + "." + name; }
+	 * 
+	 * public String getTextureFile() { return "/blocks.png"; }
+	 */
+	@Override
 	public String getItemNameIS(ItemStack is) {
-		String name = "";
-		if(is.getItemDamage()<getMetadataSize() && is.getItemDamage()>=0)
-			name = blockNames[is.getItemDamage()];
-		else
-			name = blockNames[0];
-		
-		return getItemName() + "." + name;
-	}
-	
-	public String getTextureFile() {
-		return "/blocks.png";
-	}*/
-	
-	public String getItemNameIS(ItemStack is) {
-		String name = "NetherSoulBomb";		
+		String name = "NetherSoulBomb";
 		return getItemName() + "." + name;
 	}
 
+	@Override
 	public int getMetadata(int meta) {
 		return meta;
 	}

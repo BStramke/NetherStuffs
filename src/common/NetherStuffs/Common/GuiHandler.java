@@ -25,7 +25,7 @@ public class GuiHandler implements IGuiHandler {
 			return new ContainerDemonicFurnace((TileDemonicFurnace) tile_entity, player.inventory);
 		} else if (tile_entity instanceof TileSoulWorkBench) {
 			return new ContainerSoulWorkBench((TileSoulWorkBench) tile_entity, player.inventory);
-		} else if(tile_entity instanceof TileSoulDetector) {
+		} else if (tile_entity instanceof TileSoulDetector) {
 			return new ContainerSoulDetector((TileSoulDetector) tile_entity);
 		}
 
@@ -41,7 +41,7 @@ public class GuiHandler implements IGuiHandler {
 			return new GuiDemonicFurnace(player.inventory, (TileDemonicFurnace) tile_entity);
 		} else if (tile_entity instanceof TileSoulWorkBench) {
 			return new GuiSoulWorkBench(player.inventory, (TileSoulWorkBench) tile_entity);
-		}else if (tile_entity instanceof TileSoulDetector) {
+		} else if (tile_entity instanceof TileSoulDetector) {
 			return new GuiSoulDetector((TileSoulDetector) tile_entity, player);
 		}
 

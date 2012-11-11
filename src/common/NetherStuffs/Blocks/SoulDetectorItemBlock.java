@@ -28,10 +28,12 @@ public class SoulDetectorItemBlock extends ItemBlock {
 		return getItemName() + "." + name;
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/block_detector.png";
 	}
-	
+
+	@Override
 	public int getMetadata(int meta) {
 		return meta;
 	}

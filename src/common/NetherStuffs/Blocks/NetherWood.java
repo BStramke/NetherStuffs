@@ -27,9 +27,10 @@ public class NetherWood extends Block {
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setStepSound(soundWoodFootstep);
 		this.setRequiresSelfNotify();
-		this.setBurnProperties(this.blockID, 0, 0);		
+		this.setBurnProperties(this.blockID, 0, 0);
 	}
 
+	@Override
 	public boolean isFireSource(World world, int x, int y, int z, int metadata, ForgeDirection side) {
 		if (side == UP) {
 			return true;
@@ -45,6 +46,7 @@ public class NetherWood extends Block {
 	/**
 	 * The type of render function that is called for this block
 	 */
+	@Override
 	public int getRenderType() {
 		return 31;
 	}
@@ -54,6 +56,7 @@ public class NetherWood extends Block {
 		return true;
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/blocks.png";
 	}
@@ -62,11 +65,12 @@ public class NetherWood extends Block {
 		return NetherWoodItemBlock.blockNames.length;
 	}
 
+	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 
 		/*
-		 * int nRowDiff = 32; // side: 1=top, 0=bottom if (side == 1 || side == 0) { nRowDiff = nRowDiff - 16;// look one row above } switch (var4) { case hellfire: return hellfire +
-		 * nRowDiff; case acid: return acid + nRowDiff; case death: return death + nRowDiff; default: return hellfire + nRowDiff; }
+		 * int nRowDiff = 32; // side: 1=top, 0=bottom if (side == 1 || side == 0) { nRowDiff = nRowDiff - 16;// look one row above } switch (var4) { case hellfire: return hellfire + nRowDiff; case
+		 * acid: return acid + nRowDiff; case death: return death + nRowDiff; default: return hellfire + nRowDiff; }
 		 */
 		int orientation = meta & 12;
 		int type = meta & 3;
@@ -107,6 +111,7 @@ public class NetherWood extends Block {
 
 	}
 
+	@Override
 	public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8) {
 		int var9 = par1World.getBlockMetadata(par2, par3, par4) & 3;
 		byte var10 = 0;
@@ -134,6 +139,7 @@ public class NetherWood extends Block {
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
 		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));

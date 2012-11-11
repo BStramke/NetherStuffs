@@ -18,16 +18,17 @@ public class NetherSaplingItemBlock extends ItemBlock {
 	public static int getMetadataSize() {
 		return blockNames.length;
 	}
-	
-   @SideOnly(Side.CLIENT)
-   /**
-    * Gets an icon index based on an item's damage value
-    */
-   public int getIconFromDamage(int par1)
-   {
-       return NetherBlocks.netherSapling.getBlockTextureFromSideAndMetadata(2, par1);
-   }
 
+	@SideOnly(Side.CLIENT)
+	/**
+	 * Gets an icon index based on an item's damage value
+	 */
+	@Override
+	public int getIconFromDamage(int par1) {
+		return NetherBlocks.netherSapling.getBlockTextureFromSideAndMetadata(2, par1);
+	}
+
+	@Override
 	public String getItemNameIS(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
@@ -38,10 +39,12 @@ public class NetherSaplingItemBlock extends ItemBlock {
 		return getItemName() + "." + name;
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/blocks.png";
 	}
 
+	@Override
 	public int getMetadata(int meta) {
 		return meta;
 	}

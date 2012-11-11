@@ -9,10 +9,11 @@ public class EntitySoulBombPrimed extends EntityTNTPrimed {
 	public EntitySoulBombPrimed(World par1World, double par2, double par4, double par6) {
 		super(par1World, par2, par4, par6);
 	}
-	
+
 	/**
 	 * Called to update the entity's position/logic.
 	 */
+	@Override
 	public void onUpdate() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -41,7 +42,7 @@ public class EntitySoulBombPrimed extends EntityTNTPrimed {
 	}
 
 	private void explode() {
-		float var1 = 10.0F; // explosion size
-		new SoulExplosion(this.worldObj, (Entity)this, this.posX, this.posY, this.posZ, var1);
+		float var1 = 4.0F; // explosion size
+		new SoulExplosion(this.worldObj, (Entity) this, this.posX, this.posY, this.posZ, var1);
 	}
 }

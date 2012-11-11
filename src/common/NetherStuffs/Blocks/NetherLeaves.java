@@ -34,6 +34,7 @@ public class NetherLeaves extends Block implements IShearable {
 		this.setBurnProperties(this.blockID, 0, 0);
 	}
 
+	@Override
 	public boolean isFireSource(World world, int x, int y, int z, int metadata, ForgeDirection side) {
 		if (side == UP) {
 			return true;
@@ -44,6 +45,7 @@ public class NetherLeaves extends Block implements IShearable {
 	/*
 	 * ejects contained items into the world, and notifies neighbours of an update, as appropriate
 	 */
+	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6) {
 		byte var7 = 1;
 		int var8 = var7 + 1;
@@ -66,6 +68,7 @@ public class NetherLeaves extends Block implements IShearable {
 	/**
 	 * Ticks the block if it's been scheduled
 	 */
+	@Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		if (!par1World.isRemote) {
 			int var6 = par1World.getBlockMetadata(par2, par3, par4);
@@ -178,6 +181,7 @@ public class NetherLeaves extends Block implements IShearable {
 	/**
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
+	@Override
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		if (par1World.provider.isHellWorld && par5Random.nextInt(15) == 1 && par1World.isAirBlock(par2, par3 - 1, par4)) {
 			double var6 = (double) ((float) par2 + par5Random.nextFloat());
@@ -211,6 +215,7 @@ public class NetherLeaves extends Block implements IShearable {
 	/**
 	 * Returns the quantity of items to drop on block destruction.
 	 */
+	@Override
 	public int quantityDropped(Random par1Random) {
 		return par1Random.nextInt(20) == 0 ? 1 : 0;
 	}
@@ -218,6 +223,7 @@ public class NetherLeaves extends Block implements IShearable {
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
+	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
 		return NetherBlocks.netherSapling.blockID;
 	}
@@ -225,6 +231,7 @@ public class NetherLeaves extends Block implements IShearable {
 	/**
 	 * Called when the player destroys a block with an item that can harvest it. (i, j, k) are the coordinates of the block and l is the block's subtype/damage.
 	 */
+	@Override
 	public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6) {
 		super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);
 	}
@@ -232,6 +239,7 @@ public class NetherLeaves extends Block implements IShearable {
 	/**
 	 * Determines the damage on the item the block drops. Used in cloth and wood.
 	 */
+	@Override
 	public int damageDropped(int meta) {
 		return unmarkedMetadata(meta);
 	}
@@ -240,14 +248,17 @@ public class NetherLeaves extends Block implements IShearable {
 		return NetherWoodItemBlock.blockNames.length;
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/blocks.png";
 	}
 
+	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
 
+	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		int nRowDiff = 64;
 		switch (unmarkedMetadata(meta)) {
@@ -263,6 +274,7 @@ public class NetherLeaves extends Block implements IShearable {
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
 		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));
@@ -291,6 +303,7 @@ public class NetherLeaves extends Block implements IShearable {
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		/*
 		 * int var6 = par1IBlockAccess.getBlockId(par2, par3, par4); if (var6 == NetherStuffs.NetherStuffs.NetherLeavesBlockId) { return false; } else { return

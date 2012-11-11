@@ -46,6 +46,7 @@ public class GuiSoulDetector extends GuiContainer {
 		this.tile_entity = tile_entity;
 	}
 
+	@Override
 	public void initGui() {
 		super.initGui();
 
@@ -116,6 +117,7 @@ public class GuiSoulDetector extends GuiContainer {
 		// Players / Playerlists
 	}
 
+	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.enabled) {
 			if (par1GuiButton.id >= 1 && par1GuiButton.id <= 12) {

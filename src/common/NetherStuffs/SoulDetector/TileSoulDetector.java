@@ -27,7 +27,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 	public static final int nRangeUp = 5;
 
 	public short[] detectionRanges = new short[] { 0, 0, 0, 0, 0, 0 };
-	public short[] detectionRangesMax = new short[] { 12, 12, 12, 12, 12, 12 };
+	public short[] detectionRangesMax = new short[] { 13, 13, 13, 13, 13, 13 };
 
 	@Override
 	public int getSizeInventory() {
@@ -100,11 +100,11 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		int nMeta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		short nMaxRange = 12;
 		if ((nMeta & 7) == SoulDetector.mk1)
-			nMaxRange = 4;
+			nMaxRange = 5;
 		else if ((nMeta & 7) == SoulDetector.mk2)
-			nMaxRange = 8;
+			nMaxRange = 9;
 		else if ((nMeta & 7) == SoulDetector.mk3 || (nMeta & 7) == SoulDetector.mk4)
-			nMaxRange = 12;
+			nMaxRange = 13;
 
 		for (int i = 0; i < 6; i++)
 			detectionRangesMax[i] = nMaxRange;

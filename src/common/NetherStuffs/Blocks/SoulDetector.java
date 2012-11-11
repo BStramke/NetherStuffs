@@ -35,10 +35,12 @@ public class SoulDetector extends BlockContainer {
 		this.setRequiresSelfNotify();
 	}
 
+	@Override
 	public int tickRate() {
 		return 20;
 	}
 
+	@Override
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
 		if (!par1World.isRemote) {
 			par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
@@ -46,18 +48,22 @@ public class SoulDetector extends BlockContainer {
 		}
 	}
 
+	@Override
 	public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0;
 	}
 
+	@Override
 	public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0;
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/block_detector.png";
 	}
 
+	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		if ((meta & 8) > 0)
 			return side + 16;
@@ -168,6 +174,7 @@ public class SoulDetector extends BlockContainer {
 		}
 	}
 
+	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6) {
 		super.breakBlock(par1World, par2, par3, par4, par5, par6);
 		setEmittingSignal(false, par1World, par2, par3, par4);
@@ -179,6 +186,7 @@ public class SoulDetector extends BlockContainer {
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
 		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));

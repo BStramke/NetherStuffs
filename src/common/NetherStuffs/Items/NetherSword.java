@@ -28,6 +28,7 @@ public class NetherSword extends ItemSword {
 		}
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/items.png";
 	}

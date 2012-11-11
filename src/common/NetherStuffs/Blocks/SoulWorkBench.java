@@ -60,6 +60,7 @@ public class SoulWorkBench extends BlockContainer {
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
+	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
 		return NetherStuffs.SoulWorkBenchBlockId;
 	}
@@ -67,6 +68,7 @@ public class SoulWorkBench extends BlockContainer {
 	/**
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
+	@Override
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
 		super.onBlockAdded(par1World, par2, par3, par4);
 		this.setDefaultDirection(par1World, par2, par3, par4);
@@ -106,6 +108,7 @@ public class SoulWorkBench extends BlockContainer {
 		}
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/blocks.png";
 	}
@@ -130,6 +133,7 @@ public class SoulWorkBench extends BlockContainer {
 	/**
 	 * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
 	 */
+	@Override
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
 
 		switch (side) {
@@ -157,6 +161,7 @@ public class SoulWorkBench extends BlockContainer {
 	/**
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
+	@Override
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		if (this.isActive(par1World, par2, par3, par4)) {
 			int var6 = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
@@ -185,6 +190,7 @@ public class SoulWorkBench extends BlockContainer {
 	/**
 	 * Returns the block texture based on the side being looked at. Args: side
 	 */
+	@Override
 	public int getBlockTextureFromSide(int side) // pretty similar to getBlockTexture
 	{
 		switch (side) {
@@ -223,6 +229,7 @@ public class SoulWorkBench extends BlockContainer {
 	/**
 	 * Called when the block is placed in the world.
 	 */
+	@Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving) {
 		int var6 = MathHelper.floor_double((double) (par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
@@ -266,8 +273,8 @@ public class SoulWorkBench extends BlockContainer {
 							}
 
 							var9.stackSize -= var13;
-							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(
-									var9.itemID, var13, var9.getItemDamage()));
+							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(var9.itemID, var13,
+									var9.getItemDamage()));
 
 							if (var9.hasTagCompound()) {
 								var14.item.setTagCompound((NBTTagCompound) var9.getTagCompound().copy());

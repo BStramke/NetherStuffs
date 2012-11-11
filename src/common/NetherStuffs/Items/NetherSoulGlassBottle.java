@@ -24,10 +24,12 @@ public class NetherSoulGlassBottle extends ItemGlassBottle {
 		// this.setHasSubtypes(true);
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/items.png";
 	}
 
+	@Override
 	public int getIconFromDamage(int par1) {
 		return 16;
 	}
@@ -36,6 +38,7 @@ public class NetherSoulGlassBottle extends ItemGlassBottle {
 		return itemNames.length;
 	}
 
+	@Override
 	public String getItemNameIS(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
@@ -46,17 +49,20 @@ public class NetherSoulGlassBottle extends ItemGlassBottle {
 		return getItemName() + "." + name;
 	}
 
+	@Override
 	public int getMetadata(int meta) {
 		return meta;
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void getSubItems(int par1, CreativeTabs tab, List list) {
 		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));
 		}
 	}
 
+	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
 		MovingObjectPosition var4 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
 

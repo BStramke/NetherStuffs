@@ -10,6 +10,7 @@ public class NetherDemonicBarHandle extends Item {
 		this.setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/items.png";
 	}

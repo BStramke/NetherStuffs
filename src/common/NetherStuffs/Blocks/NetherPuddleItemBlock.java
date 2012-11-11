@@ -23,16 +23,17 @@ public class NetherPuddleItemBlock extends ItemBlock {
 	public static int getMetadataSize() {
 		return blockNames.length;
 	}
-	
 
 	@SideOnly(Side.CLIENT)
 	/**
 	 * Gets an icon index based on an item's damage value
 	 */
+	@Override
 	public int getIconFromDamage(int par1) {
 		return NetherBlocks.netherPuddle.getBlockTextureFromSideAndMetadata(NetherBlocks.sideTop, par1);
 	}
 
+	@Override
 	public String getItemNameIS(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
@@ -43,14 +44,17 @@ public class NetherPuddleItemBlock extends ItemBlock {
 		return getItemName() + "." + name;
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/puddles.png";
 	}
 
+	@Override
 	public int getMetadata(int meta) {
 		return meta;
 	}
 
+	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
 		MovingObjectPosition var4 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
 		if (var4 == null) {

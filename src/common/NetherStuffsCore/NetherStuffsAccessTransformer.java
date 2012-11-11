@@ -20,12 +20,12 @@ public class NetherStuffsAccessTransformer implements IClassTransformer {
 
 	public static void addClassOverride(String name, String description) {
 		override.put(name, description);
-		//System.out.println("list:"+override);
+		// System.out.println("list:"+override);
 	}
 
 	@Override
 	public byte[] transform(String name, byte[] bytes) {
-		System.out.println("try override: "+name);
+		System.out.println("try override: " + name);
 		if (override.containsKey(name)) {
 			System.out.println("attempting override of " + name + " from " + NetherStuffsCorePlugin.myLocation);
 			bytes = overrideBytes(name, bytes, NetherStuffsCorePlugin.myLocation);

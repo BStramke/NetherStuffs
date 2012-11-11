@@ -18,6 +18,7 @@ public class SlotDemonicFurnace extends SlotFurnace {
 		this.thePlayer = par1EntityPlayer;
 	}
 
+	@Override
 	public ItemStack decrStackSize(int par1) {
 		if (this.getHasStack()) {
 			this.itemsToProcess += Math.min(par1, this.getStack().stackSize);

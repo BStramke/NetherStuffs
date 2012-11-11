@@ -20,20 +20,6 @@ public class DemonicFurnaceRecipes {
 		return smeltingBase;
 	}
 
-	//private DemonicFurnaceRecipes() {
-		/*
-		 * this.addSmelting(Block.oreIron.blockID, new ItemStack(Item.ingotIron), 0.7F); this.addSmelting(Block.oreGold.blockID, new ItemStack(Item.ingotGold), 1.0F);
-		 * this.addSmelting(Block.oreDiamond.blockID, new ItemStack(Item.diamond), 1.0F); this.addSmelting(Block.sand.blockID, new ItemStack(Block.glass), 0.1F);
-		 * this.addSmelting(Item.porkRaw.shiftedIndex, new ItemStack(Item.porkCooked), 0.35F); this.addSmelting(Item.beefRaw.shiftedIndex, new ItemStack(Item.beefCooked), 0.35F);
-		 * this.addSmelting(Item.chickenRaw.shiftedIndex, new ItemStack(Item.chickenCooked), 0.35F); this.addSmelting(Item.fishRaw.shiftedIndex, new ItemStack(Item.fishCooked),
-		 * 0.35F); this.addSmelting(Block.cobblestone.blockID, new ItemStack(Block.stone), 0.1F); this.addSmelting(Item.clay.shiftedIndex, new ItemStack(Item.brick), 0.3F);
-		 * this.addSmelting(Block.cactus.blockID, new ItemStack(Item.dyePowder, 1, 2), 0.2F); this.addSmelting(Block.wood.blockID, new ItemStack(Item.coal, 1, 1), 0.15F);
-		 * this.addSmelting(Block.oreEmerald.blockID, new ItemStack(Item.emerald), 1.0F); this.addSmelting(Item.field_82794_bL.shiftedIndex, new ItemStack(Item.field_82795_bM),
-		 * 0.35F); this.addSmelting(Block.oreCoal.blockID, new ItemStack(Item.coal), 0.1F); this.addSmelting(Block.oreRedstone.blockID, new ItemStack(Item.redstone), 0.7F);
-		 * this.addSmelting(Block.oreLapis.blockID, new ItemStack(Item.dyePowder, 1, 4), 0.2F);
-		 */
-	//}
-
 	/*
 	 * public Map getSmeltingList() { return this.metaSmeltingList; }
 	 */
@@ -48,20 +34,6 @@ public class DemonicFurnaceRecipes {
 		else
 			return 0.0F;
 	}
-
-	/**
-	 * Add a metadata-sensitive furnace recipe
-	 * 
-	 * @param itemID
-	 *           The Item ID
-	 * @param metadata
-	 *           The Item Metadata
-	 * @param itemstack
-	 *           The ItemStack for the result
-	 */
-	/*public void addSmelting(int itemID, int metadata, ItemStack itemstack) {
-		addSmelting(itemID, metadata, itemstack, 0.0F);
-	}*/
 
 	/**
 	 * Add a metadata-sensitive furnace recipe

@@ -28,10 +28,12 @@ public class NetherOreIngot extends Item {
 		this.setHasSubtypes(true);
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/items.png";
 	}
 
+	@Override
 	public int getIconFromDamage(int par1) {
 		return this.iconIndex + par1;
 	}
@@ -46,12 +48,12 @@ public class NetherOreIngot extends Item {
 		float var3 = 0; // Var3==Exp for 1 Item
 
 		switch (par1ItemStack.getItemDamage()) {
-			case 0:
-				var3 = 1;
-				break;
-			case 1:
-				var3 = 0.5F;
-				break;
+		case 0:
+			var3 = 1;
+			break;
+		case 1:
+			var3 = 0.5F;
+			break;
 		}
 
 		int var4 = 0; // contains calculated xp to process
@@ -76,6 +78,7 @@ public class NetherOreIngot extends Item {
 		return itemNames.length;
 	}
 
+	@Override
 	public String getItemNameIS(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
@@ -87,6 +90,7 @@ public class NetherOreIngot extends Item {
 	}
 
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void getSubItems(int par1, CreativeTabs tab, List list) {
 		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));
