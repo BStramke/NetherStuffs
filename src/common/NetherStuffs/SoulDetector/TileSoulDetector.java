@@ -26,8 +26,13 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 	public static final int nRangeDown = 4;
 	public static final int nRangeUp = 5;
 
+	public static final int nDetectEverything = 0;
+	public static final int nDetectHostile = 1;
+	public static final int nDetectNonHostile = 2;
+
 	public short[] detectionRanges = new short[] { 0, 0, 0, 0, 0, 0 };
 	public short[] detectionRangesMax = new short[] { 13, 13, 13, 13, 13, 13 };
+	public boolean[] detectEntities = new boolean[] { true, false, false };
 
 	@Override
 	public int getSizeInventory() {
@@ -108,7 +113,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 
 		for (int i = 0; i < 6; i++)
 			detectionRangesMax[i] = nMaxRange;
-		
+
 		switch (dir) {
 		case NORTH:
 			return this.detectionRangesMax[this.nRangeNorth];
@@ -181,6 +186,53 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		return nRetRange;
 	}
 
+	public boolean setDetectEverything(boolean bActive) {
+		detectEntities[this.nDetectEverything] = bActive;
+		if (this.worldObj.isRemote) {
+			sendDetectToServer();
+		}
+		return detectEntities[this.nDetectEverything];
+	}
+
+	public boolean setDetectHostile(boolean bActive) {
+		detectEntities[this.nDetectHostile] = bActive;
+		if (this.worldObj.isRemote) {
+			sendDetectToServer();
+		}
+		return detectEntities[this.nDetectHostile];
+	}
+
+	public boolean setDetectNonHostile(boolean bActive) {
+		detectEntities[this.nDetectNonHostile] = bActive;
+		if (this.worldObj.isRemote) {
+			sendDetectToServer();
+		}
+		return detectEntities[this.nDetectNonHostile];
+	}
+
+	@SideOnly(Side.CLIENT)
+	private void sendDetectToServer() {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream outputStream = new DataOutputStream(bos);
+		try {
+			outputStream.writeShort(3);
+			outputStream.writeInt(this.xCoord);
+			outputStream.writeInt(this.yCoord);
+			outputStream.writeInt(this.zCoord);
+
+			for (int i = 0; i < this.detectEntities.length; i++)
+				outputStream.writeBoolean(this.detectEntities[i]);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = "NetherStuffs";
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+		PacketDispatcher.sendPacketToServer(packet);
+	}
+
 	@SideOnly(Side.CLIENT)
 	private void sendToServer(int nRange, ForgeDirection dir) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -250,6 +302,28 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
 	}
 
+	public void sendDetectToClient(EntityPlayer player) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream outputStream = new DataOutputStream(bos);
+
+		try {
+			outputStream.writeShort(3);
+			outputStream.writeInt(this.xCoord);
+			outputStream.writeInt(this.yCoord);
+			outputStream.writeInt(this.zCoord);
+			for (int i = 0; i < this.detectEntities.length; i++)
+				outputStream.writeBoolean(this.detectEntities[i]);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = "NetherStuffs";
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+		PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
+	}
+
 	@Override
 	public void closeChest() {}
 
@@ -259,6 +333,10 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		for (int i = 0; i < this.detectionRanges.length; i++) {
 			tagCompound.setShort("Current_ID_" + i, (short) this.detectionRanges[i]);
 		}
+		for (int i = 0; i < this.detectEntities.length; i++) {
+			tagCompound.setBoolean("Detect_ID_" + i, this.detectEntities[i]);
+		}
+
 		// System.out.println("written");
 	}
 
@@ -267,7 +345,9 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		super.readFromNBT(tagCompound);
 		for (int i = 0; i < this.detectionRanges.length; i++) {
 			this.detectionRanges[i] = tagCompound.getShort("Current_ID_" + i);
-
+		}
+		for (int i = 0; i < this.detectEntities.length; i++) {
+			this.detectEntities[i] = tagCompound.getBoolean("Detect_ID_" + i);
 		}
 		// System.out.println("read");
 	}

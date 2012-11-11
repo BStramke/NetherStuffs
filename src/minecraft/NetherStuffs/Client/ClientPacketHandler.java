@@ -27,12 +27,31 @@ public class ClientPacketHandler implements IPacketHandler {
 			int nType = data.readShort();
 			if (nType == 1) {
 				processSoulDetectorRange(data, sender);
-			} 
+			} else if(nType == 3) {
+				processSoulDetectorDetectionSettings(data, sender);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void processSoulDetectorDetectionSettings(DataInputStream data, EntityPlayer player) {
+		try {
+			int xCoord = data.readInt();
+			int yCoord = data.readInt();
+			int zCoord = data.readInt();
+			
+			TileEntity tile_entity = player.worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
+			if (tile_entity instanceof TileSoulDetector) {
+				for (int i = 0; i < ((TileSoulDetector) tile_entity).detectEntities.length; i++)
+					((TileSoulDetector) tile_entity).detectEntities[i] = data.readBoolean();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
 	public void processSoulDetectorRange(DataInputStream data, EntityPlayer player) {
 		try {
 			int xCoord = data.readInt();

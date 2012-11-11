@@ -25,6 +25,24 @@ public class ServerPacketHandler implements IPacketHandler {
 				processSoulDetectorRange(data, sender);
 			} else if (nType == 2) {
 				processSoulDetectorRangeQuery(data, sender);
+			} else if (nType == 3) {
+				processSoulDetectorDetectionSettings(data, sender);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void processSoulDetectorDetectionSettings(DataInputStream data, EntityPlayer sender) {
+		try {
+			int xCoord = data.readInt();
+			int yCoord = data.readInt();
+			int zCoord = data.readInt();
+			TileEntity tile_entity = sender.worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
+			if (tile_entity instanceof TileSoulDetector) {
+				for(int i = 0; i < ((TileSoulDetector) tile_entity).detectEntities.length; i++)
+					((TileSoulDetector) tile_entity).detectEntities[i] = data.readBoolean();
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -39,6 +57,7 @@ public class ServerPacketHandler implements IPacketHandler {
 			TileEntity tile_entity = sender.worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
 			if (tile_entity instanceof TileSoulDetector) {
 				((TileSoulDetector) tile_entity).sendToClient(sender);
+				((TileSoulDetector) tile_entity).sendDetectToClient(sender);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

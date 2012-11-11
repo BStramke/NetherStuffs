@@ -39,6 +39,10 @@ public class GuiSoulDetector extends GuiContainer {
 	private GuiButton btnRangeIncSouth;
 	private GuiButton btnRangeDecSouth;
 
+	private GuiButton cbxDetectEverything;
+	private GuiButton cbxDetectHostile;
+	private GuiButton cbxDetectNonHostile;
+
 	private EntityPlayer player;
 
 	public GuiSoulDetector(TileSoulDetector tile_entity, EntityPlayer player) {
@@ -70,15 +74,28 @@ public class GuiSoulDetector extends GuiContainer {
 
 		int nMeta = this.tile_entity.getBlockMetadata() & 7;
 		switch (nMeta) {
-		case SoulDetector.mk1:
-			drawDetectionMark1();
-			break;
-		case SoulDetector.mk2:
-			drawDetectionMark2();
-		case SoulDetector.mk3:
-			drawDetectionMark3();
 		case SoulDetector.mk4:
 			drawDetectionMark4();
+		case SoulDetector.mk3:
+			drawDetectionMark3();
+		case SoulDetector.mk2:
+			drawDetectionMark2();
+		case SoulDetector.mk1:
+			drawDetectionMark1();
+		}
+	}
+
+	private void drawDetectionMarks() {
+		int nMeta = this.tile_entity.getBlockMetadata() & 7;
+		switch (nMeta) {
+		case SoulDetector.mk4:
+			drawDetectionMark4();
+		case SoulDetector.mk3:
+			drawDetectionMark3();
+		case SoulDetector.mk2:
+			drawDetectionMark2();
+		case SoulDetector.mk1:
+			drawDetectionMark1();
 		}
 	}
 
@@ -101,12 +118,44 @@ public class GuiSoulDetector extends GuiContainer {
 		this.fontRenderer.drawString(nRangeSouth.toString(), var5 + 96 - nRangeSouth.toString().length() * 7, var6 + 52, 0xffffff);
 	}
 
+	/*private void initDetectionMark1() {
+		// no settings needed as far as i know
+		this.controlList.add(this.cbxDetectEverything = new GuiButtonCheckbox(13, this.guiLeft + 6, this.guiTop + 76, 9, 9, true, "Everything"));
+		int nMeta = this.tile_entity.getBlockMetadata() & 7;
+		this.cbxDetectEverything.enabled = nMeta>0;
+	}
+
+	private void initDetectionMark2() {
+		// Hostile / Non-Hostile Setting
+		// this.cbxDetectEverything.enabled = true;
+		this.controlList.add(this.cbxDetectHostile = new GuiButtonCheckbox(14, this.guiLeft + 6, this.guiTop + 88, 9, 9, false, "Hostile"));
+		this.controlList.add(this.cbxDetectNonHostile = new GuiButtonCheckbox(15, this.guiLeft + 6, this.guiTop + 100, 9, 9, false, "Friendly"));
+	}
+
+	private void initDetectionMark3() {
+		// Mob-Selector
+	}
+
+	private void initDetectionMark4() {
+		// Players / Playerlists
+	}*/
+	
 	private void drawDetectionMark1() {
 		// no settings needed as far as i know
+		this.controlList.remove(this.cbxDetectEverything);
+		this.controlList.add(this.cbxDetectEverything = new GuiButtonCheckbox(13, this.guiLeft + 6, this.guiTop + 76, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectEverything], "Everything"));
+		int nMeta = this.tile_entity.getBlockMetadata() & 7;
+		this.cbxDetectEverything.enabled = nMeta>0;
 	}
 
 	private void drawDetectionMark2() {
 		// Hostile / Non-Hostile Setting
+		// this.cbxDetectEverything.enabled = true;
+		
+		this.controlList.remove(this.cbxDetectHostile);
+		this.controlList.remove(this.cbxDetectNonHostile);
+		this.controlList.add(this.cbxDetectHostile = new GuiButtonCheckbox(14, this.guiLeft + 6, this.guiTop + 88, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectHostile], "Hostile"));
+		this.controlList.add(this.cbxDetectNonHostile = new GuiButtonCheckbox(15, this.guiLeft + 6, this.guiTop + 100, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectNonHostile], "Friendly"));
 	}
 
 	private void drawDetectionMark3() {
@@ -116,6 +165,8 @@ public class GuiSoulDetector extends GuiContainer {
 	private void drawDetectionMark4() {
 		// Players / Playerlists
 	}
+	
+	
 
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
@@ -153,6 +204,12 @@ public class GuiSoulDetector extends GuiContainer {
 					this.tile_entity.decRange(dir);
 				else
 					this.tile_entity.incRange(dir);
+			} else if (par1GuiButton.id == 13) { // toggle Everything Cbx
+				this.tile_entity.setDetectEverything(!this.tile_entity.detectEntities[this.tile_entity.nDetectEverything]);
+			} else if (par1GuiButton.id == 14) { // toggle Hostile Cbx
+				this.tile_entity.setDetectHostile(!this.tile_entity.detectEntities[this.tile_entity.nDetectHostile]);
+			} else if (par1GuiButton.id == 15) { // toggle Non-Hostile Cbx
+				this.tile_entity.setDetectNonHostile(!this.tile_entity.detectEntities[this.tile_entity.nDetectNonHostile]);
 			}
 		}
 	}
@@ -176,6 +233,7 @@ public class GuiSoulDetector extends GuiContainer {
 		int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 		drawRangeNumbers();
+		drawDetectionMarks();
 	}
 
 	private int nUpdateDelayCounter = 0;

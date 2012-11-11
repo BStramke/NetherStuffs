@@ -1,5 +1,6 @@
 package NetherStuffs.Blocks;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -8,8 +9,17 @@ import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
+import net.minecraft.src.EntityBat;
+import net.minecraft.src.EntityCow;
+import net.minecraft.src.EntityDragon;
+import net.minecraft.src.EntityGhast;
 import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityMob;
+import net.minecraft.src.EntityOcelot;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntitySlime;
+import net.minecraft.src.EntityVillager;
+import net.minecraft.src.EntityWolf;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
@@ -97,6 +107,7 @@ public class SoulDetector extends BlockContainer {
 
 		if (!world.isRemote) {
 			((TileSoulDetector) tile_entity).sendToClient(player);
+			((TileSoulDetector) tile_entity).sendDetectToClient(player);
 		}
 		return true;
 	}
@@ -144,8 +155,9 @@ public class SoulDetector extends BlockContainer {
 
 				// System.out.println("Lower Corner: " + par1World.getBlockId(xCoord - nRangeWest, yCoord - nRangeDown, zCoord - nRangeNorth));
 				// System.out.println("Upper Corner: " + par1World.getBlockId(xCoord + nRangeEast, yCoord + nRangeUp, zCoord + nRangeSouth));
-
+				List results = new ArrayList();
 				Iterator it = tmp.iterator();
+				//
 				while (it.hasNext()) {
 					Object data = it.next();
 					if (data instanceof EntityLiving || data instanceof EntityPlayer) {} else {
@@ -153,7 +165,43 @@ public class SoulDetector extends BlockContainer {
 					}
 				}
 
-				if (tmp.size() >= 1) {
+				if (((TileSoulDetector) tile_entity).detectEntities[TileSoulDetector.nDetectEverything]) {
+					results.addAll(tmp);
+				}
+
+				if (((TileSoulDetector) tile_entity).detectEntities[TileSoulDetector.nDetectHostile]) {
+					it = tmp.iterator();
+					while (it.hasNext()) {
+						Object data = it.next();
+						// Spider Jockey is a Subtype of Spider
+						// Wither Skeleton is a Subtype of Skeleton with different Textures and stuff, but same entity type
+						// Zombie Villager is a Zombie Subtype
+						/*
+						 * if (data instanceof EntityBlaze || data instanceof EntityCaveSpider || data instanceof EntityCreeper || data instanceof EntityGhast || data instanceof EntityMagmaCube || data
+						 * instanceof EntitySilverfish || data instanceof EntitySkeleton || data instanceof EntitySlime || data instanceof EntitySpider || data instanceof EntityWitch || data instanceof
+						 * EntityWither || data instanceof EntityZombie || data instanceof EntityEnderman || data instanceof EntityWolf || data instanceof EntityDragon)
+						 */
+						if (data instanceof EntityMob || data instanceof EntityGhast || data instanceof EntitySlime || data instanceof EntityWolf || data instanceof EntityDragon) {
+							if (data instanceof EntityWolf && ((EntityWolf) data).isTamed() == true) {} else
+								results.add(data);
+						}
+					}
+				}
+
+				if (((TileSoulDetector) tile_entity).detectEntities[TileSoulDetector.nDetectNonHostile]) {
+					it = tmp.iterator();
+					while (it.hasNext()) {
+						Object data = it.next();
+						if (data instanceof EntityCow || data instanceof EntityBat || data instanceof EntityVillager || data instanceof EntityOcelot) {
+							if (data instanceof EntityWolf && ((EntityWolf) data).isTamed() == false) {} else
+								results.add(data);
+						}
+					}
+				}
+
+				System.out.println(results);
+
+				if (results.size() >= 1) {
 					setEmittingSignal(true, par1World, xCoord, yCoord, zCoord);
 				} else {
 					setEmittingSignal(false, par1World, xCoord, yCoord, zCoord);
