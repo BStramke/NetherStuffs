@@ -1,27 +1,18 @@
 package NetherStuffs.SoulDetector;
 
-import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.util.Iterator;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
 import net.minecraft.src.Packet250CustomPayload;
-import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-import cpw.mods.fml.common.network.PacketDispatcher;
-
 import NetherStuffs.Blocks.SoulDetector;
-import NetherStuffs.Client.ClientProxy;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GuiSoulDetector extends GuiContainer {
 
@@ -42,6 +33,7 @@ public class GuiSoulDetector extends GuiContainer {
 	private GuiButton cbxDetectEverything;
 	private GuiButton cbxDetectHostile;
 	private GuiButton cbxDetectNonHostile;
+	private GuiButton[] cbxDetectMobButtons = new GuiButton[31];
 
 	private EntityPlayer player;
 
@@ -118,55 +110,46 @@ public class GuiSoulDetector extends GuiContainer {
 		this.fontRenderer.drawString(nRangeSouth.toString(), var5 + 96 - nRangeSouth.toString().length() * 7, var6 + 52, 0xffffff);
 	}
 
-	/*private void initDetectionMark1() {
-		// no settings needed as far as i know
-		this.controlList.add(this.cbxDetectEverything = new GuiButtonCheckbox(13, this.guiLeft + 6, this.guiTop + 76, 9, 9, true, "Everything"));
-		int nMeta = this.tile_entity.getBlockMetadata() & 7;
-		this.cbxDetectEverything.enabled = nMeta>0;
-	}
-
-	private void initDetectionMark2() {
-		// Hostile / Non-Hostile Setting
-		// this.cbxDetectEverything.enabled = true;
-		this.controlList.add(this.cbxDetectHostile = new GuiButtonCheckbox(14, this.guiLeft + 6, this.guiTop + 88, 9, 9, false, "Hostile"));
-		this.controlList.add(this.cbxDetectNonHostile = new GuiButtonCheckbox(15, this.guiLeft + 6, this.guiTop + 100, 9, 9, false, "Friendly"));
-	}
-
-	private void initDetectionMark3() {
-		// Mob-Selector
-	}
-
-	private void initDetectionMark4() {
-		// Players / Playerlists
-	}*/
-	
 	private void drawDetectionMark1() {
 		// no settings needed as far as i know
 		this.controlList.remove(this.cbxDetectEverything);
-		this.controlList.add(this.cbxDetectEverything = new GuiButtonCheckbox(13, this.guiLeft + 6, this.guiTop + 76, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectEverything], "Everything"));
+		this.controlList.add(this.cbxDetectEverything = new GuiButtonCheckbox(13, this.guiLeft + 6, this.guiTop + 76, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectEverything],
+				"Everything"));
 		int nMeta = this.tile_entity.getBlockMetadata() & 7;
-		this.cbxDetectEverything.enabled = nMeta>0;
+		this.cbxDetectEverything.enabled = nMeta > 0;
 	}
 
 	private void drawDetectionMark2() {
 		// Hostile / Non-Hostile Setting
 		// this.cbxDetectEverything.enabled = true;
-		
+
 		this.controlList.remove(this.cbxDetectHostile);
 		this.controlList.remove(this.cbxDetectNonHostile);
 		this.controlList.add(this.cbxDetectHostile = new GuiButtonCheckbox(14, this.guiLeft + 6, this.guiTop + 88, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectHostile], "Hostile"));
-		this.controlList.add(this.cbxDetectNonHostile = new GuiButtonCheckbox(15, this.guiLeft + 6, this.guiTop + 100, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectNonHostile], "Friendly"));
+		this.controlList.add(this.cbxDetectNonHostile = new GuiButtonCheckbox(15, this.guiLeft + 6, this.guiTop + 100, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectNonHostile],
+				"Friendly"));
 	}
 
 	private void drawDetectionMark3() {
 		// Mob-Selector
+		for (int i = 0; i < this.cbxDetectMobButtons.length; i++)
+			this.controlList.remove(this.cbxDetectMobButtons[i]);
+		
+		for (int i = 0; i < this.cbxDetectMobButtons.length; i++) {
+			if (i < 16)
+				this.controlList.add(this.cbxDetectMobButtons[i] = new GuiButtonMobCheckbox(16 + i, this.guiLeft + 6 + i * 8, this.guiTop + 112, this.tile_entity.detectEntitiesMobs[i], i));
+			else
+				this.controlList.add(this.cbxDetectMobButtons[i] = new GuiButtonMobCheckbox(16 + i, this.guiLeft + 6 + (i - 16) * 8, this.guiTop + 120, this.tile_entity.detectEntitiesMobs[i], i));
+				
+		}
+
+		// this.controlList.add(this.cbxDetectPig = new GuiButtonMobCheckbox(16, this.guiLeft + 6, this.guiTop + 112, this.tile_entity.detectEntitiesMobs[this.tile_entity.nDetectPig],
+		// this.tile_entity.nDetectPig));
 	}
 
 	private void drawDetectionMark4() {
 		// Players / Playerlists
 	}
-	
-	
 
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
@@ -210,7 +193,8 @@ public class GuiSoulDetector extends GuiContainer {
 				this.tile_entity.setDetectHostile(!this.tile_entity.detectEntities[this.tile_entity.nDetectHostile]);
 			} else if (par1GuiButton.id == 15) { // toggle Non-Hostile Cbx
 				this.tile_entity.setDetectNonHostile(!this.tile_entity.detectEntities[this.tile_entity.nDetectNonHostile]);
-			}
+			} else if (par1GuiButton.id >= 16 && par1GuiButton.id<=16+31)
+				this.tile_entity.setDetectMob(par1GuiButton.id-16, !this.tile_entity.detectEntitiesMobs[par1GuiButton.id-16]);
 		}
 	}
 

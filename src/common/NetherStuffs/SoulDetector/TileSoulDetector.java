@@ -30,9 +30,43 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 	public static final int nDetectHostile = 1;
 	public static final int nDetectNonHostile = 2;
 
+	public static final int nDetectPig = 0;
+	public static final int nDetectSheep = 1;
+	public static final int nDetectCow = 2;
+	public static final int nDetectChicken = 3;
+	public static final int nDetectSquid = 4;
+	public static final int nDetectMooshroom = 5;
+	public static final int nDetectVillager = 6;
+	public static final int nDetectOcelot = 7;
+	public static final int nDetectBat = 8;
+	public static final int nDetectWolfTameable = 9;
+	public static final int nDetectIronGolem = 10;
+	public static final int nDetectSnowGolem = 11;
+	public static final int nDetectCreeper = 12;
+	public static final int nDetectZombie = 13;
+	public static final int nDetectSpider = 14;
+	public static final int nDetectWither = 15;
+	public static final int nDetectSkeleton = 16;
+	public static final int nDetectWolfAggressive = 17;
+	public static final int nDetectSilverfish = 18;
+	public static final int nDetectEnderman = 19;
+	public static final int nDetectSlime = 20;
+	public static final int nDetectGhast = 21;
+	public static final int nDetectPigZombie = 22;
+	public static final int nDetectWitherSkeleton = 23;
+	public static final int nDetectMagmaCube = 24;
+	public static final int nDetectWitherSkeletonJockey = 25;
+	public static final int nDetectBlaze = 26;
+	public static final int nDetectWitch = 27;
+	public static final int nDetectZombieVillager = 28;
+	public static final int nDetectSkeletonJockey = 29;
+	public static final int nDetectEnderDragon = 30;
+
 	public short[] detectionRanges = new short[] { 0, 0, 0, 0, 0, 0 };
 	public short[] detectionRangesMax = new short[] { 13, 13, 13, 13, 13, 13 };
 	public boolean[] detectEntities = new boolean[] { true, false, false };
+	public boolean[] detectEntitiesMobs = new boolean[] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+			false, false, false, false, false, false, false, false, false, false, false };
 
 	@Override
 	public int getSizeInventory() {
@@ -210,6 +244,37 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		return detectEntities[this.nDetectNonHostile];
 	}
 
+	public boolean setDetectMob(int i, boolean bActive) {
+		detectEntitiesMobs[i] = bActive;
+		if (this.worldObj.isRemote) {
+			sendDetectMobsToServer();
+		}
+		return detectEntitiesMobs[i];
+	}
+
+	@SideOnly(Side.CLIENT)
+	private void sendDetectMobsToServer() {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream outputStream = new DataOutputStream(bos);
+		try {
+			outputStream.writeShort(4);
+			outputStream.writeInt(this.xCoord);
+			outputStream.writeInt(this.yCoord);
+			outputStream.writeInt(this.zCoord);
+
+			for (int i = 0; i < this.detectEntitiesMobs.length; i++)
+				outputStream.writeBoolean(this.detectEntitiesMobs[i]);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = "NetherStuffs";
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+		PacketDispatcher.sendPacketToServer(packet);
+	}
+
 	@SideOnly(Side.CLIENT)
 	private void sendDetectToServer() {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -323,6 +388,28 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		packet.length = bos.size();
 		PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
 	}
+	
+	public void sendDetectMobsToClient(EntityPlayer player) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream outputStream = new DataOutputStream(bos);
+
+		try {
+			outputStream.writeShort(4);
+			outputStream.writeInt(this.xCoord);
+			outputStream.writeInt(this.yCoord);
+			outputStream.writeInt(this.zCoord);
+			for (int i = 0; i < this.detectEntitiesMobs.length; i++)
+				outputStream.writeBoolean(this.detectEntitiesMobs[i]);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = "NetherStuffs";
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+		PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
+	}
 
 	@Override
 	public void closeChest() {}
@@ -336,6 +423,9 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		for (int i = 0; i < this.detectEntities.length; i++) {
 			tagCompound.setBoolean("Detect_ID_" + i, this.detectEntities[i]);
 		}
+		for (int i = 0; i < this.detectEntitiesMobs.length; i++) {
+			tagCompound.setBoolean("Detect_Mob_ID_" + i, this.detectEntitiesMobs[i]);
+		}
 
 		// System.out.println("written");
 	}
@@ -348,6 +438,9 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		}
 		for (int i = 0; i < this.detectEntities.length; i++) {
 			this.detectEntities[i] = tagCompound.getBoolean("Detect_ID_" + i);
+		}
+		for (int i = 0; i < this.detectEntitiesMobs.length; i++) {
+			this.detectEntitiesMobs[i] = tagCompound.getBoolean("Detect_Mob_ID_" + i);
 		}
 		// System.out.println("read");
 	}
