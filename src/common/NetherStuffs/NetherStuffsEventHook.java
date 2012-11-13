@@ -22,12 +22,9 @@ public class NetherStuffsEventHook {
 
 	@ForgeSubscribe
 	public void entitySpawnInWorldEvent(EntityJoinWorldEvent event) {
-		if (event.isCancelable() && event.world.provider.isHellWorld) {
+		if (event.isCancelable() && event.world.provider.isHellWorld && !event.world.isRemote) {
 			if (event.entity instanceof EntityGhast || event.entity instanceof EntityPigZombie || event.entity instanceof EntityBlaze || event.entity instanceof EntityMagmaCube
 					|| event.entity instanceof EntitySkeleton || event.entity instanceof EntityWither) {
-
-				if (event.world.isRemote)
-					return;
 
 				List tmp = ((WorldServer) event.world).getAllTileEntityInBox((int) Math.round(event.entity.posX) - nDetectRadius, (int) Math.round(event.entity.posY) - nDetectRadius,
 						(int) Math.round(event.entity.posZ) - nDetectRadius, (int) Math.round(event.entity.posX) + nDetectRadius, (int) Math.round(event.entity.posY) + nDetectRadius,
