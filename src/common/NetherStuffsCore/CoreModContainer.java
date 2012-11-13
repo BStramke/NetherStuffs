@@ -23,9 +23,9 @@ public class CoreModContainer extends DummyModContainer {
 		myMeta.authorList = Arrays.asList(new String[] { "BStramke" });
 		myMeta.description = "Core Mod for NetherStuffs";
 		myMeta.modId = "NetherStuffsCore";
-		myMeta.version = "1.4.2";
+		myMeta.version = "0.6";
 		myMeta.name = "NetherStuffsCore";
-		myMeta.url = "";
+		myMeta.url = "http://netherstuffs.wikispaces.com/";
 	}
 
 	public boolean registerBus(EventBus bus, LoadController controller) {
