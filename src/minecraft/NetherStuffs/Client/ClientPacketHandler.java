@@ -42,7 +42,7 @@ public class ClientPacketHandler implements IPacketHandler {
 			int xCoord = data.readInt();
 			int yCoord = data.readInt();
 			int zCoord = data.readInt();
-			
+
 			TileEntity tile_entity = player.worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
 			if (tile_entity instanceof TileSoulDetector) {
 				for (int i = 0; i < ((TileSoulDetector) tile_entity).detectEntities.length; i++)

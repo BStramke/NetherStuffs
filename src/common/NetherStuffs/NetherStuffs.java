@@ -5,6 +5,7 @@ import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
 import NetherStuffs.Blocks.NetherBlocks;
 import NetherStuffs.Blocks.NetherLeavesItemBlock;
 import NetherStuffs.Blocks.NetherOreItemBlock;
@@ -161,6 +162,9 @@ public class NetherStuffs extends DummyModContainer {
 		initLanguageRegistry();
 		proxy.registerRenderThings();
 		NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
+		
+		
+		MinecraftForge.EVENT_BUS.register(new NetherStuffsEventHook());
 	}
 
 	private void registerWorldGenerators() {

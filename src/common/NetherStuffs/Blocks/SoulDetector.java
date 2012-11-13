@@ -199,7 +199,7 @@ public class SoulDetector extends BlockContainer {
 					}
 				}
 
-				System.out.println(results);
+				//System.out.println(results);
 
 				if (results.size() >= 1) {
 					setEmittingSignal(true, par1World, xCoord, yCoord, zCoord);
