@@ -24,8 +24,8 @@ public class NetherStuffsEventHook {
 			if (event.entity instanceof EntityGhast || event.entity instanceof EntityPigZombie || event.entity instanceof EntityBlaze || event.entity instanceof EntityMagmaCube
 					|| event.entity instanceof EntitySkeleton || event.entity instanceof EntityWither) {
 				Iterator var5 = event.entity.worldObj.loadedTileEntityList.iterator();
-				System.out.println(event.entity.worldObj.getChunkFromChunkCoords(event.entity.chunkCoordX, event.entity.chunkCoordZ).chunkTileEntityMap);
-
+				//System.out.println(event.entity.worldObj.getChunkFromChunkCoords(event.entity.chunkCoordX, event.entity.chunkCoordZ).chunkTileEntityMap);
+/*
 				while (var5.hasNext()) {
 					TileEntity var6 = (TileEntity) var5.next();
 					if (var6 instanceof TileSoulDetector) {
@@ -34,7 +34,7 @@ public class NetherStuffsEventHook {
 							return;
 						}
 					}
-				}
+				}*/
 			}
 		}
 	}
