@@ -37,7 +37,7 @@ public class NetherStuffsEventHook {
 				while (entries.hasNext()) {
 					Object entity = entries.next();
 					if (entity instanceof TileSoulBlocker) {
-						System.out.println("prevented Spawning of " + event.entity);
+						//System.out.println("prevented Spawning of " + event.entity);
 						event.setCanceled(true);
 						return;
 					}
