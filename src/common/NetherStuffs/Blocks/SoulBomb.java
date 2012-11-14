@@ -28,19 +28,23 @@ public class SoulBomb extends BlockTNT {
 		}
 	}
 
-	/*
-	 * public String getTextureFile() { return "/blocks.png"; }
-	 */
+	public String getTextureFile() {
+		return "/blocks.png";
+	}
 
 	/*
 	 * public int getMetadataSize() { return NetherPlankItemBlock.blockNames.length; }
 	 */
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		if (side == NetherBlocks.sideBottom || side == NetherBlocks.sideTop)
-			return 9;
-		else
-			return 8;
+		switch (side) {
+		case NetherBlocks.sideTop:
+			return 116;
+		case NetherBlocks.sideBottom:
+			return 117;
+		default:
+			return 115;
+		}
 	}
 
 	@Override

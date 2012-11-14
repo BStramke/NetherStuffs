@@ -138,22 +138,14 @@ public class SoulWorkBench extends BlockContainer {
 
 		switch (side) {
 		case NetherBlocks.sideBottom:
-			return 98; // bottom
+			return 100; // bottom
 		case NetherBlocks.sideTop:
-			return 98; // top
-		default: {
-
-			int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-			if (side != unmarkedMetadata(var6))
-				return 97;
-			else {
-				if (this.isActiveSet(var6))
-					return 99;
-				else
-					return 96;
-			}
-
-		}
+			return 100; // top
+		case NetherBlocks.sideEast:
+		case NetherBlocks.sideWest:
+			return 101;
+		default:
+			return 102;
 		}
 	}
 
@@ -195,19 +187,14 @@ public class SoulWorkBench extends BlockContainer {
 	{
 		switch (side) {
 		case NetherBlocks.sideBottom:
-			return 98; // bottom
+			return 100; // bottom
 		case NetherBlocks.sideTop:
-			return 98; // top
-		case NetherBlocks.sideFront:
-			return 96; // front
-		case NetherBlocks.sideBack:
-			return 97; // back 97
-		case NetherBlocks.sideRight:
-			return 97; // right
-		case NetherBlocks.sideLeft:
-			return 97; // left
+			return 100; // top
+		case NetherBlocks.sideEast:
+		case NetherBlocks.sideWest:
+			return 101;
 		default:
-			return 98;
+			return 102;
 		}
 	}
 
@@ -273,8 +260,8 @@ public class SoulWorkBench extends BlockContainer {
 							}
 
 							var9.stackSize -= var13;
-							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(var9.itemID, var13,
-									var9.getItemDamage()));
+							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(var9.itemID,
+									var13, var9.getItemDamage()));
 
 							if (var9.hasTagCompound()) {
 								var14.item.setTagCompound((NBTTagCompound) var9.getTagCompound().copy());
