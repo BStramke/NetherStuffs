@@ -19,7 +19,7 @@ public class NetherStuffsCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 
 	@Override
 	public String[] getASMTransformerClass() {
-		return new String[] { "NetherStuffsCore.NetherStuffsAccessTransformer" };
+		return new String[] { "NetherStuffsCore.NetherStuffsAccessTransformer", "NetherStuffsCore.NetherStuffsAccessTransformer2" };
 	}
 
 	@Override

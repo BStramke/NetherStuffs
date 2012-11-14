@@ -15,10 +15,10 @@ import cpw.mods.fml.common.asm.transformers.AccessTransformer;
 import cpw.mods.fml.relauncher.IClassTransformer;
 
 public class NetherStuffsAccessTransformer implements IClassTransformer {
-	private static NetherStuffsAccessTransformer instance;
-	private static List mapFiles = new LinkedList();
+	//private static NetherStuffsAccessTransformer instance;
+//	private static List mapFiles = new LinkedList();
 
-	public NetherStuffsAccessTransformer() throws IOException {
+/*	public NetherStuffsAccessTransformer() throws IOException {
 		super();
 		instance = this;
 		// add your access transformers here!
@@ -51,7 +51,7 @@ public class NetherStuffsAccessTransformer implements IClassTransformer {
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
-	}
+	}*/
 
 	public static HashMap<String, String> override = new HashMap<String, String>();
 
@@ -62,11 +62,11 @@ public class NetherStuffsAccessTransformer implements IClassTransformer {
 
 	@Override
 	public byte[] transform(String name, byte[] bytes) {
-		System.out.println("try override: " + name);
+		//System.out.println("try override: " + name);
 		if (override.containsKey(name)) {
 			System.out.println("attempting override of " + name + " from " + NetherStuffsCorePlugin.myLocation);
 			bytes = overrideBytes(name, bytes, NetherStuffsCorePlugin.myLocation);
-		}
+		} 
 		return bytes;
 	}
 
