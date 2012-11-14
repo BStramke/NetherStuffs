@@ -18,10 +18,12 @@ import NetherStuffs.SoulBlocker.TileSoulBlocker;
 import NetherStuffs.SoulDetector.TileSoulDetector;
 
 public class NetherStuffsEventHook {
-	static int nDetectRadius = 8;
+	public static int nDetectRadius; //will be set from config
 
 	@ForgeSubscribe
 	public void entitySpawnInWorldEvent(EntityJoinWorldEvent event) {
+		if (nDetectRadius == 0)
+			return;
 		if (event.isCancelable() && event.world.provider.isHellWorld && !event.world.isRemote) {
 			if (event.entity instanceof EntityGhast || event.entity instanceof EntityPigZombie || event.entity instanceof EntityBlaze || event.entity instanceof EntityMagmaCube
 					|| event.entity instanceof EntitySkeleton || event.entity instanceof EntityWither) {
@@ -34,7 +36,7 @@ public class NetherStuffsEventHook {
 				while (entries.hasNext()) {
 					Object entity = entries.next();
 					if (entity instanceof TileSoulBlocker) {
-						//System.out.println("prevented Spawning of " + event.entity);
+						// System.out.println("prevented Spawning of " + event.entity);
 						event.setCanceled(true);
 						return;
 					}
