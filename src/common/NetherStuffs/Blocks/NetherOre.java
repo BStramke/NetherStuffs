@@ -1,15 +1,11 @@
 package NetherStuffs.Blocks;
 
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
-import net.minecraft.src.World;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -32,7 +28,7 @@ public class NetherOre extends Block {
 	public int getMetadataSize() {
 		return NetherOreItemBlock.blockNames.length;
 	}
-
+	
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (meta) {

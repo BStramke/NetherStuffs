@@ -56,7 +56,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "1.0.1", modid = "NetherStuffs")
+@Mod(name = "NetherStuffs", version = "0.6", modid = "NetherStuffs")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
 public class NetherStuffs extends DummyModContainer {
 	@Instance
@@ -102,11 +102,12 @@ public class NetherStuffs extends DummyModContainer {
 
 	public static int NetherSoulDetectorBlockId;
 	public static int NetherSoulBlockerBlockId;
-	
+
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 
 	@PreInit
 	public void PreLoad(FMLPreInitializationEvent event) {
+		System.out.println("[NetherStuffs] PreLoad");
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		NetherOreBlockId = config.get(Configuration.CATEGORY_BLOCK, "NetherOre", 1230).getInt();
@@ -145,7 +146,7 @@ public class NetherStuffs extends DummyModContainer {
 		SoulEnergyBottleItemId = config.get(Configuration.CATEGORY_ITEM, "SoulEnergyPotion", 5015).getInt();
 
 		SpawnSkeletonsAwayFromNetherFortresses = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsAwayFromNetherFortresses", true).getBoolean(true);
-		
+
 		NetherStuffsEventHook.nDetectRadius = config.get(Configuration.CATEGORY_GENERAL, "SoulBlockerRadius", 8).getInt();
 
 		config.save();
@@ -169,6 +170,22 @@ public class NetherStuffs extends DummyModContainer {
 		Item.itemsList[NetherSoulDetectorBlockId] = new SoulDetectorItemBlock(NetherSoulDetectorBlockId - 256).setItemName("NetherSoulDetectorItemBlock");
 		Item.itemsList[NetherSoulBlockerBlockId] = new SoulBlockerItemBlock(NetherSoulBlockerBlockId - 256).setItemName("NetherSoulBlockerItemBlock");
 
+		// set required Stuff to Gather
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherOre, NetherBlocks.demonicOre, "pickaxe", 2);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherOre, NetherBlocks.netherStone, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.NetherDemonicFurnace, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.NetherSoulBlocker, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.NetherSoulDetector, "pickaxe", 1);
+
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherSoulWorkBench, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWood, NetherBlocks.netherWoodAcid, "axe", 2);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWood, NetherBlocks.netherWoodHellfire, "axe", 2);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWood, NetherBlocks.netherWoodDeath, "axe", 2);
+
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherPlank, NetherBlocks.netherPlankAcid, "axe", 1);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherPlank, NetherBlocks.netherPlankHellfire, "axe", 1);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherPlank, NetherBlocks.netherPlankDeath, "axe", 1);
+
 		GameRegistry.registerTileEntity(TileDemonicFurnace.class, "tileEntityNetherStuffsDemonicFurnace");
 		GameRegistry.registerTileEntity(TileSoulWorkBench.class, "tileEntityNetherStuffsSoulWorkBench");
 		GameRegistry.registerTileEntity(TileSoulDetector.class, "tileEntityNetherStuffsSoulDetector");
@@ -183,9 +200,13 @@ public class NetherStuffs extends DummyModContainer {
 		NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
 
 		MinecraftForge.EVENT_BUS.register(new NetherStuffsEventHook());
-		
-		
-		((BiomeGenHell)BiomeGenBase.hell).spawnableMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 50, 4, 4));
+
+		/*
+		 * This lets Skeletons Spawn away from NetherFortresses. Actual Idea by ErasmoGnome, made on the MinecraftForums:
+		 * http://www.minecraftforum.net/topic/1493398-move-wither-skeletons-out-of-fortresses-over-125-supporters/
+		 */
+		if (SpawnSkeletonsAwayFromNetherFortresses)
+			((BiomeGenHell) BiomeGenBase.hell).spawnableMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 50, 4, 4));
 	}
 
 	private void registerWorldGenerators() {
@@ -397,8 +418,9 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name", "Nether Charcoal");
 
 	}
-	
+
 	@PostInit
 	public static void postInit(FMLPostInitializationEvent event) {
-	}	
+		System.out.println("[NetherStuffs] postInit");
+	}
 }
