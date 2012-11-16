@@ -26,7 +26,6 @@ public class NetherPuddle extends Block {
 		this.blockMaterial.setGroundCover();
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setRequiresSelfNotify();
-		this.setHardness(0.1F);
 		this.setLightOpacity(0);
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.015625F, 1.0F);
 		this.setTickRandomly(true);

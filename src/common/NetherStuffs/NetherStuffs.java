@@ -56,7 +56,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "0.6", modid = "NetherStuffs")
+@Mod(name = "NetherStuffs", version = "0.6.1", modid = "NetherStuffs")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
 public class NetherStuffs extends DummyModContainer {
 	@Instance
@@ -178,10 +178,12 @@ public class NetherStuffs extends DummyModContainer {
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.NetherSoulDetector, "pickaxe", 1);
 
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherSoulWorkBench, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWood, "axe", 2);
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWood, NetherBlocks.netherWoodAcid, "axe", 2);
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWood, NetherBlocks.netherWoodHellfire, "axe", 2);
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWood, NetherBlocks.netherWoodDeath, "axe", 2);
 
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherPlank, "axe", 1);
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherPlank, NetherBlocks.netherPlankAcid, "axe", 1);
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherPlank, NetherBlocks.netherPlankHellfire, "axe", 1);
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherPlank, NetherBlocks.netherPlankDeath, "axe", 1);

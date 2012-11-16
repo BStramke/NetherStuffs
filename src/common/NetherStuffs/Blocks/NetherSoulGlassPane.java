@@ -18,7 +18,6 @@ public class NetherSoulGlassPane extends BlockPane {
 
 	public NetherSoulGlassPane(int par1, int par2, int par3, Material par4Material, boolean par5) {
 		super(par1, par2, par3, par4Material, par5);
-		this.setHardness(0.3F);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		BlockPane.addToConnectList(this.blockID);
 	}

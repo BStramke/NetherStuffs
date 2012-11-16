@@ -17,7 +17,6 @@ public class NetherSoulGlass extends BlockGlass {
 
 	public NetherSoulGlass(int par1, int par2, Material par3Material, boolean par4) {
 		super(par1, par2, par3Material, par4);
-		this.setHardness(0.3F);
 		this.setStepSound(soundGlassFootstep);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		BlockPane.addToConnectList(par1);

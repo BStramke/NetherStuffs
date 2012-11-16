@@ -10,16 +10,34 @@ import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityBat;
+import net.minecraft.src.EntityBlaze;
+import net.minecraft.src.EntityChicken;
 import net.minecraft.src.EntityCow;
+import net.minecraft.src.EntityCreeper;
 import net.minecraft.src.EntityDragon;
+import net.minecraft.src.EntityEnderman;
 import net.minecraft.src.EntityGhast;
+import net.minecraft.src.EntityIronGolem;
 import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityMagmaCube;
 import net.minecraft.src.EntityMob;
+import net.minecraft.src.EntityMooshroom;
 import net.minecraft.src.EntityOcelot;
+import net.minecraft.src.EntityPig;
+import net.minecraft.src.EntityPigZombie;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntitySheep;
+import net.minecraft.src.EntitySilverfish;
+import net.minecraft.src.EntitySkeleton;
 import net.minecraft.src.EntitySlime;
+import net.minecraft.src.EntitySnowman;
+import net.minecraft.src.EntitySpider;
+import net.minecraft.src.EntitySquid;
 import net.minecraft.src.EntityVillager;
+import net.minecraft.src.EntityWitch;
+import net.minecraft.src.EntityWither;
 import net.minecraft.src.EntityWolf;
+import net.minecraft.src.EntityZombie;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
@@ -124,13 +142,6 @@ public class SoulDetector extends BlockContainer {
 				int nRangeSouth = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.SOUTH);
 				int nRangeEast = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.EAST);
 				int nRangeWest = ((TileSoulDetector) tile_entity).getRange(ForgeDirection.WEST);
-				// west&east = xcoord
-				// up&down=ycoord
-				// south&north = zcoord
-				// south = +
-				// north = -
-				// east=+
-				// west=-
 
 				Integer nLowerX = xCoord - nRangeWest;
 				Integer nLowerY = yCoord - nRangeDown;
@@ -140,24 +151,11 @@ public class SoulDetector extends BlockContainer {
 				Integer nUpperZ = zCoord + nRangeSouth + 1;
 
 				AxisAlignedBB axis = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ);
-
-				/*
-				 * int var3 = MathHelper.floor_double((axis.minX - World.MAX_ENTITY_RADIUS) / 16.0D); int var4 = MathHelper.floor_double((axis.maxX + World.MAX_ENTITY_RADIUS) / 16.0D); int var5 =
-				 * MathHelper.floor_double((axis.minZ - World.MAX_ENTITY_RADIUS) / 16.0D); int var6 = MathHelper.floor_double((axis.maxZ + World.MAX_ENTITY_RADIUS) / 16.0D);
-				 */
-
 				List tmp = par1World.getEntitiesWithinAABBExcludingEntity((Entity) null, axis);
 
-				/*
-				 * System.out.println(nLowerX.toString() + "," + nLowerY.toString() + "," + nLowerZ.toString() + "," + nUpperX.toString() + "," + nUpperY.toString() + "," + nUpperZ.toString());
-				 * System.out.println(var3 + "," + var4 + "," + var5 + "," + var6);
-				 */
-
-				// System.out.println("Lower Corner: " + par1World.getBlockId(xCoord - nRangeWest, yCoord - nRangeDown, zCoord - nRangeNorth));
-				// System.out.println("Upper Corner: " + par1World.getBlockId(xCoord + nRangeEast, yCoord + nRangeUp, zCoord + nRangeSouth));
-				List results = new ArrayList();
+				List results = new ArrayList(); //this could be a boolean, but maybe we want a count based detection, like, if 5 Pigs...
 				Iterator it = tmp.iterator();
-				//
+				
 				while (it.hasNext()) {
 					Object data = it.next();
 					if (data instanceof EntityLiving || data instanceof EntityPlayer) {} else {
@@ -171,16 +169,8 @@ public class SoulDetector extends BlockContainer {
 
 				if (((TileSoulDetector) tile_entity).detectEntities[TileSoulDetector.nDetectHostile]) {
 					it = tmp.iterator();
-					while (it.hasNext()) {
+					while (it.hasNext() && results.size() == 0) {
 						Object data = it.next();
-						// Spider Jockey is a Subtype of Spider
-						// Wither Skeleton is a Subtype of Skeleton with different Textures and stuff, but same entity type
-						// Zombie Villager is a Zombie Subtype
-						/*
-						 * if (data instanceof EntityBlaze || data instanceof EntityCaveSpider || data instanceof EntityCreeper || data instanceof EntityGhast || data instanceof EntityMagmaCube || data
-						 * instanceof EntitySilverfish || data instanceof EntitySkeleton || data instanceof EntitySlime || data instanceof EntitySpider || data instanceof EntityWitch || data instanceof
-						 * EntityWither || data instanceof EntityZombie || data instanceof EntityEnderman || data instanceof EntityWolf || data instanceof EntityDragon)
-						 */
 						if (data instanceof EntityMob || data instanceof EntityGhast || data instanceof EntitySlime || data instanceof EntityWolf || data instanceof EntityDragon) {
 							if (data instanceof EntityWolf && ((EntityWolf) data).isTamed() == true) {} else
 								results.add(data);
@@ -190,7 +180,7 @@ public class SoulDetector extends BlockContainer {
 
 				if (((TileSoulDetector) tile_entity).detectEntities[TileSoulDetector.nDetectNonHostile]) {
 					it = tmp.iterator();
-					while (it.hasNext()) {
+					while (it.hasNext() && results.size() == 0) {
 						Object data = it.next();
 						if (data instanceof EntityCow || data instanceof EntityBat || data instanceof EntityVillager || data instanceof EntityOcelot) {
 							if (data instanceof EntityWolf && ((EntityWolf) data).isTamed() == false) {} else
@@ -199,7 +189,82 @@ public class SoulDetector extends BlockContainer {
 					}
 				}
 
-				//System.out.println(results);
+				if (results.size() == 0) {
+					it = tmp.iterator();
+					while (it.hasNext() && results.size() == 0) {
+						Object data = it.next();
+						if (data instanceof EntityPig && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectPig])
+							results.add(data);
+						else if (data instanceof EntitySheep && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectSheep])
+							results.add(data);
+						else if (data instanceof EntityCow && !(data instanceof EntityMooshroom) && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectCow])
+							results.add(data);
+						else if (data instanceof EntityChicken && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectChicken])
+							results.add(data);
+						else if (data instanceof EntitySquid && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectSquid])
+							results.add(data);
+						else if (data instanceof EntityMooshroom && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectMooshroom])
+							results.add(data);
+						else if (data instanceof EntityVillager && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectVillager])
+							results.add(data);
+						else if (data instanceof EntityOcelot && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectOcelot])
+							results.add(data);
+						else if (data instanceof EntityBat && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectBat])
+							results.add(data);
+						else if (data instanceof EntityWolf && ((EntityWolf) data).isAngry() == false && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWolfTameable])
+							results.add(data);
+						else if (data instanceof EntityIronGolem && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectIronGolem])
+							results.add(data);
+						else if (data instanceof EntitySnowman && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectSnowGolem])
+							results.add(data);
+						else if (data instanceof EntityCreeper && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectCreeper])
+							results.add(data);
+						else if (data instanceof EntityZombie && !(data instanceof EntityPigZombie) && ((EntityZombie) data).isVillager() == false
+								&& ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectZombie])
+							results.add(data);
+						else if (data instanceof EntitySpider && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectSpider]) // this also detects cave spiders
+							results.add(data);
+						else if (data instanceof EntityWither && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWither])
+							results.add(data);
+						else if (data instanceof EntitySkeleton && ((EntitySkeleton) data).getSkeletonType() != 1 && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectSkeleton])
+							results.add(data);
+						else if (data instanceof EntityWolf && ((EntityWolf) data).isAngry() == true && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWolfAggressive])
+							results.add(data);
+						else if (data instanceof EntitySilverfish && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectSilverfish])
+							results.add(data);
+						else if (data instanceof EntityEnderman && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectEnderman])
+							results.add(data);
+						else if (data instanceof EntitySlime && !(data instanceof EntityMagmaCube) && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectSlime])
+							results.add(data);
+						else if (data instanceof EntityGhast && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectGhast])
+							results.add(data);
+						else if (data instanceof EntityPigZombie && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectPigZombie])
+							results.add(data);
+						else if (data instanceof EntitySkeleton && ((EntitySkeleton) data).getSkeletonType() == 1
+								&& ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWitherSkeleton])
+							results.add(data);
+						else if (data instanceof EntityMagmaCube && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectMagmaCube])
+							results.add(data);
+						else if (((Entity) data).ridingEntity instanceof EntitySpider && ((Entity) data).riddenByEntity instanceof EntitySkeleton
+								&& ((EntitySkeleton) ((Entity) data).riddenByEntity).getSkeletonType() == 1
+								&& ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWitherSkeletonJockey])
+							results.add(data);
+						else if (data instanceof EntityBlaze && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectBlaze])
+							results.add(data);
+						else if (data instanceof EntityWitch && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWitch])
+							results.add(data);
+						else if (data instanceof EntityZombie && ((EntityZombie) data).isVillager() == true && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectZombieVillager])
+							results.add(data);
+						else if (((Entity) data).ridingEntity instanceof EntitySpider && ((Entity) data).riddenByEntity instanceof EntitySkeleton
+								&& ((EntitySkeleton) ((Entity) data).riddenByEntity).getSkeletonType() != 1
+								&& ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWitherSkeletonJockey])
+							results.add(data);
+						else if (data instanceof EntityDragon && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectEnderDragon])
+							results.add(data);
+					}
+				}
+
+				// System.out.println(results);
 
 				if (results.size() >= 1) {
 					setEmittingSignal(true, par1World, xCoord, yCoord, zCoord);
