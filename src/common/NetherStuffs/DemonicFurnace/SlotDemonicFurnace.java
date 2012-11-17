@@ -2,6 +2,7 @@ package NetherStuffs.DemonicFurnace;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityXPOrb;
+import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
@@ -12,10 +13,16 @@ public class SlotDemonicFurnace extends SlotFurnace {
 
 	private EntityPlayer thePlayer;
 	private int itemsToProcess;
+	private boolean bCheckDefaultRecipes;
 
 	public SlotDemonicFurnace(EntityPlayer par1EntityPlayer, IInventory par2iInventory, int par3, int par4, int par5) {
+		this(par1EntityPlayer, par2iInventory, par3, par4, par5, false);
+	}
+
+	public SlotDemonicFurnace(EntityPlayer par1EntityPlayer, IInventory par2iInventory, int par3, int par4, int par5, boolean bCheckDefaultRecipes) {
 		super(par1EntityPlayer, par2iInventory, par3, par4, par5);
 		this.thePlayer = par1EntityPlayer;
+		this.bCheckDefaultRecipes = bCheckDefaultRecipes;
 	}
 
 	@Override
@@ -34,6 +41,8 @@ public class SlotDemonicFurnace extends SlotFurnace {
 		if (!this.thePlayer.worldObj.isRemote) {
 			int var2 = this.itemsToProcess;
 			float var3 = DemonicFurnaceRecipes.smelting().getExperience(par1ItemStack);
+			if (var3 == 0.0F && this.bCheckDefaultRecipes)
+				var3 = FurnaceRecipes.smelting().getExperience(par1ItemStack) * 2; // check the default Recipes and double their XP gain! (applies for the SoulFurnace)
 			int var4;
 
 			if (var3 == 0.0F) {

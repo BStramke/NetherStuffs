@@ -12,12 +12,13 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class SoulEnergyBottle extends Item {
 
-	public static String[] itemNames = new String[] { "SoulEnergyBottleSmall", "SoulEnergyBottleMedium", "SoulEnergyBottleLarge" };
-	public static String[] itemDisplayNames = new String[] { "Small Soulenergy Bottle", "Medium Soulenergy Bottle", "Large Soulenergy Bottle" };
+	public static String[] itemNames = new String[] { "SoulEnergyBottleSmall", "SoulEnergyBottleMedium", "SoulEnergyBottleLarge", "SoulEnergyBottleLargeFilled" };
+	public static String[] itemDisplayNames = new String[] { "Small Soulenergy Bottle", "Medium Soulenergy Bottle", "Large Soulenergy Bottle", "Large Soulenergy Bottle FILLED" };
 
 	public static final int small = 0;
 	public static final int medium = 1;
 	public static final int large = 2;
+	public static final int largeFilled = 3;
 
 	protected SoulEnergyBottle(int par1) {
 		super(par1);
@@ -53,7 +54,10 @@ public class SoulEnergyBottle extends Item {
 		if (!item.hasTagCompound())
 			return 0;
 		else {
-			return item.getTagCompound().getInteger("SoulEnergyAmount");
+			if (item.getItemDamage() == largeFilled)
+				return 10000;
+			else
+				return item.getTagCompound().getInteger("SoulEnergyAmount");
 		}
 	}
 
@@ -78,6 +82,9 @@ public class SoulEnergyBottle extends Item {
 			nLimit = 1000;
 			break;
 		case large:
+			nLimit = 10000;
+			break;
+		case largeFilled:
 			nLimit = 10000;
 			break;
 		}

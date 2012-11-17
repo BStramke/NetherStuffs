@@ -3,6 +3,7 @@ package NetherStuffs.DemonicFurnace;
 import java.util.Iterator;
 
 import NetherStuffs.Items.NetherItems;
+import NetherStuffs.SoulFurnace.TileSoulFurnace;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;

@@ -11,6 +11,9 @@ import NetherStuffs.SoulBlocker.TileSoulBlocker;
 import NetherStuffs.SoulDetector.ContainerSoulDetector;
 import NetherStuffs.SoulDetector.GuiSoulDetector;
 import NetherStuffs.SoulDetector.TileSoulDetector;
+import NetherStuffs.SoulFurnace.ContainerSoulFurnace;
+import NetherStuffs.SoulFurnace.GuiSoulFurnace;
+import NetherStuffs.SoulFurnace.TileSoulFurnace;
 import NetherStuffs.SoulWorkBench.ContainerSoulWorkBench;
 import NetherStuffs.SoulWorkBench.GuiSoulWorkBench;
 import NetherStuffs.SoulWorkBench.TileSoulWorkBench;
@@ -23,7 +26,9 @@ public class GuiHandler implements IGuiHandler {
 
 		TileEntity tile_entity = world.getBlockTileEntity(x, y, z);
 
-		if (tile_entity instanceof TileDemonicFurnace) {
+		if (tile_entity instanceof TileSoulFurnace) {
+			return new ContainerSoulFurnace((TileSoulFurnace) tile_entity, player.inventory);
+		} else if (tile_entity instanceof TileDemonicFurnace) {
 			return new ContainerDemonicFurnace((TileDemonicFurnace) tile_entity, player.inventory);
 		} else if (tile_entity instanceof TileSoulWorkBench) {
 			return new ContainerSoulWorkBench((TileSoulWorkBench) tile_entity, player.inventory);
@@ -41,7 +46,9 @@ public class GuiHandler implements IGuiHandler {
 
 		TileEntity tile_entity = world.getBlockTileEntity(x, y, z);
 
-		if (tile_entity instanceof TileDemonicFurnace) {
+		if (tile_entity instanceof TileSoulFurnace) {
+			return new GuiSoulFurnace(player.inventory, (TileSoulFurnace) tile_entity);
+		} else if (tile_entity instanceof TileDemonicFurnace) {
 			return new GuiDemonicFurnace(player.inventory, (TileDemonicFurnace) tile_entity);
 		} else if (tile_entity instanceof TileSoulWorkBench) {
 			return new GuiSoulWorkBench(player.inventory, (TileSoulWorkBench) tile_entity);

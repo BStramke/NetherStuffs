@@ -37,6 +37,7 @@ import NetherStuffs.Items.NetherStonePotionBowl;
 import NetherStuffs.Items.SoulEnergyBottle;
 import NetherStuffs.SoulBlocker.TileSoulBlocker;
 import NetherStuffs.SoulDetector.TileSoulDetector;
+import NetherStuffs.SoulFurnace.TileSoulFurnace;
 import NetherStuffs.SoulWorkBench.TileSoulWorkBench;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
@@ -102,6 +103,7 @@ public class NetherStuffs extends DummyModContainer {
 
 	public static int NetherSoulDetectorBlockId;
 	public static int NetherSoulBlockerBlockId;
+	public static int NetherSoulFurnaceBlockId;
 
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 
@@ -123,7 +125,9 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulBombBlockId = config.get(Configuration.CATEGORY_BLOCK, "SoulBomb", 1240).getInt();
 		NetherSoulDetectorBlockId = config.get(Configuration.CATEGORY_BLOCK, "SoulDetector", 1241).getInt();
 		NetherSoulBlockerBlockId = config.get(Configuration.CATEGORY_BLOCK, "SoulBlocker", 1242).getInt();
-
+		NetherSoulFurnaceBlockId = config.get(Configuration.CATEGORY_BLOCK, "SoulFurnace", 1243).getInt();
+		
+		
 		NetherOreIngotItemId = config.get(Configuration.CATEGORY_ITEM, "NetherIngots", 5000).getInt();
 		NetherDemonicBarHandleItemId = config.get(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5001).getInt();
 		NetherObsidianSwordItemId = config.get(Configuration.CATEGORY_ITEM, "ObsidianSword", 5002).getInt();
@@ -158,6 +162,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulGlass);
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulGlassPane);
 		GameRegistry.registerBlock(NetherBlocks.NetherDemonicFurnace);
+		GameRegistry.registerBlock(NetherBlocks.NetherSoulFurnace);
 		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench);
 
 		Item.itemsList[NetherOreBlockId] = new NetherOreItemBlock(NetherOreBlockId - 256, NetherBlocks.netherOre).setItemName("NetherOreItemBlock");
@@ -189,6 +194,7 @@ public class NetherStuffs extends DummyModContainer {
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherPlank, NetherBlocks.netherPlankDeath, "axe", 1);
 
 		GameRegistry.registerTileEntity(TileDemonicFurnace.class, "tileEntityNetherStuffsDemonicFurnace");
+		GameRegistry.registerTileEntity(TileSoulFurnace.class, "tileEntityNetherStuffsSoulFurnace");
 		GameRegistry.registerTileEntity(TileSoulWorkBench.class, "tileEntityNetherStuffsSoulWorkBench");
 		GameRegistry.registerTileEntity(TileSoulDetector.class, "tileEntityNetherStuffsSoulDetector");
 		GameRegistry.registerTileEntity(TileSoulBlocker.class, "tileEntityNetherStuffsSoulBlocker");
@@ -411,6 +417,7 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("item.NetherWoodStick.name", "Nether Stick");
 
 		LanguageRegistry.instance().addStringLocalization("tile.NetherDemonicFurnace.name", "Demonic Furnace");
+		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulFurnace.name", "Soul Furnace");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulWorkBench.name", "Soul Workbench");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlass.name", "Soul Glass");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlassPane.name", "Soul Glass Pane");

@@ -35,6 +35,9 @@ public class SoulWorkBenchRecipes {
 
 		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk4), 100, new Object[] { "IBI", "BDB", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'B',
 				new ItemStack(Item.diamond, 1, 0), 'D', new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk3) });
+		
+		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulFurnace, 1), 30, new Object[] { "IBI", "IFI", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'F',
+			new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1) });		
 	}
 
 	public List getRecipeList() {
