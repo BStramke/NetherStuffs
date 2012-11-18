@@ -91,10 +91,8 @@ public class NetherLeaves extends Block implements IShearable {
 				}
 			}
 
-			if (isUserPlaced(var6) || !isDecaying(var6))
-				return;
-
-			// if ((var6 & 8) != 0 && (var6 & 4) == 0)
+		// if ((var6 & 8) != 0 && (var6 & 4) == 0)
+			if (isDecaying(var6) && !isUserPlaced(var6))
 			{
 				byte var7 = 4;
 				int var8 = var7 + 1;

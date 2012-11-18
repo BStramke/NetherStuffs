@@ -31,6 +31,6 @@ public class NetherLeavesItemBlock extends ItemBlock {
 
 	@Override
 	public int getMetadata(int meta) {
-		return meta;
+		return meta | 4; // sets user placed bit to prevent decay
 	}
 }
