@@ -26,6 +26,7 @@ import net.minecraft.src.EntityOcelot;
 import net.minecraft.src.EntityPig;
 import net.minecraft.src.EntityPigZombie;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.EntitySheep;
 import net.minecraft.src.EntitySilverfish;
 import net.minecraft.src.EntitySkeleton;
@@ -158,7 +159,7 @@ public class SoulDetector extends BlockContainer {
 				
 				while (it.hasNext()) {
 					Object data = it.next();
-					if (data instanceof EntityLiving || data instanceof EntityPlayer) {} else {
+					if (data instanceof EntityLiving || data instanceof EntityPlayerMP) {} else {
 						it.remove();
 					}
 				}
