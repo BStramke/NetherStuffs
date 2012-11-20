@@ -1,5 +1,7 @@
 package NetherStuffs;
 
+import org.objectweb.asm.Type;
+
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.BiomeGenHell;
 import net.minecraft.src.Block;
@@ -155,8 +157,7 @@ public class NetherStuffs extends DummyModContainer {
 		NetherStuffsEventHook.nDetectRadius = config.get(Configuration.CATEGORY_GENERAL, "SoulBlockerRadius", 8).getInt();
 
 		NetherStuffsEventHook.SpawnSkeletonsOnlyOnNaturalNetherBlocks = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsOnlyOnNaturalNetherBlocks", false).getBoolean(false);
-
-		//Add the Toggleable Spawn Allowing Blocks here (aka. Natural Nether Blocks)
+		// Add the Toggleable Spawn Allowing Blocks here (aka. Natural Nether Blocks)
 		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.netherrack.blockID);
 		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.slowSand.blockID);
 		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.glowStone.blockID);
@@ -165,16 +166,16 @@ public class NetherStuffs extends DummyModContainer {
 		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.stairsNetherBrick.blockID);
 		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.gravel.blockID);
 
-		// this Blocks will always let the beasts of the Nether not spawn on them.
-		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherLeavesBlockId);
-		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulDetectorBlockId);
-		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulBlockerBlockId);
-		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulFurnaceBlockId);
-		NetherStuffsEventHook.lBlockSpawnListForced.add(SoulWorkBenchBlockId);
-		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherDemonicFurnaceBlockId);
-		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulGlassBlockid);
-		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulGlassPaneBlockid);
-		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulBombBlockId);
+		String tmpString = config.get(Configuration.CATEGORY_GENERAL, "BlockIDNetherSpawningBlacklist", NetherLeavesBlockId + "," + NetherSoulDetectorBlockId + "," + NetherSoulBlockerBlockId + ","
+				+ NetherSoulFurnaceBlockId + "," + SoulWorkBenchBlockId + "," + NetherDemonicFurnaceBlockId + "," + NetherSoulGlassBlockid + "," + NetherSoulGlassPaneBlockid + ","
+				+ NetherSoulBombBlockId).value;
+		String[] tmp = tmpString.split(",");
+		for (int i = 0; i < tmp.length; i++) {
+			int intVal = Integer.parseInt(tmp[i].trim());
+			if (intVal > 0 && intVal < 4096)
+				NetherStuffsEventHook.lBlockSpawnListForced.add(intVal);
+		}
+		System.out.println("[NetherStuffs] Blocked Nether Spawns on Block IDs: " + NetherStuffsEventHook.lBlockSpawnListForced.toString());
 
 		config.save();
 	}
