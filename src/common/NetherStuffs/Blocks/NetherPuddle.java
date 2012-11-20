@@ -23,7 +23,7 @@ public class NetherPuddle extends Block {
 
 	public NetherPuddle(int par1, int par2) {
 		super(par1, par2, NetherPuddleMaterial.netherPuddle);
-		this.blockMaterial.setGroundCover();
+		//this.blockMaterial.setReplaceable();
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setRequiresSelfNotify();
 		this.setLightOpacity(0);

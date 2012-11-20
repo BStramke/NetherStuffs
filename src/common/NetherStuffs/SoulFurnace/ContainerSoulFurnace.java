@@ -66,11 +66,11 @@ public class ContainerSoulFurnace extends Container {
 			ICrafting var2 = (ICrafting) var1.next();
 
 			if (this.lastCookTime != this.furnace.furnaceCookTime) {
-				var2.updateCraftingInventoryInfo(this, 0, this.furnace.furnaceCookTime);
+				var2.sendProgressBarUpdate(this, 0, this.furnace.furnaceCookTime);
 			}
 
 			if (this.lastTankLevel != this.furnace.currentTankLevel) {
-				var2.updateCraftingInventoryInfo(this, 1, this.furnace.currentTankLevel);
+				var2.sendProgressBarUpdate(this, 1, this.furnace.currentTankLevel);
 			}
 		}
 
@@ -90,8 +90,8 @@ public class ContainerSoulFurnace extends Container {
 	@Override
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
-		par1ICrafting.updateCraftingInventoryInfo(this, 0, this.furnace.furnaceCookTime);
-		par1ICrafting.updateCraftingInventoryInfo(this, 1, this.furnace.currentTankLevel);
+		par1ICrafting.sendProgressBarUpdate(this, 0, this.furnace.furnaceCookTime);
+		par1ICrafting.sendProgressBarUpdate(this, 1, this.furnace.currentTankLevel);
 	}
 
 	@Override

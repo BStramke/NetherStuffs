@@ -29,13 +29,14 @@ public class BlockPane extends Block {
 		this.canDropItself = par5;
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
-	
+
 	/**
 	 * 
-	 * @param nBlockID BlockId to Connect To
+	 * @param nBlockID
+	 *            BlockId to Connect To
 	 */
-	public static void addToConnectList(int nBlockID){
-		if(!canConnectToBlockList.contains(nBlockID))
+	public static void addToConnectList(int nBlockID) {
+		if (!canConnectToBlockList.contains(nBlockID))
 			canConnectToBlockList.add(nBlockID);
 	}
 
@@ -47,8 +48,8 @@ public class BlockPane extends Block {
 	}
 
 	/**
-	 * Is this block (a) opaque and (b) a full 1m cube? This determines whether or not to render the shared face of two adjacent blocks and also whether the player can attach
-	 * torches, redstone wire, etc to this block.
+	 * Is this block (a) opaque and (b) a full 1m cube? This determines whether or not to render the shared face of two adjacent blocks and also whether the player can attach torches, redstone wire,
+	 * etc to this block.
 	 */
 	public boolean isOpaqueCube() {
 		return false;
@@ -73,7 +74,7 @@ public class BlockPane extends Block {
 	 * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
 	 * coordinates.  Args: blockAccess, x, y, z, side
 	 */
-	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {		
+	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		int var6 = par1IBlockAccess.getBlockId(par2, par3, par4);
 		return var6 == this.blockID || canConnectToBlockList.contains(var6) ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
 	}
@@ -182,8 +183,8 @@ public class BlockPane extends Block {
 	}
 
 	/**
-	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage and is ignored for blocks which do not support subtypes.
-	 * Blocks which cannot be harvested should return null.
+	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage and is ignored for blocks which do not support subtypes. Blocks which cannot be
+	 * harvested should return null.
 	 */
 	protected ItemStack createStackedBlock(int par1) {
 		return new ItemStack(this.blockID, 1, par1);

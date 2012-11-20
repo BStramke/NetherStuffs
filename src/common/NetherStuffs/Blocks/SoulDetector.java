@@ -78,12 +78,12 @@ public class SoulDetector extends BlockContainer {
 	}
 
 	@Override
-	public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+	public boolean isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0;
 	}
 
 	@Override
-	public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+	public boolean isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0;
 	}
 

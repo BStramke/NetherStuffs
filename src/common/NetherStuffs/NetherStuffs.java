@@ -106,6 +106,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherSoulFurnaceBlockId;
 
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
+	private static boolean IncreaseNetherrackHardness;
 
 	@PreInit
 	public void PreLoad(FMLPreInitializationEvent event) {
@@ -149,6 +150,7 @@ public class NetherStuffs extends DummyModContainer {
 		SoulEnergyBottleItemId = config.get(Configuration.CATEGORY_ITEM, "SoulEnergyPotion", 5015).getInt();
 
 		SpawnSkeletonsAwayFromNetherFortresses = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsAwayFromNetherFortresses", true).getBoolean(true);
+		IncreaseNetherrackHardness = config.get(Configuration.CATEGORY_GENERAL, "IncreaseNetherrackHardness", true).getBoolean(true);
 
 		NetherStuffsEventHook.nDetectRadius = config.get(Configuration.CATEGORY_GENERAL, "SoulBlockerRadius", 8).getInt();
 
@@ -207,6 +209,12 @@ public class NetherStuffs extends DummyModContainer {
 		NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
 
 		MinecraftForge.EVENT_BUS.register(new NetherStuffsEventHook());
+
+		// set Netherrack hardness to different values
+		if (IncreaseNetherrackHardness) {
+			Block.netherrack.setHardness(1.5F);
+			Block.netherrack.setResistance(2.0F);
+		}
 
 		/*
 		 * This lets Skeletons Spawn away from NetherFortresses. Actual Idea by ErasmoGnome, made on the MinecraftForums:

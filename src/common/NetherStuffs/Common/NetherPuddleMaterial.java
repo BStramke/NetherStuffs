@@ -12,8 +12,8 @@ public class NetherPuddleMaterial extends Material {
 	public NetherPuddleMaterial() {
 		super(MapColor.airColor);
 		this.setNoPushMobility();
-		this.setGroundCover();
-		this.setNoHarvest();
+		this.setReplaceable();
+		this.setRequiresTool();
 		this.isTranslucent = true;
 	}
 

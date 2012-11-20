@@ -102,8 +102,8 @@ public class ContainerSoulWorkBench extends Container {
 	@Override
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
-		par1ICrafting.updateCraftingInventoryInfo(this, 0, this.soulworkbench.currentTankLevel);
-		par1ICrafting.updateCraftingInventoryInfo(this, 1, this.soulworkbench.processTime);
+		par1ICrafting.sendProgressBarUpdate(this, 0, this.soulworkbench.currentTankLevel);
+		par1ICrafting.sendProgressBarUpdate(this, 1, this.soulworkbench.processTime);
 	}
 
 	/*
