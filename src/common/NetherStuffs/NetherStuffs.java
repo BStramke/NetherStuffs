@@ -154,6 +154,28 @@ public class NetherStuffs extends DummyModContainer {
 
 		NetherStuffsEventHook.nDetectRadius = config.get(Configuration.CATEGORY_GENERAL, "SoulBlockerRadius", 8).getInt();
 
+		NetherStuffsEventHook.SpawnSkeletonsOnlyOnNaturalNetherBlocks = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsOnlyOnNaturalNetherBlocks", false).getBoolean(false);
+
+		//Add the Toggleable Spawn Allowing Blocks here (aka. Natural Nether Blocks)
+		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.netherrack.blockID);
+		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.slowSand.blockID);
+		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.glowStone.blockID);
+		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.netherBrick.blockID);
+		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.netherFence.blockID);
+		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.stairsNetherBrick.blockID);
+		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.gravel.blockID);
+
+		// this Blocks will always let the beasts of the Nether not spawn on them.
+		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherLeavesBlockId);
+		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulDetectorBlockId);
+		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulBlockerBlockId);
+		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulFurnaceBlockId);
+		NetherStuffsEventHook.lBlockSpawnListForced.add(SoulWorkBenchBlockId);
+		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherDemonicFurnaceBlockId);
+		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulGlassBlockid);
+		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulGlassPaneBlockid);
+		NetherStuffsEventHook.lBlockSpawnListForced.add(NetherSoulBombBlockId);
+
 		config.save();
 	}
 
