@@ -83,17 +83,33 @@ public class NetherLeaves extends Block implements IShearable {
 						} else if (nNextBlockId != Block.netherrack.blockID && nNextBlockId != NetherBlocks.netherOre.blockID) {
 							break;
 						} else {
-							int metadata = NetherLeaves.unmarkedMetadata(var6);
-							NetherPuddle.placePuddleWithType(par1World, par2, yCoord + 1, par4, metadata);
+							boolean bSpawnPuddle = true;
+							// roll the dice to check surroundings, higher values prevent droppings in direct vacancy more often (due to checks)
+							if (par5Random.nextInt(100) > 91) {
+								int xCoord = par2;
+								int zCoord = par3;
+								if (par1World.getBlockId(xCoord + 1, yCoord, zCoord) == NetherBlocks.netherPuddle.blockID
+										|| par1World.getBlockId(xCoord - 1, yCoord, zCoord) == NetherBlocks.netherPuddle.blockID
+										|| par1World.getBlockId(xCoord, yCoord, zCoord + 1) == NetherBlocks.netherPuddle.blockID
+										|| par1World.getBlockId(xCoord, yCoord, zCoord - 1) == NetherBlocks.netherPuddle.blockID
+										|| par1World.getBlockId(xCoord + 1, yCoord, zCoord + 1) == NetherBlocks.netherPuddle.blockID
+										|| par1World.getBlockId(xCoord - 1, yCoord, zCoord - 1) == NetherBlocks.netherPuddle.blockID
+										|| par1World.getBlockId(xCoord + 1, yCoord, zCoord - 1) == NetherBlocks.netherPuddle.blockID
+										|| par1World.getBlockId(xCoord - 1, yCoord, zCoord + 1) == NetherBlocks.netherPuddle.blockID)
+									bSpawnPuddle = false;
+							}
+							if (bSpawnPuddle) {
+								int metadata = NetherLeaves.unmarkedMetadata(var6);
+								NetherPuddle.placePuddleWithType(par1World, par2, yCoord + 1, par4, metadata);
+							}
 							break;
 						}
 					}
 				}
 			}
 
-		// if ((var6 & 8) != 0 && (var6 & 4) == 0)
-			if (isDecaying(var6) && !isUserPlaced(var6))
-			{
+			// if ((var6 & 8) != 0 && (var6 & 4) == 0)
+			if (isDecaying(var6) && !isUserPlaced(var6)) {
 				byte var7 = 4;
 				int var8 = var7 + 1;
 				byte var9 = 32;

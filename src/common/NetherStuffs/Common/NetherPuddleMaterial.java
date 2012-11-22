@@ -21,4 +21,9 @@ public class NetherPuddleMaterial extends Material {
 	public boolean isOpaque() {
 		return true;
 	}
+
+	@Override
+	public boolean blocksMovement() {
+		return false;
+	}
 }

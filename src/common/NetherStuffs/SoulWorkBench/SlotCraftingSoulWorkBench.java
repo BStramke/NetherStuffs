@@ -39,6 +39,8 @@ public class SlotCraftingSoulWorkBench extends SlotCrafting {
 			this.onCrafting(par2ItemStack);
 
 			for (int var3 = 0; var3 < this.craftMatrix.getSizeInventory(); ++var3) {
+				if(var3 == TileSoulWorkBench.nTankFillSlot)
+					continue;
 				ItemStack var4 = this.craftMatrix.getStackInSlot(var3);
 
 				if (var4 != null) {

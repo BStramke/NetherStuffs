@@ -21,23 +21,25 @@ public class SoulWorkBenchRecipes {
 	public static int nSoulEnergyRequired = 0;
 
 	SoulWorkBenchRecipes() {
+		this.addRecipe(new ItemStack(Block.slowSand, 3), 20, new Object[] { "SSS", "SSS", "SSS", 'S', new ItemStack(Block.sand) });
+
 		this.addRecipe(new ItemStack(NetherBlocks.netherSoulBomb, 1, 0), 10, new Object[] { "DID", "IDI", "DID", 'D', new ItemStack(Item.lightStoneDust, 1, 0), 'I',
 				new ItemStack(NetherItems.NetherOreIngot, 1, 0) });
 
-		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk1), 25, new Object[] { "IBI", "BTB", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'B',
-				new ItemStack(Block.netherBrick, 1, 0), 'T', new ItemStack(Block.torchRedstoneActive, 1, 0) });
+		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk1), 25, new Object[] { "IBI", "BTB", "IBI", 'I',
+				new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'B', new ItemStack(Block.netherBrick, 1, 0), 'T', new ItemStack(Block.torchRedstoneActive, 1, 0) });
 
-		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk2), 50, new Object[] { "IGI", "GDG", "IGI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'G',
-				new ItemStack(Item.ingotIron, 1, 0), 'D', new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk1) });
+		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk2), 50, new Object[] { "IGI", "GDG", "IGI", 'I',
+				new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'G', new ItemStack(Item.ingotIron, 1, 0), 'D', new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk1) });
 
-		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk3), 75, new Object[] { "IGI", "GDG", "IGI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'G',
-				new ItemStack(Item.ingotGold, 1, 0), 'D', new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk2) });
+		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk3), 75, new Object[] { "IGI", "GDG", "IGI", 'I',
+				new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'G', new ItemStack(Item.ingotGold, 1, 0), 'D', new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk2) });
 
-		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk4), 100, new Object[] { "IBI", "BDB", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'B',
-				new ItemStack(Item.diamond, 1, 0), 'D', new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk3) });
-		
+		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk4), 100, new Object[] { "IBI", "BDB", "IBI", 'I',
+				new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'B', new ItemStack(Item.diamond, 1, 0), 'D', new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk3) });
+
 		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulFurnace, 1), 30, new Object[] { "IBI", "IFI", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'F',
-			new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1) });		
+				new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1) });
 	}
 
 	public List getRecipeList() {
@@ -124,9 +126,9 @@ public class SoulWorkBenchRecipes {
 		 */
 
 		/*
-		 * if (var3 == 2 && var4.itemID == var5.itemID && var4.stackSize == 1 && var5.stackSize == 1 && Item.itemsList[var4.itemID].isRepairable()) { Item var13 = Item.itemsList[var4.itemID]; int var14
-		 * = var13.getMaxDamage() - var4.getItemDamageForDisplay(); int var8 = var13.getMaxDamage() - var5.getItemDamageForDisplay(); int var9 = var14 + var8 + var13.getMaxDamage() * 5 / 100; int var10
-		 * = var13.getMaxDamage() - var9;
+		 * if (var3 == 2 && var4.itemID == var5.itemID && var4.stackSize == 1 && var5.stackSize == 1 && Item.itemsList[var4.itemID].isRepairable()) { Item var13 =
+		 * Item.itemsList[var4.itemID]; int var14 = var13.getMaxDamage() - var4.getItemDamageForDisplay(); int var8 = var13.getMaxDamage() - var5.getItemDamageForDisplay(); int var9
+		 * = var14 + var8 + var13.getMaxDamage() * 5 / 100; int var10 = var13.getMaxDamage() - var9;
 		 * 
 		 * if (var10 < 0) { var10 = 0; }
 		 * 

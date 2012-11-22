@@ -23,7 +23,6 @@ public class NetherPuddle extends Block {
 
 	public NetherPuddle(int par1, int par2) {
 		super(par1, par2, NetherPuddleMaterial.netherPuddle);
-		//this.blockMaterial.setReplaceable();
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setRequiresSelfNotify();
 		this.setLightOpacity(0);
@@ -178,6 +177,18 @@ public class NetherPuddle extends Block {
 	public static boolean canBlockStay(World par1World, int par2, int par3, int par4, boolean CheckPuddleMeta) {
 		if (par1World.isAirBlock(par2, par3 - 1, par4))
 			return false;
+
+		boolean bFoundLeaves = false;
+		for (int yCoord = par3; yCoord < 256 && bFoundLeaves == false; yCoord++) {
+			if (par1World.getBlockId(par2, yCoord, par4) == NetherBlocks.netherLeaves.blockID) {
+				bFoundLeaves = true;
+				break;
+			}
+		}
+
+		if (bFoundLeaves == false)
+			return false;
+
 		int puddleMeta = NetherPuddle.unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
 		return canBlockStay(par1World, par2, par3, par4, puddleMeta, CheckPuddleMeta);
 	}
