@@ -2,22 +2,21 @@ package NetherStuffs.SoulFurnace;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.FurnaceRecipes;
-import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.ISidedInventory;
 import NetherStuffs.Blocks.NetherSoulFurnace;
 import NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import NetherStuffs.Items.NetherItems;
 import NetherStuffs.Items.SoulEnergyBottle;
-import NetherStuffs.SoulWorkBench.SoulWorkBenchRecipes;
+import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
-public class TileSoulFurnace extends TileEntity implements IInventory, ISidedInventory {
+public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
+	public static final int nSmeltedSlot = 0;
 	public static final int nTankFillSlot = 1;
 	public static final int nOutputSlot = 2;
 	private ItemStack[] inventory = new ItemStack[3];
@@ -54,10 +53,11 @@ public class TileSoulFurnace extends TileEntity implements IInventory, ISidedInv
 	}
 
 	private void fillFuelToTank() {
-		if (this.currentTankLevel < this.maxTankLevel && this.inventory[this.nTankFillSlot] != null && this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
+		if (this.currentTankLevel < this.maxTankLevel && this.inventory[this.nTankFillSlot] != null
+				&& this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
 			if (this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
-				SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot])
-						- this.maxTankLevel);
+				SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot],
+						this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) - this.maxTankLevel);
 				this.currentTankLevel = this.maxTankLevel;
 			} else {
 				this.currentTankLevel += SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]);
@@ -207,20 +207,20 @@ public class TileSoulFurnace extends TileEntity implements IInventory, ISidedInv
 	 */
 	public void smeltItem() {
 		if (this.canSmelt()) {
-			ItemStack var1 = DemonicFurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
+			ItemStack var1 = DemonicFurnaceRecipes.smelting().getSmeltingResult(this.inventory[nSmeltedSlot]);
 			if (var1 == null)
-				var1 = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
+				var1 = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[nSmeltedSlot]);
 
-			if (this.inventory[2] == null) {
-				this.inventory[2] = var1.copy();
-			} else if (this.inventory[2].isItemEqual(var1)) {
-				inventory[2].stackSize += var1.stackSize;
+			if (this.inventory[nOutputSlot] == null) {
+				this.inventory[nOutputSlot] = var1.copy();
+			} else if (this.inventory[nOutputSlot].isItemEqual(var1)) {
+				inventory[nOutputSlot].stackSize += var1.stackSize;
 			}
 
-			--this.inventory[0].stackSize;
+			--this.inventory[nSmeltedSlot].stackSize;
 
-			if (this.inventory[0].stackSize <= 0) {
-				this.inventory[0] = null;
+			if (this.inventory[nSmeltedSlot].stackSize <= 0) {
+				this.inventory[nSmeltedSlot] = null;
 			}
 		}
 	}
@@ -232,16 +232,16 @@ public class TileSoulFurnace extends TileEntity implements IInventory, ISidedInv
 		if (this.inventory[0] == null) {
 			return false;
 		} else {
-			ItemStack var1 = DemonicFurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
+			ItemStack var1 = DemonicFurnaceRecipes.smelting().getSmeltingResult(this.inventory[nSmeltedSlot]);
 			if (var1 == null)
-				var1 = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
+				var1 = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[nSmeltedSlot]);
 			if (var1 == null)
 				return false;
-			if (this.inventory[2] == null)
+			if (this.inventory[nOutputSlot] == null)
 				return true;
-			if (!this.inventory[2].isItemEqual(var1))
+			if (!this.inventory[nOutputSlot].isItemEqual(var1))
 				return false;
-			int result = inventory[2].stackSize + var1.stackSize;
+			int result = inventory[nOutputSlot].stackSize + var1.stackSize;
 			return (result <= getInventoryStackLimit() && result <= var1.getMaxStackSize());
 		}
 	}
@@ -273,16 +273,45 @@ public class TileSoulFurnace extends TileEntity implements IInventory, ISidedInv
 	}
 
 	@Override
-	public int getStartInventorySide(ForgeDirection side) {
-		if (side == ForgeDirection.DOWN)
+	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
+		if (from == ForgeDirection.UP) {
+			ItemStack var1 = DemonicFurnaceRecipes.smelting().getSmeltingResult(stack);
+			if (var1 == null)
+				return 0;
+			else {
+				ItemStack currentStack = getStackInSlot(nSmeltedSlot);
+				if (currentStack == null)
+					return var1.stackSize;
+				else {
+					if (this.getInventoryStackLimit() - currentStack.stackSize >= stack.stackSize)
+						return stack.stackSize;
+					else
+						return this.getInventoryStackLimit() - currentStack.stackSize;
+				}
+			}
+		} else if (from == ForgeDirection.DOWN)
+			// nTankFillSlot
 			return 1;
-		if (side == ForgeDirection.UP)
+		else
 			return 0;
-		return 2;
 	}
 
 	@Override
-	public int getSizeInventorySide(ForgeDirection side) {
-		return 1;
+	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from, int maxItemCount) {
+		if (from == ForgeDirection.UP) {
+			return new ItemStack[] { getStackInSlot(this.nSmeltedSlot) };
+		} else if (from == ForgeDirection.DOWN) {
+			return new ItemStack[] { getStackInSlot(this.nTankFillSlot) };
+		} else {
+			ItemStack outputStack = this.getStackInSlot(this.nOutputSlot);
+			if (getStackInSlot(this.nOutputSlot) != null) {
+				if (maxItemCount > outputStack.stackSize)
+					return new ItemStack[] { outputStack };
+				else
+					return new ItemStack[] { new ItemStack(outputStack.itemID, maxItemCount, outputStack.getItemDamage()) };
+
+			} else
+				return new ItemStack[] { outputStack };
+		}
 	}
 }

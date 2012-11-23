@@ -23,6 +23,7 @@ LICENSE.txt
 !/src/common/net/minecraft/src/BlockPane.java
 !/src/common/net/minecraft/src/BlockBreakable.java
 !/src/common/NetherStuffsCore/
+!/src/common/buildcraft
 !/src/common/netherstuffs_at.cfg
 
 *.bat

@@ -1,21 +1,23 @@
 package NetherStuffs.DemonicFurnace;
 
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.ISidedInventory;
 import NetherStuffs.Blocks.NetherDemonicFurnace;
 import NetherStuffs.Blocks.NetherWood;
 import NetherStuffs.Blocks.NetherWoodItemBlock;
 import NetherStuffs.Items.NetherWoodCharcoal;
+import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
-public class TileDemonicFurnace extends TileEntity implements IInventory, ISidedInventory {
+public class TileDemonicFurnace extends TileEntity implements ISpecialInventory {
+	public static final int nSmeltedSlot = 0;
+	public static final int nFuelSlot = 1;
+	public static final int nOutputSlot = 2;
 
 	private ItemStack[] inventory = new ItemStack[3];
 
@@ -259,10 +261,10 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 			/*
 			 * if (var3 == Block.woodSingleSlab) { return 150; }
 			 * 
-			 * if (var3.blockMaterial == Material.wood) { return 300; } } if (var2 instanceof ItemTool && ((ItemTool) var2).func_77861_e().equals("WOOD")) return 200; if (var2 instanceof ItemSword &&
-			 * ((ItemSword) var2).func_77825_f().equals("WOOD")) return 200; if (var2 instanceof ItemHoe && ((ItemHoe) var2).func_77842_f().equals("WOOD")) return 200; if (var1 ==
-			 * Item.stick.shiftedIndex) return 100; if (var1 == Item.coal.shiftedIndex) return 1600; if (var1 == Item.bucketLava.shiftedIndex) return 20000; if (var1 == Block.sapling.blockID) return 100;
-			 * if (var1 == Item.blazeRod.shiftedIndex) return 2400; return GameRegistry.getFuelValue(par0ItemStack);
+			 * if (var3.blockMaterial == Material.wood) { return 300; } } if (var2 instanceof ItemTool && ((ItemTool) var2).func_77861_e().equals("WOOD")) return 200; if (var2
+			 * instanceof ItemSword && ((ItemSword) var2).func_77825_f().equals("WOOD")) return 200; if (var2 instanceof ItemHoe && ((ItemHoe) var2).func_77842_f().equals("WOOD"))
+			 * return 200; if (var1 == Item.stick.shiftedIndex) return 100; if (var1 == Item.coal.shiftedIndex) return 1600; if (var1 == Item.bucketLava.shiftedIndex) return 20000; if
+			 * (var1 == Block.sapling.blockID) return 100; if (var1 == Item.blazeRod.shiftedIndex) return 2400; return GameRegistry.getFuelValue(par0ItemStack);
 			 */
 
 		}
@@ -314,16 +316,89 @@ public class TileDemonicFurnace extends TileEntity implements IInventory, ISided
 	}
 
 	@Override
-	public int getStartInventorySide(ForgeDirection side) {
-		if (side == ForgeDirection.DOWN)
-			return 1;
-		if (side == ForgeDirection.UP)
+	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
+		if (from == ForgeDirection.UP && DemonicFurnaceRecipes.smelting().getSmeltingResult(stack) != null) {
+			ItemStack currentStack = getStackInSlot(nSmeltedSlot);
+			if (currentStack == null) {
+				if (doAdd)
+					setInventorySlotContents(nSmeltedSlot, stack);
+				return stack.stackSize;
+			} else {
+				if (!currentStack.isItemEqual(stack))
+					return 0;
+				else {
+					int nFreeStackSize = this.getInventoryStackLimit() - currentStack.stackSize;
+					if (nFreeStackSize >= stack.stackSize) {
+						if (doAdd) {
+							currentStack.stackSize += stack.stackSize;
+							//setInventorySlotContents(nSmeltedSlot, currentStack);
+						}
+						return stack.stackSize;
+					} else {
+						if (doAdd) {
+							currentStack.stackSize = getInventoryStackLimit();
+							//setInventorySlotContents(nSmeltedSlot, currentStack);
+						}
+						return nFreeStackSize;
+					}
+				}
+			}
+		} else if (from == ForgeDirection.DOWN && isItemFuel(stack)) {
+			ItemStack currentStack = getStackInSlot(nFuelSlot);
+			if (currentStack == null) {
+				if (doAdd)
+					setInventorySlotContents(nFuelSlot, stack);
+				return stack.stackSize;
+			} else {
+				if (!currentStack.isItemEqual(stack))
+					return 0;
+				else {
+					int nFreeStackSize = this.getInventoryStackLimit() - currentStack.stackSize;
+					if (nFreeStackSize <= 0)
+						return 0;
+					else if (nFreeStackSize >= stack.stackSize) {
+						if (doAdd) {
+							//currentStack = currentStack.copy();
+							currentStack.stackSize += stack.stackSize;
+							//setInventorySlotContents(nFuelSlot, currentStack);
+						}
+						return stack.stackSize;
+					} else {
+						if (doAdd) {
+							//currentStack = currentStack.copy();
+							currentStack.stackSize = getInventoryStackLimit();
+							//setInventorySlotContents(nFuelSlot, currentStack);
+						}
+						return nFreeStackSize;
+					}
+				}
+			}
+		} else
 			return 0;
-		return 2;
 	}
 
 	@Override
-	public int getSizeInventorySide(ForgeDirection side) {
-		return 1;
+	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from, int maxItemCount) {
+		if (from == ForgeDirection.UP && getStackInSlot(this.nSmeltedSlot) != null) {
+			ItemStack outputStack = getStackInSlot(this.nSmeltedSlot).copy();
+			outputStack.stackSize = 1;
+			if (doRemove)
+				decrStackSize(this.nSmeltedSlot, 1);
+			return new ItemStack[] { outputStack };
+		} else if (from == ForgeDirection.DOWN && getStackInSlot(this.nFuelSlot) != null) {
+			ItemStack outputStack = getStackInSlot(this.nFuelSlot).copy();
+			outputStack.stackSize = 1;
+			if (doRemove)
+				decrStackSize(this.nFuelSlot, 1);
+			return new ItemStack[] { outputStack };
+		} else if (from != ForgeDirection.UP && from != ForgeDirection.DOWN && getStackInSlot(this.nOutputSlot) != null) {
+			ItemStack outputStack = this.getStackInSlot(this.nOutputSlot);
+			outputStack = outputStack.copy();
+			outputStack.stackSize = 1;
+			if (doRemove)
+				decrStackSize(this.nOutputSlot, 1);
+			return new ItemStack[] { outputStack };
+		} else
+			return null;
 	}
 }
