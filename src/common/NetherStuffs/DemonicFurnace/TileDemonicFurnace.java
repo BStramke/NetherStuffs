@@ -317,64 +317,36 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory 
 
 	@Override
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
-		if (from == ForgeDirection.UP && DemonicFurnaceRecipes.smelting().getSmeltingResult(stack) != null) {
-			ItemStack currentStack = getStackInSlot(nSmeltedSlot);
-			if (currentStack == null) {
-				if (doAdd)
-					setInventorySlotContents(nSmeltedSlot, stack);
-				return stack.stackSize;
-			} else {
-				if (!currentStack.isItemEqual(stack))
-					return 0;
-				else {
-					int nFreeStackSize = this.getInventoryStackLimit() - currentStack.stackSize;
-					if (nFreeStackSize >= stack.stackSize) {
-						if (doAdd) {
-							currentStack.stackSize += stack.stackSize;
-							//setInventorySlotContents(nSmeltedSlot, currentStack);
-						}
-						return stack.stackSize;
-					} else {
-						if (doAdd) {
-							currentStack.stackSize = getInventoryStackLimit();
-							//setInventorySlotContents(nSmeltedSlot, currentStack);
-						}
-						return nFreeStackSize;
-					}
-				}
-			}
-		} else if (from == ForgeDirection.DOWN && isItemFuel(stack)) {
-			ItemStack currentStack = getStackInSlot(nFuelSlot);
-			if (currentStack == null) {
-				if (doAdd)
-					setInventorySlotContents(nFuelSlot, stack);
-				return stack.stackSize;
-			} else {
-				if (!currentStack.isItemEqual(stack))
-					return 0;
-				else {
-					int nFreeStackSize = this.getInventoryStackLimit() - currentStack.stackSize;
-					if (nFreeStackSize <= 0)
-						return 0;
-					else if (nFreeStackSize >= stack.stackSize) {
-						if (doAdd) {
-							//currentStack = currentStack.copy();
-							currentStack.stackSize += stack.stackSize;
-							//setInventorySlotContents(nFuelSlot, currentStack);
-						}
-						return stack.stackSize;
-					} else {
-						if (doAdd) {
-							//currentStack = currentStack.copy();
-							currentStack.stackSize = getInventoryStackLimit();
-							//setInventorySlotContents(nFuelSlot, currentStack);
-						}
-						return nFreeStackSize;
-					}
-				}
-			}
-		} else
+		int nTargetSlot = 0;
+		if (from == ForgeDirection.UP && DemonicFurnaceRecipes.smelting().getSmeltingResult(stack) != null)
+			nTargetSlot = nSmeltedSlot;
+		else if (from == ForgeDirection.DOWN && isItemFuel(stack))
+			nTargetSlot = nFuelSlot;
+		else
 			return 0;
+
+		ItemStack targetStack = getStackInSlot(nTargetSlot);
+		if (targetStack == null) {
+			if (doAdd) {
+				targetStack = stack.copy();
+				setInventorySlotContents(nTargetSlot, targetStack);
+			}
+			return stack.stackSize;
+		}
+
+		if (!targetStack.isItemEqual(stack))
+			return 0;
+
+		int nFreeStackSize = this.getInventoryStackLimit() - targetStack.stackSize;
+		if (nFreeStackSize >= stack.stackSize) {
+			if (doAdd)
+				targetStack.stackSize += stack.stackSize;
+			return stack.stackSize;
+		} else {
+			if (doAdd)
+				targetStack.stackSize = getInventoryStackLimit();
+			return nFreeStackSize;
+		}
 	}
 
 	@Override
