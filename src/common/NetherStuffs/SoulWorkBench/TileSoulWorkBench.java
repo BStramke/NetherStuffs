@@ -2,20 +2,19 @@ package NetherStuffs.SoulWorkBench;
 
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.ISidedInventory;
 import NetherStuffs.Items.NetherItems;
 import NetherStuffs.Items.SoulEnergyBottle;
+import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
-public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedInventory {
+public class TileSoulWorkBench extends TileEntity implements ISpecialInventory {
 	public static final int nTankFillSlot = 9;
 	public static final int nOutputSlot = 10;
 
@@ -29,23 +28,6 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 	public int maxTankLevel = 100;
 	public int energyUsedPerTick = 1;
 	public int nSoulEnergyRequired = 0;
-
-	@Override
-	public int getStartInventorySide(ForgeDirection side) {
-		if (side == ForgeDirection.DOWN)// fuel input
-			return nTankFillSlot;
-		else
-			return 0;
-	}
-
-	@Override
-	public int getSizeInventorySide(ForgeDirection side) {
-		if (side == ForgeDirection.DOWN)
-			return 1;
-		if (side == ForgeDirection.UP)
-			return 9;
-		return 0;
-	}
 
 	@Override
 	public int getSizeInventory() {
@@ -172,11 +154,6 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 
 		if (this.currentTankLevel == 0 && this.inventory[nTankFillSlot] == null)
 			return false;
-		/*
-		 * if (this.inventory[0] == null) { return false; } else { ItemStack var1 = DemonicFurnaceRecipes.smelting().getSmeltingResult(this.inventory [0]); if (var1 == null) return
-		 * false; if (this.inventory[2] == null) return true; if (!this.inventory[2].isItemEqual(var1)) return false; int result = inventory[2].stackSize + var1.stackSize; return
-		 * (result <= getInventoryStackLimit() && result <= var1.getMaxStackSize()); }
-		 */
 
 		return true;
 	}
@@ -234,6 +211,7 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 		return tmpCraftingInventory;
 	}
 
+	@Override
 	public void onInventoryChanged() {
 		ItemStack tmpStack = SoulWorkBenchRecipes.getInstance().getCraftingResult(this);
 		this.nSoulEnergyRequired = SoulWorkBenchRecipes.getInstance().nSoulEnergyRequired;
@@ -244,5 +222,115 @@ public class TileSoulWorkBench extends TileEntity implements IInventory, ISidedI
 
 	public int getSoulEnergyRequired() {
 		return this.nSoulEnergyRequired;
+	}
+
+	@Override
+	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
+		int nTargetSlot = 0;
+		// every Soul Energy Bottle may go to the TankFillSlot, other items go to the Inventory
+		if (stack.itemID == NetherItems.SoulEnergyBottle.shiftedIndex && getStackInSlot(nTankFillSlot) == null) {
+			nTargetSlot = nTankFillSlot;
+			ItemStack targetStack = getStackInSlot(nTargetSlot);
+			if (targetStack == null) {
+				if (doAdd) {
+					targetStack = stack.copy();
+					setInventorySlotContents(nTargetSlot, targetStack);
+				}
+				return stack.stackSize;
+			}
+
+			if (!targetStack.isItemEqual(stack))
+				return 0;
+
+			int nFreeStackSize = this.getInventoryStackLimit() - targetStack.stackSize;
+			if (nFreeStackSize >= stack.stackSize) {
+				if (doAdd)
+					targetStack.stackSize += stack.stackSize;
+				return stack.stackSize;
+			} else {
+				if (doAdd)
+					targetStack.stackSize = getInventoryStackLimit();
+				return nFreeStackSize;
+			}
+		} else {
+
+			ItemStack[] targetStacks = new ItemStack[] { this.getStackInSlot(0), this.getStackInSlot(1), this.getStackInSlot(2), this.getStackInSlot(3), this.getStackInSlot(4),
+					this.getStackInSlot(5), this.getStackInSlot(6), this.getStackInSlot(7), this.getStackInSlot(8) };
+			int nUsedAmount = 0;
+			for (int nStackSize = stack.stackSize; nStackSize > 0; nStackSize--) {
+				int nTargetInputSlot = -1;
+				int nLeastStackSize = getInventoryStackLimit() + 1;
+				int nLeastStackIndex = -1;
+				int nFirstEmptyStackIndex = -1;
+
+				for (int i = 0; i < 9; i++) {
+					if (targetStacks[i] != null && targetStacks[i].isItemEqual(stack) && targetStacks[i].stackSize < getInventoryStackLimit()) {
+						if (targetStacks[i].stackSize < nLeastStackSize) {
+							nLeastStackSize = targetStacks[i].stackSize;
+							nLeastStackIndex = i;
+						}
+					} else if (targetStacks[i] == null) {
+						nFirstEmptyStackIndex = i;
+					}
+				}
+
+				if (nLeastStackIndex >= 0) {
+					if (doAdd) {
+						targetStacks[nLeastStackIndex].stackSize++;
+					}
+					nUsedAmount++;
+				} else if (nFirstEmptyStackIndex >= 0) {
+					if (doAdd) {
+						ItemStack tmp = stack.copy();
+						tmp.stackSize = 1;
+						setInventorySlotContents(nFirstEmptyStackIndex, tmp);
+						targetStacks[nFirstEmptyStackIndex] = tmp;
+					}
+					nUsedAmount++;
+				} else
+					return nUsedAmount; // basically this happens when all slots are filled, doing return to shortcut Execution for large Stacks
+
+			}
+			return nUsedAmount;
+		}
+	}
+
+	@Override
+	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from, int maxItemCount) {
+		if (from == ForgeDirection.UP) {
+			for (int i = 0; i < 9; i++) {
+				if (this.getStackInSlot(i) == null)
+					continue;
+
+				ItemStack outputStack = this.getStackInSlot(i).copy();
+				if (this.getStackInSlot(i) != null) {
+					outputStack.stackSize = 1;
+					if (doRemove)
+						decrStackSize(i, 1);
+					return new ItemStack[] { outputStack };
+				}
+			}
+			return null;
+		} else if (from == ForgeDirection.DOWN && getStackInSlot(this.nTankFillSlot) != null) {
+			ItemStack outputStack = getStackInSlot(this.nTankFillSlot).copy();
+			outputStack.stackSize = 1;
+			if (doRemove)
+				decrStackSize(this.nTankFillSlot, 1);
+			return new ItemStack[] { outputStack };
+		} else if (from != ForgeDirection.UP && from != ForgeDirection.DOWN/* && getStackInSlot(this.nOutputSlot) != null/* && this.nSoulEnergyRequired <= this.currentTankLevel */) {
+			ItemStack outputStack = SoulWorkBenchRecipes.getInstance().getCraftingResult(this);
+			if (outputStack == null || !hasEnoughFuel(outputStack))
+				return null;
+			else {
+				if (doRemove) {
+					consumeFuelFromTank(outputStack);
+					for (int i = 0; i < 9; i++)
+						decrStackSize(i, 1);
+					onInventoryChanged();
+				}
+				return new ItemStack[] { outputStack };
+			}
+		} else
+			return null;
 	}
 }

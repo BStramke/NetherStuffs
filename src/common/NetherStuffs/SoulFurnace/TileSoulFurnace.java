@@ -274,44 +274,61 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
 
 	@Override
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
-		if (from == ForgeDirection.UP) {
-			ItemStack var1 = DemonicFurnaceRecipes.smelting().getSmeltingResult(stack);
-			if (var1 == null)
-				return 0;
-			else {
-				ItemStack currentStack = getStackInSlot(nSmeltedSlot);
-				if (currentStack == null)
-					return var1.stackSize;
-				else {
-					if (this.getInventoryStackLimit() - currentStack.stackSize >= stack.stackSize)
-						return stack.stackSize;
-					else
-						return this.getInventoryStackLimit() - currentStack.stackSize;
-				}
-			}
-		} else if (from == ForgeDirection.DOWN)
-			// nTankFillSlot
-			return 1;
+		int nTargetSlot = 0;
+		// every Soul Energy Bottle may go to the TankFillSlot, every Item that has a recipe will go to the Smelted Slot, regardless of input Side
+		if (stack.itemID == NetherItems.SoulEnergyBottle.shiftedIndex && getStackInSlot(nTankFillSlot) == null)
+			nTargetSlot = nTankFillSlot;
+		else if (DemonicFurnaceRecipes.smelting().getSmeltingResult(stack) != null || FurnaceRecipes.smelting().getSmeltingResult(stack) != null)
+			nTargetSlot = nSmeltedSlot;
 		else
 			return 0;
+
+		ItemStack targetStack = getStackInSlot(nTargetSlot);
+		if (targetStack == null) {
+			if (doAdd) {
+				targetStack = stack.copy();
+				setInventorySlotContents(nTargetSlot, targetStack);
+			}
+			return stack.stackSize;
+		}
+
+		if (!targetStack.isItemEqual(stack))
+			return 0;
+
+		int nFreeStackSize = this.getInventoryStackLimit() - targetStack.stackSize;
+		if (nFreeStackSize >= stack.stackSize) {
+			if (doAdd)
+				targetStack.stackSize += stack.stackSize;
+			return stack.stackSize;
+		} else {
+			if (doAdd)
+				targetStack.stackSize = getInventoryStackLimit();
+			return nFreeStackSize;
+		}
 	}
 
 	@Override
 	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from, int maxItemCount) {
-		if (from == ForgeDirection.UP) {
-			return new ItemStack[] { getStackInSlot(this.nSmeltedSlot) };
-		} else if (from == ForgeDirection.DOWN) {
-			return new ItemStack[] { getStackInSlot(this.nTankFillSlot) };
-		} else {
+		if (from == ForgeDirection.UP && getStackInSlot(this.nSmeltedSlot) != null) {
+			ItemStack outputStack = getStackInSlot(this.nSmeltedSlot).copy();
+			outputStack.stackSize = 1;
+			if (doRemove)
+				decrStackSize(this.nSmeltedSlot, 1);
+			return new ItemStack[] { outputStack };
+		} else if (from == ForgeDirection.DOWN && getStackInSlot(this.nTankFillSlot) != null) {
+			ItemStack outputStack = getStackInSlot(this.nTankFillSlot).copy();
+			outputStack.stackSize = 1;
+			if (doRemove)
+				decrStackSize(this.nTankFillSlot, 1);
+			return new ItemStack[] { outputStack };
+		} else if (from != ForgeDirection.UP && from != ForgeDirection.DOWN && getStackInSlot(this.nOutputSlot) != null) {
 			ItemStack outputStack = this.getStackInSlot(this.nOutputSlot);
-			if (getStackInSlot(this.nOutputSlot) != null) {
-				if (maxItemCount > outputStack.stackSize)
-					return new ItemStack[] { outputStack };
-				else
-					return new ItemStack[] { new ItemStack(outputStack.itemID, maxItemCount, outputStack.getItemDamage()) };
-
-			} else
-				return new ItemStack[] { outputStack };
-		}
+			outputStack = outputStack.copy();
+			outputStack.stackSize = 1;
+			if (doRemove)
+				decrStackSize(this.nOutputSlot, 1);
+			return new ItemStack[] { outputStack };
+		} else
+			return null;
 	}
 }
