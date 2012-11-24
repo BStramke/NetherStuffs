@@ -9,6 +9,7 @@ import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.SpawnListEntry;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -26,6 +27,8 @@ import NetherStuffs.Blocks.SoulBlockerItemBlock;
 import NetherStuffs.Blocks.SoulBombItemBlock;
 import NetherStuffs.Blocks.SoulDetectorItemBlock;
 import NetherStuffs.Client.ClientPacketHandler;
+import NetherStuffs.Client.RenderHeldTorchArrow;
+import NetherStuffs.Client.RenderTorchArrow;
 import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.Common.GuiHandler;
 import NetherStuffs.Common.NetherStuffsFuel;
@@ -45,6 +48,7 @@ import NetherStuffs.SoulFurnace.TileSoulFurnace;
 import NetherStuffs.SoulWorkBench.TileSoulWorkBench;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -58,6 +62,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -104,6 +109,8 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherSoulglassSwordAcidItemId;
 	public static int NetherSoulglassSwordDeathItemId;
 	public static int NetherSoulglassSwordHellfireItemId;
+
+	public static int NetherBowItemId;
 
 	public static int NetherSoulDetectorBlockId;
 	public static int NetherSoulBlockerBlockId;
@@ -153,6 +160,7 @@ public class NetherStuffs extends DummyModContainer {
 
 		NetherWoodCharcoalItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherWoodCharcoal", 5014).getInt();
 		SoulEnergyBottleItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyPotion", 5015).getInt();
+		NetherBowItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherBow", 5016).getInt();
 
 		SpawnSkeletonsAwayFromNetherFortresses = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsAwayFromNetherFortresses", true).getBoolean(true);
 		IncreaseNetherrackHardness = config.get(Configuration.CATEGORY_GENERAL, "IncreaseNetherrackHardness", true).getBoolean(true);
@@ -181,7 +189,6 @@ public class NetherStuffs extends DummyModContainer {
 				NetherStuffsEventHook.lBlockSpawnListForced.add(intVal);
 		}
 		System.out.println("[NetherStuffs] Blocked Nether Spawns on Block IDs: " + NetherStuffsEventHook.lBlockSpawnListForced.toString());
-
 		config.save();
 	}
 
@@ -229,6 +236,9 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerTileEntity(TileSoulBlocker.class, "tileEntityNetherStuffsSoulBlocker");
 
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
+		// RenderManager.instance.entityRenderMap.put(EntityTorchArrow.class, new RenderArrow());
+		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 64, 10, true);
+		
 
 		OreDictionary.registerOre("oreDemonic", new ItemStack(NetherBlocks.netherOre, 1, NetherBlocks.demonicOre));
 		OreDictionary.registerOre("oreNetherStone", new ItemStack(NetherBlocks.netherOre, 1, NetherBlocks.netherStone));
@@ -528,6 +538,8 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulBomb.NetherSoulBomb.name", "Soul Bomb");
 
 		LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name", "Nether Charcoal");
+
+		LanguageRegistry.instance().addStringLocalization("item.NetherBow.name", "Nether Bow");
 
 	}
 
