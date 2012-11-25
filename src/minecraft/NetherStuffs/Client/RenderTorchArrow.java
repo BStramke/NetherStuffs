@@ -38,7 +38,7 @@ public class RenderTorchArrow extends Render {
 		 * 
 		 * if (var21 > 0.0F) { float var22 = -MathHelper.sin(var21 * 3.0F) * var21; GL11.glRotatef(var22, 0.0F, 0.0F, 1.0F); }
 		 */
-		System.out.println(var16 + "," + var17 + "," + var18 + "," + var19);
+		//System.out.println(var16 + "," + var17 + "," + var18 + "," + var19);
 		GL11.glRotatef(45.0F, 1.0F, 0.0F, 0.0F);
 		GL11.glScalef(var20, var20, var20);
 		GL11.glTranslatef(-4.0F, 0.0F, 0.0F);

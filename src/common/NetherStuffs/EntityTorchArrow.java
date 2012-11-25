@@ -17,6 +17,7 @@ import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -26,6 +27,11 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 	private int zTile = -1;
 	private int inTile = 0;
 	private int inData = 0;
+
+	private int xTilePrev = -1;
+	private int yTilePrev = -1;
+	private int zTilePrev = -1;
+
 	private boolean inGround = false;
 
 	/** 1 if the player can pick up the arrow */
@@ -59,9 +65,9 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 		super(par1World);
 		this.shootingEntity = par2EntityLiving;
 
-		/*if (par2EntityLiving instanceof EntityPlayer) {
-			this.canBePickedUp = 1;
-		}*/
+		/*
+		 * if (par2EntityLiving instanceof EntityPlayer) { this.canBePickedUp = 1; }
+		 */
 
 		this.posY = par2EntityLiving.posY + (double) par2EntityLiving.getEyeHeight() - 0.10000000149011612D;
 		double var6 = par3EntityLiving.posX - par2EntityLiving.posX;
@@ -190,9 +196,8 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 		if (this.inGround) {
 			int var18 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
 			int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
-
 			if (var18 == this.inTile && var19 == this.inData) {
-				this.worldObj.setBlock(this.xTile, this.yTile, this.zTile, Block.torchWood.blockID);
+
 				this.setDead();
 			} else {
 				this.inGround = false;
