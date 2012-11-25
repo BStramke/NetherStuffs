@@ -16,7 +16,6 @@ import cpw.mods.fml.common.asm.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderTorchArrow extends Render {
 	public void renderTorchArrow(EntityTorchArrow par1EntityArrow, double par2, double par4, double par6, float par8, float par9) {
-		
 		this.loadTexture("/item/arrows.png");
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) par2, (float) par4, (float) par6);
@@ -26,12 +25,12 @@ public class RenderTorchArrow extends Render {
 		byte var11 = 0;
 		float var12 = 0.0F;
 		float var13 = 0.5F;
-		float var14 = (float) (0 + var11 * 10) / 32.0F;
-		float var15 = (float) (5 + var11 * 10) / 32.0F;
+		float var14 = (float) (0 + 10 + var11 * 10) / 32.0F;
+		float var15 = (float) (5 + 10 + var11 * 10) / 32.0F;
 		float var16 = 0.0F;
 		float var17 = 0.15625F;
-		float var18 = (float) (5 + var11 * 10) / 32.0F;
-		float var19 = (float) (10 + var11 * 10) / 32.0F;
+		float var18 = (float) (5 + 10 + var11 * 10) / 32.0F;
+		float var19 = (float) (10 + 10 + var11 * 10) / 32.0F;
 		float var20 = 0.05625F;
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		/*
