@@ -29,7 +29,7 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 	private boolean inGround = false;
 
 	/** 1 if the player can pick up the arrow */
-	public int canBePickedUp = 0;
+	public int canBePickedUp = 1;
 
 	/** Seems to be some sort of timer for animating an arrow. */
 	public int arrowShake = 0;
@@ -38,7 +38,7 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 	public Entity shootingEntity;
 	private int ticksInGround;
 	private int ticksInAir = 0;
-	private double damage = 2.0D;
+	private double damage = 0.5D;
 
 	/** The amount of knockback an arrow applies when it hits a mob. */
 	private int knockbackStrength;
@@ -59,9 +59,9 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 		super(par1World);
 		this.shootingEntity = par2EntityLiving;
 
-		if (par2EntityLiving instanceof EntityPlayer) {
+		/*if (par2EntityLiving instanceof EntityPlayer) {
 			this.canBePickedUp = 1;
-		}
+		}*/
 
 		this.posY = par2EntityLiving.posY + (double) par2EntityLiving.getEyeHeight() - 0.10000000149011612D;
 		double var6 = par3EntityLiving.posX - par2EntityLiving.posX;
@@ -192,9 +192,8 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 			int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 
 			if (var18 == this.inTile && var19 == this.inData) {
-				this.setDead();
 				this.worldObj.setBlock((int) this.posX, (int) this.posY, (int) this.posZ, Block.torchWood.blockID);
-//TODO: Place Torches on Sides of Blocks instead of Ground
+				this.setDead();
 			} else {
 				this.inGround = false;
 				this.motionX *= (double) (this.rand.nextFloat() * 0.2F);

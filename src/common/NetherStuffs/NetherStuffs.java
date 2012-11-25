@@ -236,7 +236,6 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerTileEntity(TileSoulBlocker.class, "tileEntityNetherStuffsSoulBlocker");
 
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
-		// RenderManager.instance.entityRenderMap.put(EntityTorchArrow.class, new RenderArrow());
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 64, 10, true);
 		
 

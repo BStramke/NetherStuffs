@@ -1,11 +1,9 @@
 package NetherStuffs.Client;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import net.minecraft.src.RenderArrow;
-import net.minecraft.src.RenderManager;
 import net.minecraftforge.client.MinecraftForgeClient;
 import NetherStuffs.EntityTorchArrow;
 import NetherStuffs.Common.CommonProxy;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
 	@Override
