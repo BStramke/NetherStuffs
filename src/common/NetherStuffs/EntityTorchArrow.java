@@ -192,7 +192,7 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 			int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 
 			if (var18 == this.inTile && var19 == this.inData) {
-				this.worldObj.setBlock((int) this.posX, (int) this.posY, (int) this.posZ, Block.torchWood.blockID);
+				this.worldObj.setBlock(this.xTile, this.yTile, this.zTile, Block.torchWood.blockID);
 				this.setDead();
 			} else {
 				this.inGround = false;
