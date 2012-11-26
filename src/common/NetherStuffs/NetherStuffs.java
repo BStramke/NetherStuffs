@@ -543,7 +543,7 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	@PostInit
-	public static void postInit(FMLPostInitializationEvent event) {
+	public static void postInit(FMLPostInitializationEvent event) {		
 		System.out.println("[NetherStuffs] postInit");
 	}
 }
