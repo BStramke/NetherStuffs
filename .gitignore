@@ -24,8 +24,7 @@ LICENSE.txt
 !/src/common/net/minecraft/src/BlockBreakable.java
 !/src/common/NetherStuffsCore/
 !/src/common/codechicken
-!/src/net/minecraft/net/minecraft/src/GuiContainer.java
-!/src/net/minecraft/net/minecraft/src/GuiContainer.java.bak
+!/src/minecraft/net/minecraft/src/GuiContainer.*
 !/src/common/buildcraft
 !/src/common/netherstuffs_at.cfg
 
