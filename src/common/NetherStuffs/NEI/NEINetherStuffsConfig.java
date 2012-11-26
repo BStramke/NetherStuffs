@@ -13,6 +13,9 @@ public class NEINetherStuffsConfig implements IConfigureNEI {
 	public void loadConfig() {
 		API.registerRecipeHandler(new DemonicFurnaceRecipeHandler());
 		API.registerUsageHandler(new DemonicFurnaceRecipeHandler());
+		
+		API.registerRecipeHandler(new SoulFurnaceRecipeHandler());
+		API.registerUsageHandler(new SoulFurnaceRecipeHandler());
 	}
 
 	@Override
