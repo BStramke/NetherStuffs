@@ -28,10 +28,6 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 	private int inTile = 0;
 	private int inData = 0;
 
-	private int xTilePrev = -1;
-	private int yTilePrev = -1;
-	private int zTilePrev = -1;
-
 	private boolean inGround = false;
 
 	/** 1 if the player can pick up the arrow */
@@ -65,9 +61,9 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 		super(par1World);
 		this.shootingEntity = par2EntityLiving;
 
-		/*
-		 * if (par2EntityLiving instanceof EntityPlayer) { this.canBePickedUp = 1; }
-		 */
+		if (par2EntityLiving instanceof EntityPlayer) {
+			this.canBePickedUp = 1;
+		}
 
 		this.posY = par2EntityLiving.posY + (double) par2EntityLiving.getEyeHeight() - 0.10000000149011612D;
 		double var6 = par3EntityLiving.posX - par2EntityLiving.posX;
@@ -197,7 +193,7 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 			double nX = this.posX - this.xTile; // X < 0 means its hit from West, X > 1 means its hit from East
 			double nY = this.posY - this.yTile; // Y > 1 means its hit from Top, Y < 0 means its hit from bottom
 			double nZ = this.posZ - this.zTile; // Z < 0 means its hit from North, Z > 1 means its hit from South
-			System.out.println(nX + "," + nY + "," + nZ);
+			//System.out.println(nX + "," + nY + "," + nZ);
 			int var18 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
 			int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 			if (var18 == this.inTile && var19 == this.inData) {
@@ -215,6 +211,7 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 					this.worldObj.setBlock(this.xTile, this.yTile - 1, this.zTile, Block.torchWood.blockID);
 
 				this.setDead();
+				++this.ticksInGround;
 			} else {
 				this.inGround = false;
 				this.motionX *= (double) (this.rand.nextFloat() * 0.2F);
@@ -310,8 +307,8 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 						this.motionX *= -0.10000000149011612D;
 						this.motionY *= -0.10000000149011612D;
 						this.motionZ *= -0.10000000149011612D;
-						this.rotationYaw += 180.0F;
-						this.prevRotationYaw += 180.0F;
+						//this.rotationYaw += 180.0F;
+						//this.prevRotationYaw += 180.0F;
 						this.ticksInAir = 0;
 					}
 				} else {
@@ -349,26 +346,28 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 			this.posY += this.motionY;
 			this.posZ += this.motionZ;
 			var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-			this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
+			//this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
 			for (this.rotationPitch = (float) (Math.atan2(this.motionY, (double) var20) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
 				;
 			}
 
-			while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {
+			/*while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {
 				this.prevRotationPitch += 360.0F;
 			}
 
 			while (this.rotationYaw - this.prevRotationYaw < -180.0F) {
+				System.out.println("CHANGED4");
 				this.prevRotationYaw -= 360.0F;
 			}
 
 			while (this.rotationYaw - this.prevRotationYaw >= 180.0F) {
+				System.out.println("CHANGED5");
 				this.prevRotationYaw += 360.0F;
-			}
+			}*/
 
 			this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
-			this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
+			//this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 			float var22 = 0.99F;
 			var11 = 0.05F;
 

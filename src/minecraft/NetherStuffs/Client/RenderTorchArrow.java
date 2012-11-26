@@ -33,12 +33,14 @@ public class RenderTorchArrow extends Render {
 		float var19 = (float) (10 + 10 + var11 * 10) / 32.0F;
 		float var20 = 0.05625F;
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		/*
-		 * float var21 = (float)par1EntityArrow.arrowShake - par9;
-		 * 
-		 * if (var21 > 0.0F) { float var22 = -MathHelper.sin(var21 * 3.0F) * var21; GL11.glRotatef(var22, 0.0F, 0.0F, 1.0F); }
-		 */
-		//System.out.println(var16 + "," + var17 + "," + var18 + "," + var19);
+
+		float var21 = (float) par1EntityArrow.arrowShake - par9;
+
+		if (var21 > 0.0F) {
+			float var22 = -MathHelper.sin(var21 * 3.0F) * var21;
+			GL11.glRotatef(var22, 0.0F, 0.0F, 1.0F);
+		}
+
 		GL11.glRotatef(45.0F, 1.0F, 0.0F, 0.0F);
 		GL11.glScalef(var20, var20, var20);
 		GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
@@ -72,9 +74,9 @@ public class RenderTorchArrow extends Render {
 	}
 
 	/**
-	 * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then handing it off to a worker function which does the actual
-	 * work. In all probabilty, the class Render is generic (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1, double d2,
-	 * float f, float f1). But JAD is pre 1.5 so doesn't do that.
+	 * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then handing it off to a worker function which does the actual work. In all
+	 * probabilty, the class Render is generic (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1, double d2, float f, float f1). But JAD is pre
+	 * 1.5 so doesn't do that.
 	 */
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		this.renderTorchArrow((EntityTorchArrow) par1Entity, par2, par4, par6, par8, par9);
