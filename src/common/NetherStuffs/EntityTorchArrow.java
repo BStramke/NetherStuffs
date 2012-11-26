@@ -194,9 +194,25 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 		}
 
 		if (this.inGround) {
+			double nX = this.posX - this.xTile; // X < 0 means its hit from West, X > 1 means its hit from East
+			double nY = this.posY - this.yTile; // Y > 1 means its hit from Top, Y < 0 means its hit from bottom
+			double nZ = this.posZ - this.zTile; // Z < 0 means its hit from North, Z > 1 means its hit from South
+			System.out.println(nX + "," + nY + "," + nZ);
 			int var18 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
 			int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 			if (var18 == this.inTile && var19 == this.inData) {
+				if (nX <= 0)
+					this.worldObj.setBlock(this.xTile - 1, this.yTile, this.zTile, Block.torchWood.blockID);
+				else if (nX >= 1)
+					this.worldObj.setBlock(this.xTile + 1, this.yTile, this.zTile, Block.torchWood.blockID);
+				else if (nZ <= 0)
+					this.worldObj.setBlock(this.xTile, this.yTile, this.zTile - 1, Block.torchWood.blockID);
+				else if (nZ >= 1)
+					this.worldObj.setBlock(this.xTile, this.yTile, this.zTile + 1, Block.torchWood.blockID);
+				else if (nY >= 1)
+					this.worldObj.setBlock(this.xTile, this.yTile + 1, this.zTile, Block.torchWood.blockID);
+				else if (nY <= 0)
+					this.worldObj.setBlock(this.xTile, this.yTile - 1, this.zTile, Block.torchWood.blockID);
 
 				this.setDead();
 			} else {
@@ -324,8 +340,8 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 
 			if (this.getIsCritical()) {
 				for (var9 = 0; var9 < 4; ++var9) {
-					this.worldObj.spawnParticle("crit", this.posX + this.motionX * (double) var9 / 4.0D, this.posY + this.motionY * (double) var9 / 4.0D, this.posZ + this.motionZ
-							* (double) var9 / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
+					this.worldObj.spawnParticle("crit", this.posX + this.motionX * (double) var9 / 4.0D, this.posY + this.motionY * (double) var9 / 4.0D, this.posZ + this.motionZ * (double) var9
+							/ 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
 				}
 			}
 
@@ -359,8 +375,8 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 			if (this.isInWater()) {
 				for (int var26 = 0; var26 < 4; ++var26) {
 					float var27 = 0.25F;
-					this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double) var27, this.posY - this.motionY * (double) var27, this.posZ - this.motionZ
-							* (double) var27, this.motionX, this.motionY, this.motionZ);
+					this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double) var27, this.posY - this.motionY * (double) var27, this.posZ - this.motionZ * (double) var27,
+							this.motionX, this.motionY, this.motionZ);
 				}
 
 				var22 = 0.8F;
