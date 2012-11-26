@@ -1,5 +1,9 @@
-package NetherStuffs;
+package NetherStuffs.NEI;
 
+import java.util.ArrayList;
+import java.util.TreeSet;
+
+import NetherStuffs.Blocks.NetherBlocks;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 
@@ -7,7 +11,8 @@ public class NEINetherStuffsConfig implements IConfigureNEI {
 
 	@Override
 	public void loadConfig() {
-		API.registerRecipeHandler(new SoulWorkbenchRecipeHandler());
+		API.registerRecipeHandler(new DemonicFurnaceRecipeHandler());
+		API.registerUsageHandler(new DemonicFurnaceRecipeHandler());
 	}
 
 	@Override
