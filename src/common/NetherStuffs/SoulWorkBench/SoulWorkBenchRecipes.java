@@ -111,48 +111,36 @@ public class SoulWorkBenchRecipes {
 
 	public ItemStack getCraftingResult(TileSoulWorkBench soulworkbench) {
 		InventoryCrafting InventoryCraftingSoulWorkBench = soulworkbench.getCraftingInventory();
-		// int var3 = 0;
-		// ItemStack var4 = null;
-		// ItemStack var5 = null;
 
-		/*
-		 * for (int var6 = 0; var6 < InventoryCraftingSoulWorkBench.getSizeInventory(); ++var6) { ItemStack var7 = InventoryCraftingSoulWorkBench.getStackInSlot(var6);
-		 * 
-		 * if (var7 != null) { if (var3 == 0) { var4 = var7; }
-		 * 
-		 * if (var3 == 1) { var5 = var7; }
-		 * 
-		 * ++var3; } }
-		 */
+		Iterator var11 = this.recipes.iterator();
+		IRecipe var12;
 
-		/*
-		 * if (var3 == 2 && var4.itemID == var5.itemID && var4.stackSize == 1 && var5.stackSize == 1 && Item.itemsList[var4.itemID].isRepairable()) { Item var13 =
-		 * Item.itemsList[var4.itemID]; int var14 = var13.getMaxDamage() - var4.getItemDamageForDisplay(); int var8 = var13.getMaxDamage() - var5.getItemDamageForDisplay(); int var9
-		 * = var14 + var8 + var13.getMaxDamage() * 5 / 100; int var10 = var13.getMaxDamage() - var9;
-		 * 
-		 * if (var10 < 0) { var10 = 0; }
-		 * 
-		 * return new ItemStack(var4.itemID, 1, var10); } else
-		 */{
-			Iterator var11 = this.recipes.iterator();
-			IRecipe var12;
+		do {
+			if (!var11.hasNext()) {
+				// this.nSoulEnergyRequired = 0;
+				return null;
+			}
 
-			do {
-				if (!var11.hasNext()) {
-					// this.nSoulEnergyRequired = 0;
-					return null;
-				}
+			var12 = (IRecipe) var11.next();
+		} while (!var12.matches(InventoryCraftingSoulWorkBench, null));
 
-				var12 = (IRecipe) var11.next();
-			} while (!var12.matches(InventoryCraftingSoulWorkBench, null));
+		this.nSoulEnergyRequired = ((SoulWorkBenchShapedRecipes) var12).getCraftingResultSoulEnergy();
 
-			this.nSoulEnergyRequired = ((SoulWorkBenchShapedRecipes) var12).getCraftingResultSoulEnergy();
+		return var12.getCraftingResult(InventoryCraftingSoulWorkBench);
 
-			return var12.getCraftingResult(InventoryCraftingSoulWorkBench);
-		}
 	}
 
 	public int getCraftingSoulEnergyRequired(ItemStack item) {
+		Iterator it = this.recipes.iterator();
+		while (it.hasNext()) {
+			Object data = it.next();
+			if (data instanceof SoulWorkBenchShapedRecipes) {
+				if (((SoulWorkBenchShapedRecipes) data).getRecipeOutput() != null && ((SoulWorkBenchShapedRecipes) data).getRecipeOutput().isItemEqual(item)) {
+					return ((SoulWorkBenchShapedRecipes) data).getRecipeSoulEnergyRequired();
+				}
+			}
+		}
+
 		return this.nSoulEnergyRequired;
 	}
 }

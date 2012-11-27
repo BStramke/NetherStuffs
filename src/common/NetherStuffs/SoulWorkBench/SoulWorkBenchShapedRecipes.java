@@ -32,7 +32,7 @@ public class SoulWorkBenchShapedRecipes implements IRecipe {
 		this.recipeHeight = par2;
 		this.recipeItems = par3ArrayOfItemStack;
 		this.recipeOutput = par4ItemStack;
-		this.recipeSoulEnergyRequired = nSoulEnergyAmount;
+		this.setRecipeSoulEnergyRequired(nSoulEnergyAmount);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class SoulWorkBenchShapedRecipes implements IRecipe {
 	}
 
 	public int getCraftingResultSoulEnergy() {
-		return this.recipeSoulEnergyRequired;
+		return this.getRecipeSoulEnergyRequired();
 	}
 
 	/**
@@ -118,5 +118,13 @@ public class SoulWorkBenchShapedRecipes implements IRecipe {
 	@Override
 	public ItemStack getRecipeOutput() {
 		return this.recipeOutput;
+	}
+
+	public int getRecipeSoulEnergyRequired() {
+		return recipeSoulEnergyRequired;
+	}
+
+	public void setRecipeSoulEnergyRequired(int recipeSoulEnergyRequired) {
+		this.recipeSoulEnergyRequired = recipeSoulEnergyRequired;
 	}
 }
