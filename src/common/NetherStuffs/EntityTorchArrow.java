@@ -4,20 +4,19 @@ import java.util.List;
 
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
+import net.minecraft.src.BlockTorch;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityDamageSourceIndirect;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IProjectile;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
-import net.minecraftforge.common.ForgeDirection;
+import NetherStuffs.Items.NetherItems;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -193,22 +192,33 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 			double nX = this.posX - this.xTile; // X < 0 means its hit from West, X > 1 means its hit from East
 			double nY = this.posY - this.yTile; // Y > 1 means its hit from Top, Y < 0 means its hit from bottom
 			double nZ = this.posZ - this.zTile; // Z < 0 means its hit from North, Z > 1 means its hit from South
-			//System.out.println(nX + "," + nY + "," + nZ);
+			// System.out.println(nX + "," + nY + "," + nZ);
 			int var18 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
 			int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 			if (var18 == this.inTile && var19 == this.inData) {
+				int nXPos = this.xTile;
+				int nYPos = this.yTile;
+				int nZPos = this.zTile;
 				if (nX <= 0)
-					this.worldObj.setBlock(this.xTile - 1, this.yTile, this.zTile, Block.torchWood.blockID);
+					nXPos = this.xTile - 1;
 				else if (nX >= 1)
-					this.worldObj.setBlock(this.xTile + 1, this.yTile, this.zTile, Block.torchWood.blockID);
+					nXPos = this.xTile + 1;
 				else if (nZ <= 0)
-					this.worldObj.setBlock(this.xTile, this.yTile, this.zTile - 1, Block.torchWood.blockID);
+					nZPos = this.zTile - 1;
 				else if (nZ >= 1)
-					this.worldObj.setBlock(this.xTile, this.yTile, this.zTile + 1, Block.torchWood.blockID);
+					nZPos = this.zTile + 1;
 				else if (nY >= 1)
-					this.worldObj.setBlock(this.xTile, this.yTile + 1, this.zTile, Block.torchWood.blockID);
+					nYPos = this.yTile + 1;
 				else if (nY <= 0)
-					this.worldObj.setBlock(this.xTile, this.yTile - 1, this.zTile, Block.torchWood.blockID);
+					nYPos = this.yTile - 1;
+
+				if (((BlockTorch)Block.torchWood).canPlaceBlockAt(this.worldObj, nXPos, nYPos, nZPos) && this.worldObj.getBlockId(nXPos, nYPos, nZPos) == 0)
+					this.worldObj.setBlock(nXPos, nYPos, nZPos, Block.torchWood.blockID);
+				else {
+					if (!this.worldObj.isRemote) {
+						this.entityDropItem(new ItemStack(NetherItems.torchArrow, 1), 1);
+					}					
+				}
 
 				this.setDead();
 				++this.ticksInGround;
@@ -307,8 +317,8 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 						this.motionX *= -0.10000000149011612D;
 						this.motionY *= -0.10000000149011612D;
 						this.motionZ *= -0.10000000149011612D;
-						//this.rotationYaw += 180.0F;
-						//this.prevRotationYaw += 180.0F;
+						// this.rotationYaw += 180.0F;
+						// this.prevRotationYaw += 180.0F;
 						this.ticksInAir = 0;
 					}
 				} else {
@@ -346,28 +356,22 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 			this.posY += this.motionY;
 			this.posZ += this.motionZ;
 			var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-			//this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
+			// this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
 			for (this.rotationPitch = (float) (Math.atan2(this.motionY, (double) var20) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
 				;
 			}
 
-			/*while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {
-				this.prevRotationPitch += 360.0F;
-			}
-
-			while (this.rotationYaw - this.prevRotationYaw < -180.0F) {
-				System.out.println("CHANGED4");
-				this.prevRotationYaw -= 360.0F;
-			}
-
-			while (this.rotationYaw - this.prevRotationYaw >= 180.0F) {
-				System.out.println("CHANGED5");
-				this.prevRotationYaw += 360.0F;
-			}*/
+			/*
+			 * while (this.rotationPitch - this.prevRotationPitch >= 180.0F) { this.prevRotationPitch += 360.0F; }
+			 * 
+			 * while (this.rotationYaw - this.prevRotationYaw < -180.0F) { System.out.println("CHANGED4"); this.prevRotationYaw -= 360.0F; }
+			 * 
+			 * while (this.rotationYaw - this.prevRotationYaw >= 180.0F) { System.out.println("CHANGED5"); this.prevRotationYaw += 360.0F; }
+			 */
 
 			this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
-			//this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
+			// this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 			float var22 = 0.99F;
 			var11 = 0.05F;
 
@@ -435,7 +439,7 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 		if (!this.worldObj.isRemote && this.inGround && this.arrowShake <= 0) {
 			boolean var2 = this.canBePickedUp == 1 || this.canBePickedUp == 2 && par1EntityPlayer.capabilities.isCreativeMode;
 
-			if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Block.torchWood, 1))) {
+			if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(NetherItems.torchArrow, 1))) {
 				var2 = false;
 			}
 

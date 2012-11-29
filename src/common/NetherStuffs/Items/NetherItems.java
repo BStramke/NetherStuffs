@@ -1,5 +1,6 @@
 package NetherStuffs.Items;
 
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumToolMaterial;
 import net.minecraft.src.Item;
 import net.minecraftforge.common.EnumHelper;
@@ -26,7 +27,7 @@ public class NetherItems {
 			0, 1);
 
 	public static final Item NetherBow = new NetherBow(NetherStuffs.NetherBowItemId).setItemName("NetherBow").setIconCoord(5, 1);
-
+	public static final Item torchArrow = new Item(NetherStuffs.TorchArrowItemId).setIconCoord(5, 2).setItemName("torchArrow").setCreativeTab(CreativeTabs.tabCombat);
 	/**
 	 * Swords
 	 */
