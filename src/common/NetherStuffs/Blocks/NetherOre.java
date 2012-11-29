@@ -19,6 +19,7 @@ public class NetherOre extends Block {
 	public static final int netherOreEmerald = 6;
 	public static final int netherOreCoal = 7;
 	public static final int netherOreObsidian = 8;
+	public static final int netherOreLapis = 9;
 
 	public NetherOre(int par1, int par2) {
 		super(par1, par2, Material.rock);
@@ -57,6 +58,8 @@ public class NetherOre extends Block {
 			return 7;
 		case netherOreObsidian:
 			return 8;
+		case netherOreLapis:
+			return 9;
 		default:
 			return 0;
 		}
