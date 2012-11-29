@@ -21,9 +21,9 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
 	public static final int nOutputSlot = 2;
 	private ItemStack[] inventory = new ItemStack[3];
 
-	private int nTicksToComplete = 200;
+	private int nTicksToComplete = 195;
 	public int currentTankLevel = 0;
-	public int maxTankLevel = 1280;
+	public int maxTankLevel = 1920; //1920 equals 2 stacks of Smelting Ores
 
 	/** The number of ticks that the current item has been cooking for */
 	public int furnaceCookTime = 0;
@@ -151,7 +151,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
 			if (this.canSmelt() && this.currentTankLevel > 0) {
 				++this.furnaceCookTime;
 
-				if (this.furnaceCookTime % 10 == 0) // every 10 Ticks needs 1 energy, 20 energy for each smelting
+				if (this.furnaceCookTime % 13 == 0) // every 13 Ticks needs 1 energy, 15 energy for each smelting
 					this.currentTankLevel--;
 
 				if (this.furnaceCookTime == nTicksToComplete) {
