@@ -17,6 +17,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import NetherStuffs.Blocks.NetherBlocks;
 import NetherStuffs.Blocks.NetherLeavesItemBlock;
+import NetherStuffs.Blocks.NetherOre;
 import NetherStuffs.Blocks.NetherOreItemBlock;
 import NetherStuffs.Blocks.NetherPlankItemBlock;
 import NetherStuffs.Blocks.NetherPuddleItemBlock;
@@ -266,7 +267,14 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	private void registerWorldGenerators() {
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, 0, 5));
+		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, 5));
+		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal, 5));
+		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreIron, 5));
+		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreGold, 5));
+		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreDiamond, 2));
+		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreEmerald, 2));
+		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreRedstone, 2));
+		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreObsidian, 3));
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsTrees(true, 4, false));
 	}
 
@@ -276,9 +284,17 @@ public class NetherStuffs extends DummyModContainer {
 		addSmeltingMeta(Block.netherrack, 0, NetherBlocks.netherOre, NetherBlocks.netherStone); // this actually is the basic recipe
 		// to get started
 
-		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, 0, new ItemStack(NetherItems.NetherOreIngot, 1, 0), 1.0F);
+		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, new ItemStack(NetherItems.NetherOreIngot, 1, 0), 1.0F);
 		DemonicFurnaceRecipes.smelting().addSmelting(Block.slowSand.blockID, 0, new ItemStack(NetherBlocks.NetherSoulGlass, 1, 0), 0.5F);
-		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherWood.blockID, 0, new ItemStack(NetherItems.NetherWoodCharcoal, 1, 0), 0.25F);
+		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal, new ItemStack(Item.coal, 1), 0.25F);
+		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreIron, new ItemStack(Item.ingotIron, 1), 0.25F);
+		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreGold, new ItemStack(Item.ingotGold, 1), 0.25F);
+		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreDiamond, new ItemStack(Item.diamond, 1), 0.5F);
+		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreEmerald, new ItemStack(Item.emerald, 1), 0.5F);
+		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreRedstone, new ItemStack(Item.redstone, 4), 0.25F);
+		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreObsidian, new ItemStack(Block.obsidian, 1, 0), 0.25F);
+		
+
 
 		CraftingManager
 				.getInstance()

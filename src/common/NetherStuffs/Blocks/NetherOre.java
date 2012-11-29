@@ -12,6 +12,13 @@ import cpw.mods.fml.common.asm.SideOnly;
 public class NetherOre extends Block {
 	public static final int demonicOre = 0;
 	public static final int netherStone = 1;
+	public static final int netherOreIron = 2;
+	public static final int netherOreGold = 3;
+	public static final int netherOreDiamond = 4;
+	public static final int netherOreRedstone = 5;
+	public static final int netherOreEmerald = 6;
+	public static final int netherOreCoal = 7;
+	public static final int netherOreObsidian = 8;
 
 	public NetherOre(int par1, int par2) {
 		super(par1, par2, Material.rock);
@@ -36,6 +43,20 @@ public class NetherOre extends Block {
 			return 0;
 		case netherStone:
 			return 1;
+		case netherOreIron:
+			return 2;
+		case netherOreGold:
+			return 3;
+		case netherOreDiamond:
+			return 4;
+		case netherOreRedstone:
+			return 5;
+		case netherOreEmerald:
+			return 6;
+		case netherOreCoal:
+			return 7;
+		case netherOreObsidian:
+			return 8;
 		default:
 			return 0;
 		}

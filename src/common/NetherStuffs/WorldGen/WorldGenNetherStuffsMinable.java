@@ -2,6 +2,9 @@ package NetherStuffs.WorldGen;
 
 import java.util.Random;
 
+import NetherStuffs.Blocks.NetherBlocks;
+import NetherStuffs.Blocks.NetherOre;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.MathHelper;
@@ -12,7 +15,7 @@ public class WorldGenNetherStuffsMinable implements IWorldGenerator {
 
 	/** The block ID of the ore to be placed using this generator. */
 	private int minableBlockId;
-	private int minableBlockMeta = 0;
+	private int minableBlockMeta;
 
 	/** The number of blocks to generate. */
 	private int numberOfBlocks;

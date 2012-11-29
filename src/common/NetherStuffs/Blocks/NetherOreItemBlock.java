@@ -6,13 +6,14 @@ import net.minecraft.src.ItemStack;
 
 public class NetherOreItemBlock extends ItemBlock {
 
-	public static String[] blockNames = new String[] { "DemonicOre", "NetherStone" };
-	public static String[] blockDisplayNames = new String[] { "Demonic Ore", "Nether Stone" };
-
+	public static String[] blockNames = new String[] { "DemonicOre", "NetherStone", "NetherOreIron", "NetherOreGold", "NetherOreDiamond", "NetherOreRedstone", "NetherOreEmerald", "NetherOreCoal", "NetherOreObsidian" };
+	public static String[] blockDisplayNames = new String[] { "Demonic Ore", "Nether Stone", "Nether Iron Ore", "Nether Gold Ore", "Nether Diamond Ore", "Nether Redstone Ore", "Nether Emerald Ore", "Nether Coal Ore", "Nether Obsidian Ore" };
+	
 	public NetherOreItemBlock(int id, Block block) {
 		super(id);
 		setHasSubtypes(true);
 	}
+
 
 	public static int getMetadataSize() {
 		return blockNames.length;
