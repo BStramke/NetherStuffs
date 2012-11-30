@@ -1,21 +1,21 @@
 package NetherStuffs.Items;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Enchantment;
 import net.minecraft.src.EnchantmentHelper;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumAction;
-import net.minecraft.src.Item;
+import net.minecraft.src.ItemBow;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import NetherStuffs.EntityTorchArrow;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
-public class NetherBow extends Item {
+public class NetherBow extends ItemBow {
 
 	public NetherBow(int par1) {
 		super(par1);
