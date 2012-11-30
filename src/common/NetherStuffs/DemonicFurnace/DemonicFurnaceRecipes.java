@@ -2,7 +2,9 @@ package NetherStuffs.DemonicFurnace;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.src.ItemStack;
 
@@ -10,7 +12,7 @@ public class DemonicFurnaceRecipes {
 	private static final DemonicFurnaceRecipes smeltingBase = new DemonicFurnaceRecipes();
 
 	/** The list of smelting results. */
-	private Map metaSmeltingList = new HashMap();
+	public Map metaSmeltingList = new HashMap();
 	private Map metaExperienceList = new HashMap();
 
 	/**

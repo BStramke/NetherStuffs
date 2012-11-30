@@ -6,15 +6,18 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.GuiContainer;
-import net.minecraft.src.GuiFurnace;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import NetherStuffs.Blocks.NetherBlocks;
+import NetherStuffs.Blocks.NetherOre;
+import NetherStuffs.Blocks.NetherOreItemBlock;
+import NetherStuffs.Blocks.NetherWood;
 import NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import NetherStuffs.DemonicFurnace.GuiDemonicFurnace;
 import NetherStuffs.DemonicFurnace.TileDemonicFurnace;
@@ -24,6 +27,7 @@ import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import codechicken.nei.recipe.FurnaceRecipeHandler.SmeltingPair;
 
 public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
 
@@ -87,7 +91,7 @@ public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public void loadTransferRects() {
-		//transferRects.add(new RecipeTransferRect(new Rectangle(50, 23, 18, 18), "netherdemonicfuel"));
+		// transferRects.add(new RecipeTransferRect(new Rectangle(50, 23, 18, 18), "netherdemonicfuel"));
 		transferRects.add(new RecipeTransferRect(new Rectangle(74, 23, 24, 18), "netherdemonicsmelting"));
 	}
 
@@ -101,12 +105,11 @@ public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
 	public void loadCraftingRecipes(String outputId, Object... results) {
 		if (outputId.equals("netherdemonicsmelting") && getClass() == DemonicFurnaceRecipeHandler.class)// don't want subclasses getting a hold of this
 		{
-			arecipes.add(new SmeltingPair(new ItemStack(NetherStuffs.Blocks.NetherBlocks.netherOre, 1, NetherStuffs.Blocks.NetherBlocks.demonicOre), new ItemStack(
-					NetherStuffs.Items.NetherItems.NetherOreIngot, 1, 0)));
-			arecipes.add(new SmeltingPair(new ItemStack(Block.slowSand, 1), new ItemStack(NetherStuffs.Blocks.NetherBlocks.NetherSoulGlass)));
-			arecipes.add(new SmeltingPair(new ItemStack(NetherStuffs.Blocks.NetherBlocks.netherWood, 1, NetherStuffs.Blocks.NetherBlocks.netherWoodHellfire), new ItemStack(
-					NetherStuffs.Items.NetherItems.NetherWoodCharcoal, 1)));
-		//} else if (outputId.equals("netherdemonicfuel") && getClass() == DemonicFurnaceRecipeHandler.class) {
+			HashMap<List<Integer>, ItemStack> metarecipes = (HashMap<List<Integer>, ItemStack>) DemonicFurnaceRecipes.smelting().metaSmeltingList;
+			for (Entry<List<Integer>, ItemStack> recipe : metarecipes.entrySet()) {
+				ItemStack item = recipe.getValue();
+				arecipes.add(new SmeltingPair(new ItemStack(recipe.getKey().get(0), 1, recipe.getKey().get(1)), item));
+			}
 		} else {
 			super.loadCraftingRecipes(outputId, results);
 		}
@@ -115,13 +118,13 @@ public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
-		if (result.isItemEqual(new ItemStack(NetherStuffs.Items.NetherItems.NetherOreIngot, 1, 0)))
-			arecipes.add(new SmeltingPair(new ItemStack(NetherStuffs.Blocks.NetherBlocks.netherOre, 1, NetherStuffs.Blocks.NetherBlocks.demonicOre), result));
-		else if (result.isItemEqual(new ItemStack(NetherStuffs.Blocks.NetherBlocks.NetherSoulGlass)))
-			arecipes.add(new SmeltingPair(new ItemStack(Block.slowSand, 1), result));
-		else if (result.isItemEqual(new ItemStack(NetherStuffs.Items.NetherItems.NetherWoodCharcoal, 1)))
-			arecipes.add(new SmeltingPair(new ItemStack(NetherStuffs.Blocks.NetherBlocks.netherWood, 1, NetherStuffs.Blocks.NetherBlocks.netherWoodHellfire), result));
-
+		HashMap<List<Integer>, ItemStack> metarecipes = (HashMap<List<Integer>, ItemStack>) DemonicFurnaceRecipes.smelting().metaSmeltingList;
+		for (Entry<List<Integer>, ItemStack> recipe : metarecipes.entrySet()) {
+			ItemStack item = recipe.getValue();
+			if (NEIClientUtils.areStacksSameType(item, result)) {
+				arecipes.add(new SmeltingPair(new ItemStack(recipe.getKey().get(0), 1, recipe.getKey().get(1)), item));
+			}
+		}
 	}
 
 	@Override
@@ -137,12 +140,8 @@ public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
-		if (ingredient.isItemEqual(new ItemStack(NetherStuffs.Blocks.NetherBlocks.netherOre, 1, NetherStuffs.Blocks.NetherBlocks.demonicOre)))
-			arecipes.add(new SmeltingPair(ingredient, new ItemStack(NetherStuffs.Items.NetherItems.NetherOreIngot, 1, 0)));
-		else if (ingredient.isItemEqual(new ItemStack(Block.slowSand, 1)))
-			arecipes.add(new SmeltingPair(ingredient, new ItemStack(NetherStuffs.Blocks.NetherBlocks.NetherSoulGlass, 1)));
-		else if (ingredient.isItemEqual(new ItemStack(NetherStuffs.Blocks.NetherBlocks.netherWood, 1, NetherStuffs.Blocks.NetherBlocks.netherWoodHellfire)))
-			arecipes.add(new SmeltingPair(ingredient, new ItemStack(NetherStuffs.Items.NetherItems.NetherWoodCharcoal, 1)));
+		if (DemonicFurnaceRecipes.smelting().getSmeltingResult(ingredient) != null)
+			arecipes.add(new SmeltingPair(ingredient, DemonicFurnaceRecipes.smelting().getSmeltingResult(ingredient)));
 	}
 
 	public void drawExtras(GuiContainerManager gui, int recipe) {

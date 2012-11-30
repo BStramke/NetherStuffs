@@ -12,23 +12,25 @@ public class GenerateNetherStuffsMinable extends WorldGenerator {
 	/** The block ID of the ore to be placed using this generator. */
 	private int minableBlockId;
 	private int minableBlockMeta = 0;
+	private int spawnchance = 100;
 
 	/** The number of blocks to generate. */
-	private int numberOfBlocks;
+	private int numberOfBlocks = 0;
 
-	public GenerateNetherStuffsMinable(int par1, int par2) {
-		this.minableBlockId = par1;
-		this.numberOfBlocks = par2;
-	}
-
-	public GenerateNetherStuffsMinable(int id, int meta, int number) {
-		this(id, number);
-		minableBlockMeta = meta;
+	public GenerateNetherStuffsMinable(int id, int meta, int number, int spawnchance) {
+		this.minableBlockId = id;
+		this.minableBlockMeta = meta;
+		this.numberOfBlocks = number;
+		this.spawnchance = spawnchance;
 	}
 
 	@Override
 	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5) {
 		float var6 = par2Random.nextFloat() * (float) Math.PI;
+		
+		if(par2Random.nextInt(100)+1 < this.spawnchance)
+			return true;
+
 		double var7 = (double) ((float) (par3 + 8) + MathHelper.sin(var6) * (float) this.numberOfBlocks / 8.0F);
 		double var9 = (double) ((float) (par3 + 8) - MathHelper.sin(var6) * (float) this.numberOfBlocks / 8.0F);
 		double var11 = (double) ((float) (par5 + 8) + MathHelper.cos(var6) * (float) this.numberOfBlocks / 8.0F);

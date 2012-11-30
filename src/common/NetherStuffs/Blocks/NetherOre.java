@@ -1,6 +1,7 @@
 package NetherStuffs.Blocks;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
@@ -20,6 +21,7 @@ public class NetherOre extends Block {
 	public static final int netherOreCoal = 7;
 	public static final int netherOreObsidian = 8;
 	public static final int netherOreLapis = 9;
+	public static final int netherOreCobblestone = 10;
 
 	public NetherOre(int par1, int par2) {
 		super(par1, par2, Material.rock);
@@ -36,7 +38,7 @@ public class NetherOre extends Block {
 	public int getMetadataSize() {
 		return NetherOreItemBlock.blockNames.length;
 	}
-	
+
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (meta) {
@@ -60,9 +62,19 @@ public class NetherOre extends Block {
 			return 8;
 		case netherOreLapis:
 			return 9;
+		case netherOreCobblestone:
+			return 10;
 		default:
 			return 0;
 		}
+	}
+
+	@Override
+	public int idDropped(int meta, Random par2Random, int par3) {
+		if(meta == netherOreCobblestone) //cobble may drop as cobble
+			return Block.cobblestone.blockID;
+		else
+			return super.idDropped(meta, par2Random, par3);
 	}
 
 	@Override
