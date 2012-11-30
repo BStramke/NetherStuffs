@@ -1,5 +1,7 @@
 package NetherStuffs.Items;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Enchantment;
 import net.minecraft.src.EnchantmentHelper;
@@ -22,6 +24,12 @@ public class NetherBow extends Item {
 		this.setCreativeTab(CreativeTabs.tabCombat);
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getIconFromDamage(int par1) {
+		return 65;
+	}
+	
 	/**
 	 * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
 	 */
@@ -128,4 +136,23 @@ public class NetherBow extends Item {
 		return 1;
 	}
 
+	@Override
+	public int getIconIndex(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+		// Here is an example usage for Vanilla bows.
+		if (usingItem != null && usingItem.getItem().shiftedIndex == NetherItems.NetherBow.shiftedIndex) {
+			int k = usingItem.getMaxItemUseDuration() - useRemaining;
+			if (k >= 18)
+				return 68;
+			if (k > 13)
+				return 67;
+			if (k > 0)
+				return 66;
+		}
+
+		return getIconIndex(stack);
+	}
+	@Override
+	public String getTextureFile() {
+		return "/items.png";
+	}
 }

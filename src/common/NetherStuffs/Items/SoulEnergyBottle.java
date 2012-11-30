@@ -135,6 +135,19 @@ public class SoulEnergyBottle extends Item {
 		}
 	}
 
+	public static void decreaseSoulEnergyAmount(ItemStack item, int i) {
+		if (i >= 0) {
+			if (!item.hasTagCompound())
+				item.stackTagCompound = new NBTTagCompound();
+
+			int nCurrentAmount = item.getTagCompound().getInteger("SoulEnergyAmount");
+			int nNewAmount = nCurrentAmount - i;
+			if (nNewAmount < 0)
+				nNewAmount = 0;
+			item.getTagCompound().setInteger("SoulEnergyAmount", nNewAmount);
+		}
+	}
+
 	public static void setSoulEnergyAmount(ItemStack item, int i) {
 		if (i >= 0) {
 			if (!item.hasTagCompound())

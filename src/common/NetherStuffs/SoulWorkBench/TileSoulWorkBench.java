@@ -96,8 +96,7 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory {
 		if (this.inventory[this.nTankFillSlot] != null && this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.shiftedIndex
 				&& this.currentTankLevel < this.maxTankLevel) {
 			if (this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
-				SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot],
-						this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) - this.maxTankLevel);
+				SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.maxTankLevel - this.currentTankLevel);
 				this.currentTankLevel = this.maxTankLevel;
 			} else {
 				this.currentTankLevel += SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]);

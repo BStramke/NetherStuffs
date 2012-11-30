@@ -25,12 +25,12 @@ public class RenderTorchArrow extends Render {
 		byte var11 = 0;
 		float var12 = 0.0F;
 		float var13 = 0.5F;
-		float var14 = (float) (0 + 10 + var11 * 10) / 32.0F;
-		float var15 = (float) (5 + 10 + var11 * 10) / 32.0F;
+		float var14 = (float) (0 + var11 * 10) / 32.0F;
+		float var15 = (float) (5 + var11 * 10) / 32.0F;
 		float var16 = 0.0F;
 		float var17 = 0.15625F;
-		float var18 = (float) (5 + 10 + var11 * 10) / 32.0F;
-		float var19 = (float) (10 + 10 + var11 * 10) / 32.0F;
+		float var18 = (float) (5 + var11 * 10) / 32.0F;
+		float var19 = (float) (10 + var11 * 10) / 32.0F;
 		float var20 = 0.05625F;
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
