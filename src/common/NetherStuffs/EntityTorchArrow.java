@@ -212,7 +212,7 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 				else if (nY <= 0)
 					nYPos = this.yTile - 1;
 
-				if (((BlockTorch)Block.torchWood).canPlaceBlockAt(this.worldObj, nXPos, nYPos, nZPos) && this.worldObj.getBlockId(nXPos, nYPos, nZPos) == 0)
+				if (((BlockTorch)Block.torchWood).canPlaceBlockAt(this.worldObj, nXPos, nYPos, nZPos)/* && this.worldObj.getBlockId(nXPos, nYPos, nZPos) == 0*/)
 					this.worldObj.setBlock(nXPos, nYPos, nZPos, Block.torchWood.blockID);
 				else {
 					if (!this.worldObj.isRemote) {
