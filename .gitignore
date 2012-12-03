@@ -19,6 +19,8 @@ LICENSE.txt
 !/src/minecraft/NetherStuffsCore/
 /src/minecraft_server/*
 /src/common/*
+/src/dummy/*
+/src/resources
 !/src/common/NetherStuffs/
 !/src/common/net/minecraft/src/BlockPane.java
 !/src/common/net/minecraft/src/BlockBreakable.java
@@ -27,7 +29,7 @@ LICENSE.txt
 !/src/common/codechickencore_at.cfg
 !/src/common/nei_at.cfg
 !/src/minecraft/net/minecraft/src/GuiContainer.*
-!/src/common/buildcraft
+!/src/common/buildcraft/api/inventory/ISpecialInventory.java
 !/src/common/netherstuffs_at.cfg
 
 *.bat
