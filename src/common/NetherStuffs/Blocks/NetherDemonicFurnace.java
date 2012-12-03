@@ -207,13 +207,13 @@ public class NetherDemonicFurnace extends BlockContainer {
 			return 98; // bottom
 		case NetherBlocks.sideTop:
 			return 98; // top
-		case NetherBlocks.sideFront:
+		case NetherBlocks.sideSouth:
 			return 96; // front
-		case NetherBlocks.sideBack:
+		case NetherBlocks.sideNorth:
 			return 97; // back 97
-		case NetherBlocks.sideRight:
+		case NetherBlocks.sideEast:
 			return 97; // right
-		case NetherBlocks.sideLeft:
+		case NetherBlocks.sideWest:
 			return 97; // left
 		default:
 			return 98;

@@ -106,13 +106,13 @@ public class NetherSoulFurnace extends BlockContainer {
 			return 130; // bottom
 		case NetherBlocks.sideTop:
 			return 130; // top
-		case NetherBlocks.sideFront:
+		case NetherBlocks.sideSouth:
 			return 128; // front
-		case NetherBlocks.sideBack:
+		case NetherBlocks.sideNorth:
 			return 129; // back 97
-		case NetherBlocks.sideRight:
+		case NetherBlocks.sideEast:
 			return 129; // right
-		case NetherBlocks.sideLeft:
+		case NetherBlocks.sideWest:
 			return 129; // left
 		default:
 			return 130;
