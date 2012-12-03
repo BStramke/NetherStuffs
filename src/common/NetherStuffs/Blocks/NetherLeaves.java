@@ -6,14 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.EntityFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IShearable;
+import NetherStuffs.Client.EntityDropParticleFXNetherStuffs;
 import NetherStuffs.Common.NetherLeavesMaterial;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -202,20 +205,25 @@ public class NetherLeaves extends Block implements IShearable {
 			double var8 = (double) par3 - 0.05D;
 			double var10 = (double) ((float) par4 + par5Random.nextFloat());
 			int metadata = par1World.getBlockMetadata(par2, par3, par4);
-			switch (metadata) {
+			EntityFX fx = null;
+			switch (unmarkedMetadata(metadata)) {
 			case hellfire:
 				par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
 				break;
 			case acid:
-				// EntityDropParticleFXNetherStuffs(par1World, par2, par3, par4, Material.lava);
-				par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+				fx = new EntityDropParticleFXNetherStuffs(par1World, var6, var8, var10, "acid");
 				break;
 			case death:
-				par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+				fx = new EntityDropParticleFXNetherStuffs(par1World, var6, var8, var10, "death");
 				break;
 			default:
-				par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+				System.out.println(metadata);
+				// par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
 				break;
+			}
+
+			if (fx != null) {
+				Minecraft.getMinecraft().effectRenderer.addEffect((EntityFX) fx, null);
 			}
 		}
 
