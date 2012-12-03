@@ -5,10 +5,12 @@ import net.minecraft.src.BiomeGenHell;
 import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.EntitySkeleton;
+import net.minecraft.src.EnumCreatureType;
 import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.SpawnListEntry;
+import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -278,7 +280,11 @@ public class NetherStuffs extends DummyModContainer {
 		 * /topic/1493398-move-wither-skeletons-out- of-fortresses-over-125-supporters/
 		 */
 		if (SpawnSkeletonsAwayFromNetherFortresses)
-			((BiomeGenHell) BiomeGenBase.hell).spawnableMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 50, 4, 4));
+			EntityRegistry.addSpawn(EntitySkeleton.class, 50, 4, 4, EnumCreatureType.monster, BiomeGenBase.hell);
+		
+		/* Use the above method as its without coremod possible
+		if (SpawnSkeletonsAwayFromNetherFortresses)
+			((BiomeGenHell) BiomeGenBase.hell).spawnableMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 50, 4, 4));*/
 	}
 
 	private void registerWorldGenerators() {
