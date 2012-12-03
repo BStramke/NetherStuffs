@@ -34,6 +34,7 @@ import NetherStuffs.Client.ClientPacketHandler;
 import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.Common.GuiHandler;
 import NetherStuffs.Common.NetherStuffsFuel;
+import NetherStuffs.Common.NetherStuffsPlayerTracker;
 import NetherStuffs.Common.ServerPacketHandler;
 import NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import NetherStuffs.DemonicFurnace.TileDemonicFurnace;
@@ -52,6 +53,7 @@ import NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -192,6 +194,7 @@ public class NetherStuffs extends DummyModContainer {
 			if (intVal > 0 && intVal < 4096)
 				NetherStuffsEventHook.lBlockSpawnListForced.add(intVal);
 		}
+
 		FMLLog.info("[NetherStuffs] Blocked Nether Spawns on Block IDs: %s", NetherStuffsEventHook.lBlockSpawnListForced.toString());
 		config.save();
 	}
@@ -275,6 +278,8 @@ public class NetherStuffs extends DummyModContainer {
 			Block.netherrack.setResistance(2.0F);
 		}
 
+		
+		GameRegistry.registerPlayerTracker(new NetherStuffsPlayerTracker());
 		/*
 		 * This lets Skeletons Spawn away from NetherFortresses. Actual Idea by ErasmoGnome, made on the MinecraftForums: http://www.minecraftforum.net
 		 * /topic/1493398-move-wither-skeletons-out- of-fortresses-over-125-supporters/

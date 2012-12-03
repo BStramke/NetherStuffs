@@ -11,6 +11,7 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -19,7 +20,9 @@ public class NetherSoulGlassPane extends BlockPane {
 	public NetherSoulGlassPane(int par1, int par2, int par3, Material par4Material, boolean par5) {
 		super(par1, par2, par3, par4Material, par5);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
-		BlockPane.addToConnectList(this.blockID);
+		if(Loader.isModLoaded("NetherStuffsCore")){
+			BlockPane.addToConnectList(this.blockID);
+		}
 	}
 
 	public String getItemNameIS(ItemStack is) {

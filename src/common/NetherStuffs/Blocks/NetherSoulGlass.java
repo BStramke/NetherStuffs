@@ -10,6 +10,7 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -19,9 +20,11 @@ public class NetherSoulGlass extends BlockGlass {
 		super(par1, par2, par3Material, par4);
 		this.setStepSound(soundGlassFootstep);
 		this.setCreativeTab(CreativeTabs.tabBlock);
-		BlockPane.addToConnectList(par1);
-		addToSameBlockList(Block.glass.blockID);
-		addToSameBlockList(this.blockID);
+		if (Loader.isModLoaded("NetherStuffsCore")) {
+			BlockPane.addToConnectList(par1);
+			addToSameBlockList(Block.glass.blockID);
+			addToSameBlockList(this.blockID);
+		}
 	}
 
 	public String getItemNameIS(ItemStack is) {

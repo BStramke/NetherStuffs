@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import cpw.mods.fml.common.Loader;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityBlaze;
 import net.minecraft.src.EntityGhast;
 import net.minecraft.src.EntityMagmaCube;
 import net.minecraft.src.EntityPig;
 import net.minecraft.src.EntityPigZombie;
+import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.EntitySkeleton;
 import net.minecraft.src.EntityWither;
 import net.minecraft.src.MathHelper;
@@ -25,9 +28,9 @@ public class NetherStuffsEventHook {
 	public static List lAllowedSpawnNetherBlockIds = new ArrayList();
 	public static boolean SpawnSkeletonsOnlyOnNaturalNetherBlocks;
 	public static List lBlockSpawnListForced = new ArrayList();
-
+	
 	@ForgeSubscribe
-	public void entitySpawnInWorldEvent(EntityJoinWorldEvent event) {
+	public void entitySpawnInWorldEvent(EntityJoinWorldEvent event) {		
 		if (nDetectRadius == 0)
 			return;
 		if (event.isCancelable() && event.world.provider.isHellWorld && !event.world.isRemote) {
