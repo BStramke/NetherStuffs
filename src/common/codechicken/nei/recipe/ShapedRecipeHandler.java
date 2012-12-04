@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 import codechicken.core.ReflectionManager;
-import codechicken.nei.DefaultOverlayRenderer;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.NEICompatibility;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.api.DefaultOverlayRenderer;
 import net.minecraft.src.Container;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.GuiContainer;
@@ -201,13 +201,17 @@ public class ShapedRecipeHandler extends TemplateRecipeHandler
 	{
 		return "/gui/crafting.png";
 	}
-
-	@Override
-	public boolean hasOverlay(GuiContainer gui, Container container, int recipe)
-	{
-		return DefaultOverlayRenderer.getOverlayIdent(gui).equals("crafting") || 
-				(isRecipe2x2(recipe) && DefaultOverlayRenderer.getOverlayIdent(gui).equals("crafting2x2"));
-	}
+    
+    @Override
+    public String getOverlayIdentifier()
+    {
+        return "crafting";
+    }
+    
+    public boolean hasOverlay(GuiContainer gui, Container container, int recipe)
+    {
+        return super.hasOverlay(gui, container, recipe) || RecipeInfo.hasDefaultOverlay(gui, "crafting2x2");
+    }
 	
 	public boolean isRecipe2x2(int recipe)
 	{

@@ -1,18 +1,5 @@
 package codechicken.core.asm;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AnnotationNode;
-import org.objectweb.asm.tree.ClassNode;
-
-import codechicken.core.ReflectionManager;
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.asm.ASMTransformer;
 
 public class DevTransfomer extends ASMTransformer
@@ -21,20 +8,8 @@ public class DevTransfomer extends ASMTransformer
 	
 	public DevTransfomer()
 	{
-		if(ObfuscationManager.obfuscated)
-			disabled = true;
-		try
-		{
-			if(ReflectionManager.callMethod(ReflectionManager.findClass("net.minecraftforge.common.ForgeVersion"), Integer.class, "getBuildVersion") != 0)
-				disabled = true;
-		}
-		catch(Exception e)
-		{
-			disabled = true;
-		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public byte[] transform(String name, byte[] bytes)
 	{

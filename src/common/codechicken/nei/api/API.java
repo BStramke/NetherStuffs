@@ -6,11 +6,9 @@ import java.util.LinkedList;
 
 import org.lwjgl.input.Keyboard;
 
-import codechicken.nei.DefaultOverlayRenderer;
 import codechicken.nei.DropDownFile;
 import codechicken.nei.GuiNEIControls;
 import codechicken.nei.GuiNEISettings;
-import codechicken.nei.IStackPositioner;
 import codechicken.nei.ItemHash;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.MultiItemRange;
@@ -24,6 +22,7 @@ import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.ICraftingHandler;
 import codechicken.nei.recipe.IUsageHandler;
+import codechicken.nei.recipe.RecipeInfo;
 
 import net.minecraft.src.GuiContainer;
 import net.minecraft.src.ItemStack;
@@ -87,7 +86,18 @@ public class API
 	 */
 	public static void registerGuiOverlay(Class<? extends GuiContainer> classz, String ident, IStackPositioner positioner)
 	{
-		DefaultOverlayRenderer.registerGuiOverlay(classz, ident, positioner);
+		RecipeInfo.registerGuiOverlay(classz, ident, positioner);
+	}
+	
+	/**
+	 * 
+	 * @param classz The class of your gui
+	 * @param handler The handler to register
+	 * @param ident The recipe identification string
+	 */
+	public static void registerGuiOverlayHandler(Class<? extends GuiContainer> classz, IOverlayHandler handler, String ident)
+	{
+	    RecipeInfo.registerOverlayHandler(classz, handler, ident);
 	}
 
 	public static void registerNEIGuiHandler(INEIGuiHandler handler)

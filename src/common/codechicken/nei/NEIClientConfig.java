@@ -28,6 +28,7 @@ import codechicken.nei.api.ItemInfo;
 import codechicken.nei.api.LayoutStyle;
 import codechicken.nei.api.TaggedInventoryArea;
 import codechicken.nei.asm.NEIModContainer;
+import codechicken.nei.recipe.RecipeInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.GuiContainer;
@@ -672,6 +673,7 @@ public class NEIClientConfig
 		vishash = new ItemVisibilityHash();
 		ItemInfo.load();
 		GuiInfo.load();
+		RecipeInfo.load();
 		LayoutManager.load();
 		NEIController.load();
 		

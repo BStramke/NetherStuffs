@@ -241,7 +241,8 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
 	
 	public void onCraftMatrixChanged(IInventory iinventory)
 	{
-		updateEnchantmentOptions();
+	    if(parentscreen != null)
+	        updateEnchantmentOptions();
 	}
 
 	public void updateEnchantmentOptions()

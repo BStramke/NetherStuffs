@@ -60,9 +60,9 @@ public class NEIServerUtils
         return world.getWorldInfo().getWorldTime();
     }
 
-    public static void setTime(long l)
+    public static void setTime(long l, World world)
     {
-    	ServerUtils.getWorld().getWorldInfo().setWorldTime(l);
+    	world.getWorldInfo().setWorldTime(l);
     }
 	
     public static void setSlotContents(EntityPlayer player, int slot, ItemStack item, boolean containerInv)
@@ -92,9 +92,9 @@ public class NEIServerUtils
 	
     public static void setHourForward(World world, int hour, boolean notify)
 	{
-		long l = (getTime(world) / 24000L) * 24000L;
-        long l1 = l + 24000L + (long)(hour * 1000);
-        setTime(l1);
+		long day = (getTime(world) / 24000L) * 24000L;
+        long newTime = day + 24000L + (long)(hour * 1000);
+        setTime(newTime, world);
         if(notify)ServerUtils.sendChatToAll("Day "+(getTime(world) / 24000L)+". "+hour+":00");
 	}
 	
@@ -105,12 +105,12 @@ public class NEIServerUtils
 		int newhour = hour;
 		while(true)
 		{
-			int zone = ((newhour+3)/6)%4;
+			int zone = newhour/6;
 			try
 			{
 				if(NEIServerConfig.isPropertyDisabled(dim, AllowedPropertyMap.idToNameMap.get(zone)))
 				{
-					newhour = ((zone+1) % 4)*6-3;
+					newhour = ((zone+1)%4)*6;
 				}
 				else
 				{

@@ -1,7 +1,10 @@
 package codechicken.core.asm;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -65,7 +68,7 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 	private void scanCodeChickenMods()
 	{
 		File modsDir = new File(minecraftDir, "mods");
-		if(!modsDir.exists())
+		if(!modsDir.exists() || !ObfuscationManager.obfuscated)
 			return;
 		for(File file : modsDir.listFiles(new FilenameFilter()
 		{			
@@ -90,7 +93,12 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 					
 					String mapFile = attr.getValue("AccessTransformer");
 					if(mapFile != null)
-						CodeChickenAccessTransformer.addTransformerMap(mapFile);
+					{
+					    File temp = extractTemp(jar, mapFile);
+					    System.out.println("Adding AccessTransformer: "+mapFile);
+						CodeChickenAccessTransformer.addTransformerMap(temp.getPath());
+						temp.delete();
+					}
 				}
 				finally
 				{
@@ -99,8 +107,27 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 			}
 			catch(Exception e)
 			{
+                e.printStackTrace();
 				System.err.println("CodeChickenCore: Failed to read jar file: "+file.getName());
 			}
 		}
 	}
+
+    private File extractTemp(JarFile jar, String mapFile) throws IOException
+    {
+        File temp = new File("temp.dat");
+        if(!temp.exists())
+            temp.createNewFile();
+        FileOutputStream fout = new FileOutputStream(temp);
+        byte[] data = new byte[4096];
+        int read = 0;
+        InputStream fin = jar.getInputStream(jar.getEntry(mapFile));
+        while((read = fin.read(data)) > 0)
+        {
+            fout.write(data, 0, read);
+        }
+        fin.close();
+        fout.close();
+        return temp;
+    }
 }

@@ -18,13 +18,31 @@ public class ConfigFile
 {
 	public static class TagOrderComparator implements Comparator<ConfigTag>
 	{
+		int sortMode;
+		
+		public TagOrderComparator(int sortMode)
+		{
+			this.sortMode = sortMode;
+		}
+		
 		public int compare(ConfigTag o1, ConfigTag o2)
 		{
 			if(o1.position == o2.position)
 			{
 				if(o1.brace == o2.brace)
 				{
-					return o1.name.compareTo(o2.name);
+					switch(sortMode)
+					{
+						case 1:
+							if(o1.value == null)
+								return o2.value == null ? 0 : 1;
+							else if(o2.value == null)
+								return -1;
+							else
+								return o1.value.compareTo(o2.value);
+						default:
+							return o1.name.compareTo(o2.name);
+					}
 				}
 				else
 				{
@@ -276,7 +294,7 @@ public class ConfigFile
 			}
 		}
 		ConfigFile.writeLine(writer, "", 0);
-		saveTagTree(writer, maintags, 0, "");
+		saveTagTree(writer, maintags, 0, "", sortMode);
 		writer.flush();
 		writer.close();
 	}
@@ -288,7 +306,7 @@ public class ConfigFile
 		return this;
 	}
 	
-	public static void saveTagTree(PrintWriter writer, TreeMap<String, ConfigTag> tagtree, int braces, String bracequalifier)
+	public static void saveTagTree(PrintWriter writer, TreeMap<String, ConfigTag> tagtree, int braces, String bracequalifier, int sortMode)
 	{
 		ArrayList<ConfigTag> taglist = new ArrayList<ConfigTag>(tagtree.size());
 		for(Entry<String, ConfigTag> tag : tagtree.entrySet())
@@ -296,7 +314,7 @@ public class ConfigFile
 			taglist.add(tag.getValue());
 		}
 		
-		Collections.sort(taglist, new TagOrderComparator());
+		Collections.sort(taglist, new TagOrderComparator(sortMode));
 
 		for(ConfigTag tag : taglist)
 		{
@@ -304,7 +322,7 @@ public class ConfigFile
 		}
 	}
 	
-	public static ArrayList<ConfigTag> getSortedTagList(TreeMap<String, ConfigTag> tagtree)
+	public static ArrayList<ConfigTag> getSortedTagList(TreeMap<String, ConfigTag> tagtree, int sortMode)
 	{
 		ArrayList<ConfigTag> taglist = new ArrayList<ConfigTag>(tagtree.size());
 		for(Entry<String, ConfigTag> tag : tagtree.entrySet())
@@ -312,7 +330,7 @@ public class ConfigFile
 			taglist.add(tag.getValue());
 		}
 		
-		Collections.sort(taglist, new TagOrderComparator());
+		Collections.sort(taglist, new TagOrderComparator(sortMode));
 		return taglist;
 	}
 	
@@ -339,10 +357,18 @@ public class ConfigFile
 		return this;
 	}
 	
+	public ConfigFile setSortMode(int mode)
+	{
+		sortMode = mode;
+		saveConfig();
+		return this;
+	}
+	
 	public File file;
 	public TreeMap<String, ConfigTag> maintags;
 	public String comment;
 	public int newlinemode = 2;
+	public int sortMode = 0;
 	public static boolean loading;
 	
 	public static final byte[] lineend = new byte[]{0xD, 0xA};

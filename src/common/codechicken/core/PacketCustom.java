@@ -14,6 +14,7 @@ import cpw.mods.fml.common.network.Player;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
+import net.minecraftforge.liquids.LiquidStack;
 
 public final class PacketCustom
 {
@@ -38,7 +39,7 @@ public final class PacketCustom
 		{
 			NetworkRegistry.instance().registerChannel(this, channel, getSide());
 		}
-		
+
 		@Override
 		public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) 
 		{
@@ -252,7 +253,7 @@ public final class PacketCustom
 	public void writeCoord(int x, int y, int z)
 	{
 		writeInt(x);
-		writeByte(y);
+		writeInt(y);
 		writeInt(z);
 	}
 	
@@ -312,6 +313,20 @@ public final class PacketCustom
 		{
 			FMLCommonHandler.instance().raiseException(e, "Custom Packet", true);
 		}
+	}
+
+	public void writeLiquidStack(LiquidStack liquid)
+	{
+		if (liquid == null)
+        {
+            writeShort(-1);
+        }
+        else
+        {
+            writeShort(liquid.itemID);
+            writeInt(liquid.amount);
+            writeShort(liquid.itemMeta);
+        }
 	}
 
 	public boolean readBoolean()
@@ -430,7 +445,7 @@ public final class PacketCustom
 	
 	public BlockCoord readCoord()
 	{
-		return new BlockCoord(readInt(), readUnsignedByte(), readInt());
+		return new BlockCoord(readInt(), readInt(), readInt());
 	}
 	
 	public byte[] readByteArray(int length)
@@ -506,6 +521,21 @@ public final class PacketCustom
 			return null;
 		}
 	}
+		
+	public LiquidStack readLiquidStack()
+	{
+		LiquidStack var2 = null;
+        short liquidID = readShort();
+
+        if (liquidID >= 0)
+        {
+            int amount = readInt();
+            short liquidMeta = readShort();
+            var2 = new LiquidStack(liquidID, amount, liquidMeta);
+        }
+
+        return var2;
+	}
 
 	private String channel;
 	private int type;
@@ -537,5 +567,10 @@ public final class PacketCustom
 			handlerMap.put(channel, handler);
 		}
 		handler.registerRange(firstID, lastID, IHandler);
+	}
+
+	public void sendToPlayer(EntityPlayerMP player)
+	{
+		player.playerNetServerHandler.sendPacketToPlayer(toPacket());
 	}
 }

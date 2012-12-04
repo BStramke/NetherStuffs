@@ -720,7 +720,7 @@ public class SubSetRangeTag extends ConfigTag
 		{
 			validranges.resetHashes();
 		}
-		sortedtags = ConfigFile.getSortedTagList(childtags);
+		sortedtags = ConfigFile.getSortedTagList(childtags, sortMode);
 		for(ConfigTag tag : sortedtags)
 		{
 			SubSetRangeTag stag = (SubSetRangeTag)tag;
@@ -863,7 +863,7 @@ public class SubSetRangeTag extends ConfigTag
 		}
 		else if(childtags.size() > 0)
 		{
-			ConfigFile.saveTagTree(writer, childtags, tabs, bracequalifier);
+			ConfigFile.saveTagTree(writer, childtags, tabs, bracequalifier, sortMode);
 		}
 	}
 	

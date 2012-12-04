@@ -15,11 +15,13 @@ import net.minecraft.src.GuiContainer;
 import net.minecraft.src.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import codechicken.nei.DefaultOverlayRenderer;
-import codechicken.nei.IRecipeOverlayRenderer;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.api.DefaultOverlayRenderer;
+import codechicken.nei.api.IOverlayHandler;
+import codechicken.nei.api.IRecipeOverlayRenderer;
+import codechicken.nei.api.IStackPositioner;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.forge.IContainerInputHandler;
 import codechicken.nei.forge.IContainerTooltipHandler;
@@ -153,6 +155,12 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
 	 */
 	public static class RecipeTransferRect
 	{
+	    @Deprecated
+	    public RecipeTransferRect(TemplateRecipeHandler handler, Rectangle rectangle, String outputId, Object... results)
+        {
+            this(rectangle, outputId, results);
+        }
+	    
 		public RecipeTransferRect(Rectangle rectangle, String outputId, Object... results)
 		{
 			rect = rectangle;
@@ -531,12 +539,21 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
 	
 	public boolean hasOverlay(GuiContainer gui, Container container, int recipe)
 	{
-		return DefaultOverlayRenderer.getOverlayIdent(gui).equals(getOverlayIdentifier());
+	    return RecipeInfo.hasDefaultOverlay(gui, getOverlayIdentifier()) || RecipeInfo.hasOverlayHandler(gui, getOverlayIdentifier());
 	}
 	
 	public IRecipeOverlayRenderer getOverlayRenderer(GuiContainer gui, int recipe)
 	{
-		return new DefaultOverlayRenderer(getIngredientStacks(recipe), gui);
+	    IStackPositioner positioner = RecipeInfo.getStackPositioner(gui, getOverlayIdentifier());
+	    if(positioner == null)
+	        return null;
+		return new DefaultOverlayRenderer(getIngredientStacks(recipe), positioner);
+	}
+	
+	@Override
+	public IOverlayHandler getOverlayHandler(GuiContainer gui, int recipe)
+	{
+	    return RecipeInfo.getOverlayHandler(gui, getOverlayIdentifier());
 	}
 	
 	@Override

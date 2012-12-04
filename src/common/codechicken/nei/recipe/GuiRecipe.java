@@ -2,16 +2,21 @@ package codechicken.nei.recipe;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import com.google.common.base.Objects;
+
 import codechicken.nei.GuiNEIButton;
-import codechicken.nei.IRecipeOverlayRenderer;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientConfig;
+import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.IGuiContainerOverlay;
+import codechicken.nei.api.IOverlayHandler;
+import codechicken.nei.api.IRecipeOverlayRenderer;
 import codechicken.nei.forge.IContainerClientSide;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
@@ -20,7 +25,7 @@ import net.minecraft.src.Slot;
 
 public abstract class GuiRecipe extends GuiContainer implements IContainerClientSide, IGuiContainerOverlay
 {
-	protected GuiRecipe(GuiContainer prevgui)
+    protected GuiRecipe(GuiContainer prevgui)
 	{
 		super(new ContainerRecipe());
 		slotcontainer = (ContainerRecipe) inventorySlots;
@@ -197,16 +202,25 @@ public abstract class GuiRecipe extends GuiContainer implements IContainerClient
 	
 	private void overlayRecipe(int recipe)
 	{
-		IRecipeOverlayRenderer renderer = currenthandlers.get(recipetype).getOverlayRenderer(firstGui, recipe);
-		if(renderer == null)return;
-		
-		firstGui.refresh();
-        mc.displayGuiScreen(firstGui);
-		LayoutManager.overlayRenderer = renderer;
-        return;
+	    IRecipeOverlayRenderer renderer = currenthandlers.get(recipetype).getOverlayRenderer(firstGui, recipe);
+	    IOverlayHandler handler = currenthandlers.get(recipetype).getOverlayHandler(firstGui, recipe);
+	    boolean shift = NEIClientUtils.shiftKey();
+	    
+	    if(handler != null && (renderer == null || shift))
+	    {
+            firstGui.refresh();
+            mc.displayGuiScreen(firstGui);
+	        handler.overlayRecipe(firstGui, currenthandlers.get(recipetype).getIngredientStacks(recipe), shift);
+	    }
+	    else if(renderer != null && (handler == null || !shift))
+	    {	        
+	        firstGui.refresh();
+	        mc.displayGuiScreen(firstGui);
+	        LayoutManager.overlayRenderer = renderer;
+	    }
 	}
-	
-	public void refreshPage()
+
+    public void refreshPage()
 	{
 		refreshSlots();
 		

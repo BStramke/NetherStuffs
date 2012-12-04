@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
-import codechicken.nei.IRecipeOverlayRenderer;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.api.IOverlayHandler;
+import codechicken.nei.api.IRecipeOverlayRenderer;
 import codechicken.nei.forge.GuiContainerManager;
 
 import net.minecraft.src.Container;
@@ -76,7 +77,13 @@ public interface IRecipeHandler
 	 * @param recipe The recipe index to get the overlay renderer for.
 	 * @return An instance of {@link IRecipeOverlayRenderer} to be used for rendering the overlay of this specific recipe.
 	 */
-	public IRecipeOverlayRenderer getOverlayRenderer(GuiContainer gui, int recipe);	
+	public IRecipeOverlayRenderer getOverlayRenderer(GuiContainer gui, int recipe);
+	/**
+     * 
+     * @param recipe The recipe index to get the overlay renderer for.
+     * @return An instance of {@link IOverlayHandler} to be used for rendering the overlay of this specific recipe.
+     */
+	public IOverlayHandler getOverlayHandler(GuiContainer gui, int recipe);
 	/**
 	 * 
 	 * @return The number of recipes that can fit on a page in the viewer (1 or 2)

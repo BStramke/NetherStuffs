@@ -16,17 +16,13 @@ import net.minecraft.src.Packet;
 import net.minecraft.src.Packet3Chat;
 import net.minecraft.src.Vec3;
 import net.minecraft.src.World;
+import net.minecraftforge.common.DimensionManager;
 
 public class ServerUtils extends CommonUtils
 {
 	public static MinecraftServer mc()
 	{
 		return MinecraftServer.getServer();
-	}
-
-	public static World getWorld()
-	{
-		return mc().worldServerForDimension(0);
 	}
 
 	public static EntityPlayerMP getPlayer(String playername)

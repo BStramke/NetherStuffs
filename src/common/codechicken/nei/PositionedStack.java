@@ -56,7 +56,8 @@ public class PositionedStack
 			ItemStack permutation = item.copy();
 			stacks.add(permutation);
 			if(item.getItemDamage() == -1)
-			{				
+			{
+			    permutation.setItemDamage(0);
 				for(int damage = 1; damage <= 15; damage++)
 				{
 					permutation = item.copy();

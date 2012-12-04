@@ -62,7 +62,6 @@ public class ItemList
         	catch(PatternSyntaxException e)
         	{
         		patternMatch = Pattern.compile("");
-        		LayoutManager.searchField.setText(matchstring.substring(0, matchstring.length()-1));
         	}
     	}
         
@@ -144,29 +143,24 @@ public class ItemList
 		                continue;
 		            
 		            sublist.clear();
-		            item.getSubItems(itemID, item.getCreativeTab(), sublist);
+		            item.getSubItems(itemID, null, sublist);
 		            ArrayList<int[]> damageranges = ItemInfo.getItemDamageVariants(item.shiftedIndex);
 		            if(sublist.size() > 0)
 		            {
-		            	boolean finishSearch = false;
 			            ArrayList<Integer> discreteDamages = new ArrayList<Integer>();
 		            	for(ItemStack stack : sublist)
 		            	{
 			            	if(stack.hasTagCompound())
 			    			{
-			            		finishSearch = true;
 			            		stack = stack.copy();
 			                    items.add(stack);              
 			                    DropDownFile.dropDownInstance.addItemIfInRange(itemID, stack.getItemDamage(), stack.stackTagCompound);	   
 			    			}
-			    			else/*&& item.itemID != Item.potion.shiftedIndex && item.itemID != Item.monsterPlacer.shiftedIndex*/
+			    			else
 			    			{
 			    				discreteDamages.add(stack.getItemDamage());
 			    			}
 		            	}
-		            	
-		            	if(finishSearch)
-		            		continue;
 		            	
 		            	if(damageranges == ItemInfo.defaultDamageRange)
 		            		damageranges = NEIClientUtils.concatIntegersToRanges(discreteDamages);

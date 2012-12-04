@@ -2,6 +2,8 @@ package codechicken.nei;
 
 import java.util.ArrayList;
 
+import codechicken.nei.api.IStackPositioner;
+
 public class OffsetPositioner implements IStackPositioner
 {
 	public OffsetPositioner(int x, int y)

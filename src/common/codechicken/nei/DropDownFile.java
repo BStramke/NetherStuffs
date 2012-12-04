@@ -460,7 +460,7 @@ public class DropDownFile extends ConfigFile
 	
 	public void resetHashes()
 	{
-		sortedtags = ConfigFile.getSortedTagList(maintags);
+		sortedtags = ConfigFile.getSortedTagList(maintags, sortMode);
 		for(ConfigTag tag : sortedtags)
 		{
 			((SubSetRangeTag)tag).resetHashes();

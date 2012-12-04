@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 
 import codechicken.core.PacketCustom;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
@@ -32,23 +33,26 @@ public class NEIServerConfig
 	public static HashMap<ItemHash, HashSet<String>> bannedblocks = new HashMap<ItemHash, HashSet<String>>();
 	public static ConfigFile serverConfig = new ConfigFile(new File(CommonUtils.getMinecraftDir(), "config/NEIServer.cfg")).setComment("NEI Server Permissions : Names are Comma (,) separated : ALL, OP and NONE are special names");
 	public static File worldSaveFile;
+	public static File worldSaveDir;
 	public static NBTTagCompound worldCompound;
 	
-	private static World lastWorld;
+	private static MinecraftServer server;
 	
 	public static void load(World world)
 	{
-		if(CommonUtils.getDimension(world) != 0 || lastWorld == world)
+		if(MinecraftServer.getServer() == server)
 			return;
 		
-		lastWorld = world;
+		System.out.println("Loading NEI");
+		server = MinecraftServer.getServer();
 		
 		initDefaults();
 		loadBannedBlocks();
 		
 		try
 		{
-			worldSaveFile = new File(CommonUtils.getWorldBaseSaveLocation(world), "NEI.dat");
+			worldSaveDir = CommonUtils.getWorldBaseSaveLocation(world);
+			worldSaveFile = new File(worldSaveDir, "NEI.dat");
 			if(!worldSaveFile.getParentFile().exists())
 				worldSaveFile.getParentFile().mkdirs();
 			if(!worldSaveFile.exists())
@@ -88,7 +92,7 @@ public class NEIServerConfig
 		setDefaultFeature("delete");
 		setDefaultFeature("notify-item", "CONSOLE, OP");
 		
-		serverConfig.getTag("BannedBlocks."+Block.bedrock.blockID).setDefaultValue("NONE");
+		serverConfig.getTag("BannedBlocks."+Block.bedrock.blockID+":0").setDefaultValue("NONE");
 	}
 	
 	private static void setDefaultFeature(String featurename, String... names)
@@ -225,7 +229,7 @@ public class NEIServerConfig
 	public static void loadPlayer(EntityPlayer player)
 	{
 		System.out.println("Loading Player: "+player.username);
-		playerSaves.put(player.username, new PlayerSave(player.username));
+		playerSaves.put(player.username, new PlayerSave(player.username, new File(worldSaveDir, "NEI/players")));
 	}
 
 	public static void unloadPlayer(EntityPlayer player)

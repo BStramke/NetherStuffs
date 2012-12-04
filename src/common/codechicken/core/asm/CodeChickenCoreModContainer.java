@@ -14,7 +14,7 @@ import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
 @SrcPackager(getMappedDirectories = {"CodeChickenCore"}, getClasses = {""}, getName = "CodeChickenCore")
-@Packager(getBaseDirectories = {"CodeChickenCore"}, getClasses = {""}, getName = "CodeChickenCore", getVersion = "0.6.10")
+@Packager(getBaseDirectories = {"CodeChickenCore"}, getClasses = {""}, getName = "CodeChickenCore", getVersion = "0.6.13")
 public class CodeChickenCoreModContainer extends DummyModContainer
 {
 	public CodeChickenCoreModContainer()

@@ -339,22 +339,18 @@ public class NEIClientUtils extends NEIServerUtils
         mc().theWorld.getWorldInfo().setWorldTime(l);
     }
 
-    public static void setHourForward(int i)
+    public static void setHourForward(int hour)
     {
-        long timethisday = (getTime() / 24000L) * 24000L;
-        long nexthour = timethisday + 24000L + (long)(i * 1000);
+		long day = (getTime() / 24000L) * 24000L;
+        long newTime = day + 24000L + (long)(hour * 1000);
         
 		if(NEIClientConfig.hasSMPCounterPart())
 		{
-			ClientPacketHandler.sendSetTime(i);
+			ClientPacketHandler.sendSetTime(hour);
 		}
 		else
-		{
-			long l = (getTime() / 24000L) * 24000L;
-	        long l1 = l + 24000L + (long)(i * 1000);
-	        setTime(l1);
-	        
-	        sendCommand(NEIClientConfig.getStringSetting("command.time"), nexthour);
+		{	        
+	        sendCommand(NEIClientConfig.getStringSetting("command.time"), newTime);
 		}
     }
 		

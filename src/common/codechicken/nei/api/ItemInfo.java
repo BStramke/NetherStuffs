@@ -12,6 +12,7 @@ import codechicken.nei.NEIClientUtils;
 import codechicken.nei.NEICompatibility;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.recipe.BrewingRecipeHandler;
+import codechicken.nei.recipe.DefaultOverlayHandler;
 import codechicken.nei.recipe.FuelRecipeHandler;
 import codechicken.nei.recipe.FurnaceRecipeHandler;
 import codechicken.nei.recipe.RecipeItemInputHandler;
@@ -69,7 +70,6 @@ public class ItemInfo
     	defaultDamageRange.add(new int[]{0,15});
         addVanillaBlockProperties();
         addDefaultDropDowns();
-        addRecipeHandlers();
         searchItems();
         addMobSpawnerItem();
         addSpawnEggs();
@@ -82,26 +82,6 @@ public class ItemInfo
 	{
 		GuiContainerManager.addInputHandler(new RecipeItemInputHandler());
 		GuiContainerManager.addInputHandler(new EnchantmentInputHandler());
-	}
-
-	private static void addRecipeHandlers()
-	{
-		API.registerRecipeHandler(new ShapedRecipeHandler());
-		API.registerUsageHandler(new ShapedRecipeHandler());
-		API.registerRecipeHandler(new ShapelessRecipeHandler());
-		API.registerUsageHandler(new ShapelessRecipeHandler());
-		API.registerRecipeHandler(new FurnaceRecipeHandler());
-		API.registerUsageHandler(new FurnaceRecipeHandler());
-		API.registerRecipeHandler(new BrewingRecipeHandler());
-		API.registerUsageHandler(new BrewingRecipeHandler());
-		API.registerRecipeHandler(new FuelRecipeHandler());		
-		API.registerUsageHandler(new FuelRecipeHandler());
-
-		API.registerGuiOverlay(GuiCrafting.class, "crafting", 5, 11);
-		API.registerGuiOverlay(GuiInventory.class, "crafting2x2", 63, 20);
-		API.registerGuiOverlay(GuiFurnace.class, "smelting", 5, 11);
-		API.registerGuiOverlay(GuiFurnace.class, "fuel", 5, 11);
-		API.registerGuiOverlay(GuiBrewingStand.class, "brewing", 5, 11);
 	}
 
 	private static void addMobSpawnerItem()

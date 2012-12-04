@@ -27,4 +27,57 @@ public class BlockCoord extends ChunkPosition implements Comparable<BlockCoord>
 	{
 		return new Vector3(x+0.5, y+0.5, z+0.5);
 	}
+
+	public BlockCoord multiply(int i)
+	{
+		return new BlockCoord(x*i, y*i, z*i);
+	}
+
+	public double mag_()
+	{
+		return Math.sqrt(x*x+y*y+z*z);
+	}
+	
+	public int mag2()
+	{
+		return x*x+y*y+z*z;
+	}
+
+	public boolean isZero()
+	{
+		return x == 0 && y == 0 && z == 0;
+	}
+
+	public boolean isAxial()
+	{
+		return x == 0 ? (y == 0 || z == 0) : (y == 0 && z == 0);
+	}
+	
+	public BlockCoord add(BlockCoord coord2)
+	{
+		return new BlockCoord(x+coord2.x, y+coord2.y, z+coord2.z);
+	}
+	
+	public BlockCoord sub(BlockCoord coord2)
+	{
+		return new BlockCoord(x-coord2.x, y-coord2.y, z-coord2.z);
+	}
+
+	public BlockCoord offset(int side)
+	{
+		return add(sideOffsets[side]);
+	}
+
+	public BlockCoord inset(int side)
+	{
+		return sub(sideOffsets[side]);
+	}
+	
+	public static final BlockCoord[] sideOffsets = new BlockCoord[]{
+		new BlockCoord( 0,-1, 0),
+		new BlockCoord( 0, 1, 0),
+		new BlockCoord( 0, 0,-1),
+		new BlockCoord( 0, 0, 1),
+		new BlockCoord(-1, 0, 0),
+		new BlockCoord( 1, 0, 0)};
 }

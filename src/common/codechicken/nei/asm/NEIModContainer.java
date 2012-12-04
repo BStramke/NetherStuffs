@@ -22,7 +22,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 
 @SrcPackager(getName="NotEnoughItems", getClasses = {""}, getMappedDirectories = {"NEI"})
-@Packager(getName = "NotEnoughItems", getClasses = {""}, getBaseDirectories = {"NEI"}, getVersion = "1.4.2.8")
+@Packager(getName = "NotEnoughItems", getClasses = {""}, getBaseDirectories = {"NEI"}, getVersion = "1.4.3.2")
 public class NEIModContainer extends DummyModContainer
 {    
     public static LinkedList<IConfigureNEI> plugins = new LinkedList<IConfigureNEI>();

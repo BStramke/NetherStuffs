@@ -209,6 +209,12 @@ public class Vector3
 		Quat.aroundAxis(axis.copy().normalize(), angle).rotate(this);
 		return this;
 	}
+	
+	public Vector3 rotate(Quat rotator)
+	{
+		rotator.rotate(this);
+		return this;
+	}
 
 	public Vec3 toVec3D()
 	{

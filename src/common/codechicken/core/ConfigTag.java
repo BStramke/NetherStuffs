@@ -237,12 +237,12 @@ public class ConfigTag
 		{
 			ConfigFile.writeLine(writer, unqualifiedname, tabs);
 			ConfigFile.writeLine(writer, "{", tabs);
-			ConfigFile.saveTagTree(writer, childtags, tabs+1, qualifiedname.replace(' ', '_'));
+			ConfigFile.saveTagTree(writer, childtags, tabs+1, qualifiedname.replace(' ', '_'), sortMode);
 			ConfigFile.writeLine(writer, "}", tabs);
 		}
 		else if(childtags.size() > 0)
 		{
-			ConfigFile.saveTagTree(writer, childtags, tabs, bracequalifier);
+			ConfigFile.saveTagTree(writer, childtags, tabs, bracequalifier, sortMode);
 		}
 	}	
 
@@ -260,6 +260,13 @@ public class ConfigTag
 		{
 			newline = true;
 		}
+		parentfile.saveConfig();
+		return this;
+	}
+	
+	public ConfigTag setSortMode(int mode)
+	{
+		sortMode = mode;
 		parentfile.saveConfig();
 		return this;
 	}
@@ -331,6 +338,46 @@ public class ConfigTag
 		}
 	}
 	
+	public boolean containsTag(String tagname)
+	{
+		return getTag(tagname, false) != null;
+	}
+	
+	public int getBlockId(String name, int defaultValue)
+	{
+		return getTag(name).getIntValue(defaultValue);
+	}
+	
+	public int getBlockId(String name)
+	{
+		int ret = getBlockId(name, IDBase);
+		IDBase = ret+1;
+		return ret;
+	}
+	
+	public int getItemId(String name, int defaultValue)
+	{
+		return getTag(name).getIntValue(defaultValue);
+	}
+	
+	public int getItemId(String name)
+	{
+		int ret = getItemId(name, IDBase);
+		IDBase = ret+1;
+		return ret;
+	}
+	
+	public int getAcheivementId(String name, int defaultValue)
+	{
+		return getTag(name).getIntValue(defaultValue);
+	}
+	
+	public ConfigTag setBaseID(int i)
+	{
+		IDBase = i;
+		return this;
+	}
+	
 	public ConfigFile parentfile;
 	public ConfigTag parenttag;
 	public TreeMap<String, ConfigTag> childtags = new TreeMap<String, ConfigTag>();
@@ -340,5 +387,7 @@ public class ConfigTag
 	public String value;
 	public boolean brace;
 	public boolean newline;
+	public int sortMode;
 	public int position = Integer.MAX_VALUE;
+	private int IDBase;	
 }
