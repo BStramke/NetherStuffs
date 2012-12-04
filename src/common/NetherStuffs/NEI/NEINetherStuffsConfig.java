@@ -15,11 +15,11 @@ public class NEINetherStuffsConfig implements IConfigureNEI {
 	public void loadConfig() {
 		API.registerRecipeHandler(new DemonicFurnaceRecipeHandler());
 		API.registerUsageHandler(new DemonicFurnaceRecipeHandler());
-		//API.registerGuiOverlay(GuiDemonicFurnace.class, "netherdemonicsmelting", 5, 11);
+		API.registerGuiOverlay(GuiDemonicFurnace.class, "netherdemonicsmelting", 5, 11);
 
 		API.registerRecipeHandler(new SoulWorkbenchRecipeHandler());
 		API.registerUsageHandler(new SoulWorkbenchRecipeHandler());
-		//API.registerGuiOverlay(GuiSoulWorkBench.class, "soulcrafting", 4, 4);
+		API.registerGuiOverlay(GuiSoulWorkBench.class, "soulcrafting", 4, 4);
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public class GuiSoulWorkBench extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		this.fontRenderer.drawString("Soul Workbench Gui", 38, 0, 4210752);
+		this.fontRenderer.drawString("Soul Workbench", 38, 0, 4210752);
 		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2 - 4, 4210752);
 	}
 

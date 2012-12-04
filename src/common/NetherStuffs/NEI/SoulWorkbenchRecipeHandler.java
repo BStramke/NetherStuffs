@@ -17,7 +17,9 @@ import codechicken.core.ReflectionManager;
 import codechicken.nei.DefaultOverlayRenderer;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.forge.GuiContainerManager;
+import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
@@ -39,7 +41,7 @@ public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
 		 * @param width
 		 * @param height
 		 * @param items
-		 *           an ItemStack[] or ItemStack[][]
+		 *            an ItemStack[] or ItemStack[][]
 		 */
 		public void setIngredients(int width, int height, Object[] items) {
 			for (int x = 0; x < width; x++) {
@@ -148,9 +150,13 @@ public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
 		}
 	}
 
+	// custom "?" handling necessary
 	@Override
-	public boolean hasOverlay(GuiContainer gui, Container container, int recipe) {
-		return DefaultOverlayRenderer.getOverlayIdent(gui).equals("soulcrafting") || (isRecipe2x2(recipe) && DefaultOverlayRenderer.getOverlayIdent(gui).equals("crafting2x2"));
+	public IOverlayHandler getOverlayHandler(GuiContainer gui, int recipe) {
+		
+		
+		
+		return RecipeInfo.getOverlayHandler(gui, getOverlayIdentifier());
 	}
 
 	public boolean isRecipe2x2(int recipe) {
@@ -192,5 +198,10 @@ public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.bindTextureByName(getGuiTexture());
 		gui.drawTexturedModalRect(0, 0, 4, 4, 166, 65);
+	}
+
+	@Override
+	public String getOverlayIdentifier() {
+		return "soulcrafting";
 	}
 }

@@ -195,4 +195,10 @@ public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
 		removeFuels();
 		findFuels();
 	}
+	
+	@Override
+	public String getOverlayIdentifier()
+	{
+		return "netherdemonicsmelting";
+	}
 }
