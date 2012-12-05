@@ -254,7 +254,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerTileEntity(TileSoulBlocker.class, "tileEntityNetherStuffsSoulBlocker");
 
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
-		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 64, 5, true);
+		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
 
 		OreDictionary.registerOre("oreDemonic", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.demonicOre));
 		OreDictionary.registerOre("oreNetherStone", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone));
