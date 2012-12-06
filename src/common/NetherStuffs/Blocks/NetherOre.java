@@ -45,27 +45,18 @@ public class NetherOre extends Block {
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (meta) {
 		case demonicOre:
+		case netherOreIron:
+		case netherOreGold:
+		case netherOreDiamond:
+		case netherOreRedstone:
+		case netherOreEmerald:
+		case netherOreCoal:
+		case netherOreObsidian:
+		case netherOreLapis:
+		case netherOreCobblestone:
 			return 0;
 		case netherStone:
 			return 1;
-		case netherOreIron:
-			return 2;
-		case netherOreGold:
-			return 3;
-		case netherOreDiamond:
-			return 4;
-		case netherOreRedstone:
-			return 5;
-		case netherOreEmerald:
-			return 6;
-		case netherOreCoal:
-			return 7;
-		case netherOreObsidian:
-			return 8;
-		case netherOreLapis:
-			return 9;
-		case netherOreCobblestone:
-			return 10;
 		default:
 			return 0;
 		}

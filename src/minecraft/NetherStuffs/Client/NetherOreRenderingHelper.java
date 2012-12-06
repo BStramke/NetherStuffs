@@ -1,70 +1,102 @@
 package NetherStuffs.Client;
 
-import org.lwjgl.opengl.GL11;
-
-import NetherStuffs.NetherStuffs;
 import net.minecraft.src.Block;
-import net.minecraft.src.FMLRenderAccessLibrary;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
+
+import org.lwjgl.opengl.GL11;
+
+import NetherStuffs.Blocks.NetherOre;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.Mod.Instance;
 
 public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 	private static int renderId;
-	
+
 	public static NetherOreRenderingHelper instance = new NetherOreRenderingHelper();
-	
-	public NetherOreRenderingHelper(){
+
+	public NetherOreRenderingHelper() {
 		this.renderId = RenderingRegistry.getNextAvailableRenderId();
 	}
-	
+
 	@Override
 	public void renderInventoryBlock(Block par1Block, int metadata, int modelID, RenderBlocks renderer) {
 		Tessellator var4 = Tessellator.instance;
 		par1Block.setBlockBoundsForItemRender();
-        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        var4.startDrawingQuads();
-        var4.setNormal(0.0F, -1.0F, 0.0F);
-        renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(0, metadata));
-        var4.draw();
+		GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
+		int nOffset = 0;
+		if (metadata == NetherOre.demonicOre)
+			nOffset = 2;
+		else
+			nOffset = 1;
 
-        var4.startDrawingQuads();
-        var4.setNormal(0.0F, 1.0F, 0.0F);
-        renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(1, metadata));
-        var4.draw();
+		var4.startDrawingQuads();
+		var4.setNormal(0.0F, -1.0F, 0.0F);
+		renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(0, metadata));
+		if (metadata != NetherOre.netherStone)
+			renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
 
-        var4.startDrawingQuads();
-        var4.setNormal(0.0F, 0.0F, -1.0F);
-        renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(2, metadata));
-        var4.draw();
-        var4.startDrawingQuads();
-        var4.setNormal(0.0F, 0.0F, 1.0F);
-        renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(3, metadata));
-        var4.draw();
-        var4.startDrawingQuads();
-        var4.setNormal(-1.0F, 0.0F, 0.0F);
-        renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(4, metadata));
-        var4.draw();
-        var4.startDrawingQuads();
-        var4.setNormal(1.0F, 0.0F, 0.0F);
-        renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(5, metadata));
-        var4.draw();
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+		var4.draw();
+
+		var4.startDrawingQuads();
+		var4.setNormal(0.0F, 1.0F, 0.0F);
+		renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(1, metadata));
+		if (metadata != NetherOre.netherStone)
+			renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
+		var4.draw();
+
+		var4.startDrawingQuads();
+		var4.setNormal(0.0F, 0.0F, -1.0F);
+		renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(2, metadata));
+		if (metadata != NetherOre.netherStone)
+			renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
+		var4.draw();
+		var4.startDrawingQuads();
+		var4.setNormal(0.0F, 0.0F, 1.0F);
+		renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(3, metadata));
+		if (metadata != NetherOre.netherStone)
+			renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
+		var4.draw();
+		var4.startDrawingQuads();
+		var4.setNormal(-1.0F, 0.0F, 0.0F);
+		renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(4, metadata));
+		if (metadata != NetherOre.netherStone)
+			renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
+		var4.draw();
+		var4.startDrawingQuads();
+		var4.setNormal(1.0F, 0.0F, 0.0F);
+		renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(5, metadata));
+		if (metadata != NetherOre.netherStone)
+			renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
+		var4.draw();
+		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}
 
 	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {	
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		renderer.renderStandardBlock(block, x, y, z);
+		int nMetadata = world.getBlockMetadata(x, y, z);
+		if (nMetadata != NetherOre.netherStone) {
+			Tessellator var8 = Tessellator.instance;
+			var8.setBrightness(1024);
 
-		Tessellator var8 = Tessellator.instance;
-		//renderer.renderWestFace(block, x, y, z, block.getBlockTexture(world, x, y, z, 5));
-		var8.setBrightness(1024);
-        renderer.renderWestFace(block, x, y, z, 81);
+			int nOffset = 0;
+			if (nMetadata == NetherOre.demonicOre)
+				nOffset = 2;
+			else
+				nOffset = 1;
+
+			renderer.renderWestFace(block, x, y, z, nMetadata + nOffset);
+			renderer.renderEastFace(block, x, y, z, nMetadata + nOffset);
+			renderer.renderNorthFace(block, x, y, z, nMetadata + nOffset);
+			renderer.renderSouthFace(block, x, y, z, nMetadata + nOffset);
+			renderer.renderTopFace(block, x, y, z, nMetadata + nOffset);
+			renderer.renderBottomFace(block, x, y, z, nMetadata + nOffset);
+		}
 		return true;
 	}
 
