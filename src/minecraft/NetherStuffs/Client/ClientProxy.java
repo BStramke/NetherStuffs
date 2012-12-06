@@ -20,8 +20,7 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.preloadTexture(CommonProxy.MOBBUTTONS_PNG);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTorchArrow.class, new RenderTorchArrow());
 		
-		RenderingRegistry.registerBlockHandler(new NetherOreRenderingHelper());
-		
+		RenderingRegistry.registerBlockHandler(new NetherOreRenderingHelper());		
 		
 		//MinecraftForgeClient.registerItemRenderer(NetherStuffs.Items.NetherItems.NetherBow.shiftedIndex, new RenderHeldTorchArrow());
 	}

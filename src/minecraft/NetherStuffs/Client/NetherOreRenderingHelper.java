@@ -60,8 +60,11 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {	
 		renderer.renderStandardBlock(block, x, y, z);
-		
-		
+
+		Tessellator var8 = Tessellator.instance;
+		//renderer.renderWestFace(block, x, y, z, block.getBlockTexture(world, x, y, z, 5));
+		var8.setBrightness(1024);
+        renderer.renderWestFace(block, x, y, z, 81);
 		return true;
 	}
 
