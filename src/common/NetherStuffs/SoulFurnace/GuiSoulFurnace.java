@@ -1,11 +1,12 @@
 package NetherStuffs.SoulFurnace;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.src.GuiContainer;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.StatCollector;
-import NetherStuffs.DemonicFurnace.TileDemonicFurnace;
+
+import org.lwjgl.opengl.GL11;
+
+import NetherStuffs.Common.CommonProxy;
 
 public class GuiSoulFurnace extends GuiContainer {
 
@@ -24,7 +25,7 @@ public class GuiSoulFurnace extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		int var4 = this.mc.renderEngine.getTexture("/soulfurnace.png");
+		int var4 = this.mc.renderEngine.getTexture(CommonProxy.SOULFURNACE_PNG);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(var4);
 		int var5 = (this.width - this.xSize) / 2;

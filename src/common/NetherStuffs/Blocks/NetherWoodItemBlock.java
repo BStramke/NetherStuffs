@@ -3,6 +3,7 @@ package NetherStuffs.Blocks;
 import net.minecraft.src.Block;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
+import NetherStuffs.Common.CommonProxy;
 
 public class NetherWoodItemBlock extends ItemBlock {
 
@@ -31,7 +32,7 @@ public class NetherWoodItemBlock extends ItemBlock {
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	@Override

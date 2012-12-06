@@ -4,14 +4,13 @@ import static net.minecraftforge.common.ForgeDirection.UP;
 
 import java.util.List;
 
-import NetherStuffs.Common.NetherWoodMaterial;
-
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
+import NetherStuffs.Common.CommonProxy;
+import NetherStuffs.Common.NetherWoodMaterial;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -38,7 +37,7 @@ public class NetherPlank extends Block {
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	public int getMetadataSize() {

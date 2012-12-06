@@ -7,6 +7,8 @@ import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
+import NetherStuffs.Client.NetherOreRenderingHelper;
+import NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -32,7 +34,7 @@ public class NetherOre extends Block {
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	public int getMetadataSize() {
@@ -67,6 +69,12 @@ public class NetherOre extends Block {
 		default:
 			return 0;
 		}
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderType() {
+		return NetherOreRenderingHelper.instance.getRenderId();
 	}
 
 	@Override

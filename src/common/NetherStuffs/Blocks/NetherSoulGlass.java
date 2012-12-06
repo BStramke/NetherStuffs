@@ -10,6 +10,7 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
+import NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -40,7 +41,7 @@ public class NetherSoulGlass extends BlockGlass {
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	@Override

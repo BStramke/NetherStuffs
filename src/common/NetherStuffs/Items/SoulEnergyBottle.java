@@ -7,6 +7,7 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
+import NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -35,7 +36,7 @@ public class SoulEnergyBottle extends Item {
 
 	@Override
 	public String getTextureFile() {
-		return "/items.png";
+		return CommonProxy.ITEMS_PNG;
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.ItemSword;
 import net.minecraft.src.Potion;
 import net.minecraft.src.PotionEffect;
+import NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -31,7 +32,7 @@ public class NetherSword extends ItemSword {
 
 	@Override
 	public String getTextureFile() {
-		return "/items.png";
+		return CommonProxy.ITEMS_PNG;
 	}
 
 	protected Types nType = Types.undefined;

@@ -2,6 +2,8 @@ package NetherStuffs.Items;
 
 import java.util.List;
 
+import NetherStuffs.Common.CommonProxy;
+
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -30,7 +32,7 @@ public class NetherOreIngot extends Item {
 
 	@Override
 	public String getTextureFile() {
-		return "/items.png";
+		return CommonProxy.ITEMS_PNG;
 	}
 
 	@Override

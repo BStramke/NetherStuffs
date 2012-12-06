@@ -3,6 +3,7 @@ package NetherStuffs.Blocks;
 import net.minecraft.src.BlockTNT;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.World;
+import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.SoulBomb.EntitySoulBombPrimed;
 
 public class SoulBomb extends BlockTNT {
@@ -29,7 +30,7 @@ public class SoulBomb extends BlockTNT {
 	}
 
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	/*

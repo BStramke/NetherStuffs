@@ -46,6 +46,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import NetherStuffs.NetherStuffs;
+import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.SoulDetector.TileSoulDetector;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -89,7 +90,7 @@ public class SoulDetector extends BlockContainer {
 
 	@Override
 	public String getTextureFile() {
-		return "/block_detector.png";
+		return CommonProxy.BLOCKDETECTOR_PNG;
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import net.minecraftforge.common.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import NetherStuffs.Blocks.SoulDetector;
+import NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GuiSoulDetector extends GuiContainer {
@@ -210,7 +211,7 @@ public class GuiSoulDetector extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		int var4 = this.mc.renderEngine.getTexture("/souldetector.png");
+		int var4 = this.mc.renderEngine.getTexture(CommonProxy.SOULDETECTOR_PNG);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(var4);
 		int var5 = (this.width - this.xSize) / 2;

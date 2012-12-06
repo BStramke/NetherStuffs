@@ -6,6 +6,8 @@ import net.minecraft.src.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import NetherStuffs.Common.CommonProxy;
+
 public class GuiSoulWorkBench extends GuiContainer {
 
 	private int ySize = 178;
@@ -24,7 +26,7 @@ public class GuiSoulWorkBench extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
-		int var4 = this.mc.renderEngine.getTexture("/soulworkbench.png");
+		int var4 = this.mc.renderEngine.getTexture(CommonProxy.SOULWORKBENCH_PNG);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(var4);
 		int var5 = (this.width - this.xSize) / 2;

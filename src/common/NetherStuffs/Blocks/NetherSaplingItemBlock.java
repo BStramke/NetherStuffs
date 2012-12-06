@@ -1,10 +1,10 @@
 package NetherStuffs.Blocks;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-import net.minecraft.src.Block;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
+import NetherStuffs.Common.CommonProxy;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class NetherSaplingItemBlock extends ItemBlock {
 	public static String[] blockNames = new String[] { "Hellfire", "Acid", "Death" };
@@ -41,7 +41,7 @@ public class NetherSaplingItemBlock extends ItemBlock {
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	@Override

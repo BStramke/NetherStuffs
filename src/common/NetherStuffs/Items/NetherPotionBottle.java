@@ -2,6 +2,8 @@ package NetherStuffs.Items;
 
 import java.util.List;
 
+import NetherStuffs.Common.CommonProxy;
+
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -27,7 +29,7 @@ public class NetherPotionBottle extends Item {
 
 	@Override
 	public String getTextureFile() {
-		return "/items.png";
+		return CommonProxy.ITEMS_PNG;
 	}
 
 	@Override

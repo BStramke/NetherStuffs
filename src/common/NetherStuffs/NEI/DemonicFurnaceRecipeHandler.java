@@ -18,6 +18,7 @@ import NetherStuffs.Blocks.NetherBlocks;
 import NetherStuffs.Blocks.NetherOre;
 import NetherStuffs.Blocks.NetherOreItemBlock;
 import NetherStuffs.Blocks.NetherWood;
+import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import NetherStuffs.DemonicFurnace.GuiDemonicFurnace;
 import NetherStuffs.DemonicFurnace.TileDemonicFurnace;
@@ -38,7 +39,7 @@ public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public String getGuiTexture() {
-		return "/furnace.png";
+		return CommonProxy.FURNANCE_PNG;
 	}
 
 	public class SmeltingPair extends CachedRecipe {

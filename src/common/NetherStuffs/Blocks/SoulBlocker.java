@@ -2,18 +2,16 @@ package NetherStuffs.Blocks;
 
 import java.util.List;
 
-import NetherStuffs.SoulBlocker.TileSoulBlocker;
-import NetherStuffs.SoulDetector.TileSoulDetector;
-
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import NetherStuffs.Common.CommonProxy;
+import NetherStuffs.SoulBlocker.TileSoulBlocker;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class SoulBlocker extends BlockContainer {
 	public static final int NetherSoulBlocker = 0;
@@ -26,7 +24,7 @@ public class SoulBlocker extends BlockContainer {
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	public int getMetadataSize() {

@@ -13,6 +13,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 import net.minecraftforge.common.EnumPlantType;
 import NetherStuffs.NetherStuffs;
+import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -56,7 +57,7 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	/**

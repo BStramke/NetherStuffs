@@ -2,6 +2,7 @@ package NetherStuffs.Items;
 
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
+import NetherStuffs.Common.CommonProxy;
 
 public class NetherWoodStick extends Item {
 
@@ -12,6 +13,6 @@ public class NetherWoodStick extends Item {
 
 	@Override
 	public String getTextureFile() {
-		return "/items.png";
+		return CommonProxy.ITEMS_PNG;
 	}
 }

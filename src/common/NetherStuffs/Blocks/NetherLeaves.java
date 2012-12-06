@@ -17,6 +17,7 @@ import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IShearable;
 import NetherStuffs.Client.EntityDropParticleFXNetherStuffs;
+import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.Common.NetherLeavesMaterial;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -272,7 +273,7 @@ public class NetherLeaves extends Block implements IShearable {
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	@Override

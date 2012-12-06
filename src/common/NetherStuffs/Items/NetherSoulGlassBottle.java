@@ -11,6 +11,7 @@ import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.World;
 import NetherStuffs.Blocks.NetherBlocks;
 import NetherStuffs.Blocks.NetherPuddle;
+import NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -26,7 +27,7 @@ public class NetherSoulGlassBottle extends ItemGlassBottle {
 
 	@Override
 	public String getTextureFile() {
-		return "/items.png";
+		return CommonProxy.ITEMS_PNG;
 	}
 
 	@Override

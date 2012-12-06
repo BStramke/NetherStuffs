@@ -2,11 +2,6 @@ package NetherStuffs.Items;
 
 import java.util.List;
 
-import NetherStuffs.Blocks.NetherBlocks;
-import NetherStuffs.Blocks.NetherPuddle;
-
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumMovingObjectType;
@@ -14,6 +9,11 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.World;
+import NetherStuffs.Blocks.NetherBlocks;
+import NetherStuffs.Blocks.NetherPuddle;
+import NetherStuffs.Common.CommonProxy;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class NetherStoneBowl extends Item {
 	public static String[] itemNames = new String[] { "NetherstoneBowl" };
@@ -26,7 +26,7 @@ public class NetherStoneBowl extends Item {
 
 	@Override
 	public String getTextureFile() {
-		return "/items.png";
+		return CommonProxy.ITEMS_PNG;
 	}
 
 	@Override

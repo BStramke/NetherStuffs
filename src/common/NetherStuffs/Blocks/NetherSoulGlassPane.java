@@ -2,15 +2,13 @@ package NetherStuffs.Blocks;
 
 import java.util.List;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockEnderChest;
-import net.minecraft.src.BlockGlass;
 import net.minecraft.src.BlockPane;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
+import NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -38,7 +36,7 @@ public class NetherSoulGlassPane extends BlockPane {
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	@Override

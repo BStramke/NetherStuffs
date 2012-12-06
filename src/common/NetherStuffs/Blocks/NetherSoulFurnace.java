@@ -16,6 +16,7 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import NetherStuffs.NetherStuffs;
+import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.SoulFurnace.TileSoulFurnace;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -47,7 +48,7 @@ public class NetherSoulFurnace extends BlockContainer {
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	/**

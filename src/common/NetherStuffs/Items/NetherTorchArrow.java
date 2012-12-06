@@ -1,11 +1,10 @@
 package NetherStuffs.Items;
 
+import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.Item;
+import NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
 
 public class NetherTorchArrow extends Item {
 
@@ -22,6 +21,6 @@ public class NetherTorchArrow extends Item {
 	
 	@Override
 	public String getTextureFile() {
-		return "/items.png";
+		return CommonProxy.ITEMS_PNG;
 	}
 }

@@ -9,16 +9,14 @@ import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
-import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.World;
-import net.minecraftforge.common.ForgeDirection;
 import NetherStuffs.NetherStuffs;
+import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.DemonicFurnace.TileDemonicFurnace;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -119,7 +117,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	private boolean isActive(World par1World, int par2, int par3, int par4) {

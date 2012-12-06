@@ -16,7 +16,7 @@ public class SoulBombItemBlock extends ItemBlock {
 	 * 
 	 * return getItemName() + "." + name; }
 	 * 
-	 * public String getTextureFile() { return "/blocks.png"; }
+	 * public String getTextureFile() { return CommonProxy.BLOCKS_PNG; }
 	 */
 	@Override
 	public String getItemNameIS(ItemStack is) {

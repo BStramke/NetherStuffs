@@ -16,6 +16,7 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import NetherStuffs.NetherStuffs;
+import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.SoulWorkBench.TileSoulWorkBench;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -109,7 +110,7 @@ public class SoulWorkBench extends BlockContainer {
 
 	@Override
 	public String getTextureFile() {
-		return "/blocks.png";
+		return CommonProxy.BLOCKS_PNG;
 	}
 
 	private boolean isActive(World par1World, int par2, int par3, int par4) {

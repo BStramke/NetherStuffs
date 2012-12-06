@@ -1,10 +1,12 @@
 package NetherStuffs.SoulDetector;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiButton;
+
+import org.lwjgl.opengl.GL11;
+
+import NetherStuffs.Common.CommonProxy;
 
 public class GuiButtonCheckbox extends GuiButton {
 	private int xButtonOffset;
@@ -23,7 +25,7 @@ public class GuiButtonCheckbox extends GuiButton {
 	public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
 		if (this.drawButton) {
 			FontRenderer var4 = par1Minecraft.fontRenderer;
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1Minecraft.renderEngine.getTexture("/souldetector.png"));
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1Minecraft.renderEngine.getTexture(CommonProxy.SOULDETECTOR_PNG));
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
 			int var5 = this.getHoverState(this.field_82253_i);

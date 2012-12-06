@@ -4,17 +4,17 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.src.Container;
 import net.minecraft.src.GuiContainer;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.ItemStack;
+
+import org.lwjgl.opengl.GL11;
+
+import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.SoulWorkBench.GuiSoulWorkBench;
 import NetherStuffs.SoulWorkBench.SoulWorkBenchRecipes;
 import NetherStuffs.SoulWorkBench.SoulWorkBenchShapedRecipes;
 import codechicken.core.ReflectionManager;
-import codechicken.nei.DefaultOverlayRenderer;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
@@ -174,7 +174,7 @@ public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public String getGuiTexture() {
-		return "/soulworkbench.png";
+		return CommonProxy.SOULWORKBENCH_PNG;
 	}
 
 	@Override

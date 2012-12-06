@@ -1,8 +1,8 @@
 package NetherStuffs.Blocks;
 
-import net.minecraft.src.Block;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
+import NetherStuffs.Common.CommonProxy;
 
 public class SoulDetectorItemBlock extends ItemBlock {
 
@@ -30,7 +30,7 @@ public class SoulDetectorItemBlock extends ItemBlock {
 
 	@Override
 	public String getTextureFile() {
-		return "/block_detector.png";
+		return CommonProxy.BLOCKDETECTOR_PNG;
 	}
 
 	@Override

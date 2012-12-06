@@ -1,5 +1,6 @@
 package NetherStuffs.Blocks;
 
+import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.Items.NetherItems;
 import NetherStuffs.Items.NetherStonePotionBowl;
 import net.minecraft.src.EntityPlayer;
@@ -46,7 +47,7 @@ public class NetherPuddleItemBlock extends ItemBlock {
 
 	@Override
 	public String getTextureFile() {
-		return "/puddles.png";
+		return CommonProxy.PUDDLES_PNG;
 	}
 
 	@Override
