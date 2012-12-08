@@ -89,7 +89,7 @@ public class NetherLeaves extends Block implements IShearable {
 						} else {
 							boolean bSpawnPuddle = true;
 							// roll the dice to check surroundings, higher values prevent droppings in direct vacancy more often (due to checks)
-							if (par5Random.nextInt(100) > 91) {
+							//if (par5Random.nextInt(100) > 91) {
 								int xCoord = par2;
 								int zCoord = par3;
 								if (par1World.getBlockId(xCoord + 1, yCoord, zCoord) == NetherBlocks.netherPuddle.blockID
@@ -101,7 +101,7 @@ public class NetherLeaves extends Block implements IShearable {
 										|| par1World.getBlockId(xCoord + 1, yCoord, zCoord - 1) == NetherBlocks.netherPuddle.blockID
 										|| par1World.getBlockId(xCoord - 1, yCoord, zCoord + 1) == NetherBlocks.netherPuddle.blockID)
 									bSpawnPuddle = false;
-							}
+							//}
 							if (bSpawnPuddle) {
 								int metadata = NetherLeaves.unmarkedMetadata(var6);
 								NetherPuddle.placePuddleWithType(par1World, par2, yCoord + 1, par4, metadata);
