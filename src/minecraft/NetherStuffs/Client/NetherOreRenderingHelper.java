@@ -37,41 +37,71 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, -1.0F, 0.0F);
 		renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(0, metadata));
-		if (metadata != NetherOre.netherStone)
+		if (metadata != NetherOre.netherStone) {
+			var4.draw();
+			var4.startDrawingQuads();
+			var4.setNormal(0.0F, -1.0F, 0.0F);
+			var4.setBrightness(1024);
 			renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
+		}
 
 		var4.draw();
 
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, 1.0F, 0.0F);
 		renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(1, metadata));
-		if (metadata != NetherOre.netherStone)
+		if (metadata != NetherOre.netherStone) {
+			var4.draw();
+			var4.startDrawingQuads();
+			var4.setNormal(0.0F, 1.0F, 0.0F);
+			var4.setBrightness(1024);
 			renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
+		}
 		var4.draw();
 
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, 0.0F, -1.0F);
 		renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(2, metadata));
-		if (metadata != NetherOre.netherStone)
+		if (metadata != NetherOre.netherStone) {
+			var4.draw();
+			var4.startDrawingQuads();
+			var4.setNormal(0.0F, 0.0F, -1.0F);
+			var4.setBrightness(1024);
 			renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
+		}
 		var4.draw();
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, 0.0F, 1.0F);
 		renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(3, metadata));
-		if (metadata != NetherOre.netherStone)
+		if (metadata != NetherOre.netherStone) {
+			var4.draw();
+			var4.startDrawingQuads();
+			var4.setNormal(0.0F, 0.0F, 1.0F);
+			var4.setBrightness(1024);
 			renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
+		}
 		var4.draw();
 		var4.startDrawingQuads();
 		var4.setNormal(-1.0F, 0.0F, 0.0F);
 		renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(4, metadata));
-		if (metadata != NetherOre.netherStone)
+		if (metadata != NetherOre.netherStone) {
+			var4.draw();
+			var4.startDrawingQuads();
+			var4.setNormal(-1.0F, 0.0F, 0.0F);
+			var4.setBrightness(1024);
 			renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
+		}
 		var4.draw();
 		var4.startDrawingQuads();
 		var4.setNormal(1.0F, 0.0F, 0.0F);
 		renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(5, metadata));
-		if (metadata != NetherOre.netherStone)
+		if (metadata != NetherOre.netherStone) {
+			var4.draw();
+			var4.startDrawingQuads();
+			var4.setNormal(1.0F, 0.0F, 0.0F);
+			var4.setBrightness(1024);
 			renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, metadata + nOffset);
+		}
 		var4.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}
@@ -82,14 +112,14 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 		int nMetadata = world.getBlockMetadata(x, y, z);
 		if (nMetadata != NetherOre.netherStone) {
 			Tessellator var8 = Tessellator.instance;
-			var8.setBrightness(1024);
 
 			int nOffset = 0;
 			if (nMetadata == NetherOre.demonicOre)
 				nOffset = 2;
 			else
 				nOffset = 1;
-
+			renderer.enableAO = false;
+			var8.setBrightness(1024);
 			renderer.renderWestFace(block, x, y, z, nMetadata + nOffset);
 			renderer.renderEastFace(block, x, y, z, nMetadata + nOffset);
 			renderer.renderNorthFace(block, x, y, z, nMetadata + nOffset);
@@ -97,7 +127,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			renderer.renderTopFace(block, x, y, z, nMetadata + nOffset);
 			renderer.renderBottomFace(block, x, y, z, nMetadata + nOffset);
 		}
-		return true;
+		return false;
 	}
 
 	@Override
