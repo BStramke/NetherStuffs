@@ -127,7 +127,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			renderer.renderTopFace(block, x, y, z, nMetadata + nOffset);
 			renderer.renderBottomFace(block, x, y, z, nMetadata + nOffset);
 		}
-		return false;
+		return true;
 	}
 
 	@Override
