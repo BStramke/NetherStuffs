@@ -75,6 +75,7 @@ public class ContainerSoulFurnace extends Container {
 		}
 
 		this.lastCookTime = this.furnace.furnaceCookTime;
+		this.lastTankLevel = this.furnace.currentTankLevel;
 	}
 
 	@SideOnly(Side.CLIENT)

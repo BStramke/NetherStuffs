@@ -27,6 +27,7 @@ import NetherStuffs.Blocks.SoulBlocker;
 import NetherStuffs.Blocks.SoulBlockerItemBlock;
 import NetherStuffs.Blocks.SoulBombItemBlock;
 import NetherStuffs.Blocks.SoulDetectorItemBlock;
+import NetherStuffs.Blocks.SoulSiphonItemBlock;
 import NetherStuffs.Client.ClientPacketHandler;
 import NetherStuffs.Common.CommonProxy;
 import NetherStuffs.Common.GuiHandler;
@@ -46,6 +47,7 @@ import NetherStuffs.Items.SoulEnergyBottle;
 import NetherStuffs.SoulBlocker.TileSoulBlocker;
 import NetherStuffs.SoulDetector.TileSoulDetector;
 import NetherStuffs.SoulFurnace.TileSoulFurnace;
+import NetherStuffs.SoulSiphon.TileSoulSiphon;
 import NetherStuffs.SoulWorkBench.TileSoulWorkBench;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
@@ -117,6 +119,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherSoulDetectorBlockId;
 	public static int NetherSoulBlockerBlockId;
 	public static int NetherSoulFurnaceBlockId;
+	public static int NetherSoulSiphonBlockId;
 
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 	private static boolean IncreaseNetherrackHardness;
@@ -141,6 +144,7 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulDetectorBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulDetector", 1241).getInt();
 		NetherSoulBlockerBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulBlocker", 1242).getInt();
 		NetherSoulFurnaceBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulFurnace", 1243).getInt();
+		NetherSoulSiphonBlockId = config.getBlock(Configuration.CATEGORY_BLOCK,  "SoulSiphon", 1244).getInt();
 
 		NetherOreIngotItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherIngots", 5000).getInt();
 		NetherDemonicBarHandleItemId = config.getItem(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5001).getInt();
@@ -214,6 +218,7 @@ public class NetherStuffs extends DummyModContainer {
 		Item.itemsList[NetherSoulBombBlockId] = new SoulBombItemBlock(NetherSoulBombBlockId - 256).setItemName("NetherSoulBombItemBlock");
 		Item.itemsList[NetherSoulDetectorBlockId] = new SoulDetectorItemBlock(NetherSoulDetectorBlockId - 256).setItemName("NetherSoulDetectorItemBlock");
 		Item.itemsList[NetherSoulBlockerBlockId] = new SoulBlockerItemBlock(NetherSoulBlockerBlockId - 256).setItemName("NetherSoulBlockerItemBlock");
+		Item.itemsList[NetherSoulSiphonBlockId] = new SoulSiphonItemBlock(NetherSoulSiphonBlockId - 256).setItemName("NetherSoulSiphonItemBlock");
 
 		// set required Stuff to Gather
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherOre, NetherOre.netherOreCobblestone, "pickaxe", 0);
@@ -253,6 +258,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerTileEntity(TileSoulWorkBench.class, "tileEntityNetherStuffsSoulWorkBench");
 		GameRegistry.registerTileEntity(TileSoulDetector.class, "tileEntityNetherStuffsSoulDetector");
 		GameRegistry.registerTileEntity(TileSoulBlocker.class, "tileEntityNetherStuffsSoulBlocker");
+		GameRegistry.registerTileEntity(TileSoulSiphon.class, "tileEntityNetherStuffsSoulSiphon");
 
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
@@ -540,6 +546,10 @@ public class NetherStuffs extends DummyModContainer {
 
 		for (int i = 0; i < SoulBlockerItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherSoulBlocker." + SoulBlockerItemBlock.blockNames[i] + ".name", SoulBlockerItemBlock.blockDisplayNames[i]);
+		}
+		
+		for (int i = 0; i < SoulSiphonItemBlock.getMetadataSize(); i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherSoulSiphon." + SoulSiphonItemBlock.blockNames[i] + ".name", SoulSiphonItemBlock.blockDisplayNames[i]);
 		}
 
 		for (int i = 0; i < ((NetherOreIngot) NetherItems.NetherOreIngot).getMetadataSize(); i++) {

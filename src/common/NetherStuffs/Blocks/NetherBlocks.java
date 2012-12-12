@@ -31,4 +31,5 @@ public class NetherBlocks {
 	public static final Block NetherSoulDetector = new SoulDetector(NetherStuffs.NetherSoulDetectorBlockId, 0).setBlockName("NetherSoulDetector");
 	
 	public static final Block NetherSoulBlocker = new SoulBlocker(NetherStuffs.NetherSoulBlockerBlockId, 114).setBlockName("NetherSoulBlocker");
+	public static final Block NetherSoulSiphon = new SoulSiphon(NetherStuffs.NetherSoulSiphonBlockId, 114).setBlockName("NetherSoulSiphon");
 }
