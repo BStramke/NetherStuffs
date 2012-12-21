@@ -1,5 +1,7 @@
 package bstramke.NetherStuffs;
 
+import java.util.Arrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -54,6 +56,7 @@ import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
@@ -69,9 +72,10 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "0.9.2", modid = "NetherStuffs")
+@Mod(name = "NetherStuffs", version = "0.10", modid = "NetherStuffs")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
 public class NetherStuffs extends DummyModContainer {
+
 	@Instance
 	public static NetherStuffs instance = new NetherStuffs();
 
@@ -144,7 +148,7 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulDetectorBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulDetector", 1241).getInt();
 		NetherSoulBlockerBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulBlocker", 1242).getInt();
 		NetherSoulFurnaceBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulFurnace", 1243).getInt();
-		NetherSoulSiphonBlockId = config.getBlock(Configuration.CATEGORY_BLOCK,  "SoulSiphon", 1244).getInt();
+		NetherSoulSiphonBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulSiphon", 1244).getInt();
 
 		NetherOreIngotItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherIngots", 5000).getInt();
 		NetherDemonicBarHandleItemId = config.getItem(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5001).getInt();
@@ -281,7 +285,6 @@ public class NetherStuffs extends DummyModContainer {
 			Block.netherrack.setResistance(2.0F);
 		}
 
-		
 		GameRegistry.registerPlayerTracker(new NetherStuffsPlayerTracker());
 		/*
 		 * This lets Skeletons Spawn away from NetherFortresses. Actual Idea by ErasmoGnome, made on the MinecraftForums: http://www.minecraftforum.net
@@ -289,10 +292,11 @@ public class NetherStuffs extends DummyModContainer {
 		 */
 		if (SpawnSkeletonsAwayFromNetherFortresses)
 			EntityRegistry.addSpawn(EntitySkeleton.class, 50, 4, 4, EnumCreatureType.monster, BiomeGenBase.hell);
-		
-		/* Use the above method as its without coremod possible
-		if (SpawnSkeletonsAwayFromNetherFortresses)
-			((BiomeGenHell) BiomeGenBase.hell).spawnableMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 50, 4, 4));*/
+
+		/*
+		 * Use the above method as its without coremod possible if (SpawnSkeletonsAwayFromNetherFortresses) ((BiomeGenHell) BiomeGenBase.hell).spawnableMonsterList.add(new
+		 * SpawnListEntry(EntitySkeleton.class, 50, 4, 4));
+		 */
 	}
 
 	private void registerWorldGenerators() {
@@ -318,7 +322,8 @@ public class NetherStuffs extends DummyModContainer {
 		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, new ItemStack(NetherItems.NetherOreIngot, 1, 0), 1.0F);
 		DemonicFurnaceRecipes.smelting().addSmelting(Block.slowSand.blockID, 0, new ItemStack(NetherBlocks.NetherSoulGlass, 1, 0), 0.25F);
 		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherWood.blockID, NetherWood.hellfire, new ItemStack(NetherItems.NetherWoodCharcoal), 0.25F);
-		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal, new ItemStack(NetherItems.NetherWoodCharcoal, 1, NetherWoodCharcoal.coal), 0.25F);
+		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal,
+				new ItemStack(NetherItems.NetherWoodCharcoal, 1, NetherWoodCharcoal.coal), 0.25F);
 		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreIron, new ItemStack(Item.ingotIron, 1), 0.25F);
 		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreGold, new ItemStack(Item.ingotGold, 1), 0.25F);
 		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreDiamond, new ItemStack(Item.diamond, 1), 0.5F);
@@ -400,22 +405,22 @@ public class NetherStuffs extends DummyModContainer {
 		// Netherwood --> Netherlogs
 		GameRegistry.addRecipe(new ItemStack(NetherBlocks.netherPlank, 4, NetherPlank.hellfire), new Object[] { "#", '#',
 				new ItemStack(NetherBlocks.netherWood, 1, NetherWood.hellfire) });
-		GameRegistry.addRecipe(new ItemStack(NetherBlocks.netherPlank, 4, NetherPlank.acid), new Object[] { "#", '#',
-				new ItemStack(NetherBlocks.netherWood, 1, NetherWood.acid) });
-		GameRegistry.addRecipe(new ItemStack(NetherBlocks.netherPlank, 4, NetherPlank.death), new Object[] { "#", '#',
-				new ItemStack(NetherBlocks.netherWood, 1, NetherWood.death) });
+		GameRegistry.addRecipe(new ItemStack(NetherBlocks.netherPlank, 4, NetherPlank.acid), new Object[] { "#", '#', new ItemStack(NetherBlocks.netherWood, 1, NetherWood.acid) });
+		GameRegistry.addRecipe(new ItemStack(NetherBlocks.netherPlank, 4, NetherPlank.death), new Object[] { "#", '#', new ItemStack(NetherBlocks.netherWood, 1, NetherWood.death) });
 
 		// Torches out of Netherwood Sticks
 		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 6), new Object[] { "X", "#", 'X', Item.coal, '#', NetherItems.NetherWoodStick });
 		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 6), new Object[] { "X", "#", 'X', new ItemStack(Item.coal, 1, 1), '#', NetherItems.NetherWoodStick });
-		
-		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 8), new Object[] { "X", "#", 'X', new ItemStack(NetherItems.NetherWoodCharcoal, 1, NetherWoodCharcoal.charcoal), '#', Item.stick });
-		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 8), new Object[] { "X", "#", 'X', new ItemStack(NetherItems.NetherWoodCharcoal, 1, NetherWoodCharcoal.coal), '#', Item.stick });
-		
+
+		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 8), new Object[] { "X", "#", 'X', new ItemStack(NetherItems.NetherWoodCharcoal, 1, NetherWoodCharcoal.charcoal), '#',
+				Item.stick });
+		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 8), new Object[] { "X", "#", 'X', new ItemStack(NetherItems.NetherWoodCharcoal, 1, NetherWoodCharcoal.coal), '#',
+				Item.stick });
+
 		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 10), new Object[] { "X", "#", 'X', new ItemStack(NetherItems.NetherWoodCharcoal, 1, NetherWoodCharcoal.charcoal), '#',
 				NetherItems.NetherWoodStick });
 		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 10), new Object[] { "X", "#", 'X', new ItemStack(NetherItems.NetherWoodCharcoal, 1, NetherWoodCharcoal.coal), '#',
-			NetherItems.NetherWoodStick });
+				NetherItems.NetherWoodStick });
 
 		CraftingManager
 				.getInstance()
@@ -490,11 +495,12 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.addRecipe(new ItemStack(Block.netherBrick, 2), new Object[] { "NN", "NN", 'N', new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone) });
 		GameRegistry.addShapelessRecipe(new ItemStack(Item.stick), new Object[] { new ItemStack(NetherItems.NetherWoodStick) });
 
-		//Default Wooden Tools
-		GameRegistry.addRecipe(new ItemStack(Item.axeWood, 1), new Object[]{ "##.","#S.",".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick)});
-		GameRegistry.addRecipe(new ItemStack(Item.axeWood, 1), new Object[]{ ".##",".S#",".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick)});
-		GameRegistry.addRecipe(new ItemStack(Item.pickaxeWood, 1), new Object[]{ "###",".S.",".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick)});
-		GameRegistry.addRecipe(new ItemStack(Item.shovelWood, 1), new Object[]{ ".#.",".S.",".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick)});
+		// Default Wooden Tools
+		GameRegistry.addRecipe(new ItemStack(Item.axeWood, 1), new Object[] { "##.", "#S.", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick) });
+		GameRegistry.addRecipe(new ItemStack(Item.axeWood, 1), new Object[] { ".##", ".S#", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick) });
+		GameRegistry
+				.addRecipe(new ItemStack(Item.pickaxeWood, 1), new Object[] { "###", ".S.", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick) });
+		GameRegistry.addRecipe(new ItemStack(Item.shovelWood, 1), new Object[] { ".#.", ".S.", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick) });
 
 	}
 
@@ -547,7 +553,7 @@ public class NetherStuffs extends DummyModContainer {
 		for (int i = 0; i < SoulBlockerItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherSoulBlocker." + SoulBlockerItemBlock.blockNames[i] + ".name", SoulBlockerItemBlock.blockDisplayNames[i]);
 		}
-		
+
 		for (int i = 0; i < SoulSiphonItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherSoulSiphon." + SoulSiphonItemBlock.blockNames[i] + ".name", SoulSiphonItemBlock.blockDisplayNames[i]);
 		}
@@ -587,7 +593,7 @@ public class NetherStuffs extends DummyModContainer {
 			LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal." + ((NetherWoodCharcoal) NetherItems.NetherWoodCharcoal).itemNames[i] + ".name",
 					((NetherWoodCharcoal) NetherItems.NetherWoodCharcoal).itemDisplayNames[i]);
 		}
-		
+
 		LanguageRegistry.instance().addStringLocalization("item.NetherObsidianSword.name", "Obsidian Sword");
 		LanguageRegistry.instance().addStringLocalization("item.NetherSoulglassSword.name", "Soulglass Sword");
 
@@ -602,7 +608,7 @@ public class NetherStuffs extends DummyModContainer {
 
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulBomb.NetherSoulBomb.name", "Soul Bomb");
 
-		//LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name", "Nether Charcoal");
+		// LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name", "Nether Charcoal");
 
 		LanguageRegistry.instance().addStringLocalization("item.NetherBow.name", "Nether Bow");
 		LanguageRegistry.instance().addStringLocalization("item.torchArrow.name", "Torch Arrow");

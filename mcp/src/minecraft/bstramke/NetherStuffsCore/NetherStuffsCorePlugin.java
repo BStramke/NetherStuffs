@@ -19,22 +19,26 @@ public class NetherStuffsCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 
 	@Override
 	public String[] getASMTransformerClass() {
-		return new String[] { "NetherStuffsCore.NetherStuffsAccessTransformer", "NetherStuffsCore.NetherStuffsAccessTransformer2" };
+		System.out.println("getASMTransformerClass start");
+		return new String[] { "bstramke.NetherStuffsCore.NetherStuffsAccessTransformer", "bstramke.NetherStuffsCore.NetherStuffsAccessTransformer2" };
 	}
 
 	@Override
 	public String getModContainerClass() {
-		return "NetherStuffsCore.CoreModContainer";
+		System.out.println("getModContainerClass start");
+		return "bstramke.NetherStuffsCore.CoreModContainer";
 	}
 
 	@Override
 	public String getSetupClass() {
-		return "NetherStuffsCore.NetherStuffsCorePlugin";
+		System.out.println("getSetupClass start");
+		return "bstramke.NetherStuffsCore.NetherStuffsCorePlugin";
 	}
 
 	@Override
 	public void injectData(Map<String, Object> data) {
 		if (data.containsKey("coremodLocation")) {
+			System.out.println("injectData start");
 			myLocation = (File) data.get("coremodLocation");
 			// System.out.println("Location: " + myLocation);
 		}
@@ -43,8 +47,9 @@ public class NetherStuffsCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 	private void addOverrides() {
 		// if(ObfuscationReflectionHelper.obfuscation)
 		{
-			NetherStuffsAccessTransformer.addClassOverride("akf", "Necessary for connecting GlassPanes and SoulglassPanes");
-			NetherStuffsAccessTransformer.addClassOverride("ami", "Necessary for Rendering SoulGlass and Glass Sides");
+			System.out.println("addOverrides start");
+			NetherStuffsAccessTransformer.addClassOverride("akm", "net/minecraft/src/BlockBreakable.java");
+			NetherStuffsAccessTransformer.addClassOverride("amp", "net/minecraft/src/BlockPane.java");
 		}
 		/*
 		 * else { NetherStuffsAccessTransformer.addClassOverride("net.minecraft.src.BlockPane", "Necessary for connecting GlassPanes and SoulglassPanes");
