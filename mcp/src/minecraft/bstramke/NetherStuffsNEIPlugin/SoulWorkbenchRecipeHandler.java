@@ -14,6 +14,15 @@ import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.SoulWorkBench.GuiSoulWorkBench;
 import bstramke.NetherStuffs.SoulWorkBench.SoulWorkBenchRecipes;
 import bstramke.NetherStuffs.SoulWorkBench.SoulWorkBenchShapedRecipes;
+import codechicken.core.ReflectionManager;
+import codechicken.nei.NEIClientUtils;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.api.IOverlayHandler;
+import codechicken.nei.forge.GuiContainerManager;
+import codechicken.nei.recipe.RecipeInfo;
+import codechicken.nei.recipe.TemplateRecipeHandler;
+import codechicken.nei.recipe.TemplateRecipeHandler.CachedRecipe;
+import codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect;
 
 public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
 

@@ -17,6 +17,12 @@ import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import bstramke.NetherStuffs.DemonicFurnace.GuiDemonicFurnace;
 import bstramke.NetherStuffs.DemonicFurnace.TileDemonicFurnace;
 import bstramke.NetherStuffs.Items.NetherItems;
+import codechicken.nei.NEIClientUtils;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.forge.GuiContainerManager;
+import codechicken.nei.recipe.TemplateRecipeHandler;
+import codechicken.nei.recipe.TemplateRecipeHandler.CachedRecipe;
+import codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect;
 
 public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
 

@@ -1,12 +1,7 @@
 package bstramke.NetherStuffsNEIPlugin;
 
-import java.util.ArrayList;
-import java.util.TreeSet;
-
-
-import NetherStuffs.Blocks.NetherBlocks;
-import NetherStuffs.DemonicFurnace.GuiDemonicFurnace;
-import NetherStuffs.SoulWorkBench.GuiSoulWorkBench;
+import bstramke.NetherStuffs.DemonicFurnace.GuiDemonicFurnace;
+import bstramke.NetherStuffs.SoulWorkBench.GuiSoulWorkBench;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 
