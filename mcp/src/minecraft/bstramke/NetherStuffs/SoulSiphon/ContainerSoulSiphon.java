@@ -51,7 +51,7 @@ public class ContainerSoulSiphon extends Container {
 	@Override
 	public void updateProgressBar(int par1, int par2) {
 		if (par1 == 0) {
-			this.tile_entity.currentTankLevel = par2;
+			this.tile_entity.setCurrentTankLevel(par2);
 		}
 	}
 
@@ -63,18 +63,18 @@ public class ContainerSoulSiphon extends Container {
 		while (var1.hasNext()) {
 			ICrafting var2 = (ICrafting) var1.next();
 
-			if (this.lastTankLevel != this.tile_entity.currentTankLevel) {
-				var2.sendProgressBarUpdate(this, 0, this.tile_entity.currentTankLevel);
+			if (this.lastTankLevel != this.tile_entity.getCurrentTankLevel()) {
+				var2.sendProgressBarUpdate(this, 0, this.tile_entity.getCurrentTankLevel());
 			}
 		}
 
-		this.lastTankLevel = this.tile_entity.currentTankLevel;
+		this.lastTankLevel = this.tile_entity.getCurrentTankLevel();
 	}
 
 	@Override
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
-		par1ICrafting.sendProgressBarUpdate(this, 0, this.tile_entity.currentTankLevel);
+		par1ICrafting.sendProgressBarUpdate(this, 0, this.tile_entity.getCurrentTankLevel());
 	}
 
 	@Override

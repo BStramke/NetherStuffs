@@ -39,7 +39,7 @@ public class GuiSoulSiphon extends GuiContainer {
 			this.drawTexturedModalRect(var5 + 9, nBottomLeftY - i, 176, 48 - i, 21, 1);
 		}
 
-		Integer nCurrent = this.tile_entity.currentTankLevel;
+		Integer nCurrent = this.tile_entity.getCurrentTankLevel();
 		if(nCurrent>=100)
 			fontRenderer.drawString(nCurrent.toString(), var5 + 11, var6 + 49, 0x000000);
 		else

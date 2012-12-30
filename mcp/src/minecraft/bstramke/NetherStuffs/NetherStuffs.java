@@ -10,8 +10,8 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.liquids.LiquidContainerData;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -46,6 +46,7 @@ import bstramke.NetherStuffs.Items.NetherStoneBowl;
 import bstramke.NetherStuffs.Items.NetherStonePotionBowl;
 import bstramke.NetherStuffs.Items.NetherWoodCharcoal;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
+import bstramke.NetherStuffs.Items.SoulEnergyLiquidItem;
 import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
 import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
 import bstramke.NetherStuffs.SoulFurnace.TileSoulFurnace;
@@ -119,6 +120,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherBowItemId;
 	public static int TorchArrowItemId;
 	public static int SoulEnergyLiquidItemId;
+	//public static int SoulEnergyLiquidId;
 
 	public static int NetherSoulDetectorBlockId;
 	public static int NetherSoulBlockerBlockId;
@@ -128,6 +130,8 @@ public class NetherStuffs extends DummyModContainer {
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 	private static boolean IncreaseNetherrackHardness;
 
+	public static LiquidStack SoulEnergyLiquid;
+	
 	@PreInit
 	public void PreLoad(FMLPreInitializationEvent event) {
 		FMLLog.info("[NetherStuffs] PreLoad");
@@ -173,7 +177,8 @@ public class NetherStuffs extends DummyModContainer {
 		NetherBowItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherBow", 5016).getInt();
 		TorchArrowItemId = config.getItem(Configuration.CATEGORY_ITEM, "TorchArrow", 5017).getInt();
 		
-		SoulEnergyLiquidItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyLiquidID", 5018).getInt();
+		//SoulEnergyLiquidId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyLiquidID", 5018).getInt();
+		SoulEnergyLiquidItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyLiquidItemID", 5018).getInt();
 
 		SpawnSkeletonsAwayFromNetherFortresses = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsAwayFromNetherFortresses", true).getBoolean(true);
 		IncreaseNetherrackHardness = config.get(Configuration.CATEGORY_GENERAL, "IncreaseNetherrackHardness", true).getBoolean(true);
@@ -227,6 +232,9 @@ public class NetherStuffs extends DummyModContainer {
 		Item.itemsList[NetherSoulDetectorBlockId] = new SoulDetectorItemBlock(NetherSoulDetectorBlockId - 256).setItemName("NetherSoulDetectorItemBlock");
 		Item.itemsList[NetherSoulBlockerBlockId] = new SoulBlockerItemBlock(NetherSoulBlockerBlockId - 256).setItemName("NetherSoulBlockerItemBlock");
 		Item.itemsList[NetherSoulSiphonBlockId] = new SoulSiphonItemBlock(NetherSoulSiphonBlockId - 256).setItemName("NetherSoulSiphonItemBlock");
+		
+		Item.itemsList[SoulEnergyLiquidItemId] = NetherItems.SoulEnergyLiquidItem;//new SoulEnergyLiquidItem(NetherStuffs.SoulEnergyLiquidItemId).setItemName("SoulEnergyLiquidItem");
+		//Item.itemsList[SoulEnergyLiquidItemId-256] = new SoulEnergyLiquidItem(NetherStuffs.SoulEnergyLiquidItemId).setItemName("SoulEnergyLiquidItem");
 
 		// set required Stuff to Gather
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherOre, NetherOre.netherOreCobblestone, "pickaxe", 0);
@@ -274,7 +282,9 @@ public class NetherStuffs extends DummyModContainer {
 		OreDictionary.registerOre("oreDemonic", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.demonicOre));
 		OreDictionary.registerOre("oreNetherStone", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone));
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
-
+		
+		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, 1));
+		
 		registerWorldGenerators();
 		initRecipes();
 		initLanguageRegistry();
@@ -611,11 +621,12 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlassPane.name", "Soul Glass Pane");
 
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulBomb.NetherSoulBomb.name", "Soul Bomb");
-
+		
 		// LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name", "Nether Charcoal");
 
 		LanguageRegistry.instance().addStringLocalization("item.NetherBow.name", "Nether Bow");
 		LanguageRegistry.instance().addStringLocalization("item.torchArrow.name", "Torch Arrow");
+		LanguageRegistry.instance().addStringLocalization("item.SoulEnergyLiquidItem.name", "Soul Energy Liquid");
 	}
 
 	@PostInit

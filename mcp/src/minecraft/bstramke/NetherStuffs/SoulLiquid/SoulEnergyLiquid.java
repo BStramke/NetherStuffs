@@ -1,5 +1,9 @@
 package bstramke.NetherStuffs.SoulLiquid;
 
+import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Common.CommonProxy;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.liquids.ILiquid;
 import net.minecraftforge.liquids.LiquidStack;
 
@@ -11,8 +15,7 @@ public class SoulEnergyLiquid extends LiquidStack implements ILiquid {
 
 	@Override
 	public int stillLiquidId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return NetherStuffs.SoulEnergyLiquidItemId;
 	}
 
 	@Override
@@ -23,6 +26,5 @@ public class SoulEnergyLiquid extends LiquidStack implements ILiquid {
 	@Override
 	public int stillLiquidMeta() {
 		return 0;
-	}
-
+	}	
 }

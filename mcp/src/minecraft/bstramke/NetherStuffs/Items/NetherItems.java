@@ -48,5 +48,7 @@ public class NetherItems {
 	public static final Item NetherSoulglassSwordDeath = new NetherSoulglassSwordDeath(NetherStuffs.NetherSoulglassSwordDeathItemId, EnumToolMaterialSoulGlassDemonic).setItemName(
 			"NetherSoulglassSword").setIconCoord(5, 1);
 	
-	public static final bstramke.NetherStuffs.SoulLiquid.SoulEnergyLiquid SoulEnergyLiquid = new SoulEnergyLiquid(NetherStuffs.SoulEnergyLiquidItemId, 1);
+	//public static final bstramke.NetherStuffs.SoulLiquid.SoulEnergyLiquid SoulEnergyLiquid = new SoulEnergyLiquid(NetherStuffs.SoulEnergyLiquidId, 0);
+	
+	public static final Item SoulEnergyLiquidItem = new SoulEnergyLiquidItem(NetherStuffs.SoulEnergyLiquidItemId).setItemName("SoulEnergyLiquidItem");
 }

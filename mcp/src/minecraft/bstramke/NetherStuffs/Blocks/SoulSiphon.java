@@ -107,12 +107,14 @@ public class SoulSiphon extends BlockContainer {
 					}
 				}
 
-				int nSiphonAmount = tmp.size();
-				if (nMeta == SoulSiphon.mk4)
-					nSiphonAmount = (int) (nSiphonAmount * 1.25F); // MK4 gets a Bonus on Siphoned amount
+				if (!tmp.isEmpty()) {
+					int nSiphonAmount = tmp.size();
+					if (nMeta == SoulSiphon.mk4)
+						nSiphonAmount = (int) (nSiphonAmount * 1.25F); // MK4 gets a Bonus on Siphoned amount
 
-				// System.out.println("Entity Count in range (not counting players): " + nSiphonAmount);
-				((TileSoulSiphon) tile_entity).addFuelToTank(nSiphonAmount);
+					// System.out.println("Entity Count in range (not counting players): " + nSiphonAmount);
+					((TileSoulSiphon) tile_entity).addFuelToTank(nSiphonAmount);
+				}
 			}
 
 			par1World.scheduleBlockUpdate(xCoord, yCoord, zCoord, this.blockID, this.tickRate());
