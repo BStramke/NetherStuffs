@@ -3,7 +3,9 @@ package bstramke.NetherStuffs.Items;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.EnumHelper;
+import net.minecraftforge.liquids.LiquidStack;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.SoulLiquid.SoulEnergyLiquid;
 
 public class NetherItems {
 	static EnumToolMaterial EnumToolMaterialDemonicIngot = EnumHelper.addToolMaterial("DemonicIngot", 2, 300, 6.0F, 6, 15);
@@ -45,4 +47,6 @@ public class NetherItems {
 			"NetherSoulglassSword").setIconCoord(5, 1);
 	public static final Item NetherSoulglassSwordDeath = new NetherSoulglassSwordDeath(NetherStuffs.NetherSoulglassSwordDeathItemId, EnumToolMaterialSoulGlassDemonic).setItemName(
 			"NetherSoulglassSword").setIconCoord(5, 1);
+	
+	public static final bstramke.NetherStuffs.SoulLiquid.SoulEnergyLiquid SoulEnergyLiquid = new SoulEnergyLiquid(NetherStuffs.SoulEnergyLiquidItemId, 1);
 }

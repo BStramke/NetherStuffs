@@ -11,7 +11,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
+import bstramke.NetherStuffs.Blocks.NetherWood;
 import bstramke.NetherStuffs.Blocks.SoulDetector;
+import bstramke.NetherStuffs.Blocks.SoulDetectorItemBlock;
+import bstramke.NetherStuffs.Blocks.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Items.NetherItems;
 
 public class SoulWorkBenchRecipes {
@@ -26,8 +29,8 @@ public class SoulWorkBenchRecipes {
 				new ItemStack(NetherItems.NetherOreIngot, 1, 0) });
 
 		this.addRecipe(new ItemStack(NetherItems.NetherBow, 1, 0), 15, new Object[] { "SW.", "S.W", "SW.", 'S', new ItemStack(Item.silk, 1, 0), 'W',
-			new ItemStack(NetherItems.NetherWoodStick, 1, 0) });
-		
+				new ItemStack(NetherItems.NetherWoodStick, 1, 0) });
+
 		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulDetector, 1, SoulDetector.mk1), 25, new Object[] { "IBI", "BTB", "IBI", 'I',
 				new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'B', new ItemStack(Block.netherBrick, 1, 0), 'T', new ItemStack(Block.torchRedstoneActive, 1, 0) });
 
@@ -42,6 +45,13 @@ public class SoulWorkBenchRecipes {
 
 		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulFurnace, 1), 30, new Object[] { "IBI", "IFI", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'F',
 				new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1) });
+
+		//Add 4 Soul Siphons with the same Metadatas as Soul Detectors
+		for (int i = 0; i < SoulSiphonItemBlock.getMetadataSize() && i < SoulDetectorItemBlock.getMetadataSize(); i++) {
+			this.addRecipe(new ItemStack(NetherBlocks.NetherSoulSiphon, 1, i), 25, new Object[] { "WWW", "BDB", "WWW", 'W',
+					new ItemStack(NetherBlocks.netherWood, 1, NetherWood.death), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1), 'D',
+					new ItemStack(NetherBlocks.NetherSoulDetector, 1, i) });
+		}
 	}
 
 	public List getRecipeList() {

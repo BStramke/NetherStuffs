@@ -6,8 +6,8 @@ import bstramke.NetherStuffs.Common.CommonProxy;
 
 public class SoulSiphonItemBlock extends ItemBlock {
 
-	public static String[] blockNames = new String[] { "SoulSiphonMK1" };
-	public static String[] blockDisplayNames = new String[] { "Soul Siphon MK 1" };
+	public static String[] blockNames = new String[] { "SoulSiphonMK1", "SoulSiphonMK2", "SoulSiphonMK3", "SoulSiphonMK4" };
+	public static String[] blockDisplayNames = new String[] { "Soul Siphon MK 1", "Soul Siphon MK 2", "Soul Siphon MK 3", "Soul Siphon MK 4" };
 
 	public SoulSiphonItemBlock(int id) {
 		super(id);
@@ -22,7 +22,7 @@ public class SoulSiphonItemBlock extends ItemBlock {
 	public static int getMetadataSize() {
 		return blockNames.length;
 	}
-	
+
 	@Override
 	public String getItemNameIS(ItemStack is) {
 		String name = "";

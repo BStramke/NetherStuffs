@@ -6,11 +6,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.liquids.ILiquidTank;
+import net.minecraftforge.liquids.ITankContainer;
+import net.minecraftforge.liquids.LiquidEvent;
+import net.minecraftforge.liquids.LiquidStack;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulSiphon extends TileEntity implements ISpecialInventory {
+public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITankContainer {
 	private int nTankFillSlot = 0;
 	public int currentTankLevel = 0;
 	public int maxTankLevel = 1000;
@@ -86,12 +90,10 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory {
 	}
 
 	@Override
-	public void openChest() {
-	}
+	public void openChest() {}
 
 	@Override
-	public void closeChest() {
-	}
+	public void closeChest() {}
 
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
@@ -143,11 +145,11 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory {
 			this.currentTankLevel = nRest;
 		}
 	}
-	
-	public int addFuelToTank(int nAmount){
+
+	public int addFuelToTank(int nAmount) {
 		int nRest = 0;
 		this.currentTankLevel += nAmount;
-		if(this.currentTankLevel > this.maxTankLevel){
+		if (this.currentTankLevel > this.maxTankLevel) {
 			nRest = this.currentTankLevel - this.maxTankLevel;
 			this.currentTankLevel = this.maxTankLevel;
 		}
@@ -187,5 +189,62 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory {
 
 	public int getFillingScaled(int nPixelMax) {
 		return (int) (((float) this.currentTankLevel / (float) this.maxTankLevel) * nPixelMax);
+	}
+
+	@Override
+	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
+		return 0;
+	}
+
+	@Override
+	public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
+		return 0;
+	}
+
+	@Override
+	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		LiquidStack liquid = bstramke.NetherStuffs.Items.NetherItems.SoulEnergyLiquid;
+		liquid.amount = this.currentTankLevel;
+		if (liquid == null || liquid.itemID <= 0)
+			return null;
+		if (liquid.amount <= 0)
+			return null;
+
+		int used = maxDrain;
+		if (liquid.amount < used)
+			used = liquid.amount;
+
+		if (doDrain) {
+			liquid.amount -= used;
+		}
+
+		LiquidStack drained = new LiquidStack(liquid.itemID, used, liquid.itemMeta);
+
+		// Reset liquid if emptied
+		if (liquid.amount <= 0)
+			liquid = null;
+
+		// if (doDrain && tile_entity != null)
+		// LiquidEvent.fireEvent(new LiquidEvent.LiquidDrainingEvent(drained, tile_entity.worldObj, tile.xCoord, tile_entity.yCoord, tile_entity.zCoord, this));
+
+		return drained;
+	}
+
+	@Override
+	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ILiquidTank[] getTanks(ForgeDirection direction) {
+		// return new ILiquidTank[] { tank };
+		return null;
+	}
+
+	@Override
+	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

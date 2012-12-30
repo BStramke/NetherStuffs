@@ -8,6 +8,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.liquids.ILiquidTank;
+import net.minecraftforge.liquids.ITankContainer;
+import net.minecraftforge.liquids.LiquidEvent;
+import net.minecraftforge.liquids.LiquidStack;
 import bstramke.NetherStuffs.Items.NetherItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -49,7 +54,7 @@ public class ContainerSoulSiphon extends Container {
 			this.tile_entity.currentTankLevel = par2;
 		}
 	}
-	
+
 	@Override
 	public void updateCraftingResults() {
 		super.updateCraftingResults();
@@ -71,7 +76,7 @@ public class ContainerSoulSiphon extends Container {
 		super.addCraftingToCrafters(par1ICrafting);
 		par1ICrafting.sendProgressBarUpdate(this, 0, this.tile_entity.currentTankLevel);
 	}
-	
+
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot_index) {
 		ItemStack stack = null;

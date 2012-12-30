@@ -8,6 +8,7 @@ mkdir reobf\minecraft\bstramke\NetherStuffsBase\buildcraft\api\inventory
 mkdir reobf\minecraft\bstramke\NetherStuffsCoreBase
 mkdir reobf\minecraft\bstramke\NetherStuffsCoreBase\bstramke
 move reobf\minecraft\bstramke\NetherStuffs reobf\minecraft\bstramke\NetherStuffsBase\bstramke
+move reobf\minecraft\bstramke\NetherStuffsNEIPlugin reobf\minecraft\bstramke\NetherStuffsBase\bstramke
 move reobf\minecraft\bstramke\NetherStuffsCore reobf\minecraft\bstramke\NetherStuffsCoreBase\bstramke
 
 mkdir reobf\minecraft\bstramke\NetherStuffsBase\bstramke\NetherStuffs\resources
