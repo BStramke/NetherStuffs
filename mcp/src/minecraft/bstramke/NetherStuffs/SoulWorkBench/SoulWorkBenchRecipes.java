@@ -143,6 +143,9 @@ public class SoulWorkBenchRecipes {
 	}
 
 	public int getCraftingSoulEnergyRequired(ItemStack item) {
+		if(item == null)
+			return 0;
+		
 		Iterator it = this.recipes.iterator();
 		while (it.hasNext()) {
 			Object data = it.next();

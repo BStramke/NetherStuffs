@@ -8,7 +8,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Items.NetherItems;
+import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -100,7 +102,8 @@ public class ContainerSoulWorkBench extends Container {
 	}
 
 	/*
-	 * public void onCraftMatrixChanged(IInventory par1IInventory) { this.craftResult.setInventorySlotContents(0, SoulWorkBenchRecipes.getInstance().getCraftingResult(this.soulworkbench, this)); }
+	 * public void onCraftMatrixChanged(IInventory par1IInventory) { this.craftResult.setInventorySlotContents(0,
+	 * SoulWorkBenchRecipes.getInstance().getCraftingResult(this.soulworkbench, this)); }
 	 */
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot_index) {
@@ -109,23 +112,31 @@ public class ContainerSoulWorkBench extends Container {
 
 		if (slot_object != null && slot_object.getHasStack()) {
 			ItemStack stack_in_slot = slot_object.getStack();
-			if (slot_object.inventory instanceof TileSoulWorkBench) {
+			stack = stack_in_slot.copy();
 
-				stack = stack_in_slot.copy();
-
-				if (!mergeItemStack(stack_in_slot, 1, inventorySlots.size(), true)) {
+			if (slot_index == this.soulworkbench.nOutputSlot) {
+				if (!this.mergeItemStack(stack_in_slot, 11, 46, true)) {
 					return null;
 				}
-
-			} else if (slot_object.inventory instanceof InventoryPlayer) {
-
+				slot_object.onSlotChange(stack_in_slot, stack);
+			} else if (slot_index >= 11 && slot_index <= 37) { // player inventory
 				if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
-					if (!mergeItemStack(stack_in_slot, 9, inventorySlots.size(), false))
+					if (!this.mergeItemStack(stack_in_slot, this.soulworkbench.nTankFillSlot, this.soulworkbench.nTankFillSlot+1, false)) {
 						return null;
-				} else {
-					if (!mergeItemStack(stack_in_slot, 0, 9, false))
-						return null;
+					}
+				} else if (!this.mergeItemStack(stack_in_slot, 37, 46, false)) {
+					return null;
 				}
+			} else if (slot_index > 37 && slot_index < 47) { // player inventory slot bar
+				if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
+					if (!this.mergeItemStack(stack_in_slot, this.soulworkbench.nTankFillSlot, this.soulworkbench.nTankFillSlot+1, false)) {
+						return null;
+					}
+				} else if (!this.mergeItemStack(stack_in_slot, 11, 37, false)) {
+					return null;
+				}
+			} else if (!this.mergeItemStack(stack_in_slot, 11, 46, false)) {
+				return null;
 			}
 
 			if (stack_in_slot.stackSize == 0) {
@@ -133,8 +144,12 @@ public class ContainerSoulWorkBench extends Container {
 			} else {
 				slot_object.onSlotChanged();
 			}
-		}
 
+			if (stack_in_slot.stackSize == stack.stackSize)
+				return null;
+
+			slot_object.onPickupFromSlot(par1EntityPlayer, stack_in_slot);
+		}
 		return stack;
 	}
 }

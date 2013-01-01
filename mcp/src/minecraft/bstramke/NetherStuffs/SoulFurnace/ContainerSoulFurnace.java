@@ -95,52 +95,53 @@ public class ContainerSoulFurnace extends Container {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot_index) {
-		ItemStack var3 = null;
-		Slot var4 = (Slot) this.inventorySlots.get(slot_index);
+		ItemStack stack = null;
+		Slot slot_object = (Slot) this.inventorySlots.get(slot_index);
+		System.out.println(slot_index);
 
-		if (var4 != null && var4.getHasStack()) {
-			ItemStack var5 = var4.getStack();
-			var3 = var5.copy();
+		if (slot_object != null && slot_object.getHasStack()) {
+			ItemStack stack_in_slot = slot_object.getStack();
+			stack = stack_in_slot.copy();
 
 			if (slot_index == 2) {
-				if (!this.mergeItemStack(var5, 3, 39, true)) {
+				if (!this.mergeItemStack(stack_in_slot, 3, 39, true)) {
 					return null;
 				}
 
-				var4.onSlotChange(var5, var3);
+				slot_object.onSlotChange(stack_in_slot, stack);
 			} else if (slot_index != 1 && slot_index != 0) {
-				if (FurnaceRecipes.smelting().getSmeltingResult(var5) != null || DemonicFurnaceRecipes.smelting().getSmeltingResult(var5) != null) {
-					if (!this.mergeItemStack(var5, 0, 1, false)) {
+				if (FurnaceRecipes.smelting().getSmeltingResult(stack_in_slot) != null || DemonicFurnaceRecipes.smelting().getSmeltingResult(stack_in_slot) != null) {
+					if (!this.mergeItemStack(stack_in_slot, 0, 1, false)) {
 						return null;
 					}
-				} else if (var5.itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
-					if (!this.mergeItemStack(var5, 1, 2, false)) {
+				} else if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
+					if (!this.mergeItemStack(stack_in_slot, 1, 2, false)) {
 						return null;
 					}
 				} else if (slot_index >= 3 && slot_index < 30) {
-					if (!this.mergeItemStack(var5, 30, 39, false)) {
+					if (!this.mergeItemStack(stack_in_slot, 30, 39, false)) {
 						return null;
 					}
-				} else if (slot_index >= 30 && slot_index < 39 && !this.mergeItemStack(var5, 3, 30, false)) {
+				} else if (slot_index >= 30 && slot_index < 39 && !this.mergeItemStack(stack_in_slot, 3, 30, false)) {
 					return null;
 				}
-			} else if (!this.mergeItemStack(var5, 3, 39, false)) {
+			} else if (!this.mergeItemStack(stack_in_slot, 3, 39, false)) {
 				return null;
 			}
 
-			if (var5.stackSize == 0) {
-				var4.putStack((ItemStack) null);
+			if (stack_in_slot.stackSize == 0) {
+				slot_object.putStack((ItemStack) null);
 			} else {
-				var4.onSlotChanged();
+				slot_object.onSlotChanged();
 			}
 
-			if (var5.stackSize == var3.stackSize) {
+			if (stack_in_slot.stackSize == stack.stackSize) {
 				return null;
 			}
 
-			var4.onPickupFromSlot(par1EntityPlayer, var5);
+			slot_object.onPickupFromSlot(par1EntityPlayer, stack_in_slot);
 		}
 
-		return var3;
+		return stack;
 	}
 }
