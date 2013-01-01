@@ -75,7 +75,7 @@ public class ContainerSoulWorkBench extends Container {
 	@Override
 	public void updateProgressBar(int par1, int par2) {
 		if (par1 == 0) {
-			this.soulworkbench.currentTankLevel = par2;
+			this.soulworkbench.setCurrentTankLevel(par2);
 		}
 
 		if (par1 == 1) {
@@ -97,7 +97,7 @@ public class ContainerSoulWorkBench extends Container {
 	@Override
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
-		par1ICrafting.sendProgressBarUpdate(this, 0, this.soulworkbench.currentTankLevel);
+		par1ICrafting.sendProgressBarUpdate(this, 0, this.soulworkbench.getCurrentTankLevel());
 		par1ICrafting.sendProgressBarUpdate(this, 1, this.soulworkbench.processTime);
 	}
 
@@ -121,7 +121,7 @@ public class ContainerSoulWorkBench extends Container {
 				slot_object.onSlotChange(stack_in_slot, stack);
 			} else if (slot_index >= 11 && slot_index <= 37) { // player inventory
 				if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
-					if (!this.mergeItemStack(stack_in_slot, this.soulworkbench.nTankFillSlot, this.soulworkbench.nTankFillSlot+1, false)) {
+					if (!this.mergeItemStack(stack_in_slot, this.soulworkbench.nTankFillSlot, this.soulworkbench.nTankFillSlot + 1, false)) {
 						return null;
 					}
 				} else if (!this.mergeItemStack(stack_in_slot, 37, 46, false)) {
@@ -129,7 +129,7 @@ public class ContainerSoulWorkBench extends Container {
 				}
 			} else if (slot_index > 37 && slot_index < 47) { // player inventory slot bar
 				if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
-					if (!this.mergeItemStack(stack_in_slot, this.soulworkbench.nTankFillSlot, this.soulworkbench.nTankFillSlot+1, false)) {
+					if (!this.mergeItemStack(stack_in_slot, this.soulworkbench.nTankFillSlot, this.soulworkbench.nTankFillSlot + 1, false)) {
 						return null;
 					}
 				} else if (!this.mergeItemStack(stack_in_slot, 11, 37, false)) {

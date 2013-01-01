@@ -67,13 +67,13 @@ public class ContainerSoulFurnace extends Container {
 				var2.sendProgressBarUpdate(this, 0, this.furnace.furnaceCookTime);
 			}
 
-			if (this.lastTankLevel != this.furnace.currentTankLevel) {
-				var2.sendProgressBarUpdate(this, 1, this.furnace.currentTankLevel);
+			if (this.lastTankLevel != this.furnace.getCurrentTankLevel()) {
+				var2.sendProgressBarUpdate(this, 1, this.furnace.getCurrentTankLevel());
 			}
 		}
 
 		this.lastCookTime = this.furnace.furnaceCookTime;
-		this.lastTankLevel = this.furnace.currentTankLevel;
+		this.lastTankLevel = this.furnace.getCurrentTankLevel();
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -82,7 +82,7 @@ public class ContainerSoulFurnace extends Container {
 		if (par1 == 0) {
 			this.furnace.furnaceCookTime = par2;
 		} else if (par1 == 1) {
-			this.furnace.currentTankLevel = par2;
+			this.furnace.setCurrentTankLevel(par2);
 		}
 	}
 
@@ -90,7 +90,7 @@ public class ContainerSoulFurnace extends Container {
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
 		par1ICrafting.sendProgressBarUpdate(this, 0, this.furnace.furnaceCookTime);
-		par1ICrafting.sendProgressBarUpdate(this, 1, this.furnace.currentTankLevel);
+		par1ICrafting.sendProgressBarUpdate(this, 1, this.furnace.getCurrentTankLevel());
 	}
 
 	@Override

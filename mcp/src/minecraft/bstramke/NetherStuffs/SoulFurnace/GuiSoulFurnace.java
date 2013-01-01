@@ -47,7 +47,7 @@ public class GuiSoulFurnace extends GuiContainer {
 			this.drawTexturedModalRect(var5 + 9, nBottomLeftY - x, 176, 48 - x, 21, 1);
 		}
 
-		Integer nCurrent = this.inventory.currentTankLevel;
+		Integer nCurrent = this.inventory.getCurrentTankLevel();
 		if (nCurrent >= 100)
 			fontRenderer.drawString(nCurrent.toString(), var5 + 11, var6 + 49, 0x000000);
 		else

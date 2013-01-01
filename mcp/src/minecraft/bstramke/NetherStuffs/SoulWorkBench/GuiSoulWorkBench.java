@@ -48,7 +48,7 @@ public class GuiSoulWorkBench extends GuiContainer {
 		if (nRequired > 0)
 			fontRenderer.drawString("+ " + nRequired + " Energy", var5 + 39, var6 + 72, 0x000000);
 
-		Integer nCurrent = this.benchInventory.currentTankLevel;
+		Integer nCurrent = this.benchInventory.getCurrentTankLevel();
 		if(nCurrent>=100)
 			fontRenderer.drawString(nCurrent.toString(), var5 + 11, var6 + 49, 0x000000);
 		else

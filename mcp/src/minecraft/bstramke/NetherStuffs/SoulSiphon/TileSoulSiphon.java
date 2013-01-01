@@ -160,7 +160,6 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 			LiquidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
 			liquid.amount = nAmount;
 			this.tank.setLiquid(liquid);
-			System.out.println(liquid.itemID);
 		}
 
 	}
@@ -249,7 +248,6 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 
 	@Override
 	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

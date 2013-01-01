@@ -7,6 +7,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.liquids.ILiquidTank;
+import net.minecraftforge.liquids.ITankContainer;
+import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.liquids.LiquidTank;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherSoulFurnace;
 import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import bstramke.NetherStuffs.Items.NetherItems;
@@ -15,14 +20,15 @@ import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
+public class TileSoulFurnace extends TileEntity implements ISpecialInventory, ITankContainer {
+	private LiquidTank tank;
 	public static final int nSmeltedSlot = 0;
 	public static final int nTankFillSlot = 1;
 	public static final int nOutputSlot = 2;
 	private ItemStack[] inventory = new ItemStack[3];
 
 	private int nTicksToComplete = 195;
-	public int currentTankLevel = 0;
+	//public int currentTankLevel = 0;
 	public int maxTankLevel = 1920; //1920 equals 2 stacks of Smelting Ores
 
 	/** The number of ticks that the current item has been cooking for */
@@ -31,6 +37,10 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
 	@Override
 	public int getSizeInventory() {
 		return this.inventory.length;
+	}
+	
+	public TileSoulFurnace() {
+		tank = new LiquidTank(maxTankLevel);
 	}
 
 	@Override
@@ -49,17 +59,35 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
 
 	@SideOnly(Side.CLIENT)
 	public int getFillingScaled(int nPixelMax) {
-		return (int) (((float) this.currentTankLevel / (float) this.maxTankLevel) * nPixelMax);
+		return (int) (((float) this.getCurrentTankLevel() / (float) this.maxTankLevel) * nPixelMax);
+	}
+	
+	public int getCurrentTankLevel() {
+		if (this.tank.getLiquid() == null || this.tank.getLiquid().amount < 0)
+			return 0;
+		else
+			return this.tank.getLiquid().amount;
+	}
+
+	public void setCurrentTankLevel(int nAmount) {
+		if (this.tank.getLiquid() != null)
+			this.tank.getLiquid().amount = nAmount;
+		else {
+			LiquidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
+			liquid.amount = nAmount;
+			this.tank.setLiquid(liquid);
+		}
+
 	}
 
 	private void fillFuelToTank() {
-		if (this.currentTankLevel < this.maxTankLevel && this.inventory[this.nTankFillSlot] != null
+		if (this.getCurrentTankLevel() < this.maxTankLevel && this.inventory[this.nTankFillSlot] != null
 				&& this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
-			if (this.currentTankLevel + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
-				SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.maxTankLevel - this.currentTankLevel);
-				this.currentTankLevel = this.maxTankLevel;
+			if (this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
+				SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.maxTankLevel - this.getCurrentTankLevel());
+				this.setCurrentTankLevel(this.maxTankLevel);
 			} else {
-				this.currentTankLevel += SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]);
+				this.setCurrentTankLevel(this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]));
 				SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot], 0);
 			}
 		}
@@ -136,22 +164,22 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
 	public void updateEntity() {
 		boolean bActive = this.furnaceCookTime > 0;
 		boolean var2 = false;
-		int nPrevTankLevel = this.currentTankLevel;
+		int nPrevTankLevel = this.getCurrentTankLevel();
 
 		if (!this.worldObj.isRemote) {
 
 			fillFuelToTank();
 
-			if (this.currentTankLevel != nPrevTankLevel) {
+			if (this.getCurrentTankLevel() != nPrevTankLevel) {
 				var2 = true;
 			}
 
 			// check if smelting is to be done and has energy to do so
-			if (this.canSmelt() && this.currentTankLevel > 0) {
+			if (this.canSmelt() && this.getCurrentTankLevel() > 0) {
 				++this.furnaceCookTime;
 
 				if (this.furnaceCookTime % 13 == 0) // every 13 Ticks needs 1 energy, 15 energy for each smelting
-					this.currentTankLevel--;
+					this.setCurrentTankLevel(this.getCurrentTankLevel()-1);
 
 				if (this.furnaceCookTime == nTicksToComplete) {
 					this.furnaceCookTime = 0;
@@ -159,7 +187,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
 					var2 = true;
 				}
 
-				if (this.currentTankLevel != nPrevTankLevel) {
+				if (this.getCurrentTankLevel() != nPrevTankLevel) {
 					var2 = true;
 				}
 			} else {
@@ -198,7 +226,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
 		}
 
 		this.furnaceCookTime = tagCompound.getShort("CookTime");
-		this.currentTankLevel = tagCompound.getShort("TankLevel");
+		this.setCurrentTankLevel(tagCompound.getShort("TankLevel"));
 	}
 
 	/**
@@ -248,7 +276,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		tagCompound.setShort("TankLevel", (short) this.currentTankLevel);
+		tagCompound.setShort("TankLevel", (short) this.getCurrentTankLevel());
 		tagCompound.setShort("CookTime", (short) this.furnaceCookTime);
 		NBTTagList itemList = new NBTTagList();
 
@@ -329,5 +357,37 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory {
 			return new ItemStack[] { outputStack };
 		} else
 			return null;
+	}
+
+	@Override
+	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
+		return fill(0, resource, doFill);
+	}
+
+	@Override
+	public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
+		if (tankIndex == 0)
+			return tank.fill(resource, doFill);
+		return 0;
+	}
+
+	@Override
+	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		return null;
+	}
+
+	@Override
+	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
+		return null;
+	}
+
+	@Override
+	public ILiquidTank[] getTanks(ForgeDirection direction) {
+		return new ILiquidTank[] { tank };
+	}
+
+	@Override
+	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
+		return null;
 	}
 }
