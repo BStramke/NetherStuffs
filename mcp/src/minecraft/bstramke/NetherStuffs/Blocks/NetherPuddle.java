@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.Common.CommonProxy;
@@ -134,6 +135,12 @@ public class NetherPuddle extends Block {
 		}
 	}
 
+	@Override
+   public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+   {
+       return null;
+   }
+	
 	protected static boolean canBlockStay(World par1World, int par2, int par3, int par4, int puddleMeta, boolean checkPuddleMeta) {
 		boolean bValid = true;
 		if (!par1World.provider.isHellWorld) // only allow in Nether

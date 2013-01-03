@@ -19,6 +19,8 @@
 *.properties
 *.txt
 *.sh
+*.jar
+*.zip
 
 /mcp/CHANGELOG
 /mcp/*.bat
