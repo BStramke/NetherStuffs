@@ -10,7 +10,7 @@ public class SoulEnergyLiquidItem extends Item {
 
 	public SoulEnergyLiquidItem(int par1) {
 		super(par1);
-		this.setCreativeTab(CreativeTabs.tabMisc);
+		//this.setCreativeTab(CreativeTabs.tabMisc);
 	}
 	
 	@Override

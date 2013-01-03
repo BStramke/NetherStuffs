@@ -31,7 +31,7 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 	private int nTicksToComplete = 400;
 	//public int currentTankLevel = 0;
 	public int processTime = 0;
-	public int maxTankLevel = 100;
+	public int maxTankLevel = 1000;
 	public int energyUsedPerTick = 1;
 	public int nSoulEnergyRequired = 0;
 
@@ -176,7 +176,7 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		tagCompound.setShort("TankLevel", (short) this.getCurrentTankLevel());
+		tagCompound.setShort("TankLevelNew", (short) this.getCurrentTankLevel());
 		tagCompound.setShort("ProcessTime", (short) this.processTime);
 		NBTTagList itemList = new NBTTagList();
 
@@ -208,7 +208,11 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 			}
 		}
 
-		this.setCurrentTankLevel(tagCompound.getShort("TankLevel"));
+		if(tagCompound.getShort("TankLevel")>0) {
+			tagCompound.setShort("TankLevelNew", tagCompound.getShort("TankLevel"));
+			tagCompound.removeTag("TankLevel");
+		}
+		this.setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));
 		this.processTime = tagCompound.getShort("ProcessTime");
 	}
 

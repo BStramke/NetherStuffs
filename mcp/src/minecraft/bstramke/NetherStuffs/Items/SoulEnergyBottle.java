@@ -52,13 +52,14 @@ public class SoulEnergyBottle extends Item {
 	}
 
 	public static int getSoulEnergyAmount(ItemStack item) {
+		if (item.getItemDamage() == largeFilled)
+			return 100000;
+
 		if (!item.hasTagCompound())
 			return 0;
 		else {
-			if (item.getItemDamage() == largeFilled)
-				return 10000;
-			else
-				return item.getTagCompound().getInteger("SoulEnergyAmount");
+			updateOldToNewSoulEnergyTag(item);
+			return item.getTagCompound().getInteger("SoulEnergyAmountNew");
 		}
 	}
 
@@ -66,27 +67,28 @@ public class SoulEnergyBottle extends Item {
 		if (nAmount == 0)
 			return 0;
 		int nExistingAmount = 0;
-		int nLimit = 10000;
+		int nLimit = 100000;
 		int nRest = 0;
 
 		if (!item.hasTagCompound())
 			item.stackTagCompound = new NBTTagCompound();
 		else {
-			nExistingAmount = item.getTagCompound().getInteger("SoulEnergyAmount");
+			updateOldToNewSoulEnergyTag(item);
+			nExistingAmount = item.getTagCompound().getInteger("SoulEnergyAmountNew");
 		}
 
 		switch (item.getItemDamage()) {
 		case small:
-			nLimit = 100;
-			break;
-		case medium:
 			nLimit = 1000;
 			break;
-		case large:
+		case medium:
 			nLimit = 10000;
 			break;
+		case large:
+			nLimit = 100000;
+			break;
 		case largeFilled:
-			nLimit = 10000;
+			nLimit = 100000;
 			break;
 		}
 
@@ -97,7 +99,7 @@ public class SoulEnergyBottle extends Item {
 			nExistingAmount += nAmount;
 		}
 
-		item.getTagCompound().setInteger("SoulEnergyAmount", nExistingAmount);
+		item.getTagCompound().setInteger("SoulEnergyAmountNew", nExistingAmount);
 		return nRest;
 	}
 
@@ -125,14 +127,36 @@ public class SoulEnergyBottle extends Item {
 		}
 	}
 
+	private static void updateOldToNewSoulEnergyTag(ItemStack par1ItemStack) {
+		if (!par1ItemStack.hasTagCompound())
+			return;
+
+		int nAmount = 0;
+		nAmount = par1ItemStack.getTagCompound().getInteger("SoulEnergyAmount");
+		if (nAmount > 0) {
+			nAmount *= 10;
+			par1ItemStack.getTagCompound().removeTag("SoulEnergyAmount");
+			par1ItemStack.getTagCompound().setInteger("SoulEnergyAmountNew", nAmount);
+		}
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		int nExistingAmount = 0;
-		if (par1ItemStack.hasTagCompound() && par1ItemStack.stackTagCompound.hasKey("SoulEnergyAmount")) {
-			nExistingAmount = par1ItemStack.getTagCompound().getInteger("SoulEnergyAmount");
+		updateOldToNewSoulEnergyTag(par1ItemStack);
+
+		if (par1ItemStack.getItemDamage() == largeFilled) {
+			par3List.add("Contains infinite Soulenergy");
+			return;
+		}
+
+		if (par1ItemStack.hasTagCompound() && par1ItemStack.stackTagCompound.hasKey("SoulEnergyAmountNew")) {
+			nExistingAmount = par1ItemStack.getTagCompound().getInteger("SoulEnergyAmountNew");
 			if (nExistingAmount > 0)
 				par3List.add("Contains Soulenergy: " + ((Integer) nExistingAmount).toString());
+		} else {
+			par3List.add("Contains Soulenergy: 0");
 		}
 	}
 
@@ -141,20 +165,22 @@ public class SoulEnergyBottle extends Item {
 			if (!item.hasTagCompound())
 				item.stackTagCompound = new NBTTagCompound();
 
-			int nCurrentAmount = item.getTagCompound().getInteger("SoulEnergyAmount");
+			updateOldToNewSoulEnergyTag(item);
+
+			int nCurrentAmount = item.getTagCompound().getInteger("SoulEnergyAmountNew");
 			int nNewAmount = nCurrentAmount - i;
 			if (nNewAmount < 0)
 				nNewAmount = 0;
-			item.getTagCompound().setInteger("SoulEnergyAmount", nNewAmount);
+			item.getTagCompound().setInteger("SoulEnergyAmountNew", nNewAmount);
 		}
 	}
 
 	public static void setSoulEnergyAmount(ItemStack item, int i) {
 		if (i >= 0) {
+			updateOldToNewSoulEnergyTag(item);
 			if (!item.hasTagCompound())
 				item.stackTagCompound = new NBTTagCompound();
-
-			item.getTagCompound().setInteger("SoulEnergyAmount", i);
+			item.getTagCompound().setInteger("SoulEnergyAmountNew", i);
 		}
 	}
 }

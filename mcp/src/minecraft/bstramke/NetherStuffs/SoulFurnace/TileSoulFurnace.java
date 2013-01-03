@@ -29,7 +29,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 
 	private int nTicksToComplete = 195;
 	//public int currentTankLevel = 0;
-	public int maxTankLevel = 1920; //1920 equals 2 stacks of Smelting Ores
+	public int maxTankLevel = 19200; //19200 equals 2 stacks of Smelting Ores
 
 	/** The number of ticks that the current item has been cooking for */
 	public int furnaceCookTime = 0;
@@ -226,7 +226,11 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 		}
 
 		this.furnaceCookTime = tagCompound.getShort("CookTime");
-		this.setCurrentTankLevel(tagCompound.getShort("TankLevel"));
+		if(tagCompound.getShort("TankLevel")>0) {
+			tagCompound.setShort("TankLevelNew", tagCompound.getShort("TankLevel"));
+			tagCompound.removeTag("TankLevel");
+		}
+		this.setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));
 	}
 
 	/**
@@ -276,7 +280,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		tagCompound.setShort("TankLevel", (short) this.getCurrentTankLevel());
+		tagCompound.setShort("TankLevelNew", (short) this.getCurrentTankLevel());
 		tagCompound.setShort("CookTime", (short) this.furnaceCookTime);
 		NBTTagList itemList = new NBTTagList();
 

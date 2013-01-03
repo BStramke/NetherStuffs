@@ -20,7 +20,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 	private LiquidTank tank;
 	private int nTankFillSlot = 0;
 	// public int currentTankLevel = 0;
-	public int maxTankLevel = 1000;
+	public int maxTankLevel = 10000;
 
 	private ItemStack[] inventory = new ItemStack[1]; // 1 slot for bottle
 
@@ -105,7 +105,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		tagCompound.setShort("TankLevel", (short) this.getCurrentTankLevel());
+		tagCompound.setShort("TankLevelNew", (short) this.getCurrentTankLevel());
 		NBTTagList itemList = new NBTTagList();
 
 		for (int i = 0; i < inventory.length; i++) {
@@ -136,7 +136,11 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 			}
 		}
 
-		setCurrentTankLevel(tagCompound.getShort("TankLevel"));
+		if(tagCompound.getShort("TankLevel")>0) {
+			tagCompound.setShort("TankLevelNew", tagCompound.getShort("TankLevel"));
+			tagCompound.removeTag("TankLevel");
+		}
+		setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));
 	}
 
 	public void updateEntity() {
