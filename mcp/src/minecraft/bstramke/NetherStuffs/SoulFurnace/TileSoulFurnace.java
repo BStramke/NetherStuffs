@@ -175,11 +175,11 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 			}
 
 			// check if smelting is to be done and has energy to do so
-			if (this.canSmelt() && this.getCurrentTankLevel() > 0) {
+			if (this.canSmelt() && this.getCurrentTankLevel() > 10) {
 				++this.furnaceCookTime;
 
-				if (this.furnaceCookTime % 13 == 0) // every 13 Ticks needs 1 energy, 15 energy for each smelting
-					this.setCurrentTankLevel(this.getCurrentTankLevel()-1);
+				if (this.furnaceCookTime % 13 == 0) // every 13 Ticks needs 10 energy, 15 energy for each smelting
+					this.setCurrentTankLevel(this.getCurrentTankLevel()-10);
 
 				if (this.furnaceCookTime == nTicksToComplete) {
 					this.furnaceCookTime = 0;
@@ -227,7 +227,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 
 		this.furnaceCookTime = tagCompound.getShort("CookTime");
 		if(tagCompound.getShort("TankLevel")>0) {
-			tagCompound.setShort("TankLevelNew", tagCompound.getShort("TankLevel"));
+			tagCompound.setShort("TankLevelNew", (short) (tagCompound.getShort("TankLevel")*10));
 			tagCompound.removeTag("TankLevel");
 		}
 		this.setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));

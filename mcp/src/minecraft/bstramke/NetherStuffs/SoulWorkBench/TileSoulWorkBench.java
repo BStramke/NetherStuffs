@@ -209,7 +209,7 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 		}
 
 		if(tagCompound.getShort("TankLevel")>0) {
-			tagCompound.setShort("TankLevelNew", tagCompound.getShort("TankLevel"));
+			tagCompound.setShort("TankLevelNew", (short) (tagCompound.getShort("TankLevel")*10));
 			tagCompound.removeTag("TankLevel");
 		}
 		this.setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));
