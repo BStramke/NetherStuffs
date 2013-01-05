@@ -72,7 +72,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "0.10", modid = "NetherStuffs")
+@Mod(name = "NetherStuffs", version = "0.11", modid = "NetherStuffs")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
 public class NetherStuffs extends DummyModContainer {
 
@@ -233,7 +233,7 @@ public class NetherStuffs extends DummyModContainer {
 		Item.itemsList[NetherSoulBlockerBlockId] = new SoulBlockerItemBlock(NetherSoulBlockerBlockId - 256).setItemName("NetherSoulBlockerItemBlock");
 		Item.itemsList[NetherSoulSiphonBlockId] = new SoulSiphonItemBlock(NetherSoulSiphonBlockId - 256).setItemName("NetherSoulSiphonItemBlock");
 		
-		Item.itemsList[SoulEnergyLiquidItemId] = NetherItems.SoulEnergyLiquidItem;
+		//Item.itemsList[SoulEnergyLiquidItemId] = NetherItems.SoulEnergyLiquidItem;
 
 		// set required Stuff to Gather
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherOre, NetherOre.netherOreCobblestone, "pickaxe", 0);

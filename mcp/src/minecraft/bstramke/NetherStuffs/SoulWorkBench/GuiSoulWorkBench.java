@@ -2,10 +2,12 @@ package bstramke.NetherStuffs.SoulWorkBench;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 
 public class GuiSoulWorkBench extends GuiContainer {
@@ -48,10 +50,23 @@ public class GuiSoulWorkBench extends GuiContainer {
 		if (nRequired > 0)
 			fontRenderer.drawString("+ " + nRequired + " Energy", var5 + 39, var6 + 72, 0x000000);
 
-		Integer nCurrent = this.benchInventory.getCurrentTankLevel();
+		/*Integer nCurrent = this.benchInventory.getCurrentTankLevel();
 		if(nCurrent>=100)
 			fontRenderer.drawString(nCurrent.toString(), var5 + 11, var6 + 49, 0x000000);
 		else
-			fontRenderer.drawString(nCurrent.toString(), var5 + 13, var6 + 49, 0x000000);
+			fontRenderer.drawString(nCurrent.toString(), var5 + 13, var6 + 49, 0x000000);*/
+	}
+	
+	@Override
+	public void drawScreen(int par1, int par2, float par3) {
+		super.drawScreen(par1, par2, par3);
+		int var5 = (this.width - this.xSize) / 2;
+		int var6 = (this.height - this.ySize) / 2;
+
+		if (par1 > var5 + 9 && par1 < var5 + 9 + 21 && par2 > var6 + 68 - 32 && par2 < var6 + 68) {
+			ItemStack par1ItemStack = NetherStuffs.SoulEnergyLiquid.asItemStack().copy();
+			par1ItemStack.stackSize = this.benchInventory.getCurrentTankLevel();
+			drawItemStackTooltip(par1ItemStack , par1, par2);
+		}
 	}
 }

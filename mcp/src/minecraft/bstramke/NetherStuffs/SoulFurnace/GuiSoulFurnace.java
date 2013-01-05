@@ -2,10 +2,13 @@ package bstramke.NetherStuffs.SoulFurnace;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 
 public class GuiSoulFurnace extends GuiContainer {
@@ -35,7 +38,8 @@ public class GuiSoulFurnace extends GuiContainer {
 		/*
 		 * int var7;
 		 * 
-		 * if (this.inventory.isBurning()) { var7 = this.inventory.getBurnTimeRemainingScaled(12); this.drawTexturedModalRect(var5 + 56, var6 + 36 + 12 - var7, 176, 12 - var7, 14, var7 + 2); }
+		 * if (this.inventory.isBurning()) { var7 = this.inventory.getBurnTimeRemainingScaled(12); this.drawTexturedModalRect(var5 + 56, var6 + 36 + 12 - var7, 176, 12 - var7, 14,
+		 * var7 + 2); }
 		 */
 
 		int var7 = this.inventory.getCookProgressScaled(24);
@@ -47,11 +51,23 @@ public class GuiSoulFurnace extends GuiContainer {
 			this.drawTexturedModalRect(var5 + 9, nBottomLeftY - x, 176, 48 - x, 21, 1);
 		}
 
-		Integer nCurrent = this.inventory.getCurrentTankLevel();
+		/*Integer nCurrent = this.inventory.getCurrentTankLevel();
 		if (nCurrent >= 100)
 			fontRenderer.drawString(nCurrent.toString(), var5 + 11, var6 + 49, 0x000000);
 		else
-			fontRenderer.drawString(nCurrent.toString(), var5 + 13, var6 + 49, 0x000000);
+			fontRenderer.drawString(nCurrent.toString(), var5 + 13, var6 + 49, 0x000000);*/
+	}
 
+	@Override
+	public void drawScreen(int par1, int par2, float par3) {
+		super.drawScreen(par1, par2, par3);
+		int var5 = (this.width - this.xSize) / 2;
+		int var6 = (this.height - this.ySize) / 2;
+
+		if (par1 > var5 + 9 && par1 < var5 + 9 + 21 && par2 > var6 + 68 - 32 && par2 < var6 + 68) {
+			ItemStack par1ItemStack = NetherStuffs.SoulEnergyLiquid.asItemStack().copy();
+			par1ItemStack.stackSize = this.inventory.getCurrentTankLevel();
+			drawItemStackTooltip(par1ItemStack , par1, par2);
+		}
 	}
 }
