@@ -106,7 +106,7 @@ public class ContainerDemonicFurnace extends Container {
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot_index) {
 		ItemStack stack = null;
 		Slot slot_object = (Slot) inventorySlots.get(slot_index);
-		System.out.println(slot_index);
+		//System.out.println(slot_index);
 
 		if (slot_object != null && slot_object.getHasStack()) {
 			ItemStack stack_in_slot = slot_object.getStack();

@@ -155,6 +155,8 @@ public class SoulEnergyBottle extends Item {
 			nExistingAmount = par1ItemStack.getTagCompound().getInteger("SoulEnergyAmountNew");
 			if (nExistingAmount > 0)
 				par3List.add("Contains Soulenergy: " + ((Integer) nExistingAmount).toString());
+			else
+				par3List.add("Contains Soulenergy: 0");
 		} else {
 			par3List.add("Contains Soulenergy: 0");
 		}
