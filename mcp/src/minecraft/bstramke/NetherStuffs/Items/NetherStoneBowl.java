@@ -66,11 +66,11 @@ public class NetherStoneBowl extends Item {
 					NetherPuddle.removePuddle(par2World, var5, var6, var7);
 
 					if (par1ItemStack.stackSize <= 0) {
-						return new ItemStack(NetherItems.NetherStonePotionBowl.shiftedIndex, 1, bowlMetaData);
+						return new ItemStack(NetherItems.NetherStonePotionBowl.itemID, 1, bowlMetaData);
 					}
 
-					if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(NetherItems.NetherStonePotionBowl.shiftedIndex, 1, bowlMetaData))) {
-						par3EntityPlayer.dropPlayerItem(new ItemStack(NetherItems.NetherStonePotionBowl.shiftedIndex, 1, bowlMetaData));
+					if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(NetherItems.NetherStonePotionBowl.itemID, 1, bowlMetaData))) {
+						par3EntityPlayer.dropPlayerItem(new ItemStack(NetherItems.NetherStonePotionBowl.itemID, 1, bowlMetaData));
 					}
 				}
 			}

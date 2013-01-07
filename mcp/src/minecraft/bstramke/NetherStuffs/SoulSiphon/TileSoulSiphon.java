@@ -169,7 +169,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 	}
 
 	private void fillFuelToBottle() {
-		if (this.getCurrentTankLevel() > 0 && this.inventory[this.nTankFillSlot] != null && this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
+		if (this.getCurrentTankLevel() > 0 && this.inventory[this.nTankFillSlot] != null && this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.itemID) {
 			int nRest = SoulEnergyBottle.addSoulEnergy(this.getCurrentTankLevel(), this.inventory[this.nTankFillSlot]);
 			this.setCurrentTankLevel(nRest);
 		}
@@ -192,7 +192,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
 		int nTargetSlot = 0;
 		// every Soul Energy Bottle may go to the TankFillSlot
-		if (stack.itemID == NetherItems.SoulEnergyBottle.shiftedIndex && getStackInSlot(nTankFillSlot) == null) {
+		if (stack.itemID == NetherItems.SoulEnergyBottle.itemID && getStackInSlot(nTankFillSlot) == null) {
 			nTargetSlot = nTankFillSlot;
 			ItemStack targetStack = getStackInSlot(nTargetSlot);
 			if (targetStack == null) {

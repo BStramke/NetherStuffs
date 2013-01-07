@@ -1,7 +1,9 @@
 package codechicken.nei.api;
 
 import java.util.*;
+import java.util.Map.Entry;
 
+import codechicken.core.CommonUtils;
 import codechicken.core.featurehack.GameDataManipulator;
 import codechicken.nei.EnchantmentInputHandler;
 import codechicken.nei.InfiniteStackSizeHandler;
@@ -20,7 +22,10 @@ import codechicken.nei.recipe.RecipeItemInputHandler;
 import codechicken.nei.recipe.ShapedRecipeHandler;
 import codechicken.nei.recipe.ShapelessRecipeHandler;
 import codechicken.nei.recipe.weakDependancy_Forge;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.ItemData;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -32,6 +37,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
@@ -84,6 +90,7 @@ public class ItemInfo
         addVanillaBlockProperties();
         addDefaultDropDowns();
         searchItems();
+        addModItemDropDowns();
         addMobSpawnerItem(world);
         addSpawnEggs();
         new BrewingRecipeHandler().searchPotions();
@@ -91,7 +98,32 @@ public class ItemInfo
         addInputHandlers();
     }
 
-	private static void addInputHandlers()
+	private static void addModItemDropDowns()
+    {
+        NBTTagList itemDataList = new NBTTagList();
+        GameData.writeItemData(itemDataList);
+        
+        HashMap<String, MultiItemRange> modRangeMap = new HashMap<String, MultiItemRange>();
+        
+        for(int i = 0; i < itemDataList.tagCount(); i++)
+        {
+            ItemData itemData = new ItemData((NBTTagCompound) itemDataList.tagAt(i));
+            MultiItemRange itemRange = modRangeMap.get(itemData.getModId());
+            if(itemRange == null)
+                modRangeMap.put(itemData.getModId(), itemRange = new MultiItemRange());
+            itemRange.add(itemData.getItemId());
+        }
+        
+        for(Entry<String, MultiItemRange> entry : modRangeMap.entrySet())
+        {
+            String modID = entry.getKey();
+            ModContainer mod = CommonUtils.findModContainer(modID);
+            String modname = mod == null ? modID : mod.getName();
+            API.addSetRange("Mod."+modname, entry.getValue());
+        }
+    }
+
+    private static void addInputHandlers()
 	{
 		GuiContainerManager.addInputHandler(new RecipeItemInputHandler());
 		GuiContainerManager.addInputHandler(new EnchantmentInputHandler());
@@ -181,9 +213,7 @@ public class ItemInfo
     				super.addItemIfInRange(item, damage, compound);
     		}
     	});
-    	API.addSetRange("Vanilla.Blocks", new MultiItemRange("[1-145]"));
     	API.addSetRange("Blocks.MobSpawners", new MultiItemRange("[52]"));
-    	API.addSetRange("Vanilla.Items", new MultiItemRange("[256-400],[2256-2267]"));
 	}
 	
 	private static void searchItems()
@@ -274,7 +304,7 @@ public class ItemInfo
 			
 			if(item.isPotionIngredient())
 			{
-				BrewingRecipeHandler.ingredientIDs.add(item.shiftedIndex);
+				BrewingRecipeHandler.ingredientIDs.add(item.itemID);
 				potioningredients.add(item);
 			}
 		}
@@ -335,7 +365,7 @@ public class ItemInfo
 		{
 			e.printStackTrace();
 		}
-		API.setItemDamageVariants(Item.monsterPlacer.shiftedIndex, damages);
+		API.setItemDamageVariants(Item.monsterPlacer.itemID, damages);
 	}
 
 	@SuppressWarnings("unchecked")

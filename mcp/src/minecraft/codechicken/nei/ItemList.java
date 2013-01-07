@@ -139,12 +139,12 @@ public class ItemList
 					}
 					
 		            Item item = Item.itemsList[itemID];
-		            if(item == null || ItemInfo.isHidden(item.shiftedIndex))
+		            if(item == null || ItemInfo.isHidden(item.itemID))
 		                continue;
 		            
 		            sublist.clear();
 		            item.getSubItems(itemID, null, sublist);
-		            ArrayList<int[]> damageranges = ItemInfo.getItemDamageVariants(item.shiftedIndex);
+		            ArrayList<int[]> damageranges = ItemInfo.getItemDamageVariants(item.itemID);
 		            if(sublist.size() > 0)
 		            {
 			            ArrayList<Integer> discreteDamages = new ArrayList<Integer>();

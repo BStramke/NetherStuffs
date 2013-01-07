@@ -56,8 +56,8 @@ public class ContainerSoulFurnace extends Container {
 	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
 	 */
 	@Override
-	public void updateCraftingResults() {
-		super.updateCraftingResults();
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
 		Iterator var1 = this.crafters.iterator();
 
 		while (var1.hasNext()) {
@@ -114,7 +114,7 @@ public class ContainerSoulFurnace extends Container {
 					if (!this.mergeItemStack(stack_in_slot, 0, 1, false)) {
 						return null;
 					}
-				} else if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
+				} else if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.itemID) {
 					if (!this.mergeItemStack(stack_in_slot, 1, 2, false)) {
 						return null;
 					}

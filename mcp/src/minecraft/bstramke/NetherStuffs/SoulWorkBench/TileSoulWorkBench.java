@@ -103,7 +103,7 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 	}
 
 	private void fillFuelToTank() {
-		if (this.inventory[this.nTankFillSlot] != null && this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.shiftedIndex
+		if (this.inventory[this.nTankFillSlot] != null && this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.itemID
 				&& this.getCurrentTankLevel() < this.maxTankLevel) {
 			if (this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
 				SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.maxTankLevel - this.getCurrentTankLevel());
@@ -241,7 +241,7 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
 		int nTargetSlot = 0;
 		// every Soul Energy Bottle may go to the TankFillSlot, other items go to the Inventory
-		if (stack.itemID == NetherItems.SoulEnergyBottle.shiftedIndex && getStackInSlot(nTankFillSlot) == null) {
+		if (stack.itemID == NetherItems.SoulEnergyBottle.itemID && getStackInSlot(nTankFillSlot) == null) {
 			nTargetSlot = nTankFillSlot;
 			ItemStack targetStack = getStackInSlot(nTargetSlot);
 			if (targetStack == null) {

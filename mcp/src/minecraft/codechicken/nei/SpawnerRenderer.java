@@ -29,7 +29,7 @@ public class SpawnerRenderer implements IItemRenderer
 			meta = ItemMobSpawner.idPig;
 		}
 		String bossName = BossStatus.bossName;
-		int bossTimeout = BossStatus.statusBarLenght;
+		int bossTimeout = BossStatus.statusBarLength;
 		try
 		{
 			World world = NEIClientUtils.mc().theWorld;
@@ -66,7 +66,7 @@ public class SpawnerRenderer implements IItemRenderer
 				Tessellator.instance.draw();
 		}
 		BossStatus.bossName = bossName;
-		BossStatus.statusBarLenght = bossTimeout;
+		BossStatus.statusBarLength = bossTimeout;
 	}
 	
 	@Override

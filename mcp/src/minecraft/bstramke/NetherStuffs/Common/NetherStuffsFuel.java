@@ -11,7 +11,7 @@ public class NetherStuffsFuel implements IFuelHandler {
 
 	@Override
 	public int getBurnTime(ItemStack fuel) {
-		if (fuel.itemID == NetherItems.NetherWoodCharcoal.shiftedIndex)
+		if (fuel.itemID == NetherItems.NetherWoodCharcoal.itemID)
 			return 3200;
 
 		if (fuel.itemID == new ItemStack(NetherBlocks.netherWood, 0, NetherWood.hellfire).itemID) {

@@ -55,10 +55,10 @@ public class ClientUtils extends CommonUtils
         	mc().thePlayer.openContainer.windowId = windowId;
 	}
 
-	/*public static float getRenderFrame()
+	public static float getRenderFrame()
 	{
 		return mc().timer.renderPartialTicks;
-	}*/
+	}
 
 	public static String getServerIP() throws NetworkClosedException
 	{

@@ -14,14 +14,14 @@ import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
 @SrcPackager(getMappedDirectories = {"CodeChickenCore"}, getClasses = {""}, getName = "CodeChickenCore")
-@Packager(getBaseDirectories = {"CodeChickenCore"}, getClasses = {""}, getName = "CodeChickenCore", getVersion = "0.7.0.0")
+@Packager(getBaseDirectories = {"CodeChickenCore"}, getClasses = {""}, getName = "CodeChickenCore", getVersion = "0.7.1.0")
 public class CodeChickenCoreModContainer extends DummyModContainer
 {
 	public CodeChickenCoreModContainer()
 	{
 		super(new ModMetadata());
 		ModMetadata meta = getMetadata();
-        meta.modId       = "mod_CodeChickenCore";
+        meta.modId       = "CodeChickenCore";
         meta.name        = "CodeChicken Core";
         meta.version     = getClass().getAnnotation(Packager.class).getVersion();
         meta.authorList  = Arrays.asList("ChickenBones");

@@ -15,7 +15,7 @@ public class SlotSoulEnergyContainer extends Slot {
 
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack) {
-		if (par1ItemStack.itemID == NetherItems.SoulEnergyBottle.shiftedIndex)
+		if (par1ItemStack.itemID == NetherItems.SoulEnergyBottle.itemID)
 			return true;
 		else
 			return false;

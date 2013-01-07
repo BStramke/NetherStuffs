@@ -56,8 +56,8 @@ public class ContainerSoulSiphon extends Container {
 	}
 
 	@Override
-	public void updateCraftingResults() {
-		super.updateCraftingResults();
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
 		Iterator var1 = this.crafters.iterator();
 
 		while (var1.hasNext()) {
@@ -94,7 +94,7 @@ public class ContainerSoulSiphon extends Container {
 
 			} else if (slot_object.inventory instanceof InventoryPlayer) {
 
-				if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
+				if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.itemID) {
 					if (!mergeItemStack(stack_in_slot, 0, 1, false))
 						return null;
 				}

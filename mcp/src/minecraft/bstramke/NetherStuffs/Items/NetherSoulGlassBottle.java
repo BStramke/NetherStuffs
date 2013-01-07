@@ -95,11 +95,11 @@ public class NetherSoulGlassBottle extends ItemGlassBottle {
 					NetherPuddle.removePuddle(par2World, var5, var6, var7);
 
 					if (par1ItemStack.stackSize <= 0) {
-						return new ItemStack(NetherItems.NetherPotionBottle.shiftedIndex, 1, bottleMetaData);
+						return new ItemStack(NetherItems.NetherPotionBottle.itemID, 1, bottleMetaData);
 					}
 
-					if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(NetherItems.NetherPotionBottle.shiftedIndex, 1, bottleMetaData))) {
-						par3EntityPlayer.dropPlayerItem(new ItemStack(NetherItems.NetherPotionBottle.shiftedIndex, 1, bottleMetaData));
+					if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(NetherItems.NetherPotionBottle.itemID, 1, bottleMetaData))) {
+						par3EntityPlayer.dropPlayerItem(new ItemStack(NetherItems.NetherPotionBottle.itemID, 1, bottleMetaData));
 					}
 				}
 			}

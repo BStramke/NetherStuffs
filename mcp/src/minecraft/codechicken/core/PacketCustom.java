@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import codechicken.core.PacketCustom.ICustomPacketHandler.IClientPacketHandler;
 import codechicken.core.PacketCustom.ICustomPacketHandler.IServerPacketHandler;
+import codechicken.core.data.MCDataInput;
+import codechicken.core.data.MCDataOutput;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -24,7 +26,7 @@ import net.minecraft.network.NetServerHandler;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraftforge.liquids.LiquidStack;
 
-public final class PacketCustom
+public final class PacketCustom implements MCDataInput, MCDataOutput
 {
 	public static interface ICustomPacketHandler 
 	{
@@ -246,6 +248,19 @@ public final class PacketCustom
 		}
 	}
 		
+	@Override
+	public void writeChar(char c)
+	{
+	    try
+        {
+            dataout.writeChar(c);
+        }
+        catch(IOException e)
+        {
+            FMLCommonHandler.instance().raiseException(e, "Custom Packet", true);
+        }
+	}
+	
 	public void writeByteArray(byte[] barray)
 	{
 		try

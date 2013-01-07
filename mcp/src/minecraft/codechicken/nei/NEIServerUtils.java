@@ -334,7 +334,7 @@ public class NEIServerUtils
 			sendNotice("Giving "+player.username+" "+given+" of "+"\247f"+itemname, "notify-item");
 		}
 		
-		player.openContainer.updateCraftingResults();
+		player.openContainer.detectAndSendChanges();
 	}
 	
 	public static ItemStack copyStack(ItemStack itemstack, int i)

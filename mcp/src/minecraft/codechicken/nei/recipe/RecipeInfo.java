@@ -95,6 +95,8 @@ public class RecipeInfo
         API.registerUsageHandler(new ShapedRecipeHandler());
         API.registerRecipeHandler(new ShapelessRecipeHandler());
         API.registerUsageHandler(new ShapelessRecipeHandler());
+        API.registerRecipeHandler(new FireworkRecipeHandler());
+        API.registerUsageHandler(new FireworkRecipeHandler());
         API.registerRecipeHandler(new FurnaceRecipeHandler());
         API.registerUsageHandler(new FurnaceRecipeHandler());
         API.registerRecipeHandler(new BrewingRecipeHandler());

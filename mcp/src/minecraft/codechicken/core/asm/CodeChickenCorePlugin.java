@@ -34,7 +34,8 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 				"codechicken.core.asm.ClassHeirachyManager",
 				"codechicken.core.asm.CodeChickenAccessTransformer",
 				"codechicken.core.asm.InterfaceDependancyTransformer",
-				"codechicken.core.asm.FeatureHackTransformer"};
+				"codechicken.core.asm.FeatureHackTransformer", 
+				"codechicken.core.asm.DelegatedTransformer"};
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 	private void scanCodeChickenMods()
 	{
 		File modsDir = new File(minecraftDir, "mods");
-		if(!modsDir.exists() || !ObfuscationManager.obfuscated)
+		if(!modsDir.exists())
 			return;
 		for(File file : modsDir.listFiles(new FilenameFilter()
 		{			
@@ -94,12 +95,18 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 						continue;
 					
 					String mapFile = attr.getValue("AccessTransformer");
-					if(mapFile != null)
+					if(mapFile != null && ObfuscationManager.obfuscated)
 					{
 					    File temp = extractTemp(jar, mapFile);
 					    System.out.println("Adding AccessTransformer: "+mapFile);
 						CodeChickenAccessTransformer.addTransformerMap(temp.getPath());
 						temp.delete();
+					}
+					String transformer = attr.getValue("CCTransformer");
+					if(transformer != null)
+					{
+                        System.out.println("Adding CCTransformer: "+transformer);
+					    DelegatedTransformer.addTransformer(transformer, jar, file);
 					}
 				}
 				finally

@@ -111,7 +111,7 @@ public class NetherWood extends Block {
 
 	//this does the block sideway placement
 	@Override
-	public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
+	public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
 		int var10 = par9 & 3;
 		byte var11 = 0;
 

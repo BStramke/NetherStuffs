@@ -82,7 +82,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 
 	private void fillFuelToTank() {
 		if (this.getCurrentTankLevel() < this.maxTankLevel && this.inventory[this.nTankFillSlot] != null
-				&& this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
+				&& this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.itemID) {
 			if (this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
 				SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.maxTankLevel - this.getCurrentTankLevel());
 				this.setCurrentTankLevel(this.maxTankLevel);
@@ -307,7 +307,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
 		int nTargetSlot = 0;
 		// every Soul Energy Bottle may go to the TankFillSlot, every Item that has a recipe will go to the Smelted Slot, regardless of input Side
-		if (stack.itemID == NetherItems.SoulEnergyBottle.shiftedIndex && getStackInSlot(nTankFillSlot) == null)
+		if (stack.itemID == NetherItems.SoulEnergyBottle.itemID && getStackInSlot(nTankFillSlot) == null)
 			nTargetSlot = nTankFillSlot;
 		else if (DemonicFurnaceRecipes.smelting().getSmeltingResult(stack) != null || FurnaceRecipes.smelting().getSmeltingResult(stack) != null)
 			nTargetSlot = nSmeltedSlot;

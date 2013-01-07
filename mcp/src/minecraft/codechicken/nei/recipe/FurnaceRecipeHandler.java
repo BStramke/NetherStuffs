@@ -290,7 +290,7 @@ public class FurnaceRecipeHandler extends TemplateRecipeHandler
 		afuels = new ArrayList<FuelPair>();
 		for(Item item : Item.itemsList)
 		{
-			if(item != null && !efuels.contains(item.shiftedIndex))
+			if(item != null && !efuels.contains(item.itemID))
 			{
 				int burnTime;
 				try

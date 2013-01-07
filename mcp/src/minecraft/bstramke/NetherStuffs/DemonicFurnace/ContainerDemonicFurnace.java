@@ -53,8 +53,8 @@ public class ContainerDemonicFurnace extends Container {
 	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
 	 */
 	@Override
-	public void updateCraftingResults() {
-		super.updateCraftingResults();
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
 		Iterator var1 = this.crafters.iterator();
 
 		while (var1.hasNext()) {
@@ -118,7 +118,7 @@ public class ContainerDemonicFurnace extends Container {
 				}
 				slot_object.onSlotChange(stack_in_slot, stack);
 			} else if (slot_index >= 3 && slot_index <= 29) { // player inventory
-				if (stack_in_slot.itemID == NetherItems.NetherWoodCharcoal.shiftedIndex) {
+				if (stack_in_slot.itemID == NetherItems.NetherWoodCharcoal.itemID) {
 					if (!this.mergeItemStack(stack_in_slot, this.furnace.nFuelSlot, this.furnace.nFuelSlot + 1, false)) {
 						return null;
 					}
@@ -130,7 +130,7 @@ public class ContainerDemonicFurnace extends Container {
 					return null;
 				}
 			} else if (slot_index > 29 && slot_index < 39) { // player inventory slot bar
-				if (stack_in_slot.itemID == NetherItems.NetherWoodCharcoal.shiftedIndex) {
+				if (stack_in_slot.itemID == NetherItems.NetherWoodCharcoal.itemID) {
 					if (!this.mergeItemStack(stack_in_slot, this.furnace.nFuelSlot, this.furnace.nFuelSlot + 1, false)) {
 						return null;
 					}

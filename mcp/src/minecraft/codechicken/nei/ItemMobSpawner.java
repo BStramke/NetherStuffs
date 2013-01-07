@@ -28,7 +28,7 @@ public class ItemMobSpawner extends ItemBlock
     public ItemMobSpawner(World world)
 	{
 		super(Block.mobSpawner.blockID - 256);
-		itemsList[shiftedIndex] = this;
+		itemsList[itemID] = this;
 		hasSubtypes = true;
 		
         entityHashMap = new HashMap<Integer, EntityLiving>();

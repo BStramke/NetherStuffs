@@ -120,7 +120,7 @@ public class ContainerSoulWorkBench extends Container {
 				}
 				slot_object.onSlotChange(stack_in_slot, stack);
 			} else if (slot_index >= 11 && slot_index <= 37) { // player inventory
-				if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
+				if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.itemID) {
 					if (!this.mergeItemStack(stack_in_slot, this.soulworkbench.nTankFillSlot, this.soulworkbench.nTankFillSlot + 1, false)) {
 						return null;
 					}
@@ -128,7 +128,7 @@ public class ContainerSoulWorkBench extends Container {
 					return null;
 				}
 			} else if (slot_index > 37 && slot_index < 47) { // player inventory slot bar
-				if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.shiftedIndex) {
+				if (stack_in_slot.itemID == NetherItems.SoulEnergyBottle.itemID) {
 					if (!this.mergeItemStack(stack_in_slot, this.soulworkbench.nTankFillSlot, this.soulworkbench.nTankFillSlot + 1, false)) {
 						return null;
 					}

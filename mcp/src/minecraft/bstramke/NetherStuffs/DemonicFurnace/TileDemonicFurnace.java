@@ -242,7 +242,7 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory 
 		if (par0ItemStack == null) {
 			return 0;
 		} else {
-			int itemId = par0ItemStack.getItem().shiftedIndex;
+			int itemId = par0ItemStack.getItem().itemID;
 			int nMeta = par0ItemStack.getItemDamage();
 
 			if (par0ItemStack.getItem() instanceof NetherWoodItemBlock) {

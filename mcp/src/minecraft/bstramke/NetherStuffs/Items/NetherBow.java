@@ -46,7 +46,7 @@ public class NetherBow extends ItemBow {
 
 		boolean var5 = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
 
-		if (var5 || par3EntityPlayer.inventory.hasItem(NetherItems.torchArrow.shiftedIndex)) {
+		if (var5 || par3EntityPlayer.inventory.hasItem(NetherItems.torchArrow.itemID)) {
 			float var7 = (float) var6 / 20.0F;
 			var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
 
@@ -86,7 +86,7 @@ public class NetherBow extends ItemBow {
 			if (var5) {
 				var8.canBePickedUp = 2;
 			} else {
-				par3EntityPlayer.inventory.consumeInventoryItem(NetherItems.torchArrow.shiftedIndex);
+				par3EntityPlayer.inventory.consumeInventoryItem(NetherItems.torchArrow.itemID);
 			}
 
 			if (!par2World.isRemote) {
@@ -123,7 +123,7 @@ public class NetherBow extends ItemBow {
 			return event.result;
 		}
 
-		if (par3EntityPlayer.capabilities.isCreativeMode || par3EntityPlayer.inventory.hasItem(NetherItems.torchArrow.shiftedIndex)) {
+		if (par3EntityPlayer.capabilities.isCreativeMode || par3EntityPlayer.inventory.hasItem(NetherItems.torchArrow.itemID)) {
 			par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		}
 
@@ -140,7 +140,7 @@ public class NetherBow extends ItemBow {
 	@Override
 	public int getIconIndex(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
 		// Here is an example usage for Vanilla bows.
-		if (usingItem != null && usingItem.getItem().shiftedIndex == NetherItems.NetherBow.shiftedIndex) {
+		if (usingItem != null && usingItem.getItem().itemID == NetherItems.NetherBow.itemID) {
 			int k = usingItem.getMaxItemUseDuration() - useRemaining;
 			if (k >= 18)
 				return 68;

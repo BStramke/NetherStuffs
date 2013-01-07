@@ -22,7 +22,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 
 @SrcPackager(getName="NotEnoughItems", getClasses = {""}, getMappedDirectories = {"NEI"})
-@Packager(getName = "NotEnoughItems", getClasses = {""}, getBaseDirectories = {"NEI"}, getVersion = "1.4.4.0")
+@Packager(getName = "NotEnoughItems", getClasses = {""}, getBaseDirectories = {"NEI"}, getVersion = "1.4.5.1")
 public class NEIModContainer extends DummyModContainer
 {    
     public static LinkedList<IConfigureNEI> plugins = new LinkedList<IConfigureNEI>();
@@ -44,7 +44,7 @@ public class NEIModContainer extends DummyModContainer
 	{
 		ModMetadata meta = super.getMetadata();
 
-        meta.modId       = "mod_NotEnoughItems";
+        meta.modId       = "NotEnoughItems";
         meta.name        = "Not Enough Items";
         meta.version     = NEIModContainer.class.getAnnotation(Packager.class).getVersion();
         meta.authorList  = Arrays.asList("ChickenBones");

@@ -21,7 +21,7 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 
 public class ShapelessRecipeHandler extends TemplateRecipeHandler
 {
-	static final int[][] stackorder = new int[][]{
+	public int[][] stackorder = new int[][]{
 		{0,0},
 		{1,0},
 		{0,1},
@@ -34,13 +34,18 @@ public class ShapelessRecipeHandler extends TemplateRecipeHandler
 	
 	public class CachedShapelessRecipe extends CachedRecipe
 	{
+	    public CachedShapelessRecipe()
+        {
+            ingredients = new ArrayList<PositionedStack>();
+        }
+	    
 		public CachedShapelessRecipe(ItemStack output)
 		{
-			result = new PositionedStack(output, 119, 24);
-			ingredients = new ArrayList<PositionedStack>();
+		    this();
+		    setResult(output);
 		}
-		
-		public CachedShapelessRecipe(ShapelessRecipes recipe)
+
+        public CachedShapelessRecipe(ShapelessRecipes recipe)
 		{
 			this(recipe.getRecipeOutput());
 			setIngredients(recipe);
@@ -58,7 +63,8 @@ public class ShapelessRecipeHandler extends TemplateRecipeHandler
 		}
 
 		public void setIngredients(List<?> items)
-		{			
+		{
+		    ingredients.clear();
 			for(int ingred = 0; ingred < items.size(); ingred++)
 			{
 				PositionedStack stack = new PositionedStack(items.get(ingred), 25 + stackorder[ingred][0] * 18, 6 + stackorder[ingred][1] * 18);
@@ -82,7 +88,12 @@ public class ShapelessRecipeHandler extends TemplateRecipeHandler
 			}
 			
 			setIngredients(items);
-		}		
+		}
+        
+        public void setResult(ItemStack output)
+        {
+            result = new PositionedStack(output, 119, 24);
+        }	
 		
 		@Override
 		public ArrayList<PositionedStack> getIngredients()

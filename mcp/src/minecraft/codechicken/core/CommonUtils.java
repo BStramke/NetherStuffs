@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraft.block.Block;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -309,4 +310,13 @@ public class CommonUtils
 	{
 		return ID < Block.blocksList.length && Block.blocksList[ID] != null && Block.blocksList[ID].blockID != 0;
 	}
+
+    public static ModContainer findModContainer(String modID)
+    {
+        for(ModContainer mc : Loader.instance().getModList())
+            if(modID.equals(mc.getModId()))
+                return mc;
+        
+        return null;
+    }
 }

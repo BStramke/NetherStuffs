@@ -111,7 +111,7 @@ public class MultiItemRange
 
 	public MultiItemRange add(Item item, int damageStart, int damageEnd)
 	{
-		return add(item.shiftedIndex, damageStart, damageEnd);
+		return add(item.itemID, damageStart, damageEnd);
 	}
 	
 	public MultiItemRange add(Block block, int damageStart, int damageEnd)
@@ -121,7 +121,7 @@ public class MultiItemRange
 	
 	public MultiItemRange add(Item item)
 	{
-		return add(item.shiftedIndex);
+		return add(item.itemID);
 	}
 	
 	public MultiItemRange add(Block block)

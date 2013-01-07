@@ -29,9 +29,9 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler
 	{
 		public CachedBrewingRecipe(int ingredID, int basePotionID, int resultDamage)
 		{
-			precursorPotion = new PositionedStack(new ItemStack(Item.potion.shiftedIndex, 1, basePotionID), 51, 35);
+			precursorPotion = new PositionedStack(new ItemStack(Item.potion.itemID, 1, basePotionID), 51, 35);
 			ingredient = new PositionedStack(new ItemStack(ingredID, 1, 0), 74, 6);
-			result = new PositionedStack(new ItemStack(Item.potion.shiftedIndex, 1, resultDamage), 97, 35);
+			result = new PositionedStack(new ItemStack(Item.potion.itemID, 1, resultDamage), 97, 35);
 			calculateHashcode();
 		}
 		
@@ -116,7 +116,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler
 	
 	public void loadCraftingRecipes(ItemStack result)
 	{
-		if(result.itemID != Item.potion.shiftedIndex)return;
+		if(result.itemID != Item.potion.itemID)return;
 		int damage = result.getItemDamage();
 		
 		for(CachedBrewingRecipe recipe : apotions)
@@ -130,7 +130,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler
 	
 	public void loadUsageRecipes(ItemStack ingredient)
 	{		
-		if(ingredient.itemID != Item.potion.shiftedIndex && !ingredientIDs.contains(ingredient.itemID))return;
+		if(ingredient.itemID != Item.potion.itemID && !ingredientIDs.contains(ingredient.itemID))return;
 		
 		for(CachedBrewingRecipe recipe : apotions)
 		{
@@ -207,7 +207,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler
 		while(nextLevelPotions.size() > 0);
 		
 		allPotions.add(0);
-		API.setItemDamageVariants(Item.potion.shiftedIndex, allPotions);
+		API.setItemDamageVariants(Item.potion.itemID, allPotions);
 		API.addSetRange("Vanilla.Items.Potions", new MultiItemRange().add(Item.potion));
 		API.addSetRange("Vanilla.Items.Potions.Splash", new MultiItemRange().add(Item.potion, 0x4000, 0x8000));
 

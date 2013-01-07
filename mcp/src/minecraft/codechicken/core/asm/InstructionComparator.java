@@ -101,26 +101,42 @@ public class InstructionComparator
 		return importantNodeList;
 	}
 	
-	public static boolean insnListMatches(InsnList search, InsnList find, int start)
+	public static boolean insnListMatches(InsnList haystack, InsnList needle, int start)
 	{
-		if(search.size()-start < find.size())
+		if(haystack.size()-start < needle.size())
 			return false;
 		
-		for(int i = 0; i < find.size(); i++)
+		for(int i = 0; i < needle.size(); i++)
 		{
-			if(!insnEqual(search.get(i+start), find.get(i)))
+			if(!insnEqual(haystack.get(i+start), needle.get(i)))
 				return false;
 		}
 		return true;
 	}
 	
-	public static List<Integer> insnListFind(InsnList search, InsnList find)
+	public static List<Integer> insnListFind(InsnList haystack, InsnList needle)
 	{
 		LinkedList<Integer> list = new LinkedList<Integer>();
-		for(int start = 0; start < search.size()-find.size(); start++)
-			if(insnListMatches(search, find, start))
+		for(int start = 0; start < haystack.size()-needle.size(); start++)
+			if(insnListMatches(haystack, needle, start))
 				list.add(start);
 		
 		return list;
 	}
+	
+    public static List<AbstractInsnNode> insnListFindStart(InsnList haystack, InsnList needle)
+    {
+        LinkedList<AbstractInsnNode> callNodes = new LinkedList<AbstractInsnNode>();
+        for(int callPoint : insnListFind(haystack, needle))
+            callNodes.add(haystack.get(callPoint));
+        return callNodes;
+    }
+    
+    public static List<AbstractInsnNode> insnListFindEnd(InsnList haystack, InsnList needle)
+    {
+        LinkedList<AbstractInsnNode> callNodes = new LinkedList<AbstractInsnNode>();
+        for(int callPoint : insnListFind(haystack, needle))
+            callNodes.add(haystack.get(callPoint+needle.size()-1));
+        return callNodes;
+    }
 }
