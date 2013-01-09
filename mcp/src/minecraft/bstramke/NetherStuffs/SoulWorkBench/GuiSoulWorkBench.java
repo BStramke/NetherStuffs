@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import bstramke.NetherStuffs.Items.NetherItems;
 
 public class GuiSoulWorkBench extends GuiContainer {
 
@@ -40,21 +41,19 @@ public class GuiSoulWorkBench extends GuiContainer {
 		this.drawTexturedModalRect(var5 + 106, var6 + 34, this.ySize, 0, var7, 16);
 
 		// draw fill state from bottom to top
-		int nBottomLeftY = var6 + 68;
+		int nBottomLeftY = var6 + 69;
+		this.mc.renderEngine.bindTexture(mc.renderEngine.getTexture(NetherItems.SoulEnergyLiquidItem.getTextureFile()));
 		int nFillState = this.benchInventory.getFillingScaled(32);
-		for (int i = 0; i < 32 && i < nFillState; i++) {
-			this.drawTexturedModalRect(var5 + 9, nBottomLeftY - i, 176, 48 - i, 21, 1);
+		int y = 0;
+		for (int x = 16; x <= 32 && x <= nFillState; x+=16) {
+			this.drawTexturedModalRect(var5 + 12, nBottomLeftY-x, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)%16)*16, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)/16)*16, 16, 16);
+			y = x;
 		}
-
-		int nRequired = this.benchInventory.getSoulEnergyRequired();
-		if (nRequired > 0)
-			fontRenderer.drawString("+ " + nRequired + " Energy", var5 + 39, var6 + 72, 0x000000);
-
-		/*Integer nCurrent = this.benchInventory.getCurrentTankLevel();
-		if(nCurrent>=100)
-			fontRenderer.drawString(nCurrent.toString(), var5 + 11, var6 + 49, 0x000000);
-		else
-			fontRenderer.drawString(nCurrent.toString(), var5 + 13, var6 + 49, 0x000000);*/
+		
+		if(nFillState%16!=0){
+			nFillState -= y;
+			this.drawTexturedModalRect(var5 + 12, nBottomLeftY-y-nFillState, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)%16)*16, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)/16)*16, 16, nFillState);
+		}
 	}
 	
 	@Override

@@ -10,6 +10,8 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.liquids.LiquidContainerData;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -71,11 +73,11 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import forestry.api.storage.BackpackManager;
 
 @Mod(name = "NetherStuffs", version = "0.11", modid = "NetherStuffs")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
-public class NetherStuffs extends DummyModContainer {
-
+public class NetherStuffs extends DummyModContainer {	
 	@Instance
 	public static NetherStuffs instance = new NetherStuffs();
 
@@ -283,7 +285,7 @@ public class NetherStuffs extends DummyModContainer {
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
 		
 		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, 1));
-		
+				
 		registerWorldGenerators();
 		initRecipes();
 		initLanguageRegistry();
@@ -297,7 +299,7 @@ public class NetherStuffs extends DummyModContainer {
 			Block.netherrack.setHardness(1.5F);
 			Block.netherrack.setResistance(2.0F);
 		}
-
+	
 		GameRegistry.registerPlayerTracker(new NetherStuffsPlayerTracker());
 		/*
 		 * This lets Skeletons Spawn away from NetherFortresses. Actual Idea by ErasmoGnome, made on the MinecraftForums: http://www.minecraftforum.net
@@ -305,13 +307,8 @@ public class NetherStuffs extends DummyModContainer {
 		 */
 		if (SpawnSkeletonsAwayFromNetherFortresses)
 			EntityRegistry.addSpawn(EntitySkeleton.class, 50, 4, 4, EnumCreatureType.monster, BiomeGenBase.hell);
-
-		/*
-		 * Use the above method as its without coremod possible if (SpawnSkeletonsAwayFromNetherFortresses) ((BiomeGenHell) BiomeGenBase.hell).spawnableMonsterList.add(new
-		 * SpawnListEntry(EntitySkeleton.class, 50, 4, 4));
-		 */
 	}
-
+	
 	private void registerWorldGenerators() {
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, 3, 40));
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal, 5, 65));

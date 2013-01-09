@@ -1,6 +1,9 @@
 package bstramke.NetherStuffs.SoulFurnace;
 
+import javax.swing.Renderer;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -10,6 +13,8 @@ import org.lwjgl.opengl.GL11;
 
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import bstramke.NetherStuffs.Items.NetherItems;
+import bstramke.NetherStuffs.Items.SoulEnergyLiquidItem;
 
 public class GuiSoulFurnace extends GuiContainer {
 
@@ -35,27 +40,23 @@ public class GuiSoulFurnace extends GuiContainer {
 		int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
-		/*
-		 * int var7;
-		 * 
-		 * if (this.inventory.isBurning()) { var7 = this.inventory.getBurnTimeRemainingScaled(12); this.drawTexturedModalRect(var5 + 56, var6 + 36 + 12 - var7, 176, 12 - var7, 14,
-		 * var7 + 2); }
-		 */
-
 		int var7 = this.inventory.getCookProgressScaled(24);
 		this.drawTexturedModalRect(var5 + 79, var6 + 34, 176, 0, var7 + 1, 16);
 
-		int nBottomLeftY = var6 + 68;
+		int nBottomLeftY = var6 + 69;
+		this.mc.renderEngine.bindTexture(mc.renderEngine.getTexture(NetherItems.SoulEnergyLiquidItem.getTextureFile()));
 		int nFillState = this.inventory.getFillingScaled(32);
-		for (int x = 0; x < 32 && x < nFillState; x++) {
-			this.drawTexturedModalRect(var5 + 9, nBottomLeftY - x, 176, 48 - x, 21, 1);
+		int y = 0;
+		for (int x = 16; x <= 32 && x <= nFillState; x+=16) {
+			this.drawTexturedModalRect(var5 + 12, nBottomLeftY-x, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)%16)*16, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)/16)*16, 16, 16);
+			y = x;
 		}
-
-		/*Integer nCurrent = this.inventory.getCurrentTankLevel();
-		if (nCurrent >= 100)
-			fontRenderer.drawString(nCurrent.toString(), var5 + 11, var6 + 49, 0x000000);
-		else
-			fontRenderer.drawString(nCurrent.toString(), var5 + 13, var6 + 49, 0x000000);*/
+		
+		if(nFillState%16!=0){
+			nFillState -= y;
+			this.drawTexturedModalRect(var5 + 12, nBottomLeftY-y-nFillState, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)%16)*16, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)/16)*16, 16, nFillState);
+		}
+		
 	}
 
 	@Override

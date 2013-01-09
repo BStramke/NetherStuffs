@@ -14,6 +14,7 @@ import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidEvent;
 import net.minecraftforge.liquids.LiquidStack;
 import bstramke.NetherStuffs.Items.NetherItems;
+import bstramke.NetherStuffs.SoulWorkBench.SlotSoulEnergyContainer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -24,7 +25,8 @@ public class ContainerSoulSiphon extends Container {
 	public ContainerSoulSiphon(TileSoulSiphon tile_entity, InventoryPlayer player_inventory) {
 		this.tile_entity = tile_entity;
 
-		this.addSlotToContainer(new Slot(this.tile_entity, 0, 59, 35));
+		this.addSlotToContainer(new Slot(this.tile_entity, tile_entity.nTankDrainSlot, 59, 35));
+		this.addSlotToContainer(new SlotSoulEnergyContainer(this.tile_entity, tile_entity.nTankFillSlot, 12, 9));
 		bindPlayerInventory(player_inventory);
 	}
 
