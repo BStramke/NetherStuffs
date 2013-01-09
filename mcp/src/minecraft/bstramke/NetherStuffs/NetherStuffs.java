@@ -305,9 +305,9 @@ public class NetherStuffs extends DummyModContainer {
 		 * /topic/1493398-move-wither-skeletons-out- of-fortresses-over-125-supporters/
 		 */
 		if (SpawnSkeletonsAwayFromNetherFortresses)
-			EntityRegistry.addSpawn(EntitySkeleton.class, 50, 4, 4, EnumCreatureType.monster, BiomeGenBase.hell);
+			EntityRegistry.addSpawn(EntitySkeleton.class, 40, 4, 4, EnumCreatureType.monster, BiomeGenBase.hell);
 		if (SpawnBlazesNaturally)
-			EntityRegistry.addSpawn(EntityBlaze.class, 10, 1, 1, EnumCreatureType.monster, BiomeGenBase.hell);
+			EntityRegistry.addSpawn(EntityBlaze.class, 5, 1, 1, EnumCreatureType.monster, BiomeGenBase.hell);
 	}
 	
 	private void registerWorldGenerators() {
