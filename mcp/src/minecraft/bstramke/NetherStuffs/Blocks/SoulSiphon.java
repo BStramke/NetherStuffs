@@ -110,6 +110,7 @@ public class SoulSiphon extends BlockContainer {
 						Object data = it.next();
 						if (data instanceof EntityLiving && !(data instanceof EntityPlayerMP) && !(data instanceof EntityPlayer)) {
 							((EntityLiving) data).attackEntityFrom(DamageSource.generic, 1);
+							//((EntityLiving) data).recentlyHit = 60;
 						} else {
 							it.remove();
 						}

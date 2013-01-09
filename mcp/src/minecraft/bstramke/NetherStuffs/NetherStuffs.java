@@ -2,6 +2,7 @@ package bstramke.NetherStuffs;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,8 +11,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.liquids.LiquidContainerData;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -48,7 +47,6 @@ import bstramke.NetherStuffs.Items.NetherStoneBowl;
 import bstramke.NetherStuffs.Items.NetherStonePotionBowl;
 import bstramke.NetherStuffs.Items.NetherWoodCharcoal;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
-import bstramke.NetherStuffs.Items.SoulEnergyLiquidItem;
 import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
 import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
 import bstramke.NetherStuffs.SoulFurnace.TileSoulFurnace;
@@ -73,7 +71,6 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import forestry.api.storage.BackpackManager;
 
 @Mod(name = "NetherStuffs", version = "0.11", modid = "NetherStuffs")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
@@ -131,6 +128,7 @@ public class NetherStuffs extends DummyModContainer {
 
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 	private static boolean IncreaseNetherrackHardness;
+	private static boolean SpawnBlazesNaturally;
 
 	public static LiquidStack SoulEnergyLiquid;
 	
@@ -184,6 +182,7 @@ public class NetherStuffs extends DummyModContainer {
 
 		SpawnSkeletonsAwayFromNetherFortresses = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsAwayFromNetherFortresses", true).getBoolean(true);
 		IncreaseNetherrackHardness = config.get(Configuration.CATEGORY_GENERAL, "IncreaseNetherrackHardness", true).getBoolean(true);
+		SpawnBlazesNaturally = config.get(Configuration.CATEGORY_GENERAL, "SpawnBlazesNaturally", false).getBoolean(false);
 
 		NetherStuffsEventHook.nDetectRadius = config.get(Configuration.CATEGORY_GENERAL, "SoulBlockerRadius", 8).getInt();
 
@@ -307,6 +306,8 @@ public class NetherStuffs extends DummyModContainer {
 		 */
 		if (SpawnSkeletonsAwayFromNetherFortresses)
 			EntityRegistry.addSpawn(EntitySkeleton.class, 50, 4, 4, EnumCreatureType.monster, BiomeGenBase.hell);
+		if (SpawnBlazesNaturally)
+			EntityRegistry.addSpawn(EntityBlaze.class, 10, 1, 1, EnumCreatureType.monster, BiomeGenBase.hell);
 	}
 	
 	private void registerWorldGenerators() {
