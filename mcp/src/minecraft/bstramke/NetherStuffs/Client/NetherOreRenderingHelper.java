@@ -118,6 +118,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			else
 				nOffset = 1;
 			renderer.enableAO = false;
+			renderer.aoType = 0;
 			var8.setBrightness(1024);
 			renderer.renderWestFace(block, x, y, z, nMetadata + nOffset);
 			renderer.renderEastFace(block, x, y, z, nMetadata + nOffset);
