@@ -58,16 +58,17 @@ public class NetherSword extends ItemSword {
 
 	@Override
 	public int getDamageVsEntity(Entity par1Entity) {
-		if (this.nType == Types.acid) {
-			((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.wither.id, 20 * 5, 4));
-		} else if (this.nType == Types.death) {
-			((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.hunger.id, 20 * 60, 8));
-			((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.poison.id, 20 * 5, 8));
-		} else if (this.nType == Types.hellfire) {
-			((EntityLiving) par1Entity).attackEntityFrom(DamageSource.lava, 2);
-			((EntityLiving) par1Entity).setFire(8);
+		if (par1Entity instanceof EntityLiving) {
+			if (this.nType == Types.acid) {
+				((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.wither.id, 20 * 5, 4));
+			} else if (this.nType == Types.death) {
+				((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.hunger.id, 20 * 60, 8));
+				((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.poison.id, 20 * 5, 8));
+			} else if (this.nType == Types.hellfire) {
+				((EntityLiving) par1Entity).attackEntityFrom(DamageSource.lava, 2);
+				((EntityLiving) par1Entity).setFire(8);
+			}
 		}
-
 		return super.getDamageVsEntity(par1Entity);
 	}
 
