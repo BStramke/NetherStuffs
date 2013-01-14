@@ -57,6 +57,7 @@ import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -225,10 +226,10 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench, "NetherSoulWorkBench");
 
-		// if(Loader.isModLoaded("NetherStuffsCore")) {
+		if(Loader.isModLoaded("NetherStuffsCore")) {
 		FMLLog.info("[NetherStuffs] SkyBlock is set available because NetherStuffsCore was found.");
 		GameRegistry.registerBlock(NetherBlocks.skyblock, "NetherSkyBlock");
-		// }
+		}
 
 		Item.itemsList[NetherOreBlockId] = new NetherOreItemBlock(NetherOreBlockId - 256, NetherBlocks.netherOre).setItemName("NetherOreItemBlock");
 		Item.itemsList[NetherWoodBlockId] = new NetherWoodItemBlock(NetherWoodBlockId - 256, NetherBlocks.netherWood).setItemName("NetherWoodItemBlock");

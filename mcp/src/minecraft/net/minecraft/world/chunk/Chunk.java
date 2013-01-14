@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import bstramke.NetherStuffs.NetherStuffs;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.command.IEntitySelector;
@@ -27,6 +25,7 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import bstramke.NetherStuffsCore.CoreModContainer;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -835,7 +834,7 @@ public class Chunk {
 		if (par2 >= this.heightMap[par3 << 4 | par1]) //default behavior
 			return true;
 		else {
-			if (/* Loader.isModLoaded("NetherStuffs") && Loader.isModLoaded("NetherStuffsCore") */true) {
+			if (Loader.isModLoaded("NetherStuffs") && Loader.isModLoaded("NetherStuffsCore")) {
 				int nBlockId = 0;
 				int nMaxHeight = 256;
 				if(this.worldObj.provider.isHellWorld) //save half of the time when in the nether as its only 128 height
@@ -844,7 +843,7 @@ public class Chunk {
 					nBlockId = this.getBlockID(par1, i, par3);
 					if (nBlockId == 0) //it's Air. thats good. try next block
 						continue;
-					else if (nBlockId == NetherStuffs.NetherSkyBlockId) {
+					else if (nBlockId == CoreModContainer.NetherSkyBlockId) {
 						//System.out.println("Found: " + this.heightMap[par3 << 4] + ", " + par3 + ", " + par2 + ", " + par1 + ", x:" + par1 + ", y:" + i + ", z:" + par3);
 						return true;
 					} else
