@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,7 +57,6 @@ import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -77,7 +75,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(name = "NetherStuffs", version = "0.11", modid = "NetherStuffs")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
-public class NetherStuffs extends DummyModContainer {	
+public class NetherStuffs extends DummyModContainer {
 	@Instance
 	public static NetherStuffs instance = new NetherStuffs();
 
@@ -122,7 +120,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherBowItemId;
 	public static int TorchArrowItemId;
 	public static int SoulEnergyLiquidItemId;
-	//public static int SoulEnergyLiquidId;
+	// public static int SoulEnergyLiquidId;
 
 	public static int NetherSoulDetectorBlockId;
 	public static int NetherSoulBlockerBlockId;
@@ -134,7 +132,7 @@ public class NetherStuffs extends DummyModContainer {
 	private static boolean SpawnBlazesNaturally;
 
 	public static LiquidStack SoulEnergyLiquid;
-	
+
 	@PreInit
 	public void PreLoad(FMLPreInitializationEvent event) {
 		FMLLog.info("[NetherStuffs] PreLoad");
@@ -180,8 +178,8 @@ public class NetherStuffs extends DummyModContainer {
 		SoulEnergyBottleItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyPotion", 5215).getInt(5215);
 		NetherBowItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherBow", 5216).getInt(5216);
 		TorchArrowItemId = config.getItem(Configuration.CATEGORY_ITEM, "TorchArrow", 5217).getInt(5217);
-		
-		//SoulEnergyLiquidId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyLiquidID", 5018).getInt();
+
+		// SoulEnergyLiquidId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyLiquidID", 5018).getInt();
 		SoulEnergyLiquidItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyLiquidItemID", 5218).getInt(5218);
 
 		SpawnSkeletonsAwayFromNetherFortresses = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsAwayFromNetherFortresses", true).getBoolean(true);
@@ -218,19 +216,19 @@ public class NetherStuffs extends DummyModContainer {
 
 	@Init
 	public void load(FMLInitializationEvent event) {
-		//LiquidContainerData data = new LiquidContainerData(NetherItems.SoulEnergyLiquid, null, NetherStuffs.SoulSiphon.ContainerSoulSiphon);
-		//LiquidContainerRegistry.registerLiquid(data);
-		
+		// LiquidContainerData data = new LiquidContainerData(NetherItems.SoulEnergyLiquid, null, NetherStuffs.SoulSiphon.ContainerSoulSiphon);
+		// LiquidContainerRegistry.registerLiquid(data);
+
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulGlass, "NetherSoulGlass");
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulGlassPane, "NetherSoulGlassPane");
 		GameRegistry.registerBlock(NetherBlocks.NetherDemonicFurnace, "NetherDemonicFurnace");
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench, "NetherSoulWorkBench");
-		
-		//if(Loader.isModLoaded("NetherStuffsCore")) {
-			FMLLog.info("[NetherStuffs] SkyBlock is set available because NetherStuffsCore was found.");
-			GameRegistry.registerBlock(NetherBlocks.skyblock, "NetherSkyBlock");
-		//}
+
+		// if(Loader.isModLoaded("NetherStuffsCore")) {
+		FMLLog.info("[NetherStuffs] SkyBlock is set available because NetherStuffsCore was found.");
+		GameRegistry.registerBlock(NetherBlocks.skyblock, "NetherSkyBlock");
+		// }
 
 		Item.itemsList[NetherOreBlockId] = new NetherOreItemBlock(NetherOreBlockId - 256, NetherBlocks.netherOre).setItemName("NetherOreItemBlock");
 		Item.itemsList[NetherWoodBlockId] = new NetherWoodItemBlock(NetherWoodBlockId - 256, NetherBlocks.netherWood).setItemName("NetherWoodItemBlock");
@@ -242,8 +240,8 @@ public class NetherStuffs extends DummyModContainer {
 		Item.itemsList[NetherSoulDetectorBlockId] = new SoulDetectorItemBlock(NetherSoulDetectorBlockId - 256).setItemName("NetherSoulDetectorItemBlock");
 		Item.itemsList[NetherSoulBlockerBlockId] = new SoulBlockerItemBlock(NetherSoulBlockerBlockId - 256).setItemName("NetherSoulBlockerItemBlock");
 		Item.itemsList[NetherSoulSiphonBlockId] = new SoulSiphonItemBlock(NetherSoulSiphonBlockId - 256).setItemName("NetherSoulSiphonItemBlock");
-		
-		//Item.itemsList[SoulEnergyLiquidItemId] = NetherItems.SoulEnergyLiquidItem;
+
+		// Item.itemsList[SoulEnergyLiquidItemId] = NetherItems.SoulEnergyLiquidItem;
 
 		// set required Stuff to Gather
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherOre, NetherOre.netherOreCobblestone, "pickaxe", 0);
@@ -291,9 +289,9 @@ public class NetherStuffs extends DummyModContainer {
 		OreDictionary.registerOre("oreDemonic", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.demonicOre));
 		OreDictionary.registerOre("oreNetherStone", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone));
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
-		
+
 		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, 1));
-				
+
 		registerWorldGenerators();
 		initRecipes();
 		initLanguageRegistry();
@@ -307,7 +305,7 @@ public class NetherStuffs extends DummyModContainer {
 			Block.netherrack.setHardness(1.5F);
 			Block.netherrack.setResistance(2.0F);
 		}
-	
+
 		GameRegistry.registerPlayerTracker(new NetherStuffsPlayerTracker());
 		/*
 		 * This lets Skeletons Spawn away from NetherFortresses. Actual Idea by ErasmoGnome, made on the MinecraftForums: http://www.minecraftforum.net
@@ -318,7 +316,7 @@ public class NetherStuffs extends DummyModContainer {
 		if (SpawnBlazesNaturally)
 			EntityRegistry.addSpawn(EntityBlaze.class, 5, 1, 1, EnumCreatureType.monster, BiomeGenBase.hell);
 	}
-	
+
 	private void registerWorldGenerators() {
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, 3, 40));
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal, 5, 65));
@@ -577,12 +575,12 @@ public class NetherStuffs extends DummyModContainer {
 		for (int i = 0; i < SoulSiphonItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherSoulSiphon." + SoulSiphonItemBlock.blockNames[i] + ".name", SoulSiphonItemBlock.blockDisplayNames[i]);
 		}
-		
-		//if(Loader.isModLoaded("NetherStuffsCore")) {
-			for (int i = 0; i < SkyBlock.getMetadataSize(); i++) {
-				LanguageRegistry.instance().addStringLocalization("tile.NetherSkyBlock." + SkyBlock.blockNames[i] + ".name", SkyBlock.blockDisplayNames[i]);
-			}
-		//}
+
+		// if(Loader.isModLoaded("NetherStuffsCore")) {
+		for (int i = 0; i < SkyBlock.getMetadataSize(); i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherSkyBlock." + SkyBlock.blockNames[i] + ".name", SkyBlock.blockDisplayNames[i]);
+		}
+		// }
 
 		for (int i = 0; i < ((NetherOreIngot) NetherItems.NetherOreIngot).getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot." + ((NetherOreIngot) NetherItems.NetherOreIngot).itemNames[i] + ".name",
@@ -633,7 +631,7 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlassPane.name", "Soul Glass Pane");
 
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulBomb.NetherSoulBomb.name", "Soul Bomb");
-		
+
 		// LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name", "Nether Charcoal");
 
 		LanguageRegistry.instance().addStringLocalization("item.NetherBow.name", "Nether Bow");

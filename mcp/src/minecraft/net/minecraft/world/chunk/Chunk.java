@@ -832,7 +832,7 @@ public class Chunk {
 	 * Returns whether is not a block above this one blocking sight to the sky (done via checking against the heightmap)
 	 */
 	public boolean canBlockSeeTheSky(int par1, int par2, int par3) {
-		if (par2 >= this.heightMap[par3 << 4 | par1])
+		if (par2 >= this.heightMap[par3 << 4 | par1]) //default behavior
 			return true;
 		else {
 			if (/* Loader.isModLoaded("NetherStuffs") && Loader.isModLoaded("NetherStuffsCore") */true) {
@@ -842,7 +842,7 @@ public class Chunk {
 					nMaxHeight = 128;
 				for (int i = par2; i < nMaxHeight; i++) {
 					nBlockId = this.getBlockID(par1, i, par3);
-					if (nBlockId == 0)
+					if (nBlockId == 0) //it's Air. thats good. try next block
 						continue;
 					else if (nBlockId == NetherStuffs.NetherSkyBlockId) {
 						//System.out.println("Found: " + this.heightMap[par3 << 4] + ", " + par3 + ", " + par2 + ", " + par1 + ", x:" + par1 + ", y:" + i + ", z:" + par3);
