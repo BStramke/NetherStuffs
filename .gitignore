@@ -22,6 +22,7 @@
 *.sh
 *.jar
 *.zip
+*.lnk
 
 /mcp/CHANGELOG
 /mcp/*.bat
@@ -45,6 +46,4 @@
 /mcp/src/minecraft/paulscode/
 /mcp/src/minecraft/net/
 /mcp/src/minecraft/cpw/
-
-
 
