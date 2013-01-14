@@ -29,6 +29,8 @@ rem BlockBreakable
 copy reobf\minecraft\akm.class reobf\minecraft\bstramke\NetherStuffsCoreBase\akm.class 
 rem BlockPane
 copy reobf\minecraft\amp.class reobf\minecraft\bstramke\NetherStuffsCoreBase\amp.class 
+rem Chunk
+copy reobf\minecraft\zz.class reobf\minecraft\bstramke\NetherStuffsCoreBase\zz.class 
 cd reobf\minecraft\bstramke\NetherStuffsBase
 "C:\Program Files\7-Zip\7z.exe" a -tzip mod_NetherStuffs.zip *
 cd..

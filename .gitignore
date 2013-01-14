@@ -1,5 +1,6 @@
 !/mcp/src/minecraft/net/minecraft/block/BlockBreakable.java
 !/mcp/src/minecraft/net/minecraft/block/BlockPane.java
+!/mcp/src/minecraft/net/minecraft/world/chunk/Chunk.java
 !custom_formatter.xml
 !README.md
 !/mcp/build_netherstuffs.bat
