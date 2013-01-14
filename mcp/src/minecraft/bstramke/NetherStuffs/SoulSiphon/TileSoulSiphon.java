@@ -137,7 +137,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 			}
 		}
 
-		if(tagCompound.getShort("TankLevel")>0) {
+		if (tagCompound.getShort("TankLevel") > 0) {
 			tagCompound.setShort("TankLevelNew", tagCompound.getShort("TankLevel"));
 			tagCompound.removeTag("TankLevel");
 		}
@@ -176,7 +176,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 			this.setCurrentTankLevel(nRest);
 		}
 	}
-	
+
 	private void fillFuelToTank() {
 		if (this.getCurrentTankLevel() < this.maxTankLevel && this.inventory[this.nTankFillSlot] != null
 				&& this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.itemID) {
@@ -205,17 +205,27 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 
 	@Override
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
-		int nTargetSlot = 0;
-		// every Soul Energy Bottle may go to the TankDrainSlot
-		if (stack.itemID == NetherItems.SoulEnergyBottle.itemID && getStackInSlot(nTankDrainSlot) == null) {
-			nTargetSlot = nTankDrainSlot;
-			ItemStack targetStack = getStackInSlot(nTargetSlot);
-			if (targetStack == null) {
-				if (doAdd) {
-					targetStack = stack.copy();
-					setInventorySlotContents(nTargetSlot, targetStack);
+		if (from == ForgeDirection.DOWN || from == ForgeDirection.UP) {
+			if (stack.itemID == NetherItems.SoulEnergyBottle.itemID && getStackInSlot(this.nTankFillSlot) == null) {
+				ItemStack targetStack = getStackInSlot(this.nTankFillSlot);
+				if (targetStack == null) {
+					if (doAdd) {
+						targetStack = stack.copy();
+						setInventorySlotContents(this.nTankFillSlot, targetStack);
+					}
+					return stack.stackSize;
 				}
-				return stack.stackSize;
+			}
+		} else {
+			if (stack.itemID == NetherItems.SoulEnergyBottle.itemID && getStackInSlot(this.nTankDrainSlot) == null) {
+				ItemStack targetStack = getStackInSlot(this.nTankDrainSlot);
+				if (targetStack == null) {
+					if (doAdd) {
+						targetStack = stack.copy();
+						setInventorySlotContents(this.nTankDrainSlot, targetStack);
+					}
+					return stack.stackSize;
+				}
 			}
 		}
 
@@ -224,12 +234,22 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 
 	@Override
 	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from, int maxItemCount) {
-		if (getStackInSlot(this.nTankDrainSlot) != null) {
-			ItemStack outputStack = getStackInSlot(this.nTankDrainSlot).copy();
-			outputStack.stackSize = 1;
-			if (doRemove)
-				decrStackSize(this.nTankDrainSlot, 1);
-			return new ItemStack[] { outputStack };
+		if (from == ForgeDirection.DOWN || from == ForgeDirection.UP) {
+			if (getStackInSlot(this.nTankFillSlot) != null) {
+				ItemStack outputStack = getStackInSlot(this.nTankFillSlot).copy();
+				outputStack.stackSize = 1;
+				if (doRemove)
+					decrStackSize(this.nTankDrainSlot, 1);
+				return new ItemStack[] { outputStack };
+			}
+		} else {
+			if (getStackInSlot(this.nTankDrainSlot) != null) {
+				ItemStack outputStack = getStackInSlot(this.nTankDrainSlot).copy();
+				outputStack.stackSize = 1;
+				if (doRemove)
+					decrStackSize(this.nTankDrainSlot, 1);
+				return new ItemStack[] { outputStack };
+			}
 		}
 		return null;
 	}
