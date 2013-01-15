@@ -10,7 +10,7 @@ public class NetherPlankItemBlock extends ItemBlock {
 	public static String[] blockNames = new String[] { "Hellfire", "Acid", "Death" };
 	public static String[] blockDisplayNames = new String[] { "Hellfire Log", "Acid Log", "Death Log" };
 
-	public NetherPlankItemBlock(int id, Block block) {
+	public NetherPlankItemBlock(int id) {
 		super(id);
 		setHasSubtypes(true);
 	}

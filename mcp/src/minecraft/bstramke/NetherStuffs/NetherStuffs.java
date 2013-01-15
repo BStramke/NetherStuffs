@@ -57,7 +57,6 @@ import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -226,23 +225,21 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench, "NetherSoulWorkBench");
 
-		if(Loader.isModLoaded("NetherStuffsCore")) {
-		FMLLog.info("[NetherStuffs] SkyBlock is set available because NetherStuffsCore was found.");
-		GameRegistry.registerBlock(NetherBlocks.skyblock, "NetherSkyBlock");
-		}
-
-		Item.itemsList[NetherOreBlockId] = new NetherOreItemBlock(NetherOreBlockId - 256, NetherBlocks.netherOre).setItemName("NetherOreItemBlock");
-		Item.itemsList[NetherWoodBlockId] = new NetherWoodItemBlock(NetherWoodBlockId - 256, NetherBlocks.netherWood).setItemName("NetherWoodItemBlock");
-		Item.itemsList[NetherPlankBlockId] = new NetherPlankItemBlock(NetherPlankBlockId - 256, NetherBlocks.netherPlank).setItemName("NetherPlankItemBlock");
-		Item.itemsList[NetherLeavesBlockId] = new NetherLeavesItemBlock(NetherLeavesBlockId - 256, NetherBlocks.netherLeaves).setItemName("NetherLeavesItemBlock");
-		Item.itemsList[NetherSaplingBlockId] = new NetherSaplingItemBlock(NetherSaplingBlockId - 256).setItemName("NetherSaplingItemBlock");
-		Item.itemsList[NetherPuddleBlockId] = new NetherPuddleItemBlock(NetherPuddleBlockId - 256).setItemName("NetherPuddleItemBlock");
-		Item.itemsList[NetherSoulBombBlockId] = new SoulBombItemBlock(NetherSoulBombBlockId - 256).setItemName("NetherSoulBombItemBlock");
-		Item.itemsList[NetherSoulDetectorBlockId] = new SoulDetectorItemBlock(NetherSoulDetectorBlockId - 256).setItemName("NetherSoulDetectorItemBlock");
-		Item.itemsList[NetherSoulBlockerBlockId] = new SoulBlockerItemBlock(NetherSoulBlockerBlockId - 256).setItemName("NetherSoulBlockerItemBlock");
-		Item.itemsList[NetherSoulSiphonBlockId] = new SoulSiphonItemBlock(NetherSoulSiphonBlockId - 256).setItemName("NetherSoulSiphonItemBlock");
-
-		// Item.itemsList[SoulEnergyLiquidItemId] = NetherItems.SoulEnergyLiquidItem;
+		//if(Loader.isModLoaded("NetherStuffsCore")) {
+			FMLLog.info("[NetherStuffs] SkyBlock is set available because NetherStuffsCore was found.");
+			GameRegistry.registerBlock(NetherBlocks.skyblock, "NetherSkyBlock");
+		//}
+		
+		GameRegistry.registerBlock(NetherBlocks.netherOre, NetherOreItemBlock.class, "NetherOreItemBlock");
+		GameRegistry.registerBlock(NetherBlocks.netherWood, NetherWoodItemBlock.class, "NetherWoodItemBlock");
+		GameRegistry.registerBlock(NetherBlocks.netherPlank, NetherPlankItemBlock.class, "NetherPlankItemBlock");
+		GameRegistry.registerBlock(NetherBlocks.netherLeaves, NetherLeavesItemBlock.class, "NetherLeavesItemBlock");
+		GameRegistry.registerBlock(NetherBlocks.netherSapling, NetherSaplingItemBlock.class, "NetherSaplingItemBlock");
+		GameRegistry.registerBlock(NetherBlocks.netherPuddle, NetherPuddleItemBlock.class, "NetherPuddleItemBlock");
+		GameRegistry.registerBlock(NetherBlocks.netherSoulBomb, SoulBombItemBlock.class, "NetherSoulBombItemBlock");
+		GameRegistry.registerBlock(NetherBlocks.NetherSoulDetector, SoulDetectorItemBlock.class, "NetherSoulDetectorItemBlock");
+		GameRegistry.registerBlock(NetherBlocks.NetherSoulBlocker, SoulBlockerItemBlock.class, "NetherSoulBlockerItemBlock");
+		GameRegistry.registerBlock(NetherBlocks.NetherSoulSiphon, SoulSiphonItemBlock.class, "NetherSoulSiphonItemBlock");
 
 		// set required Stuff to Gather
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherOre, NetherOre.netherOreCobblestone, "pickaxe", 0);
@@ -319,7 +316,7 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	private void registerWorldGenerators() {
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, 3, 40));
+		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, 3, 50));
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal, 5, 65));
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreIron, 4, 40));
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreGold, 3, 25));

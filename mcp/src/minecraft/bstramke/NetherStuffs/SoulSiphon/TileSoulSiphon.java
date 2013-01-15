@@ -11,6 +11,7 @@ import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import bstramke.NetherStuffs.SoulLiquid.SoulEnergyLiquid;
@@ -28,6 +29,8 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 	public TileSoulSiphon() {
 		tank = new LiquidTank(maxTankLevel);
 	}
+	
+	
 
 	@Override
 	public int getSizeInventory() {
@@ -142,6 +145,8 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 			tagCompound.removeTag("TankLevel");
 		}
 		setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));
+		
+		this.worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, this.worldObj.getBlockId(xCoord, yCoord, zCoord), 10);
 	}
 
 	public void updateEntity() {

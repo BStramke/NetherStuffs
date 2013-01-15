@@ -1,5 +1,7 @@
 package bstramke.NetherStuffsCore;
 
+import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -20,7 +22,7 @@ public class NetherStuffsAccessTransformer implements IClassTransformer {
 	public byte[] transform(String name, byte[] bytes) {
 		//System.out.println("try override: " + name);
 		if (override.containsKey(name)) {
-			System.out.println("attempting override of " + name + " from " + NetherStuffsCorePlugin.myLocation);
+			System.out.println("attempting override of " + name + " from " + NetherStuffsCorePlugin.myLocation.getName());
 			bytes = overrideBytes(name, bytes, NetherStuffsCorePlugin.myLocation);
 		} 
 		return bytes;
@@ -33,9 +35,9 @@ public class NetherStuffsAccessTransformer implements IClassTransformer {
 			if (entry == null)
 				System.out.println(name + " not found in " + location.getName());
 			else {
-				InputStream zin = zip.getInputStream(entry);
+				DataInputStream zin = new DataInputStream(zip.getInputStream(entry));
 				bytes = new byte[(int) entry.getSize()];
-				zin.read(bytes);
+				zin.readFully(bytes);
 				zin.close();
 				System.out.println(name + " was overriden from " + location.getName());
 			}

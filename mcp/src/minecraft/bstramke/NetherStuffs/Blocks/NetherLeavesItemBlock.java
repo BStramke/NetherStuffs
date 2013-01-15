@@ -9,7 +9,7 @@ public class NetherLeavesItemBlock extends ItemBlock {
 	public static String[] blockNames = new String[] { "Hellfire", "Acid", "Death" };
 	public static String[] blockDisplayNames = new String[] { "Hellfire Leaves", "Acid Leaves", "Death Leaves" };
 
-	public NetherLeavesItemBlock(int id, Block block) {
+	public NetherLeavesItemBlock(int id) {
 		super(id);
 		setHasSubtypes(true);
 	}

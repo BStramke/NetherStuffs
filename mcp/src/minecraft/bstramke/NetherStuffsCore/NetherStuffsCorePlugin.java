@@ -53,7 +53,7 @@ public class NetherStuffsCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 			//System.out.println("addOverrides start");
 			NetherStuffsAccessTransformer.addClassOverride("akm", "net/minecraft/src/BlockBreakable.java");
 			NetherStuffsAccessTransformer.addClassOverride("amp", "net/minecraft/src/BlockPane.java");
-			//NetherStuffsAccessTransformer.addClassOverride("zz", "net.minecraft.world.chunk.Chunk");
+			NetherStuffsAccessTransformer.addClassOverride("zz", "net.minecraft.world.chunk.Chunk");
 		}
 		/*
 		 * else { NetherStuffsAccessTransformer.addClassOverride("net.minecraft.src.BlockPane", "Necessary for connecting GlassPanes and SoulglassPanes");

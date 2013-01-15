@@ -9,7 +9,7 @@ public class NetherOreItemBlock extends ItemBlock {
 	public static String[] blockNames = new String[] { "DemonicOre", "NetherStone", "NetherOreIron", "NetherOreGold", "NetherOreDiamond", "NetherOreRedstone", "NetherOreEmerald", "NetherOreCoal", "NetherOreObsidian", "NetherOreLapis", "NetherCobblestone"};
 	public static String[] blockDisplayNames = new String[] { "Demonic Ore", "Nether Stone", "Nether Iron Ore", "Nether Gold Ore", "Nether Diamond Ore", "Nether Redstone Ore", "Nether Emerald Ore", "Nether Coal Ore", "Nether Obsidian Ore", "Nether Lapis Ore", "Encrusted Cobblestone" };
 	
-	public NetherOreItemBlock(int id, Block block) {
+	public NetherOreItemBlock(int id) {
 		super(id);
 		setHasSubtypes(true);
 	}

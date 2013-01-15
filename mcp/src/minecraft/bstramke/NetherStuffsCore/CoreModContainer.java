@@ -5,12 +5,18 @@ import java.util.Arrays;
 
 import net.minecraftforge.common.Configuration;
 
+import codechicken.core.ClientUtils;
+import codechicken.nei.ClientHandler;
+import codechicken.nei.ServerHandler;
+
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class CoreModContainer extends DummyModContainer {
@@ -31,24 +37,15 @@ public class CoreModContainer extends DummyModContainer {
 		bus.register(this);
 		return true;
 	}
-	
-	public void PreLoad(FMLPreInitializationEvent event) {
-		FMLLog.info("[NetherStuffsCore] PreLoad");	
+		
+	@Subscribe
+	public void preInit(FMLPreInitializationEvent event)
+   {		
+		FMLLog.info("[NetherStuffsCore] preInit");
 		
 		Configuration config = new Configuration(new File(event.getModConfigurationDirectory() + "NetherStuffs.cfg"));
 		config.load();
 		NetherSkyBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SkyBlock", 1245).getInt(1245);
 		config.save();	
-	}
-
-	/*
-	 * Use this in place of @Init, @Preinit, @Postinit in the file.
-	 */
-	// @Subscribe
-	/* Remember to use the right event! */
-	/*
-	 * public void onServerStarting(FMLServerStartingEvent ev) { // ev.getServer().worldServerForDimension(0).spawnHostileMobs = false;
-	 * 
-	 * }
-	 */
+   }
 }

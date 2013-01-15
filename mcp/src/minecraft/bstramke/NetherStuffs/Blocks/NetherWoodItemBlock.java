@@ -10,7 +10,7 @@ public class NetherWoodItemBlock extends ItemBlock {
 	public static String[] blockNames = new String[] { "Hellfire", "Acid", "Death" };
 	public static String[] blockDisplayNames = new String[] { "Hellfire Wood", "Acid Wood", "Death Wood" };
 
-	public NetherWoodItemBlock(int id, Block block) {
+	public NetherWoodItemBlock(int id) {
 		super(id);
 		setHasSubtypes(true);
 	}

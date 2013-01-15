@@ -834,7 +834,7 @@ public class Chunk {
 		if (par2 >= this.heightMap[par3 << 4 | par1]) //default behavior
 			return true;
 		else {
-			if (Loader.isModLoaded("NetherStuffs") && Loader.isModLoaded("NetherStuffsCore")) {
+			if (/*Loader.isModLoaded("NetherStuffs") && Loader.isModLoaded("NetherStuffsCore")*/ true) {
 				int nBlockId = 0;
 				int nMaxHeight = 256;
 				if(this.worldObj.provider.isHellWorld) //save half of the time when in the nether as its only 128 height
