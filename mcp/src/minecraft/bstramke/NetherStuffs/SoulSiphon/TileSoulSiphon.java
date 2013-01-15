@@ -145,8 +145,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 			tagCompound.removeTag("TankLevel");
 		}
 		setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));
-		
-		this.worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, this.worldObj.getBlockId(xCoord, yCoord, zCoord), 10);
+
 	}
 
 	public void updateEntity() {
