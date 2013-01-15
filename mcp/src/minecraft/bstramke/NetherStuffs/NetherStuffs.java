@@ -37,6 +37,7 @@ import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.GuiHandler;
 import bstramke.NetherStuffs.Common.NetherStuffsFuel;
 import bstramke.NetherStuffs.Common.NetherStuffsPlayerTracker;
+import bstramke.NetherStuffs.Common.PlayerDummy;
 import bstramke.NetherStuffs.Common.ServerPacketHandler;
 import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import bstramke.NetherStuffs.DemonicFurnace.TileDemonicFurnace;
@@ -131,7 +132,7 @@ public class NetherStuffs extends DummyModContainer {
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 	private static boolean IncreaseNetherrackHardness;
 	private static boolean SpawnBlazesNaturally;
-
+	
 	public static LiquidStack SoulEnergyLiquid;
 
 	@PreInit

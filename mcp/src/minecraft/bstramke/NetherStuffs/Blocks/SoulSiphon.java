@@ -10,15 +10,17 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.NetherStuffsEventHook;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.SoulSiphon.TileSoulSiphon;
 import cpw.mods.fml.relauncher.Side;
@@ -108,9 +110,8 @@ public class SoulSiphon extends BlockContainer {
 
 					while (it.hasNext()) {
 						Object data = it.next();
-						if (data instanceof EntityLiving && !(data instanceof EntityPlayerMP) && !(data instanceof EntityPlayer)) {
-							((EntityLiving) data).attackEntityFrom(DamageSource.generic, 1);
-							//((EntityLiving) data).recentlyHit = 60;
+						if (data instanceof EntityLiving && !(data instanceof EntityPlayerMP) && !(data instanceof EntityPlayer) && !(data instanceof EntityVillager)) {
+							((EntityLiving) data).attackEntityFrom(new EntityDamageSource("generic", NetherStuffsEventHook.getPlayerDummyForDimension(par1World.provider.dimensionId)), 1);
 						} else {
 							it.remove();
 						}

@@ -1,8 +1,10 @@
 package bstramke.NetherStuffs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -11,11 +13,11 @@ import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.world.WorldEvent;
+import bstramke.NetherStuffs.Common.PlayerDummy;
 import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
 
 public class NetherStuffsEventHook {
@@ -23,7 +25,19 @@ public class NetherStuffsEventHook {
 	public static List lAllowedSpawnNetherBlockIds = new ArrayList();
 	public static boolean SpawnSkeletonsOnlyOnNaturalNetherBlocks;
 	public static List lBlockSpawnListForced = new ArrayList();
+	
+	private static Map<Integer, PlayerDummy> dummyPlayers = new HashMap<Integer, PlayerDummy>();
 
+	@ForgeSubscribe
+	public void worldLoadEvent(WorldEvent.Load event) {
+		Integer tmp = event.world.provider.dimensionId;
+		dummyPlayers.put(tmp, new PlayerDummy(event.world));
+	}
+	
+	public static PlayerDummy getPlayerDummyForDimension(int nDimensionID) {
+		return dummyPlayers.get(new Integer(nDimensionID));
+	}
+	
 	@ForgeSubscribe
 	public void entitySpawnInWorldEvent(LivingSpawnEvent event) {
 		if (event.isCancelable() && event.world.provider.isHellWorld && !event.world.isRemote) {
