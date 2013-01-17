@@ -20,6 +20,8 @@ import bstramke.NetherStuffs.Blocks.SoulDetectorItemBlock;
 import bstramke.NetherStuffs.Blocks.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.NetherOreIngot;
+import bstramke.NetherStuffs.mc15compat.CompatBlock;
+import bstramke.NetherStuffs.mc15compat.CompatItem;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IGuiHandler;
 import forestry.api.core.IOreDictionaryHandler;
@@ -146,6 +148,11 @@ public class PluginForestry implements IPlugin {
 			BackpackManager.backpackItems[MINER].add(new ItemStack(NetherBlocks.netherOre, 1, i));
 		}
 		BackpackManager.backpackItems[MINER].add(new ItemStack(NetherItems.NetherOreIngot, 1, 0));
+		
+		BackpackManager.backpackItems[MINER].add(new ItemStack(CompatItem.netherBrick));
+		BackpackManager.backpackItems[MINER].add(new ItemStack(CompatItem.netherQuartz));
+		BackpackManager.backpackItems[BUILDER].add(new ItemStack(CompatBlock.blockQuartz));
+		BackpackManager.backpackItems[MINER].add(new ItemStack(CompatBlock.oreQuartz));
 
 		for (int i = 0; i < NetherSaplingItemBlock.getMetadataSize(); i++) {
 			BackpackManager.backpackItems[FORESTER].add(new ItemStack(NetherBlocks.netherSapling, 1, i));

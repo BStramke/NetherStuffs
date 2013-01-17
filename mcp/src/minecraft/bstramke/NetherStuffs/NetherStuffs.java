@@ -37,7 +37,6 @@ import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.GuiHandler;
 import bstramke.NetherStuffs.Common.NetherStuffsFuel;
 import bstramke.NetherStuffs.Common.NetherStuffsPlayerTracker;
-import bstramke.NetherStuffs.Common.PlayerDummy;
 import bstramke.NetherStuffs.Common.ServerPacketHandler;
 import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import bstramke.NetherStuffs.DemonicFurnace.TileDemonicFurnace;
@@ -56,6 +55,8 @@ import bstramke.NetherStuffs.SoulSiphon.TileSoulSiphon;
 import bstramke.NetherStuffs.SoulWorkBench.TileSoulWorkBench;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
+import bstramke.NetherStuffs.mc15compat.CompatBlock;
+import bstramke.NetherStuffs.mc15compat.CompatItem;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
@@ -132,7 +133,7 @@ public class NetherStuffs extends DummyModContainer {
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 	private static boolean IncreaseNetherrackHardness;
 	private static boolean SpawnBlazesNaturally;
-	
+
 	public static LiquidStack SoulEnergyLiquid;
 
 	@PreInit
@@ -227,11 +228,11 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench, "NetherSoulWorkBench");
 
-		if(Loader.isModLoaded("NetherStuffsCore")) {
+		if (Loader.isModLoaded("NetherStuffsCore")) {
 			FMLLog.info("[NetherStuffs] SkyBlock is set available because NetherStuffsCore was found.");
 			GameRegistry.registerBlock(NetherBlocks.skyblock, "NetherSkyBlock");
 		}
-		
+
 		GameRegistry.registerBlock(NetherBlocks.netherOre, NetherOreItemBlock.class, "NetherOreItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherWood, NetherWoodItemBlock.class, "NetherWoodItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherPlank, NetherPlankItemBlock.class, "NetherPlankItemBlock");
@@ -287,13 +288,15 @@ public class NetherStuffs extends DummyModContainer {
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
 
 		OreDictionary.registerOre("oreDemonic", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.demonicOre));
-		OreDictionary.registerOre("oreNetherStone", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone));
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
 
 		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, 1));
 
 		registerWorldGenerators();
 		initRecipes();
+
+		initMC15Compat();
+
 		initLanguageRegistry();
 		proxy.registerRenderThings();
 		NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
@@ -331,11 +334,32 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsTrees(true, 4, false));
 	}
 
+	private void initMC15Compat() {
+		GameRegistry.registerBlock(CompatBlock.blockQuartz, "BlockQuartz");
+		GameRegistry.registerBlock(CompatBlock.oreQuartz, "OreQuartz");
+		GameRegistry.registerItem(CompatItem.netherBrick, "NetherBrick");
+		GameRegistry.registerItem(CompatItem.netherQuartz, "NetherQuartz");
+
+		MinecraftForge.setBlockHarvestLevel(CompatBlock.blockQuartz, "pickaxe", 0);
+		MinecraftForge.setBlockHarvestLevel(CompatBlock.oreQuartz, "pickaxe", 0);
+
+		FurnaceRecipes.smelting().addSmelting(CompatBlock.oreQuartz.blockID, new ItemStack(CompatItem.netherQuartz), 0.5F);
+		FurnaceRecipes.smelting().addSmelting(Block.netherrack.blockID, new ItemStack(CompatItem.netherBrick), 0.15F);
+		
+		LanguageRegistry.instance().addStringLocalization("item.netherQuartz.name", "Nether Quartz");
+		LanguageRegistry.instance().addStringLocalization("item.netherBrick.name", "Nether Brick");
+
+		LanguageRegistry.instance().addStringLocalization("tile.blockQuartz.name", "Block Quartz");
+		LanguageRegistry.instance().addStringLocalization("tile.oreQuartz.name", "Ore Quartz");
+		
+		GameRegistry.addRecipe(new ItemStack(Block.netherBrick, 1), new Object[] { "NN", "NN", 'N', CompatItem.netherBrick });
+		GameRegistry.addRecipe(new ItemStack(CompatBlock.blockQuartz, 1), new Object[] { "NN", "NN", 'N', CompatItem.netherQuartz });
+		
+		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(CompatBlock.oreQuartz.blockID, 0, 5, 65));
+	}
+
 	private void initRecipes() {
 		initDefaultMinecraftRecipes();
-
-		addSmeltingMeta(Block.netherrack, 0, NetherBlocks.netherOre, NetherOre.netherStone); // this actually is the basic recipe
-		// to get started
 
 		DemonicFurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, new ItemStack(NetherItems.NetherOreIngot, 1, 0), 1.0F);
 		DemonicFurnaceRecipes.smelting().addSmelting(Block.slowSand.blockID, 0, new ItemStack(NetherBlocks.NetherSoulGlass, 1, 0), 0.25F);
@@ -353,27 +377,27 @@ public class NetherStuffs extends DummyModContainer {
 		CraftingManager
 				.getInstance()
 				.getRecipeList()
-				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), true, new Object[] { "I#I", "#W#", "I#I", '#', "oreNetherStone", 'W',
+				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), true, new Object[] { "I#I", "#W#", "I#I", '#', new ItemStack(CompatItem.netherBrick, 1), 'W',
 						new ItemStack(Block.workbench), 'I', "ingotDemonic" }));
 
 		GameRegistry.addRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[] { "I#I", "#W#", "I#I", '#',
-				new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone), 'W', new ItemStack(Block.workbench), 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0) });
+				new ItemStack(CompatItem.netherBrick, 1), 'W', new ItemStack(Block.workbench), 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0) });
 		GameRegistry.addRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[] { "#I#", "IWI", "#I#", '#',
-				new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone), 'W', new ItemStack(Block.workbench), 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0) });
+				new ItemStack(CompatItem.netherBrick, 1), 'W', new ItemStack(Block.workbench), 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0) });
 
 		GameRegistry.addRecipe(new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), new Object[] { "NNN", "N N", "NNN", 'N',
-				new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone) });
+				new ItemStack(CompatItem.netherBrick, 1) });
 
 		GameRegistry.addShapelessRecipe(new ItemStack(NetherItems.torchArrow, 1), new Object[] { new ItemStack(Item.arrow, 1), new ItemStack(Block.torchWood, 1, 0) });
 
 		CraftingManager
 				.getInstance()
 				.getRecipeList()
-				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[] { "#I#", "IWI", "#I#", '#', "oreNetherStone", 'W',
+				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[] { "#I#", "IWI", "#I#", '#', CompatItem.netherBrick, 'W',
 						new ItemStack(Block.workbench), 'I', "ingotDemonic" }));
 
 		CraftingManager.getInstance().getRecipeList()
-				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), new Object[] { "NNN", "N N", "NNN", 'N', "oreNetherStone" }));
+				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), new Object[] { "NNN", "N N", "NNN", 'N', CompatItem.netherBrick }));
 
 		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherWoodStick, 4), new Object[] { "#", "#", '#', NetherBlocks.netherPlank });
 
@@ -381,7 +405,7 @@ public class NetherStuffs extends DummyModContainer {
 				.getInstance()
 				.getRecipeList()
 				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.NetherSoulBlocker, 1, SoulBlocker.NetherSoulBlocker), new Object[] { "IPI", "SBS", "XXX", 'I', "ingotDemonic", 'P',
-						NetherBlocks.netherPlank, 'S', NetherItems.NetherWoodStick, 'B', NetherItems.NetherPotionBottle, 'X', "oreNetherStone" }));
+						NetherBlocks.netherPlank, 'S', NetherItems.NetherWoodStick, 'B', NetherItems.NetherPotionBottle, 'X', CompatItem.netherBrick }));
 
 		CraftingManager
 				.getInstance()
@@ -443,14 +467,14 @@ public class NetherStuffs extends DummyModContainer {
 		CraftingManager
 				.getInstance()
 				.getRecipeList()
-				.add(new ShapedOreRecipe(new ItemStack(NetherItems.NetherDemonicBarHandle, 1), new Object[] { "NIN", " S ", 'N', "oreNetherStone", 'I', "ingotDemonic", 'S',
+				.add(new ShapedOreRecipe(new ItemStack(NetherItems.NetherDemonicBarHandle, 1), new Object[] { "NIN", " S ", 'N', CompatItem.netherBrick, 'I', "ingotDemonic", 'S',
 						NetherItems.NetherWoodStick }));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3), new Object[] { "N N", " N ", 'N', "oreNetherStone" }));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3), new Object[] { "N N", " N ", 'N', CompatItem.netherBrick }));
 
 		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDemonicBarHandle, 1), new Object[] { "NIN", " S ", 'N',
-				new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone), 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'S', NetherItems.NetherWoodStick });
+			CompatItem.netherBrick, 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'S', NetherItems.NetherWoodStick });
 
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3), new Object[] { "N N", " N ", 'N', new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone) });
+		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3), new Object[] { "N N", " N ", 'N', CompatItem.netherBrick });
 
 		GameRegistry.addRecipe(new ItemStack(NetherBlocks.NetherSoulGlassPane, 16), new Object[] { "###", "###", '#', NetherBlocks.NetherSoulGlass });
 		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulGlassBottleItem, 3), new Object[] { "# #", " # ", '#', NetherBlocks.NetherSoulGlass });
@@ -508,9 +532,10 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.addRecipe(new ItemStack(Item.bed, 1), new Object[] { "###", "XXX", '#', Block.cloth, 'X', NetherBlocks.netherPlank });
 		GameRegistry.addRecipe(new ItemStack(Block.chest), new Object[] { "###", "# #", "###", '#', NetherBlocks.netherPlank });
 		GameRegistry.addRecipe(new ItemStack(Block.workbench), new Object[] { "##", "##", '#', NetherBlocks.netherPlank });
-
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(Block.netherBrick, 2), true, new Object[] { "NN", "NN", 'N', "oreNetherStone" }));
-		GameRegistry.addRecipe(new ItemStack(Block.netherBrick, 2), new Object[] { "NN", "NN", 'N', new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone) });
+		
+		GameRegistry.addShapelessRecipe(new ItemStack(CompatItem.netherBrick), new Object[] { new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone) });
+		GameRegistry.addShapelessRecipe(new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone), new Object[] { CompatItem.netherBrick });
+		
 		GameRegistry.addShapelessRecipe(new ItemStack(Item.stick), new Object[] { new ItemStack(NetherItems.NetherWoodStick) });
 
 		// Default Wooden Tools

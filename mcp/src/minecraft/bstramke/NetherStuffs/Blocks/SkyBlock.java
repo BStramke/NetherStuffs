@@ -31,10 +31,11 @@ public class SkyBlock extends Block {
 		return blockNames.length;
 	}
 
-	public String getItemNameIS(ItemStack is) {
-		String name = "NetherSkyBlock";
-		return getBlockName() + "." + name;
-	}
+	@Override
+	 public String getBlockName()
+   {
+       return "NetherSkyBlock." + this.blockNames[0];
+   }
 
 	@Override
 	public void onBlockAdded(net.minecraft.world.World par1World, int xCoord, int yCoord, int zCoord) {
