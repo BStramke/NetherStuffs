@@ -5,17 +5,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import cpw.mods.fml.common.Loader;
+
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.NetherWood;
 import bstramke.NetherStuffs.Blocks.SoulDetector;
 import bstramke.NetherStuffs.Blocks.SoulDetectorItemBlock;
 import bstramke.NetherStuffs.Blocks.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Items.NetherItems;
+import bstramke.NetherStuffs.mc15compat.CompatItem;
 
 public class SoulWorkBenchRecipes {
 	private static final SoulWorkBenchRecipes instance = new SoulWorkBenchRecipes();
@@ -46,11 +50,17 @@ public class SoulWorkBenchRecipes {
 		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulFurnace, 1), 300, new Object[] { "IBI", "IFI", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'F',
 				new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1) });
 
+		this.addRecipe( new ItemStack(CompatItem.netherQuartz), 100, new Object[] { "BB", "BB", 'B', new ItemStack(Block.sandStone)});
+		
 		//Add 4 Soul Siphons with the same Metadatas as Soul Detectors
 		for (int i = 0; i < SoulSiphonItemBlock.getMetadataSize() && i < SoulDetectorItemBlock.getMetadataSize(); i++) {
 			this.addRecipe(new ItemStack(NetherBlocks.NetherSoulSiphon, 1, i), 250, new Object[] { "WWW", "BDB", "WWW", 'W',
 					new ItemStack(NetherBlocks.netherWood, 1, NetherWood.death), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1), 'D',
 					new ItemStack(NetherBlocks.NetherSoulDetector, 1, i) });
+		}
+		
+		if (Loader.isModLoaded("NetherStuffsCore") || NetherStuffs.DevSetCoreModAvailable) {
+			this.addRecipe(new ItemStack(NetherBlocks.skyblock), 1000, new Object[]{"IEI", "ISI", "IEI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'E', new ItemStack(Item.enderPearl), 'S', new ItemStack(Item.netherStar)});
 		}
 	}
 

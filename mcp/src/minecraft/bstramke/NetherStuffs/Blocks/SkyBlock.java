@@ -32,14 +32,7 @@ public class SkyBlock extends Block {
 	}
 
 	@Override
-	 public String getBlockName()
-   {
-       return "NetherSkyBlock." + this.blockNames[0];
-   }
-
-	@Override
 	public void onBlockAdded(net.minecraft.world.World par1World, int xCoord, int yCoord, int zCoord) {
-		//System.out.println("onBlockAdded");
 		par1World.scheduleBlockUpdate(xCoord, yCoord, zCoord, this.blockID, this.tickRate());
 	};
 
@@ -51,14 +44,19 @@ public class SkyBlock extends Block {
 	@Override
 	public void updateTick(net.minecraft.world.World par1World, int xCoord, int yCoord, int zCoord, java.util.Random par5Random) {
 		if (!par1World.isRemote) {
-			//System.out.println("tick");
 			par1World.scheduleBlockUpdate(xCoord, yCoord, zCoord, this.blockID, this.tickRate());
 		}
 	};
 
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		return 144;
+		switch (side) {
+		case NetherBlocks.sideBottom:
+		case NetherBlocks.sideTop:	
+			return 147;
+		default:
+			return 146;
+		}
 	}
 
 	@Override

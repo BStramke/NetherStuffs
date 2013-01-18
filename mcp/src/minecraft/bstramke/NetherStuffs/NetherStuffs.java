@@ -53,7 +53,7 @@ import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
 import bstramke.NetherStuffs.SoulFurnace.TileSoulFurnace;
 import bstramke.NetherStuffs.SoulSiphon.TileSoulSiphon;
 import bstramke.NetherStuffs.SoulWorkBench.TileSoulWorkBench;
-import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsMinable;
+import bstramke.NetherStuffs.WorldGen.WorldGenDefaultMinable;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import bstramke.NetherStuffs.mc15compat.CompatBlock;
 import bstramke.NetherStuffs.mc15compat.CompatItem;
@@ -87,6 +87,9 @@ public class NetherStuffs extends DummyModContainer {
 	@SidedProxy(clientSide = "bstramke.NetherStuffs.Client.ClientProxy", serverSide = "bstramke.NetherStuffs.Common.CommonProxy")
 	public static CommonProxy proxy;
 
+	public static boolean ShowOreDistributions = false;
+	public static boolean DevSetCoreModAvailable = false;
+	
 	public static int NetherOreBlockId;
 	public static int NetherWoodBlockId;
 	public static int NetherPlankBlockId;
@@ -215,6 +218,20 @@ public class NetherStuffs extends DummyModContainer {
 
 		FMLLog.info("[NetherStuffs] Blocked Nether Spawns on Block IDs: %s", NetherStuffsEventHook.lBlockSpawnListForced.toString());
 		config.save();
+		
+		if(ShowOreDistributions){
+			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID+":"+NetherOre.demonicOre), 1);
+			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID+":"+NetherOre.netherOreCoal), 1);
+			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID+":"+NetherOre.netherOreIron), 1);
+			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID+":"+NetherOre.netherOreGold), 1);
+			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID+":"+NetherOre.netherOreDiamond), 1);
+			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID+":"+NetherOre.netherOreEmerald), 1);
+			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID+":"+NetherOre.netherOreRedstone), 1);
+			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID+":"+NetherOre.netherOreObsidian), 1);
+			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID+":"+NetherOre.netherOreLapis), 1);
+			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID+":"+NetherOre.netherOreCobblestone), 1);
+			WorldGenDefaultMinable.arrMap.put(new String(CompatBlock.oreQuartz.blockID+":0"), 1);
+		}
 	}
 
 	@Init
@@ -228,7 +245,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench, "NetherSoulWorkBench");
 
-		if (Loader.isModLoaded("NetherStuffsCore")) {
+		if (Loader.isModLoaded("NetherStuffsCore") || NetherStuffs.DevSetCoreModAvailable) {
 			FMLLog.info("[NetherStuffs] SkyBlock is set available because NetherStuffsCore was found.");
 			GameRegistry.registerBlock(NetherBlocks.skyblock, "NetherSkyBlock");
 		}
@@ -321,16 +338,17 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	private void registerWorldGenerators() {
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, 3, 50));
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal, 5, 65));
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreIron, 4, 40));
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreGold, 3, 25));
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreDiamond, 2, 15));
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreEmerald, 2, 15));
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreRedstone, 4, 20));
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreObsidian, 4, 30));
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreLapis, 3, 20));
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(NetherBlocks.netherOre.blockID, NetherOre.netherOreCobblestone, 5, 50));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.demonicOre, 27));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 16, NetherOre.netherOreCoal, 20));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreIron, 32));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreGold, 8));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreDiamond, 3));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreEmerald, 3));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreRedstone, 14));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreObsidian, 20));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreLapis, 4));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 13, NetherOre.netherOreCobblestone, 20));
+		
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsTrees(true, 4, false));
 	}
 
@@ -355,7 +373,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.addRecipe(new ItemStack(Block.netherBrick, 1), new Object[] { "NN", "NN", 'N', CompatItem.netherBrick });
 		GameRegistry.addRecipe(new ItemStack(CompatBlock.blockQuartz, 1), new Object[] { "NN", "NN", 'N', CompatItem.netherQuartz });
 		
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsMinable(CompatBlock.oreQuartz.blockID, 0, 5, 65));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(CompatBlock.oreQuartz.blockID, 8, 0, 25));
 	}
 
 	private void initRecipes() {
@@ -601,11 +619,11 @@ public class NetherStuffs extends DummyModContainer {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherSoulSiphon." + SoulSiphonItemBlock.blockNames[i] + ".name", SoulSiphonItemBlock.blockDisplayNames[i]);
 		}
 
-		// if(Loader.isModLoaded("NetherStuffsCore")) {
-		for (int i = 0; i < SkyBlock.getMetadataSize(); i++) {
-			LanguageRegistry.instance().addStringLocalization("tile.NetherSkyBlock." + SkyBlock.blockNames[i] + ".name", SkyBlock.blockDisplayNames[i]);
+		if(Loader.isModLoaded("NetherStuffsCore") || DevSetCoreModAvailable) {
+			//for (int i = 0; i < SkyBlock.getMetadataSize(); i++) {
+				LanguageRegistry.instance().addStringLocalization("tile.NetherSkyBlock.name", SkyBlock.blockDisplayNames[0]);
+			//}
 		}
-		// }
 
 		for (int i = 0; i < ((NetherOreIngot) NetherItems.NetherOreIngot).getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot." + ((NetherOreIngot) NetherItems.NetherOreIngot).itemNames[i] + ".name",

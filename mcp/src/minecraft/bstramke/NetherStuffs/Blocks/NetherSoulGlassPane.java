@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
@@ -18,7 +19,7 @@ public class NetherSoulGlassPane extends BlockPane {
 	public NetherSoulGlassPane(int par1, int par2, int par3, Material par4Material, boolean par5) {
 		super(par1, par2, par3, par4Material, par5);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
-		if(Loader.isModLoaded("NetherStuffsCore")){
+		if(Loader.isModLoaded("NetherStuffsCore") || NetherStuffs.DevSetCoreModAvailable){
 			BlockPane.addToConnectList(this.blockID);
 		}
 	}
