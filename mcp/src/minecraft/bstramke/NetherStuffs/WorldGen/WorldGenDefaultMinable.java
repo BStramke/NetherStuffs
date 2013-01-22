@@ -40,7 +40,7 @@ public class WorldGenDefaultMinable implements IWorldGenerator {
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
 		if (world.provider.isHellWorld) {
 			for (int i = 0; i < generationAttempts; ++i)
-				this.generate(world, random, chunkX * 16 + random.nextInt(16), random.nextInt(128), chunkZ * 16 + random.nextInt(16));
+				this.generate(world, random, chunkX * 16 + random.nextInt(16), random.nextInt(108) + 10, chunkZ * 16 + random.nextInt(16));
 		}
 	}
 
@@ -80,12 +80,13 @@ public class WorldGenDefaultMinable implements IWorldGenerator {
 
 								Block block = Block.blocksList[par1World.getBlockId(var38, var41, var44)];
 								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && (block != null && block.blockID == Block.netherrack.blockID)) {
-									if(NetherStuffs.ShowOreDistributions) {
-										if(arrMap.get(new String(this.minableBlockId+":"+minableBlockMeta)) != null)
-											arrMap.put(new String(this.minableBlockId+":"+minableBlockMeta), new Integer(arrMap.get(new String(this.minableBlockId+":"+minableBlockMeta)))+1);
+									if (NetherStuffs.ShowOreDistributions) {
+										if (arrMap.get(new String(this.minableBlockId + ":" + minableBlockMeta)) != null)
+											arrMap.put(new String(this.minableBlockId + ":" + minableBlockMeta),
+													new Integer(arrMap.get(new String(this.minableBlockId + ":" + minableBlockMeta))) + 1);
 										else
-											arrMap.put(new String(this.minableBlockId+":"+minableBlockMeta), 1);
-										
+											arrMap.put(new String(this.minableBlockId + ":" + minableBlockMeta), 1);
+
 										System.out.println(arrMap);
 									}
 									par1World.setBlockAndMetadata(var38, var41, var44, this.minableBlockId, minableBlockMeta);

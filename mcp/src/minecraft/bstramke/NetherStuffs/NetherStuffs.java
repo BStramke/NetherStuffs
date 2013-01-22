@@ -373,7 +373,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.addRecipe(new ItemStack(Block.netherBrick, 1), new Object[] { "NN", "NN", 'N', CompatItem.netherBrick });
 		GameRegistry.addRecipe(new ItemStack(CompatBlock.blockQuartz, 1), new Object[] { "NN", "NN", 'N', CompatItem.netherQuartz });
 		
-		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(CompatBlock.oreQuartz.blockID, 8, 0, 25));
+		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(CompatBlock.oreQuartz.blockID, 13, 0, 16));
 	}
 
 	private void initRecipes() {

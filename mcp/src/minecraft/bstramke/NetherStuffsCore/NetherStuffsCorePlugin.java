@@ -22,7 +22,7 @@ public class NetherStuffsCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 	@Override
 	public String[] getASMTransformerClass() {
 		//System.out.println("getASMTransformerClass start");
-		return new String[] {"bstramke.NetherStuffsCore.NetherStuffsAccessTransformer", "bstramke.NetherStuffsCore.NetherStuffsAccessTransformer2" };
+		return new String[] {"bstramke.NetherStuffsCore.NetherStuffsAccessTransformer", "bstramke.NetherStuffsCore.NetherStuffsASM" };
 	}
 
 	@Override
@@ -51,13 +51,13 @@ public class NetherStuffsCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 		// if(ObfuscationReflectionHelper.obfuscation)
 		{
 			//System.out.println("addOverrides start");
-			NetherStuffsAccessTransformer.addClassOverride("akm", "net/minecraft/src/BlockBreakable.java");
-			NetherStuffsAccessTransformer.addClassOverride("amp", "net/minecraft/src/BlockPane.java");
-			NetherStuffsAccessTransformer.addClassOverride("zz", "net.minecraft.world.chunk.Chunk");
+			NetherStuffsASM.addClassOverride("akm", "net/minecraft/src/BlockBreakable.java");
+			NetherStuffsASM.addClassOverride("amp", "net/minecraft/src/BlockPane.java");
+			NetherStuffsASM.addClassOverride("zz", "net.minecraft.world.chunk.Chunk");
 		}
 		/*
-		 * else { NetherStuffsAccessTransformer.addClassOverride("net.minecraft.src.BlockPane", "Necessary for connecting GlassPanes and SoulglassPanes");
-		 * NetherStuffsAccessTransformer.addClassOverride("net.minecraft.src.BlockBreakable", "Necessary for Rendering SoulGlass and Glass Sides"); }
+		 * else { NetherStuffsASM.addClassOverride("net.minecraft.src.BlockPane", "Necessary for connecting GlassPanes and SoulglassPanes");
+		 * NetherStuffsASM.addClassOverride("net.minecraft.src.BlockBreakable", "Necessary for Rendering SoulGlass and Glass Sides"); }
 		 */
 	}
 
