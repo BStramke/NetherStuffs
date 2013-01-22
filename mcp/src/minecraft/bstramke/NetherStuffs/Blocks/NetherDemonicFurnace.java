@@ -280,14 +280,13 @@ public class NetherDemonicFurnace extends BlockContainer {
 							}
 
 							var9.stackSize -= var13;
-							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(var9.itemID, var13,
-									var9.getItemDamage()));
+							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(
+									var9.itemID, var13, var9.getItemDamage()));
 
 							if (var9.hasTagCompound()) {
-								//func_92014_d() gets back an Item
-                                var14.func_92014_d().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
-                            }
-							
+								// func_92014_d() gets back an Item
+								var14.func_92014_d().setTagCompound((NBTTagCompound) var9.getTagCompound().copy());
+							}
 
 							float var15 = 0.05F;
 							var14.motionX = (double) ((float) this.furnaceRand.nextGaussian() * var15);

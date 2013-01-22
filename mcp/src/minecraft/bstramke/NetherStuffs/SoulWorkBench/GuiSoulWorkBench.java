@@ -54,6 +54,10 @@ public class GuiSoulWorkBench extends GuiContainer {
 			nFillState -= y;
 			this.drawTexturedModalRect(var5 + 12, nBottomLeftY-y-nFillState, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)%16)*16, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)/16)*16, 16, nFillState);
 		}
+		
+		int nRequired = this.benchInventory.getSoulEnergyRequired();
+		if (nRequired > 0)
+			fontRenderer.drawString("+ " + nRequired + " Energy", var5 + 39, var6 + 72, 0x000000);
 	}
 	
 	@Override

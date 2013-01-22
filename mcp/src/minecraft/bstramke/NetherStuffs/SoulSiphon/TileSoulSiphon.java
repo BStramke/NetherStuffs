@@ -1,23 +1,36 @@
 package bstramke.NetherStuffs.SoulSiphon;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.liquids.ILiquidTank;
 import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.NetherStuffsEventHook;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
+import bstramke.NetherStuffs.Blocks.SoulSiphon;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import bstramke.NetherStuffs.SoulLiquid.SoulEnergyLiquid;
 import buildcraft.api.inventory.ISpecialInventory;
 
 public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITankContainer {
+	private static int nTickCounter = 0;
 	private LiquidTank tank;
 	public int nTankFillSlot = 1;
 	public int nTankDrainSlot = 0;
@@ -29,8 +42,6 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 	public TileSoulSiphon() {
 		tank = new LiquidTank(maxTankLevel);
 	}
-	
-	
 
 	@Override
 	public int getSizeInventory() {
@@ -150,8 +161,73 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 
 	public void updateEntity() {
 		if (!this.worldObj.isRemote) {
-
 			fillFuelToTank();
+
+			nTickCounter++;
+			if (nTickCounter % 40 == 0) {
+				nTickCounter = 0;
+				int nMeta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+				if (this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
+					if (!SoulSiphon.isActiveSet(nMeta))
+						this.worldObj.setBlockMetadata(xCoord, yCoord, zCoord, SoulSiphon.setActiveOnMetadata(nMeta));
+					int nRange;
+					switch (SoulSiphon.unmarkedMetadata(nMeta)) {
+					case SoulSiphon.mk1:
+						nRange = 4;
+						break;
+					case SoulSiphon.mk2:
+						nRange = 8;
+						break;
+					case SoulSiphon.mk3:
+					case SoulSiphon.mk4:
+						nRange = 12;
+						break;
+					default:
+						nRange = 4;
+					}
+					int nRangeUp = nRange;
+					int nRangeDown = nRange;
+					int nRangeNorth = nRange;
+					int nRangeSouth = nRange;
+					int nRangeEast = nRange;
+					int nRangeWest = nRange;
+
+					Integer nLowerX = xCoord - nRangeWest;
+					Integer nLowerY = yCoord - nRangeDown;
+					Integer nLowerZ = zCoord - nRangeNorth;
+					Integer nUpperX = xCoord + nRangeEast + 1;
+					Integer nUpperY = yCoord + nRangeUp + 1;// height has to be 1 more for upwards detection (detects Head Position)
+					Integer nUpperZ = zCoord + nRangeSouth + 1;
+
+					AxisAlignedBB axis = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ);
+					List tmp = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity) null, axis);
+
+					List results = new ArrayList(); // this could be a boolean, but maybe we want a count based detection, like, if 5 Pigs...
+					Iterator it = tmp.iterator();
+
+					while (it.hasNext()) {
+						Object data = it.next();
+						if (data instanceof EntityLiving && !(data instanceof EntityPlayerMP) && !(data instanceof EntityPlayer) && !(data instanceof EntityVillager)) {
+							((EntityLiving) data).attackEntityFrom(
+									new EntityDamageSource("generic", NetherStuffsEventHook.getPlayerDummyForDimension(this.worldObj.provider.dimensionId)), 1);
+						} else {
+							it.remove();
+						}
+					}
+
+					if (!tmp.isEmpty()) {
+						int nSiphonAmount = tmp.size();
+						if (nMeta == SoulSiphon.mk4)
+							nSiphonAmount = (int) (nSiphonAmount * 1.25F); // MK4 gets a Bonus on Siphoned amount
+
+						nSiphonAmount *= 10;
+						this.addFuelToTank(nSiphonAmount);
+					}
+				} else {
+					if (SoulSiphon.isActiveSet(nMeta))
+						this.worldObj.setBlockMetadata(xCoord, yCoord, zCoord, SoulSiphon.clearActiveOnMetadata(nMeta));
+				}
+			}
 		}
 		fillFuelToBottle();
 	}

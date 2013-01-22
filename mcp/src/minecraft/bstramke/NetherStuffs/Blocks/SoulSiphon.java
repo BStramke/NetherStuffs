@@ -33,10 +33,43 @@ public class SoulSiphon extends BlockContainer {
 	public static final int mk3 = 2;
 	public static final int mk4 = 3;
 
+	private static final int METADATA_BITMASK = 0x7;
+	private static final int METADATA_ACTIVEBIT = 0x8;
+	private static final int METADATA_CLEARACTIVEBIT = -METADATA_ACTIVEBIT - 1;
+
+	public static int clearActiveOnMetadata(int metadata) {
+		return metadata & METADATA_CLEARACTIVEBIT;
+	}
+
+	public static boolean isActiveSet(int metadata) {
+		return (metadata & METADATA_ACTIVEBIT) != 0;
+	}
+
+	public static int setActiveOnMetadata(int metadata) {
+		return metadata | METADATA_ACTIVEBIT;
+	}
+
+	public static int unmarkedMetadata(int metadata) {
+		return metadata & METADATA_BITMASK;
+	}
+
 	public SoulSiphon(int par1, int par2) {
 		super(par1, par2, Material.iron);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setRequiresSelfNotify();
+	}
+
+	@SideOnly(Side.CLIENT)
+	/**
+	 * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
+	 */
+	@Override
+	public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
+		int nMeta = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+		if (this.isActiveSet(nMeta))
+			return 145;
+		else
+			return 144;
 	}
 
 	@Override
@@ -54,89 +87,9 @@ public class SoulSiphon extends BlockContainer {
 	}
 
 	@Override
-	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
-		if (!par1World.isRemote) {
-			par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
-		}
-	}
-
-	@Override
 	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
-		// TODO Auto-generated method stub
 		return super.canConnectRedstone(world, x, y, z, side);
 	}
-
-	@Override
-	public void updateTick(World par1World, int xCoord, int yCoord, int zCoord, Random par5Random) {
-		if (!par1World.isRemote) {
-			TileEntity tile_entity = par1World.getBlockTileEntity(xCoord, yCoord, zCoord);
-			if (tile_entity instanceof TileSoulSiphon) {
-				if (par1World.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
-					int nRange;
-					int nMeta = par1World.getBlockMetadata(xCoord, yCoord, zCoord);
-					switch (nMeta) {
-					case SoulSiphon.mk1:
-						nRange = 4;
-						break;
-					case SoulSiphon.mk2:
-						nRange = 8;
-						break;
-					case SoulSiphon.mk3:
-					case SoulSiphon.mk4:
-						nRange = 12;
-						break;
-					default:
-						nRange = 4;
-					}
-					int nRangeUp = nRange;
-					int nRangeDown = nRange;
-					int nRangeNorth = nRange;
-					int nRangeSouth = nRange;
-					int nRangeEast = nRange;
-					int nRangeWest = nRange;
-
-					Integer nLowerX = xCoord - nRangeWest;
-					Integer nLowerY = yCoord - nRangeDown;
-					Integer nLowerZ = zCoord - nRangeNorth;
-					Integer nUpperX = xCoord + nRangeEast + 1;
-					Integer nUpperY = yCoord + nRangeUp + 1;// height has to be 1 more for upwards detection (detects Head Position)
-					Integer nUpperZ = zCoord + nRangeSouth + 1;
-
-					AxisAlignedBB axis = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ);
-					List tmp = par1World.getEntitiesWithinAABBExcludingEntity((Entity) null, axis);
-
-					List results = new ArrayList(); // this could be a boolean, but maybe we want a count based detection, like, if 5 Pigs...
-					Iterator it = tmp.iterator();
-
-					while (it.hasNext()) {
-						Object data = it.next();
-						if (data instanceof EntityLiving && !(data instanceof EntityPlayerMP) && !(data instanceof EntityPlayer) && !(data instanceof EntityVillager)) {
-							((EntityLiving) data).attackEntityFrom(new EntityDamageSource("generic", NetherStuffsEventHook.getPlayerDummyForDimension(par1World.provider.dimensionId)), 1);
-						} else {
-							it.remove();
-						}
-					}
-
-					if (!tmp.isEmpty()) {
-						int nSiphonAmount = tmp.size();
-						if (nMeta == SoulSiphon.mk4)
-							nSiphonAmount = (int) (nSiphonAmount * 1.25F); // MK4 gets a Bonus on Siphoned amount
-
-						nSiphonAmount *= 10;
-						// System.out.println("Entity Count in range (not counting players): " + nSiphonAmount);
-						((TileSoulSiphon) tile_entity).addFuelToTank(nSiphonAmount);
-					}
-				}
-			}
-
-			par1World.scheduleBlockUpdate(xCoord, yCoord, zCoord, this.blockID, this.tickRate());
-		}
-	}
-
-	@Override
-	public int tickRate() {
-		return 40;
-	};
 
 	@SideOnly(Side.CLIENT)
 	@Override
