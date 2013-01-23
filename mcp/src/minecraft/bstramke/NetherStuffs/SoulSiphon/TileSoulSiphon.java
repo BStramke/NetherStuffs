@@ -208,6 +208,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 					while (it.hasNext()) {
 						Object data = it.next();
 						if (data instanceof EntityLiving && !(data instanceof EntityPlayerMP) && !(data instanceof EntityPlayer) && !(data instanceof EntityVillager)) {
+							((EntityLiving) data).experienceValue = 0;
 							((EntityLiving) data).attackEntityFrom(
 									new EntityDamageSource("generic", NetherStuffsEventHook.getPlayerDummyForDimension(this.worldObj.provider.dimensionId)), 1);
 						} else {
