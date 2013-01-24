@@ -325,7 +325,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
 
             if (var12 != null && var12.type != null)
             {
-                Item.field_92053_bW.func_92113_a(var12, var1.itemList);
+                Item.enchantedBook.func_92113_a(var12, var1.itemList);
             }
         }
 
@@ -701,7 +701,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
 
         if (var5 == CreativeTabs.tabInventory)
         {
-            GuiInventory.func_74223_a(this.mc, this.guiLeft + 43, this.guiTop + 45, 20, (float)(this.guiLeft + 43 - par2), (float)(this.guiTop + 45 - 30 - par3));
+            GuiInventory.drawPlayerOnGui(this.mc, this.guiLeft + 43, this.guiTop + 45, 20, (float)(this.guiLeft + 43 - par2), (float)(this.guiTop + 45 - 30 - par3));
         }
     }
 

@@ -71,7 +71,7 @@ public class ClientHandler implements ITickHandler
 			if(item.delayBeforeCanPickup > 0)continue;
 			if(item.isDead && world.isRemote)iterator.remove();
 			
-			if(!NEIClientUtils.canItemFitInInventory(player, item.func_92014_d()))continue;
+			if(!NEIClientUtils.canItemFitInInventory(player, item.getEntityItem()))continue;
 			
 			double dx = player.posX - item.posX;
 			double dy = player.posY + player.getEyeHeight() - item.posY;

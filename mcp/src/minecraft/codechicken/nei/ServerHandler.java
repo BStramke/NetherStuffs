@@ -88,7 +88,7 @@ public class ServerHandler implements ITickHandler, IPlayerTracker
 		for(EntityItem item : items)
 		{
 			if(item.delayBeforeCanPickup > 0)continue;
-			if(!NEIServerUtils.canItemFitInInventory(player, item.func_92014_d()))continue;
+			if(!NEIServerUtils.canItemFitInInventory(player, item.getEntityItem()))continue;
 			if(item.delayBeforeCanPickup == 0)
 			{
 				ServerPacketHandler.sendAddMagneticItemTo(player, item);

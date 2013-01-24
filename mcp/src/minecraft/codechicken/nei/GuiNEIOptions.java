@@ -37,7 +37,7 @@ public abstract class GuiNEIOptions extends GuiScreen
 		if(guibutton.id == 200)
 	    {
 	        mc.displayGuiScreen(parentScreen);
-	        parentScreen.refresh();
+	        parentScreen.updateScreen();
 	    }
 	    else if(guibutton.id == 201)
 	    {
@@ -50,7 +50,7 @@ public abstract class GuiNEIOptions extends GuiScreen
 		if(keyID == 1)
 		{
 	        mc.displayGuiScreen(parentScreen);
-			parentScreen.refresh();
+			parentScreen.updateScreen();
 		}
 		super.keyTyped(keyChar, keyID);
 		updateButtonNames();

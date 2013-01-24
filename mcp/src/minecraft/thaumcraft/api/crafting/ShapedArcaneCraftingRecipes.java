@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.common.blocks.TileMagicWorkbench;
 
 public class ShapedArcaneCraftingRecipes implements IArcaneRecipe
 {

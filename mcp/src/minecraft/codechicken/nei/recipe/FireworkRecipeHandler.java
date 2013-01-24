@@ -31,7 +31,7 @@ public class FireworkRecipeHandler extends ShapelessRecipeHandler
         
         public CachedFireworkRecipe(Object[] base, Object extra, int type)
         {
-            super(new ItemStack(Item.field_92052_bU));
+            super(new ItemStack(Item.firework));
             this.baseIngredients = base;
             this.extraIngred = extra;
             this.recipeType = type;
@@ -90,9 +90,9 @@ public class FireworkRecipeHandler extends ShapelessRecipeHandler
                 genRecipe(Item.gunpowder, shape, effect, Item.dyePowder, Item.dyePowder, 0);
         
         //fireworks
-        genRecipe(Item.gunpowder, Item.paper, Item.field_92054_bV, 2);
-        genRecipe(Item.gunpowder, Item.gunpowder, Item.paper, Item.field_92054_bV, 2);
-        genRecipe(Item.gunpowder, Item.gunpowder, Item.gunpowder, Item.paper, Item.field_92054_bV, 2);
+        genRecipe(Item.gunpowder, Item.paper, Item.fireworkCharge, 2);
+        genRecipe(Item.gunpowder, Item.gunpowder, Item.paper, Item.fireworkCharge, 2);
+        genRecipe(Item.gunpowder, Item.gunpowder, Item.gunpowder, Item.paper, Item.fireworkCharge, 2);
         
         //setup a valid charge to use for the recolour recipe
         for(int i = 0; i < 9; i++)
