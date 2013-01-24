@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.liquids.ILiquidTank;
@@ -22,11 +24,9 @@ import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.NetherStuffsEventHook;
-import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.SoulSiphon;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
-import bstramke.NetherStuffs.SoulLiquid.SoulEnergyLiquid;
 import buildcraft.api.inventory.ISpecialInventory;
 
 public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITankContainer {
@@ -209,8 +209,12 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 						Object data = it.next();
 						if (data instanceof EntityLiving && !(data instanceof EntityPlayerMP) && !(data instanceof EntityPlayer) && !(data instanceof EntityVillager)) {
 							((EntityLiving) data).experienceValue = 0;
-							((EntityLiving) data).attackEntityFrom(
-									new EntityDamageSource("generic", NetherStuffsEventHook.getPlayerDummyForDimension(this.worldObj.provider.dimensionId)), 1);
+							if (data instanceof EntityAnimal) {
+								((EntityLiving) data).attackEntityFrom(DamageSource.generic, 1);
+							} else {
+								((EntityLiving) data).attackEntityFrom(
+										new EntityDamageSource("generic", NetherStuffsEventHook.getPlayerDummyForDimension(this.worldObj.provider.dimensionId)), 1);
+							}
 						} else {
 							it.remove();
 						}
