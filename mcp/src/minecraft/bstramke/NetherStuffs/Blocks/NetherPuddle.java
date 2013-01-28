@@ -110,10 +110,15 @@ public class NetherPuddle extends Block {
 	}
 
 	public static void removePuddle(World par1World, int par2, int par3, int par4) {
-		// int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2,
-		// par3, par4));
-		par1World.setBlockWithNotify(par2, par3, par4, 0);
-		// dropBlockAsItem(par1World, par2, par3, par4, metadata, 0);
+		if (par1World.getBlockId(par2, par3, par4) == NetherBlocks.netherPuddle.blockID)
+			par1World.setBlockWithNotify(par2, par3, par4, 0);
+	}
+
+	@Override
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5) {
+		if (!canBlockStay(par1World, par2, par3, par4, true)) {
+			removePuddle(par1World, par2, par3, par4);
+		}
 	}
 
 	@Override
@@ -127,6 +132,10 @@ public class NetherPuddle extends Block {
 
 	public static void growPuddle(World par1World, int par2, int par3, int par4) {
 		if (par1World.provider.isHellWorld) {
+			if (!canBlockStay(par1World, par2, par3, par4, true)) {
+				removePuddle(par1World, par2, par3, par4);
+				return;
+			}
 			int metadata = par1World.getBlockMetadata(par2, par3, par4);
 			int type = unmarkedMetadata(metadata);
 			int size = getSizeFromMetadata(metadata) + 1;
@@ -136,16 +145,15 @@ public class NetherPuddle extends Block {
 	}
 
 	@Override
-   public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
-   {
-       return null;
-   }
-	
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+		return null;
+	}
+
 	protected static boolean canBlockStay(World par1World, int par2, int par3, int par4, int puddleMeta, boolean checkPuddleMeta) {
 		boolean bValid = true;
 		if (!par1World.provider.isHellWorld) // only allow in Nether
 			return false;
-		if (par3 >= 0 && par3 < 256) {
+		if (par3 > 0 && par3 < 256) {
 			if (par1World.getBlockId(par2, par3 - 1, par4) != Block.netherrack.blockID) // If its anything else than netherrack as base it wont work
 				return false;
 
@@ -172,7 +180,7 @@ public class NetherPuddle extends Block {
 
 	@Override
 	public boolean canBlockStay(World par1World, int par2, int par3, int par4) {
-		if (par1World.isAirBlock(par2, par3 - 1, par4))
+		if (par1World.isAirBlock(par2, par3 - 1, par4) || par1World.getBlockId(par2, par3 - 1, par4) != Block.netherrack.blockID)
 			return false;
 		int puddleMeta = NetherPuddle.unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
 		return canBlockStay(par1World, par2, par3, par4, puddleMeta, false);
@@ -180,6 +188,16 @@ public class NetherPuddle extends Block {
 
 	public static boolean canBlockStay(World par1World, int par2, int par3, int par4, boolean CheckPuddleMeta) {
 		if (par1World.isAirBlock(par2, par3 - 1, par4))
+			return false;
+
+		if (par1World.getBlockId(par2 + 1, par3 + 1, par4) == NetherBlocks.netherPuddle.blockID
+				|| par1World.getBlockId(par2 - 1, par3 + 1, par4) == NetherBlocks.netherPuddle.blockID
+				|| par1World.getBlockId(par2, par3 + 1, par4 + 1) == NetherBlocks.netherPuddle.blockID
+				|| par1World.getBlockId(par2, par3 + 1, par4 - 1) == NetherBlocks.netherPuddle.blockID
+				|| par1World.getBlockId(par2 + 1, par3 + 1, par4 + 1) == NetherBlocks.netherPuddle.blockID
+				|| par1World.getBlockId(par2 - 1, par3 + 1, par4 - 1) == NetherBlocks.netherPuddle.blockID
+				|| par1World.getBlockId(par2 + 1, par3 + 1, par4 - 1) == NetherBlocks.netherPuddle.blockID
+				|| par1World.getBlockId(par2 - 1, par3 + 1, par4 + 1) == NetherBlocks.netherPuddle.blockID)
 			return false;
 
 		boolean bFoundLeaves = false;

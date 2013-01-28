@@ -32,7 +32,9 @@ public class SoulEnergyLiquidItem extends Item {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		Integer nAmount = par1ItemStack.stackSize;
-		
-		par3List.add("Amount: " + nAmount.toString());
+		if(par1ItemStack.getItemDamage()>0)
+			par3List.add("Amount: " + nAmount.toString() + " / " + par1ItemStack.getItemDamage());
+		else
+			par3List.add("Amount: " + nAmount.toString());
 	}
 }

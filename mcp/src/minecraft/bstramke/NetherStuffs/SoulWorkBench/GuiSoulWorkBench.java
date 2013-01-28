@@ -69,6 +69,7 @@ public class GuiSoulWorkBench extends GuiContainer {
 		if (par1 > var5 + 9 && par1 < var5 + 9 + 21 && par2 > var6 + 68 - 32 && par2 < var6 + 68) {
 			ItemStack par1ItemStack = NetherStuffs.SoulEnergyLiquid.asItemStack().copy();
 			par1ItemStack.stackSize = this.benchInventory.getCurrentTankLevel();
+			par1ItemStack.setItemDamage(this.benchInventory.maxTankLevel);
 			drawItemStackTooltip(par1ItemStack , par1, par2);
 		}
 	}

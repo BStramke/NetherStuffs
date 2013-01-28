@@ -9,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import bstramke.NetherStuffs.Client.NetherOreRenderingHelper;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import bstramke.NetherStuffs.Items.NetherItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -72,6 +73,8 @@ public class NetherOre extends Block {
 	public int idDropped(int meta, Random par2Random, int par3) {
 		if(meta == netherOreCobblestone) //cobble may drop as cobble
 			return Block.cobblestone.blockID;
+		else if(meta == netherOreCoal) //drop coal directly as Charcoal
+			return NetherItems.NetherWoodCharcoal.itemID;
 		else
 			return super.idDropped(meta, par2Random, par3);
 	}

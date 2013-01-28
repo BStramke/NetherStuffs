@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemStack;
@@ -59,6 +60,10 @@ public class NetherSword extends ItemSword {
 	@Override
 	public int getDamageVsEntity(Entity par1Entity) {
 		if (par1Entity instanceof EntityLiving) {
+			
+			if(par1Entity instanceof EntityPlayerMP && !((EntityPlayerMP)par1Entity).mcServer.isPVPEnabled()) //if target is a Player and PVP is off, dont apply dots
+				return super.getDamageVsEntity(par1Entity);
+			
 			if (this.nType == Types.acid) {
 				((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.wither.id, 20 * 5, 4));
 			} else if (this.nType == Types.death) {

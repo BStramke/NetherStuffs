@@ -151,14 +151,31 @@ public class SoulEnergyBottle extends Item {
 			return;
 		}
 
+		int nLimit = 0;
+		switch (par1ItemStack.getItemDamage()) {
+		case small:
+			nLimit = 1000;
+			break;
+		case medium:
+			nLimit = 10000;
+			break;
+		case large:
+			nLimit = 100000;
+			break;
+		case largeFilled:
+			nLimit = 100000;
+			break;
+		}
+		
 		if (par1ItemStack.hasTagCompound() && par1ItemStack.stackTagCompound.hasKey("SoulEnergyAmountNew")) {
 			nExistingAmount = par1ItemStack.getTagCompound().getInteger("SoulEnergyAmountNew");
+			
 			if (nExistingAmount > 0)
-				par3List.add("Contains Soulenergy: " + ((Integer) nExistingAmount).toString());
+				par3List.add("Soulenergy: " + ((Integer) nExistingAmount).toString() + " / " + ((Integer)nLimit).toString());
 			else
-				par3List.add("Contains Soulenergy: 0");
+				par3List.add("Soulenergy: 0" + " / " + ((Integer)nLimit).toString());
 		} else {
-			par3List.add("Contains Soulenergy: 0");
+			par3List.add("Soulenergy: 0" + " / " + ((Integer)nLimit).toString());
 		}
 	}
 

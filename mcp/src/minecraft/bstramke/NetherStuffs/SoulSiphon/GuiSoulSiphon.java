@@ -8,6 +8,7 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Blocks.SoulSiphon;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Items.NetherItems;
 
@@ -22,7 +23,21 @@ public class GuiSoulSiphon extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		this.fontRenderer.drawString("Soul Siphon Gui", 38, 6, 4210752);
+		switch (tile_entity.blockMetadata) {
+		case SoulSiphon.mk1:
+			this.fontRenderer.drawString("Soul Siphon MK 1", 38, 6, 4210752);
+			break;
+		case SoulSiphon.mk2:
+			this.fontRenderer.drawString("Soul Siphon MK 2", 38, 6, 4210752);
+			break;
+		case SoulSiphon.mk3:
+			this.fontRenderer.drawString("Soul Siphon MK 3", 38, 6, 4210752);
+			break;
+		case SoulSiphon.mk4:
+			this.fontRenderer.drawString("Soul Siphon MK 4", 38, 6, 4210752);
+			break;
+		}
+
 		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
@@ -40,17 +55,19 @@ public class GuiSoulSiphon extends GuiContainer {
 		this.mc.renderEngine.bindTexture(mc.renderEngine.getTexture(NetherItems.SoulEnergyLiquidItem.getTextureFile()));
 		int nFillState = this.tile_entity.getFillingScaled(32);
 		int y = 0;
-		for (int x = 16; x <= 32 && x <= nFillState; x+=16) {
-			this.drawTexturedModalRect(var5 + 12, nBottomLeftY-x, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)%16)*16, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)/16)*16, 16, 16);
+		for (int x = 16; x <= 32 && x <= nFillState; x += 16) {
+			this.drawTexturedModalRect(var5 + 12, nBottomLeftY - x, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0) % 16) * 16,
+					(NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0) / 16) * 16, 16, 16);
 			y = x;
 		}
-		
-		if(nFillState%16!=0){
+
+		if (nFillState % 16 != 0) {
 			nFillState -= y;
-			this.drawTexturedModalRect(var5 + 12, nBottomLeftY-y-nFillState, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)%16)*16, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)/16)*16, 16, nFillState);
+			this.drawTexturedModalRect(var5 + 12, nBottomLeftY - y - nFillState, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0) % 16) * 16,
+					(NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0) / 16) * 16, 16, nFillState);
 		}
 	}
-	
+
 	@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		super.drawScreen(par1, par2, par3);
@@ -59,8 +76,9 @@ public class GuiSoulSiphon extends GuiContainer {
 
 		if (par1 > var5 + 9 && par1 < var5 + 9 + 21 && par2 > var6 + 68 - 32 && par2 < var6 + 68) {
 			ItemStack par1ItemStack = NetherStuffs.SoulEnergyLiquid.asItemStack().copy();
+			par1ItemStack.setItemDamage(tile_entity.maxTankLevel);
 			par1ItemStack.stackSize = this.tile_entity.getCurrentTankLevel();
-			drawItemStackTooltip(par1ItemStack , par1, par2);
+			drawItemStackTooltip(par1ItemStack, par1, par2);
 		}
 	}
 }

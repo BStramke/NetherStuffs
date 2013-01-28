@@ -3,15 +3,14 @@ package bstramke.NetherStuffs.Items;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.EnumHelper;
-import net.minecraftforge.liquids.LiquidStack;
 import bstramke.NetherStuffs.NetherStuffs;
-import bstramke.NetherStuffs.SoulLiquid.SoulEnergyLiquid;
 
 public class NetherItems {
 	static EnumToolMaterial EnumToolMaterialDemonicIngot = EnumHelper.addToolMaterial("DemonicIngot", 2, 300, 6.0F, 6, 15);
 	static EnumToolMaterial EnumToolMaterialObsidian = EnumHelper.addToolMaterial("Obsidian", 2, 350, 6.0F, 3, 15);
 	static EnumToolMaterial EnumToolMaterialSoulGlass = EnumHelper.addToolMaterial("SoulGlass", 2, 40, 6.0F, 3, 15);
 	static EnumToolMaterial EnumToolMaterialSoulGlassDemonic = EnumHelper.addToolMaterial("Demonic", 2, 300, 6.5F, 3, 15);
+	static EnumToolMaterial EnumToolMaterialDiamond = EnumHelper.addToolMaterial("Diamond", 3, 1561, 8.0F, 3, 15);
 
 	public static final Item NetherPotionBottle = new NetherPotionBottle(NetherStuffs.NetherPotionBottleItemId).setItemName("NetherPotionBottle").setIconCoord(0, 0);
 	public static final Item NetherStonePotionBowl = new NetherStonePotionBowl(NetherStuffs.NetherStonePotionBowlItemId).setItemName("NetherStonePotionBowl").setIconCoord(0, 0);
@@ -47,8 +46,13 @@ public class NetherItems {
 			"NetherSoulglassSword").setIconCoord(5, 1);
 	public static final Item NetherSoulglassSwordDeath = new NetherSoulglassSwordDeath(NetherStuffs.NetherSoulglassSwordDeathItemId, EnumToolMaterialSoulGlassDemonic).setItemName(
 			"NetherSoulglassSword").setIconCoord(5, 1);
-	
-	//public static final bstramke.NetherStuffs.SoulLiquid.SoulEnergyLiquid SoulEnergyLiquid = new SoulEnergyLiquid(NetherStuffs.SoulEnergyLiquidId, 0);
-	
+
+	public static final Item NetherDiamondSword = new NetherDiamondSword(NetherStuffs.NetherDiamondSwordItemId, EnumToolMaterialDiamond).setItemName("NetherDiamondSword")
+			.setIconCoord(7, 1);
+	public static final Item NetherDiamondSwordAcid = new NetherDiamondSwordAcid(NetherStuffs.NetherDiamondSwordAcidItemId, EnumToolMaterialDiamond).setItemName(
+			"NetherDiamondSword").setIconCoord(7, 1);
+	public static final Item NetherDiamondSwordDeath = new NetherDiamondSwordDeath(NetherStuffs.NetherDiamondSwordDeathItemId, EnumToolMaterialDiamond).setItemName(
+			"NetherDiamondSword").setIconCoord(7, 1);
+
 	public static final Item SoulEnergyLiquidItem = new SoulEnergyLiquidItem(NetherStuffs.SoulEnergyLiquidItemId).setItemName("SoulEnergyLiquidItem");
 }

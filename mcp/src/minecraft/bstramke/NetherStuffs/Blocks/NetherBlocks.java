@@ -25,8 +25,8 @@ public class NetherBlocks {
 	
 	public static final Block NetherDemonicFurnace = new NetherDemonicFurnace(NetherStuffs.NetherDemonicFurnaceBlockId).setBlockName("NetherDemonicFurnace").setHardness(3.5F).setResistance(10.0F);
 	public static final Block NetherSoulFurnace = new NetherSoulFurnace(NetherStuffs.NetherSoulFurnaceBlockId).setBlockName("NetherSoulFurnace").setHardness(3.5F).setResistance(10.0F);
-	public static final Block NetherSoulGlass = new NetherSoulGlass(NetherStuffs.NetherSoulGlassBlockid, 112, Material.glass, false).setBlockName("NetherSoulGlass").setHardness(0.3F).setResistance(10.0F);
-	public static final Block NetherSoulGlassPane = new NetherSoulGlassPane(NetherStuffs.NetherSoulGlassPaneBlockid, 112, 113, Material.glass, false).setBlockName("NetherSoulGlassPane").setHardness(0.3F).setResistance(10.0F);
+	public static final Block NetherSoulGlass = new NetherSoulGlass(NetherStuffs.NetherSoulGlassBlockid, 112, Material.glass, false).setBlockName("NetherSoulGlass").setHardness(0.6F).setResistance(10.0F);
+	public static final Block NetherSoulGlassPane = new NetherSoulGlassPane(NetherStuffs.NetherSoulGlassPaneBlockid, 112, 113, Material.glass, false).setBlockName("NetherSoulGlassPane").setHardness(0.6F).setResistance(10.0F);
 	
 	public static final Block NetherSoulDetector = new SoulDetector(NetherStuffs.NetherSoulDetectorBlockId, 0).setBlockName("NetherSoulDetector");
 	
