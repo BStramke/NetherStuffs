@@ -5,9 +5,20 @@ import java.util.LinkedHashMap;
 
 import forestry.api.genetics.IClassification.EnumClassLevel;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public interface IAlleleRegistry {
+	
+	/* INDIVIDUAL */
+	/**
+	 * Tests the itemstack for genetic information. 
+	 * @param stack
+	 * @return true if the itemstack is an individual.
+	 */
+	boolean isIndividual(ItemStack stack);
+	
+	IIndividual getIndividual(ItemStack stack);
 	
 	/* ALLELES */
 	/**

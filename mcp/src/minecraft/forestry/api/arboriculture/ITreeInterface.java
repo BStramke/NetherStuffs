@@ -13,6 +13,8 @@ public interface ITreeInterface {
 
 	boolean isPollinated(ItemStack itemstack);
 
+	ITree getTree(World world, int x, int y, int z);
+	
 	ITree getTree(ItemStack itemstack);
 
 	ITree getTree(World world, ITreeGenome genome);

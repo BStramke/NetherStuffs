@@ -23,7 +23,7 @@ public interface ITree extends IIndividual {
 
 	EnumSet<EnumPlantType> getPlantTypes();
 
-	ITree[] getSaplings(World world, int x, int y, int z);
+	ITree[] getSaplings(World world, int x, int y, int z, float modifier);
 
 	ItemStack[] getProduceList();
 

@@ -8,5 +8,6 @@ public class ForestryAPI {
 
 	public static Object instance;
 
+	@Deprecated
 	public static ArrayList<ItemStack> loggerWindfall = new ArrayList<ItemStack>();
 }

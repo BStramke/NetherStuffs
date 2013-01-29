@@ -29,5 +29,33 @@ public interface IBeeModifier {
 	 * @return Fload modifying the production speed of queens.
 	 */
 	float getProductionModifier(IBeeGenome genome);
+	
+	/**
+	 * @param genome
+	 * @param mate
+	 * @return Fload modifying the flowering of queens.
+	 */
+	float getFloweringModifier(IBeeGenome genome);
+	
+	/**
+	 * @return Boolean indicating if housing can ignore rain
+	 */
+	boolean isSealed();
+
+	/**
+	 * @return Boolean indicating if housing can ignore darkness/night
+	 */
+	boolean isSelfLighted();
+
+	/**
+	 * @return Boolean indicating if housing can ignore not seeing the sky
+	 */
+	boolean isSunlightSimulated();
+
+	/**
+	 * @return Boolean indicating whether this housing simulates the nether
+	 */
+	boolean isHellish();
+
 
 }

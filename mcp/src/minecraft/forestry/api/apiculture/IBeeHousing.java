@@ -5,7 +5,7 @@ import forestry.api.core.EnumTemperature;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public interface IBeeHousing extends IBeeModifier {
+public interface IBeeHousing extends IBeeModifier, IBeeListener {
 
 	int getXCoord();
 
@@ -53,38 +53,4 @@ public interface IBeeHousing extends IBeeModifier {
 	 */
 	boolean addProduct(ItemStack product, boolean all);
 
-	/**
-	 * Called when the bees wear out the housing's equipment.
-	 * 
-	 * @param amount
-	 *            Integer indicating the amount worn out.
-	 */
-	void wearOutEquipment(int amount);
-
-	/**
-	 * Called on queen update.
-	 * 
-	 * @param queen
-	 */
-	void onQueenChange(ItemStack queen);
-
-	/**
-	 * @return Boolean indicating if housing can ignore rain
-	 */
-	boolean isSealed();
-
-	/**
-	 * @return Boolean indicating if housing can ignore darkness/night
-	 */
-	boolean isSelfLighted();
-
-	/**
-	 * @return Boolean indicating if housing can ignore not seeing the sky
-	 */
-	boolean isSunlightSimulated();
-
-	/**
-	 * @return Boolean indicating whether this housing simulates the nether
-	 */
-	boolean isHellish();
 }

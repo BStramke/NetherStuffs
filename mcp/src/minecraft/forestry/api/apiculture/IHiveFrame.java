@@ -1,15 +1,14 @@
 package forestry.api.apiculture;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public interface IHiveFrame extends IBeeModifier {
 
 	/**
 	 * Wears out a frame.
 	 * 
-	 * @param world
-	 *            World object the caller and frame are in.
+	 * @param housing
+	 *            IBeeHousing the frame is contained in.
 	 * @param frame
 	 *            ItemStack containing the actual frame.
 	 * @param queen
@@ -18,6 +17,6 @@ public interface IHiveFrame extends IBeeModifier {
 	 *            Integer denoting the amount worn out. {@link IBeekeepingMode.getWearModifier()} has already been taken into account.
 	 * @return ItemStack containing the actual frame with adjusted damage.
 	 */
-	ItemStack frameUsed(World world, ItemStack frame, IBee queen, int wear);
+	ItemStack frameUsed(IBeeHousing housing, ItemStack frame, IBee queen, int wear);
 
 }

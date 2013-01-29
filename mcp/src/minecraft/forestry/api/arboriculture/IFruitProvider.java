@@ -41,15 +41,5 @@ public interface IFruitProvider {
 	 * @return Icon index of the texture to overlay on the leaf block.
 	 */
 	int getTextureIndex(ITreeGenome genome, IBlockAccess world, int x, int y, int z, int ripeningTime, boolean fancy);
-	
-	/**
-	 * @return false to use the texture returned by getTextureFile for rendering.
-	 */
-	boolean usesDefaultTexture();
-	
-	/**
-	 * @return Texture file to use, ignored when useDefaultTexture is true.
-	 */
-	String getTextureFile();
 
 }
