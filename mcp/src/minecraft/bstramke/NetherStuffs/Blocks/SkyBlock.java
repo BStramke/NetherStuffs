@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -20,6 +21,7 @@ public class SkyBlock extends Block {
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setStepSound(soundPowderFootstep);
 		this.setRequiresSelfNotify();
+		LanguageRegistry.instance().addStringLocalization("tile.NetherSkyBlock.name", SkyBlock.blockDisplayNames[0]);
 	}
 
 	@Override

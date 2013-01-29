@@ -50,17 +50,18 @@ public class SoulWorkBenchRecipes {
 		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulFurnace, 1), 300, new Object[] { "IBI", "IFI", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'F',
 				new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1) });
 
-		this.addRecipe( new ItemStack(CompatItem.netherQuartz), 100, new Object[] { "BB", "BB", 'B', new ItemStack(Block.sandStone)});
-		
-		//Add 4 Soul Siphons with the same Metadatas as Soul Detectors
+		this.addRecipe(new ItemStack(CompatItem.netherQuartz), 100, new Object[] { "BB", "BB", 'B', new ItemStack(Block.sandStone) });
+
+		// Add 4 Soul Siphons with the same Metadatas as Soul Detectors
 		for (int i = 0; i < SoulSiphonItemBlock.getMetadataSize() && i < SoulDetectorItemBlock.getMetadataSize(); i++) {
 			this.addRecipe(new ItemStack(NetherBlocks.NetherSoulSiphon, 1, i), 250, new Object[] { "WWW", "BDB", "WWW", 'W',
 					new ItemStack(NetherBlocks.netherWood, 1, NetherWood.death), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1), 'D',
 					new ItemStack(NetherBlocks.NetherSoulDetector, 1, i) });
 		}
-		
-		if (Loader.isModLoaded("NetherStuffsCore") || NetherStuffs.DevSetCoreModAvailable) {
-			this.addRecipe(new ItemStack(NetherBlocks.skyblock), 1000, new Object[]{"IEI", "ISI", "IEI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'E', new ItemStack(Item.enderPearl), 'S', new ItemStack(Item.netherStar)});
+
+		if ((Loader.isModLoaded("NetherStuffsCore") || NetherStuffs.DevSetCoreModAvailable) && NetherStuffs.bOverrideChunk) {
+			this.addRecipe(new ItemStack(NetherBlocks.skyblock), 1000, new Object[] { "IEI", "ISI", "IEI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'E',
+					new ItemStack(Item.enderPearl), 'S', new ItemStack(Item.netherStar) });
 		}
 	}
 
@@ -153,9 +154,9 @@ public class SoulWorkBenchRecipes {
 	}
 
 	public int getCraftingSoulEnergyRequired(ItemStack item) {
-		if(item == null)
+		if (item == null)
 			return 0;
-		
+
 		Iterator it = this.recipes.iterator();
 		while (it.hasNext()) {
 			Object data = it.next();

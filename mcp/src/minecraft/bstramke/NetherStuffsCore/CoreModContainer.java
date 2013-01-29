@@ -21,6 +21,10 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class CoreModContainer extends DummyModContainer {
 	public static int NetherSkyBlockId;
+	public static boolean bOverrideBlockBreakable;
+	public static boolean bOverrideBlockPane;
+	public static boolean bOverrideChunk;
+	
 	public CoreModContainer() {
 		super(new ModMetadata());
 		/* ModMetadata is the same as mcmod.info */
@@ -28,7 +32,7 @@ public class CoreModContainer extends DummyModContainer {
 		myMeta.authorList = Arrays.asList(new String[] { "BStramke" });
 		myMeta.description = "Core Mod for NetherStuffs";
 		myMeta.modId = "NetherStuffsCore";
-		myMeta.version = "0.12";
+		myMeta.version = "0.13";
 		myMeta.name = "NetherStuffsCore";
 		myMeta.url = "http://netherstuffs.wikispaces.com/";
 	}
@@ -42,10 +46,12 @@ public class CoreModContainer extends DummyModContainer {
 	public void preInit(FMLPreInitializationEvent event)
    {		
 		FMLLog.info("[NetherStuffsCore] preInit");
-		
 		Configuration config = new Configuration(new File(event.getModConfigurationDirectory() + "NetherStuffs.cfg"));
 		config.load();
 		NetherSkyBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SkyBlock", 1245).getInt(1245);
+		bOverrideBlockBreakable = config.get(Configuration.CATEGORY_GENERAL, "OverrideBlockBreakableClass", true).getBoolean(true);
+		bOverrideBlockPane =  config.get(Configuration.CATEGORY_GENERAL, "OverrideBlockPaneClass", true).getBoolean(true);
+		bOverrideChunk = config.get(Configuration.CATEGORY_GENERAL, "OverrideChunkClass", true).getBoolean(true);
 		config.save();	
    }
 }

@@ -1,14 +1,15 @@
 package bstramke.NetherStuffs.Items;
 
+import java.text.NumberFormat;
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import bstramke.NetherStuffs.Common.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import bstramke.NetherStuffs.Common.CommonProxy;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class SoulEnergyLiquidItem extends Item {
 
@@ -32,9 +33,10 @@ public class SoulEnergyLiquidItem extends Item {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		Integer nAmount = par1ItemStack.stackSize;
+
 		if(par1ItemStack.getItemDamage()>0)
-			par3List.add("Amount: " + nAmount.toString() + " / " + par1ItemStack.getItemDamage());
+			par3List.add("Soulenergy: " + NumberFormat.getInstance().format(nAmount) + " / " + NumberFormat.getInstance().format(par1ItemStack.getItemDamage()));
 		else
-			par3List.add("Amount: " + nAmount.toString());
+			par3List.add("Soulenergy: " + NumberFormat.getInstance().format(nAmount));
 	}
 }

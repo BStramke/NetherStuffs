@@ -1,6 +1,10 @@
 package bstramke.NetherStuffs;
 
+import java.io.File;
+import java.lang.reflect.Field;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -16,6 +20,7 @@ import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraftforge.transformers.ForgeAccessTransformer;
 import thaumcraft.api.EnumTag;
 import thaumcraft.api.ObjectTags;
 import thaumcraft.api.ThaumcraftApi;
@@ -73,6 +78,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.FMLPacket;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -80,7 +86,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "0.12.2", modid = "NetherStuffs")
+@Mod(name = "NetherStuffs", version = "0.13", modid = "NetherStuffs")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
 public class NetherStuffs extends DummyModContainer {
 	@Instance
@@ -143,6 +149,11 @@ public class NetherStuffs extends DummyModContainer {
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 	private static boolean IncreaseNetherrackHardness;
 	private static boolean SpawnBlazesNaturally;
+	public static boolean bShowCoreModMissingWarning;
+
+	public static boolean bOverrideBlockBreakable;
+	public static boolean bOverrideBlockPane;
+	public static boolean bOverrideChunk;
 
 	public static LiquidStack SoulEnergyLiquid;
 
@@ -202,6 +213,11 @@ public class NetherStuffs extends DummyModContainer {
 		SpawnSkeletonsAwayFromNetherFortresses = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsAwayFromNetherFortresses", true).getBoolean(true);
 		IncreaseNetherrackHardness = config.get(Configuration.CATEGORY_GENERAL, "IncreaseNetherrackHardness", true).getBoolean(true);
 		SpawnBlazesNaturally = config.get(Configuration.CATEGORY_GENERAL, "SpawnBlazesNaturally", false).getBoolean(false);
+		bShowCoreModMissingWarning = config.get(Configuration.CATEGORY_GENERAL, "ShowCoreModMissingWarning", true).getBoolean(true);
+		//set and save 2 overrides for display purposes inside the config
+		bOverrideBlockBreakable = config.get(Configuration.CATEGORY_GENERAL, "OverrideBlockBreakableClass", true).getBoolean(true);
+		bOverrideBlockPane = config.get(Configuration.CATEGORY_GENERAL, "OverrideBlockPaneClass", true).getBoolean(true);
+		bOverrideChunk = config.get(Configuration.CATEGORY_GENERAL, "OverrideChunkClass", true).getBoolean(true);
 
 		NetherStuffsEventHook.nDetectRadius = config.get(Configuration.CATEGORY_GENERAL, "SoulBlockerRadius", 8).getInt();
 
@@ -229,7 +245,7 @@ public class NetherStuffs extends DummyModContainer {
 
 		FMLLog.info("[NetherStuffs] Blocked Nether Spawns on Block IDs: %s", NetherStuffsEventHook.lBlockSpawnListForced.toString());
 		config.save();
-
+		
 		if (ShowOreDistributions) {
 			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID + ":" + NetherOre.demonicOre), 1);
 			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID + ":" + NetherOre.netherOreCoal), 1);
@@ -256,7 +272,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench, "NetherSoulWorkBench");
 
-		if (Loader.isModLoaded("NetherStuffsCore") || NetherStuffs.DevSetCoreModAvailable) {
+		if ((Loader.isModLoaded("NetherStuffsCore") || NetherStuffs.DevSetCoreModAvailable) && NetherStuffs.bOverrideChunk) {
 			FMLLog.info("[NetherStuffs] SkyBlock is set available because NetherStuffsCore was found.");
 			GameRegistry.registerBlock(NetherBlocks.skyblock, "NetherSkyBlock");
 		}
@@ -346,7 +362,7 @@ public class NetherStuffs extends DummyModContainer {
 		if (SpawnBlazesNaturally)
 			EntityRegistry.addSpawn(EntityBlaze.class, 5, 1, 1, EnumCreatureType.monster, BiomeGenBase.hell);
 
-		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, (new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1)
+/*		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, (new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1)
 				.add(EnumTag.EVIL, 4).add(EnumTag.METAL, 2).add(EnumTag.FLUX, 2));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal,
 				(new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1).add(EnumTag.FIRE, 3));
@@ -379,7 +395,7 @@ public class NetherStuffs extends DummyModContainer {
 		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherDemonicFurnace.blockID, -1, (new ObjectTags()).add(EnumTag.TRAP, 1));
 
 		// ThaumcraftApi.registerObjectTag(NetherItems.NetherWoodStick, -1, (new ObjectTags()).add(EnumTag.WOOD, 1).add())
-
+*/
 	}
 
 	private void registerWorldGenerators() {
@@ -526,6 +542,8 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 10), new Object[] { "X", "#", 'X', new ItemStack(NetherItems.NetherWoodCharcoal, 1, NetherWoodCharcoal.coal), '#',
 				NetherItems.NetherWoodStick });
 
+		GameRegistry.addShapelessRecipe(new ItemStack(NetherItems.NetherWoodCharcoal, 1), new Object[]{new ItemStack(Item.coal, 1, 1), new ItemStack(Item.gunpowder, 1)});
+		
 		CraftingManager
 				.getInstance()
 				.getRecipeList()
@@ -546,7 +564,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.addRecipe(new ItemStack(Item.flintAndSteel, 1), new Object[] { "BB", "QQ", 'B', CompatItem.netherBrick, 'Q', CompatItem.netherQuartz });
 
 		FurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal, new ItemStack(Item.coal, 1), 0.2F);
-		
+
 		/**
 		 * Swords
 		 */
@@ -683,12 +701,6 @@ public class NetherStuffs extends DummyModContainer {
 
 		for (int i = 0; i < SoulSiphonItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherSoulSiphon." + SoulSiphonItemBlock.blockNames[i] + ".name", SoulSiphonItemBlock.blockDisplayNames[i]);
-		}
-
-		if (Loader.isModLoaded("NetherStuffsCore") || DevSetCoreModAvailable) {
-			// for (int i = 0; i < SkyBlock.getMetadataSize(); i++) {
-			LanguageRegistry.instance().addStringLocalization("tile.NetherSkyBlock.name", SkyBlock.blockDisplayNames[0]);
-			// }
 		}
 
 		for (int i = 0; i < ((NetherOreIngot) NetherItems.NetherOreIngot).getMetadataSize(); i++) {

@@ -1,5 +1,6 @@
 package bstramke.NetherStuffs.Items;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -169,13 +170,12 @@ public class SoulEnergyBottle extends Item {
 		
 		if (par1ItemStack.hasTagCompound() && par1ItemStack.stackTagCompound.hasKey("SoulEnergyAmountNew")) {
 			nExistingAmount = par1ItemStack.getTagCompound().getInteger("SoulEnergyAmountNew");
-			
 			if (nExistingAmount > 0)
-				par3List.add("Soulenergy: " + ((Integer) nExistingAmount).toString() + " / " + ((Integer)nLimit).toString());
+				par3List.add("Soulenergy: " + NumberFormat.getInstance().format(nExistingAmount) + " / " + NumberFormat.getInstance().format(nLimit));
 			else
-				par3List.add("Soulenergy: 0" + " / " + ((Integer)nLimit).toString());
+				par3List.add("Soulenergy: 0" + " / " + NumberFormat.getInstance().format(nLimit));
 		} else {
-			par3List.add("Soulenergy: 0" + " / " + ((Integer)nLimit).toString());
+			par3List.add("Soulenergy: 0" + " / " + NumberFormat.getInstance().format(nLimit));
 		}
 	}
 

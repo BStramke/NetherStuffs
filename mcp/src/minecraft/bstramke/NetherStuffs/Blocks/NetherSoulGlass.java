@@ -1,8 +1,11 @@
 package bstramke.NetherStuffs.Blocks;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.material.Material;
@@ -12,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,11 +26,23 @@ public class NetherSoulGlass extends BlockGlass {
 		super(par1, par2, par3Material, par4);
 		this.setStepSound(soundGlassFootstep);
 		this.setCreativeTab(CreativeTabs.tabBlock);
-		if (Loader.isModLoaded("NetherStuffsCore") || NetherStuffs.DevSetCoreModAvailable) {
-			BlockPane.addToConnectList(par1);
-			addToSameBlockList(Block.glass.blockID);
-			addToSameBlockList(this.blockID);
-		}
+
+		try {
+			Class[] args = new Class[1];
+			args[0] = int.class;
+			Method m = BlockPane.class.getDeclaredMethod("addToConnectList", args);
+			m.invoke(null, this.blockID);
+		} catch (NoSuchMethodException e) {} catch (SecurityException e) {} catch (IllegalAccessException e) {} catch (IllegalArgumentException e) {} catch (InvocationTargetException e) {}
+
+		try {
+			Class[] args = new Class[1];
+			args[0] = int.class;
+			Method m;
+			m = BlockBreakable.class.getDeclaredMethod("addToSameBlockList", args);
+			m.invoke(null, Block.glass.blockID);
+			m.invoke(null, this.blockID);
+		} catch (NoSuchMethodException e) {} catch (SecurityException e) {} catch (IllegalAccessException e) {} catch (IllegalArgumentException e) {} catch (InvocationTargetException e) {}
+
 	}
 
 	public String getItemNameIS(ItemStack is) {
@@ -51,8 +67,8 @@ public class NetherSoulGlass extends BlockGlass {
 	}
 
 	/*
-	 * The issue is: it looks strange... public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) { int var6 = par1IBlockAccess.getBlockId(par2, par3,
-	 * par4); return var6 == Block.glass.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5); }
+	 * The issue is: it looks strange... public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) { int var6 =
+	 * par1IBlockAccess.getBlockId(par2, par3, par4); return var6 == Block.glass.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5); }
 	 */
 
 }
