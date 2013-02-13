@@ -28,10 +28,10 @@ public class NetherBlocks {
 	public static final Block NetherSoulGlass = new NetherSoulGlass(NetherStuffs.NetherSoulGlassBlockid, 112, Material.glass, false).setBlockName("NetherSoulGlass").setHardness(0.6F).setResistance(10.0F);
 	public static final Block NetherSoulGlassPane = new NetherSoulGlassPane(NetherStuffs.NetherSoulGlassPaneBlockid, 112, 113, Material.glass, false).setBlockName("NetherSoulGlassPane").setHardness(0.6F).setResistance(10.0F);
 	
-	public static final Block NetherSoulDetector = new SoulDetector(NetherStuffs.NetherSoulDetectorBlockId, 0).setBlockName("NetherSoulDetector");
+	public static final Block NetherSoulDetector = new SoulDetector(NetherStuffs.NetherSoulDetectorBlockId, 0).setBlockName("NetherSoulDetector").setHardness(3.5F).setResistance(10.0F);
 	
-	public static final Block NetherSoulBlocker = new SoulBlocker(NetherStuffs.NetherSoulBlockerBlockId, 114).setBlockName("NetherSoulBlocker");
-	public static final Block NetherSoulSiphon = new SoulSiphon(NetherStuffs.NetherSoulSiphonBlockId, 144).setBlockName("NetherSoulSiphon");
+	public static final Block NetherSoulBlocker = new SoulBlocker(NetherStuffs.NetherSoulBlockerBlockId, 114).setBlockName("NetherSoulBlocker").setHardness(3.5F).setResistance(10.0F);
+	public static final Block NetherSoulSiphon = new SoulSiphon(NetherStuffs.NetherSoulSiphonBlockId, 144).setBlockName("NetherSoulSiphon").setHardness(3.5F).setResistance(10.0F);
 	
-	public static final Block skyblock = new SkyBlock(NetherStuffs.NetherSkyBlockId).setBlockName("NetherSkyBlock");
+	public static final Block skyblock = new SkyBlock(NetherStuffs.NetherSkyBlockId).setBlockName("NetherSkyBlock").setHardness(3.5F).setResistance(10.0F);
 }

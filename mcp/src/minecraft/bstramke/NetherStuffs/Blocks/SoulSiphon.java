@@ -55,7 +55,7 @@ public class SoulSiphon extends BlockContainer {
 
 	public SoulSiphon(int par1, int par2) {
 		super(par1, par2, Material.iron);
-		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setCreativeTab(CreativeTabs.tabRedstone);
 		this.setRequiresSelfNotify();
 	}
 

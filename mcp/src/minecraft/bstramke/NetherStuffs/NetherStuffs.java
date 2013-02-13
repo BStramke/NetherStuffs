@@ -1,10 +1,6 @@
 package bstramke.NetherStuffs;
 
-import java.io.File;
-import java.lang.reflect.Field;
-
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -20,7 +16,6 @@ import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import net.minecraftforge.transformers.ForgeAccessTransformer;
 import thaumcraft.api.EnumTag;
 import thaumcraft.api.ObjectTags;
 import thaumcraft.api.ThaumcraftApi;
@@ -35,11 +30,12 @@ import bstramke.NetherStuffs.Blocks.NetherSapling;
 import bstramke.NetherStuffs.Blocks.NetherSaplingItemBlock;
 import bstramke.NetherStuffs.Blocks.NetherWood;
 import bstramke.NetherStuffs.Blocks.NetherWoodItemBlock;
-import bstramke.NetherStuffs.Blocks.SkyBlock;
 import bstramke.NetherStuffs.Blocks.SoulBlocker;
 import bstramke.NetherStuffs.Blocks.SoulBlockerItemBlock;
 import bstramke.NetherStuffs.Blocks.SoulBombItemBlock;
+import bstramke.NetherStuffs.Blocks.SoulDetector;
 import bstramke.NetherStuffs.Blocks.SoulDetectorItemBlock;
+import bstramke.NetherStuffs.Blocks.SoulSiphon;
 import bstramke.NetherStuffs.Blocks.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Client.ClientPacketHandler;
 import bstramke.NetherStuffs.Common.CommonProxy;
@@ -78,7 +74,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.FMLPacket;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -86,7 +81,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "0.13", modid = "NetherStuffs")
+@Mod(name = "NetherStuffs", version = "0.14", modid = "NetherStuffs")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
 public class NetherStuffs extends DummyModContainer {
 	@Instance
@@ -304,6 +299,7 @@ public class NetherStuffs extends DummyModContainer {
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.NetherDemonicFurnace, "pickaxe", 1);
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.NetherSoulBlocker, "pickaxe", 1);
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.NetherSoulDetector, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.NetherSoulSiphon, "pickaxe", 1);
 
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherSoulWorkBench, "axe", 0);
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWood, "axe", 2);
@@ -362,7 +358,7 @@ public class NetherStuffs extends DummyModContainer {
 		if (SpawnBlazesNaturally)
 			EntityRegistry.addSpawn(EntityBlaze.class, 5, 1, 1, EnumCreatureType.monster, BiomeGenBase.hell);
 
-/*		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, (new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1)
+		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.demonicOre, (new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1)
 				.add(EnumTag.EVIL, 4).add(EnumTag.METAL, 2).add(EnumTag.FLUX, 2));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal,
 				(new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1).add(EnumTag.FIRE, 3));
@@ -375,7 +371,7 @@ public class NetherStuffs extends DummyModContainer {
 				(new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1).add(EnumTag.VALUABLE, 4));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreEmerald,
 				(new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1).add(EnumTag.VALUABLE, 2));
-		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreRedstone, (new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1));
+		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreRedstone, (new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1).add(EnumTag.POWER, 1).add(EnumTag.MECHANISM, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreObsidian,
 				(new ObjectTags()).add(EnumTag.ROCK, 5).add(EnumTag.DESTRUCTION, 1).add(EnumTag.DARK, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreLapis,
@@ -385,17 +381,55 @@ public class NetherStuffs extends DummyModContainer {
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherWood.blockID, NetherWood.hellfire, (new ObjectTags()).add(EnumTag.FIRE, 4).add(EnumTag.WOOD, 8).add(EnumTag.EVIL, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherWood.blockID, NetherWood.death, (new ObjectTags()).add(EnumTag.DEATH, 4).add(EnumTag.WOOD, 8).add(EnumTag.EVIL, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherWood.blockID, NetherWood.acid, (new ObjectTags()).add(EnumTag.POISON, 4).add(EnumTag.WOOD, 8).add(EnumTag.EVIL, 1));
+		
+		//ThaumcraftApi.registerObjectTag(NetherBlocks.NetherSoulGlass, -1, (new ObjectTags()).add(EnumTag.CRYSTAL, 2).add(EnumTag.POWER, 1);
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulGlass.blockID, -1, (new ObjectTags()).add(EnumTag.CRYSTAL, 3).add(EnumTag.SPIRIT, 1));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulGlassPane.blockID, -1, (new ObjectTags()).add(EnumTag.CRYSTAL, 1));
 
+		ThaumcraftApi.registerObjectTag(CompatBlock.oreQuartz.blockID, -1, (new ObjectTags()).add(EnumTag.CRYSTAL, 4).add(EnumTag.METAL, 1));
+		ThaumcraftApi.registerObjectTag(CompatItem.netherQuartz.itemID, -1, (new ObjectTags()).add(EnumTag.CRYSTAL, 4).add(EnumTag.METAL, 1));
+		
 		ThaumcraftApi
 				.registerObjectTag(NetherBlocks.netherSapling.blockID, NetherSapling.hellfire, (new ObjectTags()).add(EnumTag.FIRE, 1).add(EnumTag.WOOD, 2).add(EnumTag.EVIL, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherSapling.blockID, NetherSapling.death, (new ObjectTags()).add(EnumTag.DEATH, 1).add(EnumTag.WOOD, 2).add(EnumTag.EVIL, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherSapling.blockID, NetherSapling.acid, (new ObjectTags()).add(EnumTag.POISON, 1).add(EnumTag.WOOD, 2).add(EnumTag.EVIL, 1));
 
-		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulFurnace.blockID, -1, (new ObjectTags()).add(EnumTag.TRAP, 1));
-		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherDemonicFurnace.blockID, -1, (new ObjectTags()).add(EnumTag.TRAP, 1));
+		ThaumcraftApi.registerComplexObjectTag(NetherItems.NetherOreIngot.itemID, -1, (new ObjectTags()).add(EnumTag.EVIL, 1).add(EnumTag.METAL, 4).add(EnumTag.FLUX, 1));
+		
+		ThaumcraftApi.registerObjectTag(NetherItems.NetherStonePotionBowl.itemID, 0, (new ObjectTags()).add(EnumTag.EVIL, 1).add(EnumTag.FIRE, 5));
+		ThaumcraftApi.registerObjectTag(NetherItems.NetherStonePotionBowl.itemID, 1, (new ObjectTags()).add(EnumTag.EVIL, 1).add(EnumTag.POISON, 5));
+		ThaumcraftApi.registerObjectTag(NetherItems.NetherStonePotionBowl.itemID, 2, (new ObjectTags()).add(EnumTag.EVIL, 1).add(EnumTag.DEATH, 5));
 
+		ThaumcraftApi.registerObjectTag(NetherItems.NetherPotionBottle.itemID, NetherPotionBottle.hellfire, (new ObjectTags()).add(EnumTag.EVIL, 2).add(EnumTag.FIRE, 10));
+		ThaumcraftApi.registerObjectTag(NetherItems.NetherPotionBottle.itemID, NetherPotionBottle.acid, (new ObjectTags()).add(EnumTag.EVIL, 2).add(EnumTag.POISON, 10));
+		ThaumcraftApi.registerObjectTag(NetherItems.NetherPotionBottle.itemID, NetherPotionBottle.death, (new ObjectTags()).add(EnumTag.EVIL, 2).add(EnumTag.DEATH, 10));
+		
+		ThaumcraftApi.registerObjectTag(NetherItems.SoulEnergyBottle.itemID, SoulEnergyBottle.small, (new ObjectTags()).add(EnumTag.EVIL, 2).add(EnumTag.POWER, 2).add(EnumTag.SPIRIT, 4));
+		ThaumcraftApi.registerObjectTag(NetherItems.SoulEnergyBottle.itemID, SoulEnergyBottle.medium, (new ObjectTags()).add(EnumTag.EVIL, 3).add(EnumTag.POWER, 3).add(EnumTag.SPIRIT, 8));
+		ThaumcraftApi.registerObjectTag(NetherItems.SoulEnergyBottle.itemID, SoulEnergyBottle.large, (new ObjectTags()).add(EnumTag.EVIL, 4).add(EnumTag.POWER, 4).add(EnumTag.SPIRIT, 16));
+		
+		ThaumcraftApi.registerComplexObjectTag(NetherItems.NetherSoulGlassBottleItem.itemID, -1, (new ObjectTags()).add(EnumTag.CRYSTAL, 1).add(EnumTag.VOID, 1));
+		ThaumcraftApi.registerComplexObjectTag(NetherItems.NetherStoneBowl.itemID, -1, (new ObjectTags()).add(EnumTag.VOID, 1));
+		
+		ThaumcraftApi.registerObjectTag(NetherBlocks.NetherSoulFurnace.blockID, -1, (new ObjectTags()).add(EnumTag.TRAP, 2).add(EnumTag.EVIL, 5).add(EnumTag.SPIRIT, 5));
+		ThaumcraftApi.registerObjectTag(NetherBlocks.NetherDemonicFurnace.blockID, -1, (new ObjectTags()).add(EnumTag.TRAP, 1).add(EnumTag.EVIL, 2).add(EnumTag.SPIRIT, 2));
+		
+		ThaumcraftApi.registerObjectTag(NetherBlocks.netherSoulBomb.blockID, -1, (new ObjectTags()).add(EnumTag.TRAP, 5).add(EnumTag.EVIL, 5).add(EnumTag.SPIRIT, 5).add(EnumTag.DEATH, 3));
+
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk1, (new ObjectTags()).add(EnumTag.MECHANISM, 2).add(EnumTag.CONTROL, 2).add(EnumTag.VISION, 1));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk2, (new ObjectTags()).add(EnumTag.MECHANISM, 4).add(EnumTag.CONTROL, 4).add(EnumTag.VISION, 2));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk3, (new ObjectTags()).add(EnumTag.MECHANISM, 6).add(EnumTag.CONTROL, 6).add(EnumTag.VISION, 3));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk4, (new ObjectTags()).add(EnumTag.MECHANISM, 8).add(EnumTag.CONTROL, 8).add(EnumTag.VISION, 4));
+		
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk1, (new ObjectTags()).add(EnumTag.TRAP, 3).add(EnumTag.WEAPON, 3).add(EnumTag.SPIRIT, 3).add(EnumTag.VOID, 1));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk2, (new ObjectTags()).add(EnumTag.TRAP, 5).add(EnumTag.WEAPON, 5).add(EnumTag.SPIRIT, 6).add(EnumTag.VOID, 2));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk3, (new ObjectTags()).add(EnumTag.TRAP, 7).add(EnumTag.WEAPON, 7).add(EnumTag.SPIRIT, 9).add(EnumTag.VOID, 3));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk4, (new ObjectTags()).add(EnumTag.TRAP, 10).add(EnumTag.WEAPON, 10).add(EnumTag.SPIRIT, 12).add(EnumTag.VOID, 4));
+		
+		
+		
 		// ThaumcraftApi.registerObjectTag(NetherItems.NetherWoodStick, -1, (new ObjectTags()).add(EnumTag.WOOD, 1).add())
-*/
+
 	}
 
 	private void registerWorldGenerators() {

@@ -213,7 +213,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 								((EntityLiving) data).attackEntityFrom(DamageSource.generic, 1);
 							} else {
 								((EntityLiving) data).attackEntityFrom(
-										new EntityDamageSource("generic", NetherStuffsEventHook.getPlayerDummyForDimension(this.worldObj.provider.dimensionId)), 1);
+										new EntityDamageSource("generic", NetherStuffsEventHook.getPlayerDummyForDimension(this.worldObj.provider.dimensionId)), 2);
 							}
 						} else {
 							it.remove();

@@ -104,7 +104,7 @@ public class SoulDetector extends BlockContainer {
 	public int getMetadataSize() {
 		return SoulDetectorItemBlock.blockNames.length;
 	}
-
+	
 	@Override
 	public int damageDropped(int meta) {
 		return meta & 7;
