@@ -52,7 +52,7 @@ public class NetherStuffsASM implements IClassTransformer {
 							CoreModContainer.bOverrideBlockBreakable = true;
 						else
 							CoreModContainer.bOverrideBlockBreakable = false;
-					}
+					} 
 					line = bufRead.readLine();
 					count++;
 				}

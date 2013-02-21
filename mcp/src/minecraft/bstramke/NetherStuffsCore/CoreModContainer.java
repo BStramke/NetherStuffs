@@ -32,7 +32,7 @@ public class CoreModContainer extends DummyModContainer {
 		myMeta.authorList = Arrays.asList(new String[] { "BStramke" });
 		myMeta.description = "Core Mod for NetherStuffs";
 		myMeta.modId = "NetherStuffsCore";
-		myMeta.version = "0.14";
+		myMeta.version = "0.14.1";
 		myMeta.name = "NetherStuffsCore";
 		myMeta.url = "http://netherstuffs.wikispaces.com/";
 	}
@@ -46,7 +46,7 @@ public class CoreModContainer extends DummyModContainer {
 	public void preInit(FMLPreInitializationEvent event)
    {		
 		FMLLog.info("[NetherStuffsCore] preInit");
-		Configuration config = new Configuration(new File(event.getModConfigurationDirectory() + "NetherStuffs.cfg"));
+		Configuration config = new Configuration(new File(event.getModConfigurationDirectory()+ File.separator + "NetherStuffs.cfg"));
 		config.load();
 		NetherSkyBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SkyBlock", 1245).getInt(1245);
 		bOverrideBlockBreakable = config.get(Configuration.CATEGORY_GENERAL, "OverrideBlockBreakableClass", true).getBoolean(true);
