@@ -1,10 +1,10 @@
 package thaumcraft.api.crafting;
 
-import java.lang.reflect.Method;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import thaumcraft.api.ThaumcraftApiHelper;
 
 public class ShapedArcaneCraftingRecipes implements IArcaneRecipe
@@ -117,6 +117,20 @@ public class ShapedArcaneCraftingRecipes implements IArcaneRecipe
                     {
                         return false;
                     }
+                    
+                	if (var9.hasTagCompound()) {
+                		NBTTagCompound tc = var9.getTagCompound();
+                		for (Object tag:tc.getTags().toArray()) {
+                			NBTBase base = (NBTBase)tag;
+                			Class nc = NBTBase.newTag(base.getId(), base.getName()).getClass();
+                    		if (!(var10.hasTagCompound() && 
+                    				nc.cast(var10.getTagCompound().getTag(base.getName())).equals(nc.cast(base)))) {
+                    			return false;
+                    		}
+                		}
+                	}
+                    
+                    
                 }
             }
         }

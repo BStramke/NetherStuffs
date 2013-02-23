@@ -48,7 +48,7 @@ public enum EnumTag {
 	//38
 	//39
 	MAGIC		(40,"Praecantatio","Magic, Sorcery",5,false,0x9700c0),
-	//41
+	TIME		(41,"Tempus","Time, Moment, Season",5,false,0x9070e0),
 	//42
 	//43
 	//44
@@ -108,7 +108,7 @@ public enum EnumTag {
 	
     public static EnumTag get(int id) {
     	if (lookup.get(id)==null||lookup.get(id).element==999)
-    		return EnumTag.UNKNOWN;
+    		return EnumTag.FLUX;
     	else
     		return lookup.get(id); 
     }

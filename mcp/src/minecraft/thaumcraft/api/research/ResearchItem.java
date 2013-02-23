@@ -83,6 +83,12 @@ public class ResearchItem
      */
     private boolean isStub;
     /**
+     * Indicates research that cannot be gained by normal means (either via normal or lost research), 
+     * but still uses a normal icon. Works much like isStub but is handy for mods that wish to add research 
+     * through their own means and keep a normal icon.
+     */
+    private boolean isAlternate;
+    /**
      * Hidden research does not display in the thaumonomicon until discovered
      */
     private boolean isHidden;
@@ -90,8 +96,14 @@ public class ResearchItem
      * Lost research can only be discovered via knowledge fragments
      */
     private boolean isLost;
+    /**
+     * These research items will automatically unlock for all players on game start
+     */
+    private boolean isAutoUnlock;
     
-    public ResearchItem(String par1, ObjectTags tags, int par3, int par4, int icon)
+    
+
+	public ResearchItem(String par1, ObjectTags tags, int par3, int par4, int icon)
     {
         this(par1, tags, par3, par4, (ItemStack)null, icon);
     }
@@ -176,6 +188,12 @@ public class ResearchItem
         return this;
     }
     
+    public ResearchItem setAlternate()
+    {
+        this.isAlternate = true;
+        return this;
+    }
+    
     public ResearchItem setHidden()
     {
         this.isHidden = true;
@@ -229,6 +247,11 @@ public class ResearchItem
         return this.isStub;
     }
     
+    public boolean getAlternate()
+    {
+        return this.isAlternate;
+    }
+    
     public boolean getHidden()
     {
         return this.isHidden;
@@ -237,5 +260,15 @@ public class ResearchItem
     public boolean getLost()
     {
         return this.isLost;
+    }
+    
+    public boolean getAutoUnlock() {
+		return isAutoUnlock;
+	}
+	
+	public ResearchItem setAutoUnlock()
+    {
+        this.isAutoUnlock = true;
+        return this;
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import thaumcraft.api.ObjectTags;
 import thaumcraft.api.ThaumcraftApiHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,14 +12,18 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 
-public class ShapelessArcaneCraftingRecipes implements IArcaneRecipe
+public class ShapelessInfusionCraftingWithNBTRecipes implements IInfusionRecipe
 {
     /** Is the ItemStack that you get when craft the recipe. */
     private final ItemStack recipeOutput;
 
     /** Is a List of ItemStack that composes the recipe. */
     public final List recipeItems;
+    
+    /** Is a List of nbt key/value pairs. */
+    public final List<NBTBase> nbtList;
     
     public String key;
     
@@ -28,13 +33,20 @@ public class ShapelessArcaneCraftingRecipes implements IArcaneRecipe
 	}
     
     public int cost;
+    
+    public ObjectTags tags;
 
-    public ShapelessArcaneCraftingRecipes(String key, ItemStack par1ItemStack, List par2List, int cost)
+    public ShapelessInfusionCraftingWithNBTRecipes(String key, 
+    		ItemStack par1ItemStack, 
+    		List par2List, int cost, ObjectTags tags,
+    		List<NBTBase> nbtList)
     {
         this.recipeOutput = par1ItemStack;
         this.recipeItems = par2List;
         this.key = key;
         this.cost = cost;
+        this.tags = tags;
+        this.nbtList = nbtList;
     }
 
     public ItemStack getRecipeOutput()
@@ -63,31 +75,23 @@ public class ShapelessArcaneCraftingRecipes implements IArcaneRecipe
                 {
                     boolean var6 = false;
                     Iterator var7 = var2.iterator();
-
+                    b1:
                     while (var7.hasNext())
                     {
                         ItemStack var8 = (ItemStack)var7.next();
 
                         if (var5.itemID == var8.itemID && (var8.getItemDamage() == -1 || var5.getItemDamage() == var8.getItemDamage()))
                         {
-                        	boolean matches=true;
-                        	if (var8.hasTagCompound()) {
-                        		NBTTagCompound tc = var8.getTagCompound();
-                        		for (Object tag:tc.getTags().toArray()) {
-                        			NBTBase base = (NBTBase)tag;
-                        			Class nc = NBTBase.newTag(base.getId(), base.getName()).getClass();
-	                        		if (!(var5.hasTagCompound() && 
-	                        				nc.cast(var5.getTagCompound().getTag(base.getName())).equals(nc.cast(base)))) {
-	                        			matches=false;
-	                        			break;
+                        	for (NBTBase nbt:nbtList) {
+                        		try {
+                        			Class nc = NBTBase.newTag(nbt.getId(), nbt.getName()).getClass();
+	                        		if (var5.hasTagCompound() && 
+	                        				nc.cast(var5.getTagCompound().getTag(nbt.getName())).equals(nc.cast(nbt))) {
+	                        			var6 = true;
+	                        			var2.remove(var8);
+	                        			break b1;
 	                        		}
-                        		}
-                        	}
-                        	
-                        	if (matches) {
-                        		var6 = true;
-                        		var2.remove(var8);
-                        		break;
+                        		} catch (Exception e) {/*probably classcast*/}
                         	}
                         }
                     }
@@ -122,6 +126,11 @@ public class ShapelessArcaneCraftingRecipes implements IArcaneRecipe
     @Override
 	public int getCost() {
 		return cost;
+	}
+    
+    @Override
+	public ObjectTags getTags() {
+		return tags;
 	}
 
 }

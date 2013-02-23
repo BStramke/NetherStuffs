@@ -10,6 +10,8 @@ import thaumcraft.api.ThaumcraftApiHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ShapelessInfusionCraftingRecipes implements IInfusionRecipe
 {
@@ -72,9 +74,25 @@ public class ShapelessInfusionCraftingRecipes implements IInfusionRecipe
 
                         if (var5.itemID == var8.itemID && (var8.getItemDamage() == -1 || var5.getItemDamage() == var8.getItemDamage()))
                         {
-                            var6 = true;
-                            var2.remove(var8);
-                            break;
+                        	boolean matches=true;
+                        	if (var8.hasTagCompound()) {
+                        		NBTTagCompound tc = var8.getTagCompound();
+                        		for (Object tag:tc.getTags().toArray()) {
+                        			NBTBase base = (NBTBase)tag;
+                        			Class nc = NBTBase.newTag(base.getId(), base.getName()).getClass();
+	                        		if (!(var5.hasTagCompound() && 
+	                        				nc.cast(var5.getTagCompound().getTag(base.getName())).equals(nc.cast(base)))) {
+	                        			matches=false;
+	                        			break;
+	                        		}
+                        		}
+                        	}
+                        	
+                        	if (matches) {
+                        		var6 = true;
+                        		var2.remove(var8);
+                        		break;
+                        	}
                         }
                     }
 

@@ -10,7 +10,7 @@ public class AuraNode implements Serializable {
 	public short level;
 	public short baseLevel;
 	public ObjectTags flux = new ObjectTags();
-	public byte type;//0-normal, 1-pure, 2-dark, 3-unstable
+	public EnumNodeType type;
 	
 	//location
 	public int dimension;
@@ -19,7 +19,7 @@ public class AuraNode implements Serializable {
 	public double zPos;
 	public boolean locked;
 	
-	public AuraNode(int key, short lvl, byte type, int dim, int x, int y, int z) {
+	public AuraNode(int key, short lvl, EnumNodeType type, int dim, int x, int y, int z) {
 		this.key = key;
 		this.level = lvl;
 		this.baseLevel = lvl;

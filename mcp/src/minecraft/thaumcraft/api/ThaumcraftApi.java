@@ -28,6 +28,10 @@ import thaumcraft.api.research.ResearchList;
 import cpw.mods.fml.common.FMLLog;
 
 
+/**
+ * @author Azanor
+ *
+ */
 public class ThaumcraftApi {
 	
 	//Materials	
@@ -107,6 +111,23 @@ public class ThaumcraftApi {
 	public static List getCraftingRecipes() {
 		return craftingRecipes;
 	}
+	
+	/**
+	 * NOTE:
+	 * All arcane and infusion crafting recipes are NBT sensitive. 
+	 * Simply add as much nbt data to the crafting ingredient itemstacks as you wish 
+	 * to match with the actual input items. For example this recipe will turn a warded 
+	 * jar filled with crystal essentia into a stack of diamonds:
+	 * 
+	 *   ItemStack is = new ItemStack(itemJarFilled);
+	 *   is.setTagInfo("tag", new NBTTagByte("tag", (byte) EnumTag.CRYSTAL.id));
+	 *   is.setTagInfo("amount", new NBTTagByte("amount", (byte) 64));
+	 *   ThaumcraftApi.addShapelessArcaneCraftingRecipe("THEJARISNOWDIAMONDS", 50,
+	 *		 	new ItemStack(Item.diamond,64,0), new Object[] { is });	
+	 *
+	 * If no tag was added for "amount" then the jar would simply have had to contain any 
+	 * amount of crystal essentia.
+	 */
 	
 	/**
 	 * @param key the research key required for this recipe to work. Leave blank if it will work without research
@@ -334,6 +355,7 @@ public class ThaumcraftApi {
     }
 
     /**
+     * Recipe is NBT sensitive
      * @param key the research key required for this recipe to work. Leave blank if it will work without research
      * @param recipeKey a string value of the key used in your research.xml for this recipe to display in the thaumonomicon
      * @param cost the vis cost
@@ -347,6 +369,7 @@ public class ThaumcraftApi {
     }
     
     /**
+     * Recipe is NBT sensitive
      * @param key the research key required for this recipe to work. Leave blank if it will work without research
      * @param cost the vis cost
      * @param tags ObjectTags list of required aspects and their amounts. No more than 5 aspects should be used in a recipe.
@@ -384,8 +407,9 @@ public class ThaumcraftApi {
 
         craftingRecipes.add(new ShapelessInfusionCraftingRecipes(key, par1ItemStack, var3, cost,tags));
     }
-
+    
     /**
+     * Recipe is NBT sensitive
      * @param key the research key required for this recipe to work. Leave blank if it will work without research
      * @param recipeKey a string value of the key used in your research.xml for this recipe to display in the thaumonomicon
      * @param cost the vis cost
@@ -468,6 +492,7 @@ public class ThaumcraftApi {
 	}
 	
 	//TAGS////////////////////////////////////////
+	
 	public static Map<List,ObjectTags> objectTags = new HashMap<List,ObjectTags>();
 	
 	/**
@@ -538,6 +563,7 @@ public class ThaumcraftApi {
 
 
 	//AURAS//////////////////////////////////////////////////
+	
 	private static Method addFluxToClosest;
 	/**
 	 * Adds flux to the node closest to the given location
@@ -609,7 +635,86 @@ public class ThaumcraftApi {
 		return ret;
     }
 	
+	private static Method getClosestAuraWithinRange;
+	/**
+	 * Gets the id of the closest aura node within range of the given coordinates. Only checks loaded chunks
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param range distance (in blocks) to check
+	 * @return returns -1 if no aura is found, otherwise returns the aura node id.
+	 */
+	public static int getClosestAuraWithinRange(World world, double x, double y, double z, double range) {
+		int ret=-1;
+		try {
+            if(getClosestAuraWithinRange == null) {
+                Class fake = Class.forName("thaumcraft.common.AuraManager");
+                getClosestAuraWithinRange = fake.getMethod("getClosestAuraWithinRange", World.class, double.class, double.class, double.class, double.class);
+            }
+            ret = (Integer) getClosestAuraWithinRange.invoke(null, world,x,y,z,range);
+        } catch(Exception ex) { 
+        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.AuraManager method getClosestAuraWithinRange");
+        }
+		return ret;
+    }
+	
+	private static Method getNodeCopy;
+	/**
+	 * Gets an copy of the AuraNode object for the given node
+	 * @param nodeId the int key of the aura node
+	 * @return returns a COPY of the auranode object, not the object itself. 
+	 * Auranode values should only be altered via queNodeChanges - NEVER directly
+	 */
+	public static AuraNode getNodeCopy(int nodeId) {
+		AuraNode node = null;
+		try {
+            if(getNodeCopy == null) {
+                Class fake = Class.forName("thaumcraft.common.AuraManager");
+                getNodeCopy = fake.getMethod("getNodeCopy", int.class);
+            }
+            node = (AuraNode) getNodeCopy.invoke(null, nodeId);
+        } catch(Exception ex) { 
+        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.AuraManager method getNodeCopy");
+        }
+		return node;
+    }
+	
+	private static Method queueNodeChanges;
+	/**
+	 * This method is used to alter the values of aura nodes. The changes specified are placed in a queue for processing by
+	 * the aura thread.<br>
+	 * 
+	 * For example:<br>
+	 * queNodeChanges(55,8,0,false,null,0,0,0); //will increase node 55's current vis by 8<br>
+	 * queNodeChanges(55,0,0,false,new ObjectTags().remove(EnumTag.FIRE,3),0,0,0); //will reduce node 55's FIRE flux levels by 3<br>
+	 * queNodeChanges(55,11,11,false,null,0,.5f,0); //will increase node 55's current and base level by 11 and increase its y pos by .5f<br>
+	 * 
+	 * @param nodeId
+	 * @param levelMod the amount by which the auras vis level should be changed (positive or negative)
+	 * @param baseMod the amount by which the auras max vis level should be changed (positive or negative)
+	 * @param toggleLock if set to true the nodes lock state will toggle to its opposite value. Currently doesn't do much
+	 * @param flx a ObjectTags collection of the all the flux to add (if positive) or remove (if negative) to the node
+	 * @param x by how much the nodes x position should be altered. Should usually be less than 1
+	 * @param y by how much the nodes y position should be altered. Should usually be less than 1
+	 * @param z by how much the nodes z position should be altered. Should usually be less than 1
+	 */
+	public static void queueNodeChanges(int nodeId, int levelMod, int baseMod, boolean toggleLock, ObjectTags flux,
+			  						  float x,float y,float z) {
+		try {
+            if(queueNodeChanges == null) {
+                Class fake = Class.forName("thaumcraft.common.AuraManager");
+                queueNodeChanges = fake.getMethod("queueNodeChanges", 
+                		int.class, int.class, int.class, boolean.class, ObjectTags.class, float.class, float.class, float.class);
+            }
+            queueNodeChanges.invoke(null, nodeId, levelMod, baseMod, toggleLock, flux, x, y, z);
+        } catch(Exception ex) { 
+        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.AuraManager method queueNodeChanges");
+        }
+    }
+	
 	//BIOMES//////////////////////////////////////////////////
+	
 	public static HashMap<Integer,List> biomeInfo = new HashMap<Integer,List>();
 	
 	/**
@@ -651,4 +756,22 @@ public class ThaumcraftApi {
 		} catch (Exception e) {}
 		return false;
 	}
+	
+	//CROPS //////////////////////////////////////////////////////////////////////////////////////////
+	
+	public static HashMap<Integer,Integer> crops = new HashMap<Integer,Integer>();
+	
+	/**
+	 * This is used to add mod crops to the list of crops harvested by golems 
+	 * that do not use the standard crop growth pattern<br> 
+	 * (i.e. being an instance of BlockCrops and being fully grown at meta 7).<br>
+	 * Only seeds implementing IPlantable will be replanted.
+	 * @param blockID the block id of the crop 
+	 * @param grownMeta the metadata value when the crop is considered fully grown. 
+	 * The block with this id and meta will be the one the golem breaks.
+	 */
+	public static void addHarvestableCrop(int blockID, int grownMeta) {
+		crops.put(blockID, grownMeta);
+	}
+	
 }
