@@ -16,7 +16,7 @@ import cpw.mods.fml.common.network.Player;
 public class ClientPacketHandler implements IPacketHandler {
 
 	public enum PacketType {
-		SoulDetectorRange((short) 1), SoulDetectionSettings((short) 3), SoulDetectorMobDetectionSettings((short) 4), NetherWoodPuddleSize((short) 5);
+		SoulDetectorRange((short) 1), SoulDetectionSettings((short) 3), SoulDetectorMobDetectionSettings((short) 4);
 
 		private short value;
 
@@ -55,27 +55,7 @@ public class ClientPacketHandler implements IPacketHandler {
 			case SoulDetectorMobDetectionSettings:
 				processSoulDetectorMobDetectionSettings(data, sender);
 				break;
-			case NetherWoodPuddleSize:
-				processNetherWoodPuddleSize(data, sender);
-				break;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void processNetherWoodPuddleSize(DataInputStream data, EntityPlayer player) {
-		try {
-			int xCoord = data.readInt();
-			int yCoord = data.readInt();
-			int zCoord = data.readInt();
-
-			TileEntity tile_entity = player.worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
-			if (tile_entity instanceof TileNetherWoodPuddle)
-				((TileNetherWoodPuddle) tile_entity).puddleSize = data.readShort();
-			
-			player.worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

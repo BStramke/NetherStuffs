@@ -63,12 +63,6 @@ public class NetherWoodPuddle extends BlockContainer {
 			int orientation = meta & 12;
 			int puddleSize = ((TileNetherWoodPuddle)tile).puddleSize;
 			
-			if(puddleSize == -1) //uninitialized puddle size --> query the server for the size
-			{
-				queryPuddleSizeFromServer(x, y, z);
-				return textureIndex;
-			}
-			
 			switch(orientation)
 			{
 				case 0:
@@ -77,7 +71,7 @@ public class NetherWoodPuddle extends BlockContainer {
 						textureIndex += 3;
 						textureIndex += puddleSize * 3;
 						if(puddleSize == 4)
-							textureIndex += 12; //this is located in the next row
+							textureIndex += 13; //this is located in the next row
 					}
 					break;
 				case 4:
@@ -112,27 +106,6 @@ public class NetherWoodPuddle extends BlockContainer {
 		return textureIndex;
 	}
 	
-	@SideOnly(Side.CLIENT)
-	private void queryPuddleSizeFromServer(int x, int y, int z) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		DataOutputStream outputStream = new DataOutputStream(bos);
-
-		try {
-			outputStream.writeShort(ServerPacketHandler.PacketType.NetherWoodPuddleSizeQuery.getValue());
-			outputStream.writeInt(x);
-			outputStream.writeInt(y);
-			outputStream.writeInt(z);
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		Packet250CustomPayload packet = new Packet250CustomPayload();
-		packet.channel = "NetherStuffs";
-		packet.data = bos.toByteArray();
-		packet.length = bos.size();
-		PacketDispatcher.sendPacketToServer(packet);
-	}
-
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		meta = meta & 3; //remove any orientation info

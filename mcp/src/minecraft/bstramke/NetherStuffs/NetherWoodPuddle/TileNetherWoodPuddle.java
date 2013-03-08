@@ -9,6 +9,8 @@ import cpw.mods.fml.common.network.Player;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
@@ -19,7 +21,7 @@ import bstramke.NetherStuffs.Client.ClientPacketHandler.PacketType;
 public class TileNetherWoodPuddle extends TileEntity {
 
 	private ForgeDirection puddleSide = ForgeDirection.UNKNOWN;
-	public short puddleSize = -1;
+	public short puddleSize = 0;
 
 	private static short maxPuddleSize = 4;
 
@@ -70,9 +72,13 @@ public class TileNetherWoodPuddle extends TileEntity {
 			break;
 		}
 		this.worldObj.setBlockMetadata(xCoord, yCoord, zCoord, meta);
+		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	public boolean harvestPuddle() {
+		if(this.worldObj.isRemote)
+			return false;
+		
 		if (hasPuddle() == false)
 			return false;
 
@@ -85,12 +91,12 @@ public class TileNetherWoodPuddle extends TileEntity {
 
 	private void incPuddleSize() {
 		puddleSize++;
-		sendPuddleSizeToClients();
+		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	private void resetPuddleSize() {
 		puddleSize = 0;
-		sendPuddleSizeToClients();
+		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	/**
@@ -101,16 +107,13 @@ public class TileNetherWoodPuddle extends TileEntity {
 			return;
 		setPuddleDirection(rand);
 
-		if (this.puddleSize > 0) // just update if its not the default size. clients always get default size by metadata
-			sendPuddleSizeToClients();
-
 		if (canGrowPuddle() == false)
 			return;
 
 		incPuddleSize();
 	}
 
-	public void sendPuddleSizeToClients() {
+	/*public void sendPuddleSizeToClients() {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
@@ -129,28 +132,7 @@ public class TileNetherWoodPuddle extends TileEntity {
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
 		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 32, worldObj.provider.dimensionId, packet);
-	}
-	
-	public void sendPuddleSizeToClient(EntityPlayer player) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		DataOutputStream outputStream = new DataOutputStream(bos);
-
-		try {
-			outputStream.writeShort(ClientPacketHandler.PacketType.NetherWoodPuddleSize.getValue());
-			outputStream.writeInt(this.xCoord);
-			outputStream.writeInt(this.yCoord);
-			outputStream.writeInt(this.zCoord);
-			outputStream.writeShort(this.puddleSize);
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		Packet250CustomPayload packet = new Packet250CustomPayload();
-		packet.channel = "NetherStuffs";
-		packet.data = bos.toByteArray();
-		packet.length = bos.size();
-		PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
-	}
+	}*/
 
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
@@ -197,8 +179,18 @@ public class TileNetherWoodPuddle extends TileEntity {
 			break;
 		}
 
-		if (zCoord <= -94 && zCoord >= -98 && yCoord == 55 && xCoord > 40 && xCoord < 50)
-			System.out.println(puddleSide);
 		puddleSize = tagCompound.getShort("puddleSize");
+	}
+	
+	@Override
+	public void onDataPacket(net.minecraft.network.INetworkManager net, Packet132TileEntityData pkt) {
+		this.readFromNBT(pkt.customParam1);
+	};
+	
+	@Override
+	public Packet getDescriptionPacket() {
+		NBTTagCompound var1 = new NBTTagCompound();
+      this.writeToNBT(var1);
+      return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, var1);
 	}
 }
