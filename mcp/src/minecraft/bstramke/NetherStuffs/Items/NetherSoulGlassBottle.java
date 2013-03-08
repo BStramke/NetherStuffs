@@ -6,12 +6,15 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemGlassBottle;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
-import bstramke.NetherStuffs.Blocks.NetherPuddle;
+import bstramke.NetherStuffs.Blocks.NetherWood;
+import bstramke.NetherStuffs.Blocks.NetherWoodPuddle;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -75,31 +78,34 @@ public class NetherSoulGlassBottle extends ItemGlassBottle {
 				int var6 = var4.blockY;
 				int var7 = var4.blockZ;
 
-				if (par2World.getBlockId(var5, var6, var7) == NetherBlocks.netherPuddle.blockID && NetherPuddle.getSizeFromMetadata(par2World.getBlockMetadata(var5, var6, var7)) == 3) {
-					int metadata = NetherPuddle.unmarkedMetadata(par2World.getBlockMetadata(var5, var6, var7));
-					int bottleMetaData = 0;
-					switch (metadata) {
-					case NetherPuddle.hellfire:
-						bottleMetaData = NetherPotionBottle.hellfire;
-						break;
-					case NetherPuddle.acid:
-						bottleMetaData = NetherPotionBottle.acid;
-						break;
-					case NetherPuddle.death:
-						bottleMetaData = NetherPotionBottle.death;
-						break;
-					default:
-						return par1ItemStack; // --> as this means its a unknown type, exit
-					}
-					--par1ItemStack.stackSize;
-					NetherPuddle.removePuddle(par2World, var5, var6, var7);
-
-					if (par1ItemStack.stackSize <= 0) {
-						return new ItemStack(NetherItems.NetherPotionBottle.itemID, 1, bottleMetaData);
-					}
-
-					if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(NetherItems.NetherPotionBottle.itemID, 1, bottleMetaData))) {
-						par3EntityPlayer.dropPlayerItem(new ItemStack(NetherItems.NetherPotionBottle.itemID, 1, bottleMetaData));
+				TileEntity tile = par2World.getBlockTileEntity(var5, var6, var7);
+				if(tile instanceof TileNetherWoodPuddle)
+				{
+					if (((TileNetherWoodPuddle)tile).harvestPuddle()) {
+						int meta = par2World.getBlockMetadata(var5, var6, var7) & 3;
+						int bottleMetaData = 0;
+						switch (meta) {
+						case NetherWood.hellfire:
+							bottleMetaData = NetherPotionBottle.hellfire;
+							break;
+						case NetherWood.acid:
+							bottleMetaData = NetherPotionBottle.acid;
+							break;
+						case NetherWood.death:
+							bottleMetaData = NetherPotionBottle.death;
+							break;
+						default:
+							return par1ItemStack; // --> as this means its a unknown type, exit
+						}
+						
+						--par1ItemStack.stackSize;
+						if (par1ItemStack.stackSize <= 0) {
+							return new ItemStack(NetherItems.NetherPotionBottle.itemID, 1, bottleMetaData);
+						}
+						
+						if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(NetherItems.NetherPotionBottle.itemID, 1, bottleMetaData))) {
+							par3EntityPlayer.dropPlayerItem(new ItemStack(NetherItems.NetherPotionBottle.itemID, 1, bottleMetaData));
+						}
 					}
 				}
 			}

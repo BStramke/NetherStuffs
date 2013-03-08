@@ -3,14 +3,19 @@ package bstramke.NetherStuffs.Blocks;
 import static net.minecraftforge.common.ForgeDirection.UP;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.NetherWoodMaterial;
+import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,7 +31,7 @@ public class NetherWood extends Block {
 		this.setRequiresSelfNotify();
 		this.setBurnProperties(this.blockID, 0, 0);
 	}
-
+	
 	@Override
 	public boolean isFireSource(World world, int x, int y, int z, int metadata, ForgeDirection side) {
 		if (side == UP) {
@@ -61,10 +66,10 @@ public class NetherWood extends Block {
 	public int getMetadataSize() {
 		return NetherWoodItemBlock.blockNames.length;
 	}
-
+	
+	@SideOnly(Side.CLIENT)
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-
 		/*
 		 * int nRowDiff = 32; // side: 1=top, 0=bottom if (side == 1 || side == 0) { nRowDiff = nRowDiff - 16;// look one row above } switch (var4) { case hellfire: return hellfire + nRowDiff; case
 		 * acid: return acid + nRowDiff; case death: return death + nRowDiff; default: return hellfire + nRowDiff; }
@@ -72,7 +77,7 @@ public class NetherWood extends Block {
 		int orientation = meta & 12;
 		int type = meta & 3;
 
-		if (orientation == 0 && (side == 1 || side == 0)) {
+		if ((orientation == 0 || orientation == 12) && (side == 1 || side == 0)) {
 			if (type == hellfire)
 				return 16;
 			if (type == acid)
@@ -108,28 +113,39 @@ public class NetherWood extends Block {
 
 	}
 
-
+	@Override
+	public void onBlockAdded(World par1World, int x, int y, int z) {
+		super.onBlockAdded(par1World, x, y, z);
+		if (!par1World.isRemote) {
+			if (par1World.rand.nextInt(100) + 1 <= 15) // chance of being able to spawn a puddled block
+			{
+				int meta = par1World.getBlockMetadata(x, y, z) & 3;
+				par1World.setBlockAndMetadata(x, y, z, NetherStuffs.NetherWoodPuddleBlockId, meta);
+			}
+		}
+	}
+	
 	//this does the block sideway placement
 	@Override
-	public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
-		int var10 = par9 & 3;
-		byte var11 = 0;
+	public int onBlockPlaced(World par1World, int par2, int par3, int par4, int side, float par6, float par7, float par8, int meta) {
+		int type = meta & 3;
+		byte orientation = 0;
 
-		switch (par5) {
+		switch (side) {
 		case 0:
 		case 1:
-			var11 = 0;
+			orientation = 0; 
 			break;
 		case 2:
 		case 3:
-			var11 = 8;
+			orientation = 8;
 			break;
 		case 4:
 		case 5:
-			var11 = 4;
+			orientation = 4;
 		}
 
-		return var10 | var11;
+		return type | orientation;
 	}
 
 	@Override

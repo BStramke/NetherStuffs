@@ -9,26 +9,55 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import bstramke.NetherStuffs.Client.ClientPacketHandler.PacketType;
 import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
 public class ServerPacketHandler implements IPacketHandler {
+	public enum PacketType {
+		SoulDetectorRange((short) 1), SoulDetectorRangeQuery((short) 2), SoulDetectionSettings((short) 3), SoulDetectorMobDetectionSettings((short) 4);
+
+		private short value;
+
+		private PacketType(short value) {
+			this.value = value;
+		}
+
+		public short getValue() {
+			return value;
+		}
+
+		public static PacketType getEnumByValue(short value) {
+			for (PacketType packet : PacketType.values()) {
+				if (packet.getValue() == value) {
+					return packet;
+				}
+			}
+			return null;
+		}
+	}
+
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload payload, Player player) {
 		DataInputStream data = new DataInputStream(new ByteArrayInputStream(payload.data));
 		EntityPlayer sender = (EntityPlayer) player;
 
 		try {
-			int nType = data.readShort();
-			if (nType == 1) {
+			short nType = data.readShort();
+			switch (PacketType.getEnumByValue(nType)) {
+			case SoulDetectorRange:
 				processSoulDetectorRange(data, sender);
-			} else if (nType == 2) {
+				break;
+			case SoulDetectorRangeQuery:
 				processSoulDetectorRangeQuery(data, sender);
-			} else if (nType == 3) {
+				break;
+			case SoulDetectionSettings:
 				processSoulDetectorDetectionSettings(data, sender);
-			}else if (nType == 4) {
+				break;
+			case SoulDetectorMobDetectionSettings:
 				processSoulDetectorMobDetectionSettings(data, sender);
+				break;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -42,9 +71,9 @@ public class ServerPacketHandler implements IPacketHandler {
 			int zCoord = data.readInt();
 			TileEntity tile_entity = sender.worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
 			if (tile_entity instanceof TileSoulDetector) {
-				for(int i = 0; i < ((TileSoulDetector) tile_entity).detectEntities.length; i++)
+				for (int i = 0; i < ((TileSoulDetector) tile_entity).detectEntities.length; i++)
 					((TileSoulDetector) tile_entity).detectEntities[i] = data.readBoolean();
-				
+
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -58,14 +87,14 @@ public class ServerPacketHandler implements IPacketHandler {
 			int zCoord = data.readInt();
 			TileEntity tile_entity = sender.worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
 			if (tile_entity instanceof TileSoulDetector) {
-				for(int i = 0; i < ((TileSoulDetector) tile_entity).detectEntitiesMobs.length; i++)
+				for (int i = 0; i < ((TileSoulDetector) tile_entity).detectEntitiesMobs.length; i++)
 					((TileSoulDetector) tile_entity).detectEntitiesMobs[i] = data.readBoolean();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void processSoulDetectorRangeQuery(DataInputStream data, EntityPlayer sender) {
 		try {
 			int xCoord = data.readInt();

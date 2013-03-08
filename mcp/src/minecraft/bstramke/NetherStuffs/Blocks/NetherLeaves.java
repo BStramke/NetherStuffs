@@ -76,43 +76,6 @@ public class NetherLeaves extends Block implements IShearable {
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		if (!par1World.isRemote) {
 			int var6 = par1World.getBlockMetadata(par2, par3, par4);
-
-			if (!isDecaying(var6) && par5Random.nextInt(10) == 0 && par1World.provider.isHellWorld) {
-				for (int yCoord = par3 - 1; yCoord > 0; yCoord--) {
-					int nNextBlockId = par1World.getBlockId(par2, yCoord, par4);
-					if (nNextBlockId != 0) {
-						if (nNextBlockId == NetherBlocks.netherPuddle.blockID) {
-							NetherPuddle.growPuddle(par1World, par2, yCoord, par4);
-							break;
-						} else if (nNextBlockId != Block.netherrack.blockID && nNextBlockId != NetherBlocks.netherOre.blockID) {
-							break;
-						} else {
-							boolean bSpawnPuddle = true;
-
-							//prevent spawning next to each other
-							int xCoord = par2;
-							int zCoord = par3;
-							if (par1World.getBlockId(xCoord + 1, yCoord + 1, zCoord) == NetherBlocks.netherPuddle.blockID
-									|| par1World.getBlockId(xCoord - 1, yCoord + 1, zCoord) == NetherBlocks.netherPuddle.blockID
-									|| par1World.getBlockId(xCoord, yCoord + 1, zCoord + 1) == NetherBlocks.netherPuddle.blockID
-									|| par1World.getBlockId(xCoord, yCoord + 1, zCoord - 1) == NetherBlocks.netherPuddle.blockID
-									|| par1World.getBlockId(xCoord + 1, yCoord + 1, zCoord + 1) == NetherBlocks.netherPuddle.blockID
-									|| par1World.getBlockId(xCoord - 1, yCoord + 1, zCoord - 1) == NetherBlocks.netherPuddle.blockID
-									|| par1World.getBlockId(xCoord + 1, yCoord + 1, zCoord - 1) == NetherBlocks.netherPuddle.blockID
-									|| par1World.getBlockId(xCoord - 1, yCoord + 1, zCoord + 1) == NetherBlocks.netherPuddle.blockID)
-								bSpawnPuddle = false;
-
-							if (bSpawnPuddle) {
-								int metadata = NetherLeaves.unmarkedMetadata(var6);
-								NetherPuddle.placePuddleWithType(par1World, par2, yCoord + 1, par4, metadata);
-							}
-							break;
-						}
-					}
-				}
-			}
-
-			// if ((var6 & 8) != 0 && (var6 & 4) == 0)
 			if (isDecaying(var6) && !isUserPlaced(var6)) {
 				byte var7 = 4;
 				int var8 = var7 + 1;

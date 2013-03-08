@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 import bstramke.NetherStuffs.Blocks.SoulDetector;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import bstramke.NetherStuffs.Common.ServerPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GuiSoulDetector extends GuiContainer {
@@ -237,7 +238,7 @@ public class GuiSoulDetector extends GuiContainer {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		try {
-			outputStream.writeShort(2);
+			outputStream.writeShort(ServerPacketHandler.PacketType.SoulDetectorRangeQuery.getValue());
 			outputStream.writeInt(this.tile_entity.xCoord);
 			outputStream.writeInt(this.tile_entity.yCoord);
 			outputStream.writeInt(this.tile_entity.zCoord);

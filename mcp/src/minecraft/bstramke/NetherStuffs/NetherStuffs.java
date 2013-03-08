@@ -25,11 +25,11 @@ import bstramke.NetherStuffs.Blocks.NetherOre;
 import bstramke.NetherStuffs.Blocks.NetherOreItemBlock;
 import bstramke.NetherStuffs.Blocks.NetherPlank;
 import bstramke.NetherStuffs.Blocks.NetherPlankItemBlock;
-import bstramke.NetherStuffs.Blocks.NetherPuddleItemBlock;
 import bstramke.NetherStuffs.Blocks.NetherSapling;
 import bstramke.NetherStuffs.Blocks.NetherSaplingItemBlock;
 import bstramke.NetherStuffs.Blocks.NetherWood;
 import bstramke.NetherStuffs.Blocks.NetherWoodItemBlock;
+import bstramke.NetherStuffs.Blocks.NetherWoodPuddleItemBlock;
 import bstramke.NetherStuffs.Blocks.SoulBlocker;
 import bstramke.NetherStuffs.Blocks.SoulBlockerItemBlock;
 import bstramke.NetherStuffs.Blocks.SoulBombItemBlock;
@@ -53,6 +53,7 @@ import bstramke.NetherStuffs.Items.NetherStoneBowl;
 import bstramke.NetherStuffs.Items.NetherStonePotionBowl;
 import bstramke.NetherStuffs.Items.NetherWoodCharcoal;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
+import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
 import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
 import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
 import bstramke.NetherStuffs.SoulFurnace.TileSoulFurnace;
@@ -107,6 +108,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static int SoulWorkBenchBlockId;
 	public static int NetherSoulBombBlockId;
 	public static int NetherSkyBlockId;
+	public static int NetherWoodPuddleBlockId;
 
 	public static int NetherObsidianSwordAcidItemId;
 	public static int NetherObsidianSwordDeathItemId;
@@ -145,6 +147,17 @@ public class NetherStuffs extends DummyModContainer {
 	private static boolean IncreaseNetherrackHardness;
 	private static boolean SpawnBlazesNaturally;
 	public static boolean bShowCoreModMissingWarning;
+	
+	public static boolean bUseNetherOreDemonic;
+	public static boolean bUseNetherOreCoal;
+	public static boolean bUseNetherOreIron;
+	public static boolean bUseNetherOreGold;
+	public static boolean bUseNetherOreDiamond;
+	public static boolean bUseNetherOreEmerald;
+	public static boolean bUseNetherOreRedstone;
+	public static boolean bUseNetherOreObsidian;
+	public static boolean bUseNetherOreLapis;
+	public static boolean bUseNetherOreCobblestone;
 
 	public static boolean bOverrideBlockBreakable;
 	public static boolean bOverrideBlockPane;
@@ -174,6 +187,7 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulFurnaceBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulFurnace", 1243).getInt(1243);
 		NetherSoulSiphonBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulSiphon", 1244).getInt(1244);
 		NetherSkyBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SkyBlock", 1245).getInt(1245);
+		NetherWoodPuddleBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "NetherWoodPuddles", 1246).getInt(1246);
 
 		NetherOreIngotItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherIngots", 5200).getInt(5200);
 		NetherDemonicBarHandleItemId = config.getItem(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5201).getInt(5201);
@@ -209,6 +223,18 @@ public class NetherStuffs extends DummyModContainer {
 		IncreaseNetherrackHardness = config.get(Configuration.CATEGORY_GENERAL, "IncreaseNetherrackHardness", true).getBoolean(true);
 		SpawnBlazesNaturally = config.get(Configuration.CATEGORY_GENERAL, "SpawnBlazesNaturally", false).getBoolean(false);
 		bShowCoreModMissingWarning = config.get(Configuration.CATEGORY_GENERAL, "ShowCoreModMissingWarning", true).getBoolean(true);
+		
+		bUseNetherOreDemonic = config.get("NetherOreGeneration", "Demonic", true).getBoolean(true);
+		bUseNetherOreCoal = config.get("NetherOreGeneration", "NetherCoal", true).getBoolean(true);
+		bUseNetherOreIron = config.get("NetherOreGeneration", "Iron", true).getBoolean(true);
+		bUseNetherOreGold = config.get("NetherOreGeneration", "Gold", true).getBoolean(true);
+		bUseNetherOreDiamond = config.get("NetherOreGeneration", "Diamond", true).getBoolean(true);
+		bUseNetherOreEmerald = config.get("NetherOreGeneration", "Emerald", true).getBoolean(true);
+		bUseNetherOreRedstone = config.get("NetherOreGeneration", "Redstone", true).getBoolean(true);
+		bUseNetherOreObsidian = config.get("NetherOreGeneration", "Obsidian", true).getBoolean(true);
+		bUseNetherOreLapis = config.get("NetherOreGeneration", "Lapis", true).getBoolean(true);
+		bUseNetherOreCobblestone = config.get("NetherOreGeneration", "Cobblestone", true).getBoolean(true);
+
 		//set and save 2 overrides for display purposes inside the config
 		bOverrideBlockBreakable = config.get(Configuration.CATEGORY_GENERAL, "OverrideBlockBreakableClass", true).getBoolean(true);
 		bOverrideBlockPane = config.get(Configuration.CATEGORY_GENERAL, "OverrideBlockPaneClass", true).getBoolean(true);
@@ -277,11 +303,11 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(NetherBlocks.netherPlank, NetherPlankItemBlock.class, "NetherPlankItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherLeaves, NetherLeavesItemBlock.class, "NetherLeavesItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherSapling, NetherSaplingItemBlock.class, "NetherSaplingItemBlock");
-		GameRegistry.registerBlock(NetherBlocks.netherPuddle, NetherPuddleItemBlock.class, "NetherPuddleItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherSoulBomb, SoulBombItemBlock.class, "NetherSoulBombItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulDetector, SoulDetectorItemBlock.class, "NetherSoulDetectorItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulBlocker, SoulBlockerItemBlock.class, "NetherSoulBlockerItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulSiphon, SoulSiphonItemBlock.class, "NetherSoulSiphonItemBlock");
+		GameRegistry.registerBlock(NetherBlocks.netherWoodPuddle, NetherWoodPuddleItemBlock.class, "NetherWoodPuddleItemBlock");
 
 		// set required Stuff to Gather
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherOre, NetherOre.netherOreCobblestone, "pickaxe", 0);
@@ -303,6 +329,7 @@ public class NetherStuffs extends DummyModContainer {
 
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherSoulWorkBench, "axe", 0);
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWood, "axe", 2);
+		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWoodPuddle, "axe", 2);
 
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWood, NetherWood.acid, "axe", 2);
 		MinecraftForge.setBlockHarvestLevel(NetherBlocks.netherWood, NetherWood.hellfire, "axe", 2);
@@ -322,6 +349,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerTileEntity(TileSoulDetector.class, "tileEntityNetherStuffsSoulDetector");
 		GameRegistry.registerTileEntity(TileSoulBlocker.class, "tileEntityNetherStuffsSoulBlocker");
 		GameRegistry.registerTileEntity(TileSoulSiphon.class, "tileEntityNetherStuffsSoulSiphon");
+		GameRegistry.registerTileEntity(TileNetherWoodPuddle.class, "tileEntityNetherWood");
 
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
@@ -433,16 +461,26 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	private void registerWorldGenerators() {
-		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.demonicOre, 27));
-		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 16, NetherOre.netherOreCoal, 20));
-		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreIron, 32));
-		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreGold, 8));
-		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreDiamond, 3));
-		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreEmerald, 3));
-		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreRedstone, 14));
-		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreObsidian, 20));
-		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreLapis, 4));
-		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 13, NetherOre.netherOreCobblestone, 20));
+		if(bUseNetherOreDemonic)
+			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.demonicOre, 27));
+		if(bUseNetherOreCoal)
+			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 16, NetherOre.netherOreCoal, 20));
+		if(bUseNetherOreIron)
+			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreIron, 32));
+		if(bUseNetherOreGold)
+			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreGold, 8));
+		if(bUseNetherOreDiamond)
+			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreDiamond, 3));
+		if(bUseNetherOreEmerald)
+			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreEmerald, 3));
+		if(bUseNetherOreRedstone)
+			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreRedstone, 14));
+		if(bUseNetherOreObsidian)
+			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreObsidian, 20));
+		if(bUseNetherOreLapis)
+			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreLapis, 4));
+		if(bUseNetherOreCobblestone)
+			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 13, NetherOre.netherOreCobblestone, 20));
 
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsTrees(true, 4, false));
 	}
@@ -708,6 +746,10 @@ public class NetherStuffs extends DummyModContainer {
 		for (int i = 0; i < NetherWoodItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherWood." + NetherWoodItemBlock.blockNames[i] + ".name", NetherWoodItemBlock.blockDisplayNames[i]);
 		}
+		
+		for (int i = 0; i < NetherWoodPuddleItemBlock.getMetadataSize(); i++) {
+			LanguageRegistry.instance().addStringLocalization("tile.NetherWoodPuddle." + NetherWoodPuddleItemBlock.blockNames[i] + ".name", NetherWoodPuddleItemBlock.blockDisplayNames[i]);
+		}
 
 		for (int i = 0; i < NetherPlankItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherPlank." + NetherPlankItemBlock.blockNames[i] + ".name", NetherPlankItemBlock.blockDisplayNames[i]);
@@ -719,10 +761,6 @@ public class NetherStuffs extends DummyModContainer {
 
 		for (int i = 0; i < NetherSaplingItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherSapling." + NetherSaplingItemBlock.blockNames[i] + ".name", NetherSaplingItemBlock.blockDisplayNames[i]);
-		}
-
-		for (int i = 0; i < NetherPuddleItemBlock.getMetadataSize(); i++) {
-			LanguageRegistry.instance().addStringLocalization("tile.NetherPuddle." + NetherPuddleItemBlock.blockNames[i] + ".name", NetherPuddleItemBlock.blockDisplayNames[i]);
 		}
 
 		for (int i = 0; i < SoulDetectorItemBlock.getMetadataSize(); i++) {

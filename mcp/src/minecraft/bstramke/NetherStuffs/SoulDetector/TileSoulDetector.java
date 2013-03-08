@@ -11,6 +11,8 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.Blocks.SoulDetector;
+import bstramke.NetherStuffs.Client.ClientPacketHandler;
+import bstramke.NetherStuffs.Common.ServerPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -256,7 +258,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		try {
-			outputStream.writeShort(4);
+			outputStream.writeShort(ServerPacketHandler.PacketType.SoulDetectorMobDetectionSettings.getValue());
 			outputStream.writeInt(this.xCoord);
 			outputStream.writeInt(this.yCoord);
 			outputStream.writeInt(this.zCoord);
@@ -279,7 +281,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		try {
-			outputStream.writeShort(3);
+			outputStream.writeShort(ServerPacketHandler.PacketType.SoulDetectionSettings.getValue());
 			outputStream.writeInt(this.xCoord);
 			outputStream.writeInt(this.yCoord);
 			outputStream.writeInt(this.zCoord);
@@ -326,7 +328,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		}
 
 		try {
-			outputStream.writeShort(1);
+			outputStream.writeShort(ServerPacketHandler.PacketType.SoulDetectorRange.getValue());
 			outputStream.writeShort(nRange);
 			outputStream.writeShort(nDirection);
 			outputStream.writeInt(this.xCoord);
@@ -347,7 +349,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try {
-			outputStream.writeShort(1);
+			outputStream.writeShort(ClientPacketHandler.PacketType.SoulDetectorRange.getValue());
 			outputStream.writeInt(this.xCoord);
 			outputStream.writeInt(this.yCoord);
 			outputStream.writeInt(this.zCoord);
@@ -371,7 +373,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try {
-			outputStream.writeShort(3);
+			outputStream.writeShort(ClientPacketHandler.PacketType.SoulDetectionSettings.getValue());
 			outputStream.writeInt(this.xCoord);
 			outputStream.writeInt(this.yCoord);
 			outputStream.writeInt(this.zCoord);
@@ -393,7 +395,7 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try {
-			outputStream.writeShort(4);
+			outputStream.writeShort(ClientPacketHandler.PacketType.SoulDetectorMobDetectionSettings.getValue());
 			outputStream.writeInt(this.xCoord);
 			outputStream.writeInt(this.yCoord);
 			outputStream.writeInt(this.zCoord);
