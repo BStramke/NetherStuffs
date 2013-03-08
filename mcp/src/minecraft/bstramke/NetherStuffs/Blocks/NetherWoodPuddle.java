@@ -1,19 +1,25 @@
 package bstramke.NetherStuffs.Blocks;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.Random;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Client.ClientPacketHandler.PacketType;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.NetherWoodMaterial;
+import bstramke.NetherStuffs.Common.ServerPacketHandler;
 import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
 
 public class NetherWoodPuddle extends BlockContainer {
@@ -51,11 +57,18 @@ public class NetherWoodPuddle extends BlockContainer {
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) {
 		int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
 		int textureIndex = getBlockTextureFromSideAndMetadata(side, meta);
-
+	
 		TileEntity tile = par1IBlockAccess.getBlockTileEntity(x, y, z);
 		if(tile instanceof TileNetherWoodPuddle) {
 			int orientation = meta & 12;
 			int puddleSize = ((TileNetherWoodPuddle)tile).puddleSize;
+			
+			if(puddleSize == -1) //uninitialized puddle size --> query the server for the size
+			{
+				queryPuddleSizeFromServer(x, y, z);
+				return textureIndex;
+			}
+			
 			switch(orientation)
 			{
 				case 0:
@@ -99,6 +112,27 @@ public class NetherWoodPuddle extends BlockContainer {
 		return textureIndex;
 	}
 	
+	@SideOnly(Side.CLIENT)
+	private void queryPuddleSizeFromServer(int x, int y, int z) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream outputStream = new DataOutputStream(bos);
+
+		try {
+			outputStream.writeShort(ServerPacketHandler.PacketType.NetherWoodPuddleSizeQuery.getValue());
+			outputStream.writeInt(x);
+			outputStream.writeInt(y);
+			outputStream.writeInt(z);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = "NetherStuffs";
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+		PacketDispatcher.sendPacketToServer(packet);
+	}
+
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		meta = meta & 3; //remove any orientation info

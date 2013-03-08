@@ -13,12 +13,13 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.Blocks.NetherWood;
+import bstramke.NetherStuffs.Client.ClientPacketHandler;
 import bstramke.NetherStuffs.Client.ClientPacketHandler.PacketType;
 
 public class TileNetherWoodPuddle extends TileEntity {
 
 	private ForgeDirection puddleSide = ForgeDirection.UNKNOWN;
-	public short puddleSize = 0;
+	public short puddleSize = -1;
 
 	private static short maxPuddleSize = 4;
 
@@ -114,7 +115,7 @@ public class TileNetherWoodPuddle extends TileEntity {
 		DataOutputStream outputStream = new DataOutputStream(bos);
 
 		try {
-			outputStream.writeShort(PacketType.NetherWoodPuddleSize.getValue());
+			outputStream.writeShort(ClientPacketHandler.PacketType.NetherWoodPuddleSize.getValue());
 			outputStream.writeInt(this.xCoord);
 			outputStream.writeInt(this.yCoord);
 			outputStream.writeInt(this.zCoord);
@@ -128,6 +129,27 @@ public class TileNetherWoodPuddle extends TileEntity {
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
 		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 32, worldObj.provider.dimensionId, packet);
+	}
+	
+	public void sendPuddleSizeToClient(EntityPlayer player) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream outputStream = new DataOutputStream(bos);
+
+		try {
+			outputStream.writeShort(ClientPacketHandler.PacketType.NetherWoodPuddleSize.getValue());
+			outputStream.writeInt(this.xCoord);
+			outputStream.writeInt(this.yCoord);
+			outputStream.writeInt(this.zCoord);
+			outputStream.writeShort(this.puddleSize);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = "NetherStuffs";
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+		PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
 	}
 
 	@Override
