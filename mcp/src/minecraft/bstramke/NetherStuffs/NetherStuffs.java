@@ -509,6 +509,9 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(CompatBlock.oreQuartz.blockID, 13, 0, 16));
 
 		ThaumcraftApi.registerObjectTag(CompatItem.netherBrick.itemID, -1, (new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.EARTH, 1).add(EnumTag.EVIL, 1));
+		
+		OreDictionary.registerOre("oreQuartz", new ItemStack(CompatBlock.oreQuartz));
+		OreDictionary.registerOre("ingotQuartz", new ItemStack(CompatItem.netherQuartz));
 	}
 
 	private void initRecipes() {
