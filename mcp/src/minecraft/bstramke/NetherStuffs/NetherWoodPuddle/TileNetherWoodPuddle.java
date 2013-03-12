@@ -75,17 +75,15 @@ public class TileNetherWoodPuddle extends TileEntity {
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
-	public boolean harvestPuddle() {
-		if(this.worldObj.isRemote)
-			return false;
-		
+	public boolean harvestPuddle() {		
 		if (hasPuddle() == false)
 			return false;
 
 		if (puddleSize < maxPuddleSize)
 			return false;
 
-		resetPuddleSize();
+		puddleSize = 0;
+		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		return true;
 	}
 
@@ -94,23 +92,17 @@ public class TileNetherWoodPuddle extends TileEntity {
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
-	private void resetPuddleSize() {
-		puddleSize = 0;
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-	}
-
 	/**
 	 * Tries to Grow a puddle
 	 */
-	public void growPuddle(Random rand) {
-		if (this.worldObj.isRemote)
-			return;
+	public void growPuddle(Random rand) {	
 		setPuddleDirection(rand);
 
 		if (canGrowPuddle() == false)
 			return;
 
-		incPuddleSize();
+		puddleSize++;
+		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	/*public void sendPuddleSizeToClients() {

@@ -45,12 +45,6 @@ public class NetherPotionBottle extends Item {
 		}
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack par1ItemStack) {
-		return true;
-	}
-
 	public static int getMetadataSize() {
 		return itemNames.length;
 	}

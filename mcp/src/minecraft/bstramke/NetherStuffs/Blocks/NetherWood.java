@@ -67,8 +67,14 @@ public class NetherWood extends Block {
 		return NetherWoodItemBlock.blockNames.length;
 	}
 	
-	@SideOnly(Side.CLIENT)
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
+		par1World.markBlockForUpdate(par2, par3, par4);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		/*
 		 * int nRowDiff = 32; // side: 1=top, 0=bottom if (side == 1 || side == 0) { nRowDiff = nRowDiff - 16;// look one row above } switch (var4) { case hellfire: return hellfire + nRowDiff; case

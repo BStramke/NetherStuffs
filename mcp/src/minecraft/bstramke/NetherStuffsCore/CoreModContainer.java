@@ -32,7 +32,7 @@ public class CoreModContainer extends DummyModContainer {
 		myMeta.authorList = Arrays.asList(new String[] { "BStramke" });
 		myMeta.description = "Core Mod for NetherStuffs";
 		myMeta.modId = "NetherStuffsCore";
-		myMeta.version = "0.14.1";
+		myMeta.version = "0.15";
 		myMeta.name = "NetherStuffsCore";
 		myMeta.url = "http://netherstuffs.wikispaces.com/";
 	}

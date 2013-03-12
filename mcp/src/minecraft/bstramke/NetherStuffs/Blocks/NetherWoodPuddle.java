@@ -108,8 +108,11 @@ public class NetherWoodPuddle extends BlockContainer {
 	
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		meta = meta & 3; //remove any orientation info
-		return blocksList[NetherStuffs.NetherWoodBlockId].getBlockTextureFromSideAndMetadata(2, meta);
+		meta = meta & 3; //remove any puddle orientation info
+		if(side==NetherBlocks.sideBottom || side==NetherBlocks.sideTop)
+			return blocksList[NetherStuffs.NetherWoodBlockId].getBlockTextureFromSideAndMetadata(side, meta);
+		else
+			return blocksList[NetherStuffs.NetherWoodBlockId].getBlockTextureFromSideAndMetadata(NetherBlocks.sideEast, meta);
 	};
 	
 	@Override
