@@ -5,17 +5,17 @@ import java.io.File;
 import org.objectweb.asm.util.ASMifier;
 import org.objectweb.asm.util.Textifier;
 
-import codechicken.core.asm.ObfuscationManager.MethodMapping;
+import codechicken.core.asm.ObfuscationMappings.DescriptorMapping;
 
 public class ASMDev
 {
     public static void print()
     {
         MethodASMifier.printMethod(
-                new MethodMapping("codechicken.core.asm.ASMDev", "test", "(I)V"), 
+                new DescriptorMapping("codechicken/core/asm/ASMDev", "test", "(I)V"), 
                 new Textifier(), new File("asm/testA.txt"));
         MethodASMifier.printMethod(
-                new MethodMapping("codechicken.core.asm.ASMDev", "test", "(I)V"), 
+                new DescriptorMapping("codechicken/core/asm/ASMDev", "test", "(I)V"), 
                 new ASMifier(), new File("asm/test.txt"));
     }
     

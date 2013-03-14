@@ -7,6 +7,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 
 import codechicken.nei.NEIChestGuiHandler;
 import codechicken.nei.NEICreativeGuiHandler;
+import codechicken.nei.NEIDummySlotHandler;
 
 public class GuiInfo
 {	
@@ -16,6 +17,7 @@ public class GuiInfo
 	{
 		API.registerNEIGuiHandler(new NEICreativeGuiHandler());
 		API.registerNEIGuiHandler(new NEIChestGuiHandler());
+		API.registerNEIGuiHandler(new NEIDummySlotHandler());
 	}
 
 	public static void clearGuiHandlers()

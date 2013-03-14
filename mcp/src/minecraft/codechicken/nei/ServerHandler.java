@@ -3,7 +3,6 @@ package codechicken.nei;
 import java.util.EnumSet;
 import java.util.List;
 
-import codechicken.core.PacketCustom;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +11,7 @@ import net.minecraft.world.World;
 
 import codechicken.core.CommonUtils;
 import codechicken.core.ServerUtils;
+import codechicken.core.packet.PacketCustom;
 import cpw.mods.fml.common.IPlayerTracker;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -27,7 +27,7 @@ public class ServerHandler implements ITickHandler, IPlayerTracker
 	{
 		instance = new ServerHandler();
 		
-		PacketCustom.assignHandler(ClientPacketHandler.channel, 0, 255, new ServerPacketHandler());	
+		PacketCustom.assignHandler(NEICPH.channel, 0, 255, new NEISPH());	
 		TickRegistry.registerTickHandler(instance, Side.SERVER);
 		GameRegistry.registerPlayerTracker(instance);
 	}
@@ -60,7 +60,7 @@ public class ServerHandler implements ITickHandler, IPlayerTracker
 		boolean isOp = ServerUtils.isPlayerOP(save.username);
 		if(isOp != save.wasOp)
 		{
-			ServerPacketHandler.sendHasServerSideTo(player);
+			NEISPH.sendHasServerSideTo(player);
 			save.wasOp = isOp;
 		}
 	}
@@ -91,7 +91,7 @@ public class ServerHandler implements ITickHandler, IPlayerTracker
 			if(!NEIServerUtils.canItemFitInInventory(player, item.getEntityItem()))continue;
 			if(item.delayBeforeCanPickup == 0)
 			{
-				ServerPacketHandler.sendAddMagneticItemTo(player, item);
+				NEISPH.sendAddMagneticItemTo(player, item);
 			}
 			
 			double dx = player.posX - item.posX;
@@ -164,7 +164,7 @@ public class ServerHandler implements ITickHandler, IPlayerTracker
 	public void onPlayerLogin(EntityPlayer player) 
 	{
 		NEIServerConfig.loadPlayer((EntityPlayer) player);
-		ServerPacketHandler.sendHasServerSideTo((EntityPlayerMP) player);
+		NEISPH.sendHasServerSideTo((EntityPlayerMP) player);
 	}
 
 	@Override
@@ -176,12 +176,12 @@ public class ServerHandler implements ITickHandler, IPlayerTracker
 	@Override
 	public void onPlayerChangedDimension(EntityPlayer player) 
 	{
-		ServerPacketHandler.sendHasServerSideTo((EntityPlayerMP) player);
+		NEISPH.sendHasServerSideTo((EntityPlayerMP) player);
 	}
 
 	@Override
 	public void onPlayerRespawn(EntityPlayer player)
 	{
-		ServerPacketHandler.sendHasServerSideTo((EntityPlayerMP) player);		
+		NEISPH.sendHasServerSideTo((EntityPlayerMP) player);		
 	}
 }

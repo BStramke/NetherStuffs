@@ -49,9 +49,6 @@ public abstract class WorldExtension
     
     protected final void unloadChunk(Chunk chunk)
     {
-        if(world.isRemote && !chunkMap.containsKey(chunk))//damn pre chunks
-            return;
-        
         chunkMap.get(chunk).unload();
     }
     
@@ -77,11 +74,18 @@ public abstract class WorldExtension
 
     protected final void unwatchChunk(Chunk chunk, EntityPlayerMP player)
     {
-        chunkMap.get(chunk).unwatchPlayer(player);
+        ChunkExtension extension = chunkMap.get(chunk);
+        if(extension != null)
+            extension.unwatchPlayer(player);
     }
 
     protected final void sendChunkUpdates(Chunk chunk)
     {
         chunkMap.get(chunk).sendUpdatePackets();
+    }
+
+    public boolean containsChunk(Chunk chunk)
+    {
+        return chunkMap.containsKey(chunk);
     }
 }

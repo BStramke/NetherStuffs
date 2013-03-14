@@ -23,6 +23,6 @@ public class OffsetPositioner implements IStackPositioner
 		return ai;
 	}
 	
-	int offsetx;
-	int offsety;	
+	public int offsetx;
+	public int offsety;	
 }

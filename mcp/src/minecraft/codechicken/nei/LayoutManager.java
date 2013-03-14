@@ -89,10 +89,10 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 	        gui.guiLeft = (gui.width - gui.xSize) / 2;
 	        gui.guiTop = (gui.height - gui.ySize) / 2;
 	        
-	        if(gui instanceof GuiContainerCreative && gui.controlList.size() > 0)
+	        if(gui instanceof GuiContainerCreative && gui.buttonList.size() > 0)
 	        {
-	        	GuiButton button1 = (GuiButton)gui.controlList.get(0);
-	        	GuiButton button2 = (GuiButton)gui.controlList.get(1);
+	        	GuiButton button1 = (GuiButton)gui.buttonList.get(0);
+	        	GuiButton button2 = (GuiButton)gui.buttonList.get(1);
 	        	button1.xPosition = gui.guiLeft;
 	        	button2.xPosition = gui.guiLeft + gui.xSize - 20;
 	        }
@@ -120,7 +120,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         for(Widget widget : controlWidgets)
         {
         	widget.onGuiClick(mousex, mousey);
-        	if(widget.contains(mousex, mousey) && widget.handleClick(mousex, mousey, button))
+        	if(widget.contains(mousex, mousey) ? widget.handleClick(mousex, mousey, button) : widget.handleClickExt(mousex, mousey, button))
         		return true;
         }
         
@@ -190,7 +190,24 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             NEIClientConfig.setEnabled(false);
         }
     }
-
+	
+	@Override
+	public void onMouseDragged(GuiContainer gui, int mx, int my, int button, long heldTime)
+	{
+	    try
+        {
+            if(!NEIClientConfig.isEnabled() || NEIClientConfig.isHidden())
+                return;
+            for(Widget widget : controlWidgets)
+                widget.mouseDragged(mx, my, button, heldTime);
+        }
+        catch(Exception exception)
+        {
+            NEIClientUtils.reportException(exception);
+            NEIClientConfig.setEnabled(false);
+        }
+	}
+	
 	@Override
 	public ItemStack getStackUnderMouse(GuiContainer gui, int mousex, int mousey)
 	{
@@ -657,12 +674,12 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 	{
 		if(gui instanceof GuiContainerCreative && NEIClientConfig.invCreativeMode())
     	{
-			ClientPacketHandler.sendCreativeInv(true);
+			NEICPH.sendCreativeInv(true);
     		return true;
     	}
     	else if(gui instanceof GuiExtendedCreativeInv && !NEIClientConfig.invCreativeMode())
     	{
-    		ClientPacketHandler.sendCreativeInv(false);
+    		NEICPH.sendCreativeInv(false);
     		return true;
     	}
 		return false;
@@ -813,7 +830,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 		
 	public static void drawIcon(GuiContainer window, int x, int y, Image image)
     {
-        window.manager.bindTextureByName("/codechicken/nei/nei_sprites.png");
+        window.manager.bindTexture("/codechicken/nei/nei_sprites.png");
     	GL11.glColor4f(1, 1, 1, 1);
         GL11.glEnable(GL11.GL_BLEND); 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -849,7 +866,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     	int ty2 = ty + 20 - h2 - te;
     	int tx2 = 200 - w2 - te;
 
-    	manager.bindTextureByName("/gui/gui.png");	
+    	manager.bindTexture("/gui/gui.png");	
     	manager.drawTexturedModalRect(x , y , tx1, ty1, w1, h1);//top left
     	manager.drawTexturedModalRect(x , y2, tx1, ty2, w1, h2);//bottom left
         

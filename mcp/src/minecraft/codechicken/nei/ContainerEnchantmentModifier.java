@@ -178,7 +178,7 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
 		EnchantmentHash e = slotEnchantment.get(slot);
 		if(e.state == 2)
 		{
-			ClientPacketHandler.sendModifyEnchantment(e.enchantment.effectId, 0, false);
+			NEICPH.sendModifyEnchantment(e.enchantment.effectId, 0, false);
 			e.state = 0;
 		}
 		else if(e.state == 1)
@@ -187,7 +187,7 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
 		}
 		else
 		{
-			ClientPacketHandler.sendModifyEnchantment(e.enchantment.effectId, level, true);
+			NEICPH.sendModifyEnchantment(e.enchantment.effectId, level, true);
 			e.state = 2;
 		}
 		updateEnchantmentOptions();
@@ -294,7 +294,6 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
 
 	public void drawSlots(GuiEnchantmentModifier gui)
 	{
-        int texe = gui.mc.renderEngine.getTexture("/gui/enchant.png");
 		for(int slot = 0; slot < 3; slot++)
 		{
 			int shade = 0;
@@ -324,7 +323,7 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
 				}
 			}
 
-			gui.mc.renderEngine.bindTexture(texe);
+			gui.mc.renderEngine.func_98187_b("/gui/enchant.png");
 			GL11.glColor3f(1, 1, 1);
 			if(hasScrollBar())
 			{

@@ -36,7 +36,7 @@ import codechicken.nei.forge.IContainerTooltipHandler;
 public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageHandler
 {
 	/**
-	 * So this Recipe Handler runs on this internal class
+	 * This Recipe Handler runs on this internal class
 	 * Fill the recipe array with subclasses of this to make transforming the different types of recipes out there into a nice format for NEI a much easier job.
 	 */
 	public abstract class CachedRecipe
@@ -242,7 +242,8 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
 		
 		private boolean transferRect(GuiContainer gui, boolean usage)
 		{
-			return TemplateRecipeHandler.transferRect(gui, guiMap.get(gui.getClass()), 5, 11, usage);
+		    int[] offset = RecipeInfo.getGuiOffset(gui);
+			return TemplateRecipeHandler.transferRect(gui, guiMap.get(gui.getClass()), offset[0], offset[1], usage);
 		}
 
 		@Override
@@ -292,6 +293,11 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
 		public List<String> handleItemTooltip(GuiContainer gui, ItemStack itemstack, List<String> currenttip)
 		{
 			return currenttip;
+		}
+		
+		@Override
+		public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime)
+		{
 		}
 	}
 	
@@ -504,7 +510,7 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
 	public void drawBackground(GuiContainerManager gui, int recipe)
 	{
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        gui.bindTextureByName(getGuiTexture());
+        gui.bindTexture(getGuiTexture());
         gui.drawTexturedModalRect(0, 0, 5, 11, 166, 65);
 	}
 	
@@ -512,7 +518,7 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_LIGHTING);
-        gui.bindTextureByName(getGuiTexture());
+        gui.bindTexture(getGuiTexture());
         drawExtras(gui, recipe);
 	}
 	

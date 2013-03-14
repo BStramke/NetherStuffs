@@ -99,7 +99,8 @@ public class NEIController implements IContainerSlotClickHandler
     		return true;
         }
     	
-    	if(NEIClientUtils.safeKeyDown(NEIClientUtils.mc().gameSettings.keyBindDrop.keyCode) && slotIndex >= 0)
+    	//TODO: replace with shift+Q
+    	/*if(NEIClientUtils.safeKeyDown(NEIClientUtils.mc().gameSettings.keyBindDrop.keyCode) && slotIndex >= 0)
     	{
     		if(button == 0 && NEIClientUtils.shiftKey())
     		{
@@ -114,7 +115,7 @@ public class NEIController implements IContainerSlotClickHandler
         		fastTransferManager.clickSlot(gui, slotIndex);
     		}
     		return true;
-    	}
+    	}*/
     	
     	return false;
     }
@@ -204,11 +205,11 @@ public class NEIController implements IContainerSlotClickHandler
 		{			
 			if(i > 0)
 			{
-				fastTransferManager.transferItem(manager.window, mouseover.slotNumber);
+				//fastTransferManager.transferItem(manager.window, mouseover.slotNumber);
 			}
 			else
 			{
-				fastTransferManager.retrieveItem(manager.window, mouseover.slotNumber);
+				//fastTransferManager.retrieveItem(manager.window, mouseover.slotNumber);
 			}
 			return true;
 		}
@@ -223,12 +224,12 @@ public class NEIController implements IContainerSlotClickHandler
 			{
 				if(inventory.currentItem == selectedItem+1 || (inventory.currentItem == 0 && selectedItem == 8))//foward
 				{
-		    		ClientPacketHandler.sendCreativeScroll(1);
+		    		NEICPH.sendCreativeScroll(1);
 					inventory.currentItem = selectedItem;
 				}
 				else if(inventory.currentItem == selectedItem-1 || (inventory.currentItem == 8 && selectedItem == 0))
 				{
-		    		ClientPacketHandler.sendCreativeScroll(-1);
+		    		NEICPH.sendCreativeScroll(-1);
 					inventory.currentItem = selectedItem;
 				}
 			}

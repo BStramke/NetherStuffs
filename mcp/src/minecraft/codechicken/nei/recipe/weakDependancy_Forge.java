@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import codechicken.core.ReflectionManager;
+import codechicken.nei.WorldOverlayRenderer;
 import codechicken.nei.SpawnerRenderer;
 import codechicken.nei.recipe.ShapedRecipeHandler.CachedShapedRecipe;
 import codechicken.nei.recipe.ShapelessRecipeHandler.CachedShapelessRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -81,5 +83,9 @@ public class weakDependancy_Forge
 		
 		return handler.new CachedShapelessRecipe(items, recipe.getRecipeOutput());
 	}
-
+	
+	public static void load()
+	{
+	    MinecraftForge.EVENT_BUS.register(new WorldOverlayRenderer());
+	}
 }

@@ -5,12 +5,21 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
 public class InventoryCopy implements IInventory
-{
+{    
+    public boolean[] accessible;
+    public ItemStack[] items;
+    public IInventory inv;
+    
     public InventoryCopy(IInventory inv)
     {
         items = new ItemStack[inv.getSizeInventory()];
         accessible = new boolean[inv.getSizeInventory()];
-        
+        this.inv = inv;
+        update();
+    }
+    
+    public void update()
+    {        
         for(int i = 0; i < items.length; i++)
         {
             ItemStack stack = inv.getStackInSlot(i);
@@ -21,13 +30,20 @@ public class InventoryCopy implements IInventory
     
     public InventoryCopy open(InventoryRange access)
     {
+        if(access.lslot > accessible.length)
+        {
+            boolean[] l_accessable = new boolean[access.lslot];
+            ItemStack[] l_items = new ItemStack[access.lslot];
+            System.arraycopy(accessible, 0, l_accessable, 0, accessible.length);
+            System.arraycopy(items, 0, l_items, 0, items.length);
+            accessible = l_accessable;
+            items = l_items;
+        }
+
         for(int slot = access.fslot; slot < access.lslot; slot++)
             accessible[slot] = true;
         return this;
     }
-    
-    public boolean[] accessible;
-    public ItemStack[] items;
     
     @Override
     public int getSizeInventory()
@@ -90,5 +106,17 @@ public class InventoryCopy implements IInventory
     @Override
     public void onInventoryChanged()
     {
+    }
+    
+    @Override
+    public boolean func_94041_b(int i, ItemStack itemstack)
+    {
+        return inv.func_94041_b(i, itemstack);
+    }
+    
+    @Override
+    public boolean func_94042_c()
+    {
+        return true;
     }
 }

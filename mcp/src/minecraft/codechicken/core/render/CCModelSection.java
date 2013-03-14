@@ -1,9 +1,10 @@
 package codechicken.core.render;
 
-import codechicken.core.Quat;
-import codechicken.core.Vector3;
+import codechicken.core.vec.Quat;
+import codechicken.core.vec.Vector3;
 import net.minecraft.client.renderer.Tessellator;
 
+@Deprecated
 public class CCModelSection
 {
 	double textureWidth;

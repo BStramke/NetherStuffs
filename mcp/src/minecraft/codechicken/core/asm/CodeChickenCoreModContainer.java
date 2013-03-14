@@ -2,6 +2,7 @@ package codechicken.core.asm;
 
 import java.util.Arrays;
 
+import codechicken.core.internal.ClientTickHandler;
 import codechicken.packager.Packager;
 import codechicken.packager.SrcPackager;
 
@@ -12,9 +13,11 @@ import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
-@SrcPackager(getMappedDirectories = {"CodeChickenCore"}, getClasses = {""}, getName = "CodeChickenCore")
-@Packager(getBaseDirectories = {"CodeChickenCore"}, getClasses = {""}, getName = "CodeChickenCore", getVersion = "0.7.1.0")
+@SrcPackager()
+@Packager(getBaseDirectories = {"CodeChickenCore"}, getName = "CodeChickenCore", getVersion = "0.8.4")
 public class CodeChickenCoreModContainer extends DummyModContainer
 {
 	public CodeChickenCoreModContainer()
@@ -39,5 +42,6 @@ public class CodeChickenCoreModContainer extends DummyModContainer
 	@Subscribe
     public void init(FMLInitializationEvent event)
     {
+	    TickRegistry.registerTickHandler(new ClientTickHandler(), Side.CLIENT);
     }
 }

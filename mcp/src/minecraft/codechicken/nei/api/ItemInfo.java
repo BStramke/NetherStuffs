@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import codechicken.core.CommonUtils;
 import codechicken.core.featurehack.GameDataManipulator;
-import codechicken.nei.EnchantmentInputHandler;
+import codechicken.nei.PopupInputHandler;
 import codechicken.nei.InfiniteStackSizeHandler;
 import codechicken.nei.InfiniteToolHandler;
 import codechicken.nei.ItemHash;
@@ -126,7 +126,7 @@ public class ItemInfo
     private static void addInputHandlers()
 	{
 		GuiContainerManager.addInputHandler(new RecipeItemInputHandler());
-		GuiContainerManager.addInputHandler(new EnchantmentInputHandler());
+		GuiContainerManager.addInputHandler(new PopupInputHandler());
 	}
 
 	private static void addMobSpawnerItem(final World world)
@@ -184,7 +184,7 @@ public class ItemInfo
         API.hideItem(Block.cauldron.blockID);
         API.hideItem(Block.netherStalk.blockID);
         API.hideItem(Block.brewingStand.blockID);
-        API.hideItem(Block.stoneOvenActive.blockID);
+        API.hideItem(Block.furnaceBurning.blockID);
         API.hideItem(Block.redstoneLampActive.blockID);
         API.hideItem(Block.flowerPot.blockID);
         API.hideItem(Block.carrot.blockID);

@@ -60,7 +60,6 @@ public class RecipeItemInputHandler implements IContainerInputHandler
 	{
 		return false;
 	}
-
 	
 	@Override
 	public boolean mouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled)
@@ -68,9 +67,13 @@ public class RecipeItemInputHandler implements IContainerInputHandler
 		return false;
 	}
 	
-
 	@Override
 	public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled)
+	{
+	}
+	
+	@Override
+	public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime)
 	{
 	}
 }

@@ -43,7 +43,7 @@ public class ItemQuantityField extends TextField
 	}
 
 	@Override
-	public void onTextChange()
+	public void onTextChange(String oldText)
 	{
 		NEIClientConfig.setItemQuantity(intValue());
 	}

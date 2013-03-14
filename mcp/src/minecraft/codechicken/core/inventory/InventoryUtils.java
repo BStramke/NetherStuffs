@@ -2,10 +2,13 @@ package codechicken.core.inventory;
 
 import com.google.common.base.Objects;
 
-import codechicken.core.Vector3;
+import codechicken.core.vec.Vector3;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.InventoryLargeChest;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -13,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.ISpecialSlotInventory;
 
 public class InventoryUtils
 {
@@ -143,6 +147,31 @@ public class InventoryUtils
         return stack1.itemID == stack2.itemID && 
                 (stack1.getItemDamage() == stack2.getItemDamage() || stack1.getItemDamage() == -1 || stack2.getItemDamage() == -1 || stack1.getItem().isDamageable());
     }
+    
+    public static int getInsertableQuantity(IInventory inv, int fslot, int lslot, ItemStack stack)
+    {
+        int quantity = 0;
+        stack = copyStack(stack, Integer.MAX_VALUE);
+        for(int slot = fslot; slot < lslot; slot++)
+            quantity+=fitStackInSlot(inv, slot, stack);
+        
+        return quantity;
+    }
+    
+    public static int fitStackInSlot(IInventory inv, int slot, ItemStack stack)
+    {
+        ItemStack base = inv.getStackInSlot(slot);
+        if(!canStack(base, stack))
+            return 0;
+
+        int fit;
+        if(inv instanceof ISpecialSlotInventory)
+            fit = ((ISpecialSlotInventory)inv).getSlotAcceptedStackSize(slot, stack);
+        else
+            fit = base != null ? incrStackSize(base, inv.getInventoryStackLimit()-base.stackSize) : inv.getInventoryStackLimit();
+        
+        return Math.min(fit, stack.stackSize);
+    }
 
     public static boolean mergeItemStack(IInventory inv, int fslot, int lslot, ItemStack stack, boolean doMerge)
     {
@@ -155,24 +184,24 @@ public class InventoryUtils
             for(int slot = fslot; slot < lslot; slot++)
             {
                 ItemStack base = inv.getStackInSlot(slot);
+                int fit = fitStackInSlot(inv, slot, stack);
+                if(fit == 0)
+                    continue;
+                
                 if(base != null)
                 {
-                    int added = incrStackSize(base, stack);
-                    if(added == 0)
-                        continue;
-                    stack.stackSize-=added;
+                    stack.stackSize-=fit;
                     if(doMerge)
                     {
-                        base.stackSize+=added;
+                        base.stackSize+=fit;
                         inv.setInventorySlotContents(slot, base);
                     }
                 }
                 else if(pass == 1)
                 {
-                    int quantity = Math.min(inv.getInventoryStackLimit(), stack.stackSize);
                     if(doMerge)
-                        inv.setInventorySlotContents(slot, copyStack(stack, quantity));
-                    stack.stackSize-=quantity;
+                        inv.setInventorySlotContents(slot, copyStack(stack, fit));
+                    stack.stackSize-=fit;
                 }
                 if(stack.stackSize == 0)
                     return true;
@@ -217,6 +246,70 @@ public class InventoryUtils
 
     public static boolean canStack(ItemStack stack1, ItemStack stack2)
     {
-        return stack1 != null && stack2 != null && stack1.itemID == stack2.itemID && (!stack2.getHasSubtypes() || stack2.getItemDamage() == stack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack2, stack1);
+        return stack1 == null || stack2 == null || 
+                (stack1.itemID == stack2.itemID && 
+                (!stack2.getHasSubtypes() || stack2.getItemDamage() == stack1.getItemDamage()) && 
+                ItemStack.areItemStackTagsEqual(stack2, stack1));
+    }
+
+    public static void consumeItem(IInventory inv, int slot)
+    {
+        ItemStack stack = inv.getStackInSlot(slot);
+        Item item = stack.getItem();
+        if(item.hasContainerItem())
+        {
+            ItemStack container = item.getContainerItemStack(stack);
+            inv.setInventorySlotContents(slot, container);
+        }
+        else
+        {
+            inv.decrStackSize(slot, 1);
+        }
+    }
+
+    public static boolean inventoriesEqual(IInventory inv1, IInventory inv2)
+    {
+        if(inv1 == null || inv2 == null)
+            return inv1 == inv2;
+        
+        if(inv1 instanceof InventoryLargeChest)
+        {
+            if(!(inv2 instanceof InventoryLargeChest))
+                return false;
+            
+            InventoryLargeChest chest1 = (InventoryLargeChest) inv1;
+            InventoryLargeChest chest2 = (InventoryLargeChest) inv2;
+            return chest1.upperChest == chest2.upperChest && chest1.lowerChest == chest2.lowerChest;
+        }
+        
+        return inv1.equals(inv2);
+    }
+
+    public static int stackSize(IInventory inv, int slot)
+    {
+        ItemStack stack = inv.getStackInSlot(slot);
+        return stack == null ? 0 : stack.stackSize;
+    }
+    
+
+    public static ItemStack getRemovableStack(IInventory inv, int slot)
+    {
+        ItemStack stack = inv.getStackInSlot(slot);
+        if(stack == null)
+            return null;
+        if(inv instanceof ISpecialSlotInventory)
+            return copyStack(stack, ((ISpecialSlotInventory)inv).getSlotAvailableStackSize(slot));
+        else
+            return stack;
+    }
+
+    public static void dropOnClose(EntityPlayer player, IInventory inv)
+    {
+        for (int i = 0; i < inv.getSizeInventory(); i++)
+        {
+            ItemStack stack = inv.getStackInSlotOnClosing(i);
+            if (stack != null)
+                player.dropPlayerItem(stack);
+        }
     }
 }

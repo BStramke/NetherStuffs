@@ -9,7 +9,8 @@ public enum InterActionMap
 	HEAL(false),
 	DELETE(true),
 	MAGNET(true),
-	ENCHANT(true);
+	ENCHANT(true),
+	POTION(true);
 	
 	public boolean requiresSMPCounterpart;
 	
@@ -28,5 +29,5 @@ public enum InterActionMap
 		return name().toLowerCase();
 	}
 	
-	public static final int protocol = 4;
+	public static final int protocol = 5;
 }

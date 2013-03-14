@@ -22,7 +22,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 
 @SrcPackager(getName="NotEnoughItems", getClasses = {""}, getMappedDirectories = {"NEI"})
-@Packager(getName = "NotEnoughItems", getClasses = {""}, getBaseDirectories = {"NEI"}, getVersion = "1.4.5.1")
+@Packager(getName = "NotEnoughItems", getClasses = {""}, getBaseDirectories = {"NEI"}, getVersion = "1.5.2.0")
 public class NEIModContainer extends DummyModContainer
 {    
     public static LinkedList<IConfigureNEI> plugins = new LinkedList<IConfigureNEI>();
@@ -50,7 +50,7 @@ public class NEIModContainer extends DummyModContainer
         meta.authorList  = Arrays.asList("ChickenBones");
         meta.description = "Recipe Viewer, Inventory Manager, Item Spawner, Cheats and more.\n\247f\n";
         meta.url         = "http://www.minecraftforum.net/topic/909223-";
-        meta.credits     = "Alexandria";
+        meta.credits     = "Alexandria - Original Idea";
         
         if(plugins.size() == 0)
         {

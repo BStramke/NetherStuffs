@@ -51,12 +51,12 @@ public abstract class GuiRecipe extends GuiContainer implements IContainerClient
 		prevpage = new GuiNEIButton(3, width/2 + 57, (height+ySize)/2 - 18, 13, 12, ">");
 		overlay1 = new GuiNEIButton(4, width/2 + 65, (height-ySize)/2 + 63, 13, 12, "?");
 		overlay2 = new GuiNEIButton(5, width/2 + 65, (height-ySize)/2 + 128, 13, 12, "?");
-		controlList.add(nexttype);
-		controlList.add(prevtype);
-		controlList.add(nextpage);
-		controlList.add(prevpage);
-		controlList.add(overlay1);
-		controlList.add(overlay2);
+		buttonList.add(nexttype);
+		buttonList.add(prevtype);
+		buttonList.add(nextpage);
+		buttonList.add(prevpage);
+		buttonList.add(overlay1);
+		buttonList.add(overlay2);
 		
 		if(currenthandlers.size() == 1)
 		{
@@ -66,7 +66,7 @@ public abstract class GuiRecipe extends GuiContainer implements IContainerClient
 		refreshPage();
 	}
 	
-	protected void keyTyped(char c, int i)
+	public void keyTyped(char c, int i)
     {
 		if(i == 1)//esc
         {
@@ -283,9 +283,8 @@ public abstract class GuiRecipe extends GuiContainer implements IContainerClient
 	
 	protected void drawGuiContainerBackgroundLayer(float f, int mx, int my)
 	{
-		int texid = mc.renderEngine.getTexture("/codechicken/nei/recipebg.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.bindTexture(texid);
+        mc.renderEngine.func_98187_b("/codechicken/nei/recipebg.png");
         int j = (width - xSize) / 2;
         int k = (height - ySize) / 2;
         drawTexturedModalRect(j, k, 0, 0, xSize, ySize);

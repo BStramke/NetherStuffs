@@ -9,17 +9,17 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.util.Printer;
 import org.objectweb.asm.util.TraceMethodVisitor;
 
-import codechicken.core.asm.ObfuscationManager.MethodMapping;
+import codechicken.core.asm.ObfuscationMappings.DescriptorMapping;
 
 import static org.objectweb.asm.Opcodes.*;
 
 public class MethodASMifier extends ClassVisitor
 {
 	PrintWriter printWriter;
-	MethodMapping method;
+	DescriptorMapping method;
 	Printer asmifier;
 	
-	public MethodASMifier(MethodMapping method, Printer printer, PrintWriter printWriter)
+	public MethodASMifier(DescriptorMapping method, Printer printer, PrintWriter printWriter)
 	{
 		super(ASM4);
 		this.method = method;
@@ -30,7 +30,7 @@ public class MethodASMifier extends ClassVisitor
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions)
 	{
-		if(name.equals(method.name) && desc.equals(method.desc))
+		if(method.matches(name, desc))
 		{
 			Printer localPrinter = asmifier.visitMethod(access, name, desc, signature, exceptions);
 		    return new TraceMethodVisitor(null, localPrinter);
@@ -47,11 +47,11 @@ public class MethodASMifier extends ClassVisitor
 		super.visitEnd();
 	}
 	
-	public static void printMethod(MethodMapping method, Printer printer, File toFile)
+	public static void printMethod(DescriptorMapping method, Printer printer, File toFile)
 	{
 		try
 		{
-			printMethod(method, CodeChickenCorePlugin.cl.getClassBytes(method.owner), printer, toFile);
+			printMethod(method, CodeChickenCorePlugin.cl.getClassBytes(method.javaClass()), printer, toFile);
 		}
 		catch(Exception e)
 		{
@@ -59,7 +59,7 @@ public class MethodASMifier extends ClassVisitor
 		}
 	}	
 
-	public static void printMethod(MethodMapping method, byte[] bytes, Printer printer, File toFile)
+	public static void printMethod(DescriptorMapping method, byte[] bytes, Printer printer, File toFile)
 	{
 		try
 		{

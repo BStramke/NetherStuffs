@@ -6,8 +6,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import codechicken.core.asm.ObfuscationMappings.DescriptorMapping;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 
+@Deprecated
 public class ReflectionManager
 {
 	public static HashMap<Class<?>, Class<?>> primitiveWrappers = new HashMap<Class<?>, Class<?>>();

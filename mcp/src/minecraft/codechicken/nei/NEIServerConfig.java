@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import codechicken.core.PacketCustom;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.block.Block;
@@ -22,9 +21,10 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import codechicken.core.CommonUtils;
-import codechicken.core.ConfigFile;
-import codechicken.core.ConfigTag;
 import codechicken.core.ServerUtils;
+import codechicken.core.config.ConfigFile;
+import codechicken.core.config.ConfigTag;
+import codechicken.core.packet.PacketCustom;
 import codechicken.nei.api.ItemInfo;
 
 public class NEIServerConfig
@@ -91,7 +91,8 @@ public class NEIServerConfig
 		setDefaultFeature("heal");
 		setDefaultFeature("magnet");
 		setDefaultFeature("creative");
-		setDefaultFeature("enchant");
+        setDefaultFeature("enchant");
+        setDefaultFeature("potion");
 		setDefaultFeature("save-state");
 		setDefaultFeature("item");
 		setDefaultFeature("delete");

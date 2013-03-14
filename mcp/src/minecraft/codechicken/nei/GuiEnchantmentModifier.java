@@ -28,9 +28,8 @@ public class GuiEnchantmentModifier extends GuiContainer
 	
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
 	{
-		int k = mc.renderEngine.getTexture("/gui/enchant.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.bindTexture(k);
+        mc.renderEngine.func_98187_b("/gui/enchant.png");
         GL11.glTranslatef(guiLeft, guiTop, 0);
         drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
         
@@ -49,9 +48,9 @@ public class GuiEnchantmentModifier extends GuiContainer
 	{
 		super.initGui();
 		
-		controlList.add(new GuiNEIButton(0, width/2 - 78, height / 2 - 52, 12, 12, "<"));
-		controlList.add(new GuiNEIButton(1, width/2 - 44, height / 2 - 52, 12, 12, ">"));
-		controlList.add(new GuiNEIButton(2, width/2 - 80, height / 2 - 15, 50, 12, NEIClientConfig.validateEnchantments() ? "Locked" : "Unlocked"));
+		buttonList.add(new GuiNEIButton(0, width/2 - 78, height / 2 - 52, 12, 12, "<"));
+		buttonList.add(new GuiNEIButton(1, width/2 - 44, height / 2 - 52, 12, 12, ">"));
+		buttonList.add(new GuiNEIButton(2, width/2 - 80, height / 2 - 15, 50, 12, NEIClientConfig.validateEnchantments() ? "Locked" : "Unlocked"));
 	}
 	
 	protected void actionPerformed(GuiButton guibutton)
@@ -75,8 +74,8 @@ public class GuiEnchantmentModifier extends GuiContainer
 	private void changeLevel(int i)
 	{
 		container.level+=i;
-		((GuiButton)controlList.get(0)).enabled = container.level != 1;
-		((GuiButton)controlList.get(1)).enabled = container.level != 10;
+		((GuiButton)buttonList.get(0)).enabled = container.level != 1;
+		((GuiButton)buttonList.get(1)).enabled = container.level != 10;
 	}
 
 	protected void mouseClicked(int i, int j, int k)

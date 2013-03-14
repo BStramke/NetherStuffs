@@ -10,6 +10,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.storage.ISaveHandler;
@@ -251,60 +252,6 @@ public class CommonUtils
 		return "\247"+"0123456789abcdef".charAt(colour);
 	}
 
-	private static Field mystMapDimension;
-	static
-	{
-		try
-		{
-			mystMapDimension = MapData.class.getDeclaredField("dimension_myst");
-		}
-		catch(Exception e)
-		{}
-	}
-	
-	/**
-	 * Handles Mystcraft Dimensions :D
-	 */
-	public static int getDimension(MapData mapdata)
-	{		
-		if(mystMapDimension != null)
-		{
-			try
-			{
-				return mystMapDimension.getInt(mapdata);
-			}
-			catch(Exception e)
-			{
-				throw new RuntimeException(e);
-			}
-		}
-		else
-		{
-			return mapdata.dimension;
-		}
-	}
-
-	/**
-	 * Handles Mystcraft Dimensions :D
-	 */
-	public static void setDimension(MapData mapdata, int dimension)	
-	{	
-		if(mystMapDimension != null)
-		{
-			try
-			{
-				mystMapDimension.setInt(mapdata, dimension);
-			}
-			catch(Exception e)
-			{
-				throw new RuntimeException(e);
-			}
-		}
-		else
-		{
-			mapdata.dimension = (byte) dimension;
-		}
-	}
 	
 	public static boolean isBlock(int ID)
 	{
@@ -318,5 +265,17 @@ public class CommonUtils
                 return mc;
         
         return null;
+    }
+
+    public static ItemStack consumeItem(ItemStack stack)
+    {
+        if(stack.getItem().hasContainerItem())
+            return stack.getItem().getContainerItemStack(stack);
+        
+        if(stack.stackSize == 1)
+            return null;
+        
+        stack.stackSize--;        
+        return stack;
     }
 }

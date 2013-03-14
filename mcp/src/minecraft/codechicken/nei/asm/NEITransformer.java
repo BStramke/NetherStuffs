@@ -13,8 +13,8 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import codechicken.core.asm.ClassHeirachyManager;
 import codechicken.core.asm.ClassOverrider;
-import codechicken.core.asm.ObfuscationManager.ClassMapping;
-import codechicken.core.asm.ObfuscationManager.MethodMapping;
+import codechicken.core.asm.ObfuscationMappings.ClassMapping;
+import codechicken.core.asm.ObfuscationMappings.DescriptorMapping;
 import static org.objectweb.asm.Opcodes.*;
 import static org.objectweb.asm.ClassWriter.*;
 import static codechicken.core.asm.InstructionComparator.*;
@@ -27,18 +27,17 @@ public class NEITransformer implements IClassTransformer
     /**
      * Adds super.updateScreen() to non implementing GuiContainer subclasses
      */
-    @SuppressWarnings("unchecked")
     public byte[] transformer001(String name, byte[] bytes)
     {
-        ClassMapping classmap = new ClassMapping("net.minecraft.client.gui.inventory.GuiContainer");
-        if(ClassHeirachyManager.classExtends(name, classmap.classname, bytes))
+        ClassMapping classmap = new ClassMapping("net/minecraft/client/gui/inventory/GuiContainer");
+        if(ClassHeirachyManager.classExtends(name, classmap.javaClass(), bytes))
         {
             ClassNode node = new ClassNode();
             ClassReader reader = new ClassReader(bytes);
             reader.accept(node, 0);
 
-            MethodMapping methodmap = new MethodMapping("net.minecraft.client.gui.GuiScreen", "updateScreen", "()V");
-            MethodMapping supermap = new MethodMapping(node.superName, methodmap);
+            DescriptorMapping methodmap = new DescriptorMapping("net/minecraft/client/gui/GuiScreen", "updateScreen", "()V");
+            DescriptorMapping supermap = new DescriptorMapping(node.superName, methodmap);
 
             InsnList supercall = new InsnList();
             supercall.add(new VarInsnNode(ALOAD, 0));
@@ -52,7 +51,7 @@ public class NEITransformer implements IClassTransformer
                     if(!insnListMatches(importantNodeList, supercall, 0))
                     {
                         methodnode.instructions.insertBefore(methodnode.instructions.getFirst(), supercall);
-                        System.out.println("Inserted super call into " + name + "." + supermap.name);
+                        System.out.println("Inserted super call into " + name + "." + supermap.s_name);
                     }
                 }
             }
@@ -69,15 +68,15 @@ public class NEITransformer implements IClassTransformer
      */
     public byte[] transformer002(String name, byte[] bytes)
     {
-        ClassMapping classmap = new ClassMapping("net.minecraft.block.BlockMobSpawner");
-        if(name.equals(classmap.classname))
+        ClassMapping classmap = new ClassMapping("net/minecraft/block/BlockMobSpawner");
+        if(classmap.isClass(name))
         {
             ClassNode node = new ClassNode();
             ClassReader reader = new ClassReader(bytes);
             reader.accept(node, 0);
 
-            MethodMapping methodmap = new MethodMapping("net.minecraft.block.Block", "onBlockPlacedBy", "(Lnet/minecraft/world/World;IIILnet/minecraft/entity/EntityLiving;)V");
-            MethodNode methodnode = (MethodNode) node.visitMethod(ACC_PUBLIC, methodmap.name, methodmap.desc, null, null);
+            DescriptorMapping methodmap = new DescriptorMapping("net/minecraft/block/Block", "onBlockPlacedBy", "(Lnet/minecraft/world/World;IIILnet/minecraft/entity/EntityLiving;Lnet/minecraft/item/ItemStack;)V");
+            MethodNode methodnode = (MethodNode) node.visitMethod(ACC_PUBLIC, methodmap.s_name, methodmap.s_desc, null, null);
 
             methodnode.instructions.add(new VarInsnNode(ILOAD, 2));//param2
             methodnode.instructions.add(new FieldInsnNode(PUTSTATIC, "codechicken/nei/ItemMobSpawner", "placedX", "I"));
@@ -102,9 +101,8 @@ public class NEITransformer implements IClassTransformer
     @SuppressWarnings("unchecked")
     public byte[] transformer003(String name, byte[] bytes)
     {
-        ClassMapping classmap = new ClassMapping("net.minecraft.inventory.Slot");
-        MethodMapping methodmap = new MethodMapping(classmap.classname, "getBackgroundIconTexture", "()Ljava/lang/String;");
-        if(name.equals(methodmap.owner))
+        DescriptorMapping methodmap = new DescriptorMapping("net/minecraft/inventory/Slot", "getBackgroundIconTexture", "()Ljava/lang/String;");
+        if(methodmap.isClass(name))
         {
             ClassNode node = new ClassNode();
             ClassReader reader = new ClassReader(bytes);
@@ -134,14 +132,14 @@ public class NEITransformer implements IClassTransformer
 
                 bytes = cw.toByteArray();
 
-                System.out.println("Generated default "+classmap.classname+".getBackgroundIconTexture().");
+                System.out.println("Generated default "+methodmap.s_owner+".getBackgroundIconTexture().");
             }
         }
         return bytes;
     }
 
     @Override
-    public byte[] transform(String name, byte[] bytes)
+    public byte[] transform(String name, String tname, byte[] bytes)
     {
         try
         {
@@ -150,7 +148,7 @@ public class NEITransformer implements IClassTransformer
                 bytes = transformer001(name, bytes);
                 bytes = transformer002(name, bytes);
                 bytes = transformer003(name, bytes);
-                bytes = ClassOverrider.overrideBytes(name, bytes, new ClassMapping("net.minecraft.client.gui.inventory.GuiContainer"), NEICorePlugin.location);
+                bytes = ClassOverrider.overrideBytes(name, bytes, new ClassMapping("net/minecraft/client/gui/inventory/GuiContainer"), NEICorePlugin.location);
             }
         }
         catch(Exception e)

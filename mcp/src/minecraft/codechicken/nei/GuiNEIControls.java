@@ -37,7 +37,7 @@ public class GuiNEIControls extends GuiNEIOptions
 	{
 		for(int i = 0; i < keyBinds.size(); i++)
 		{
-			controlList.add(new GuiSmallButton(i, (width / 2 - 155) + (i % 2) * 160, height / 6 + 24 * (i >> 1), 70, 20, ""));
+			buttonList.add(new GuiSmallButton(i, (width / 2 - 155) + (i % 2) * 160, height / 6 + 24 * (i >> 1), 70, 20, ""));
 		}
 		super.initGui();
 	}
@@ -67,7 +67,7 @@ public class GuiNEIControls extends GuiNEIOptions
 	{
 		for(int i = 0; i < keyBinds.size(); i++)
 		{
-			GuiButton button = (GuiButton)controlList.get(i);
+			GuiButton button = (GuiButton)buttonList.get(i);
 			String name = keyBinds.get(i).ident;
 			int keyCode = NEIClientConfig.getKeyBinding(name);
 			
@@ -99,7 +99,7 @@ public class GuiNEIControls extends GuiNEIOptions
 	    }
 	}
 	
-	protected void keyTyped(char keyChar, int keyID)
+	public void keyTyped(char keyChar, int keyID)
 	{
 		if(focusedButton >= 0 && keyID != 1)
 		{

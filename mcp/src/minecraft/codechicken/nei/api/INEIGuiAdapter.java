@@ -27,5 +27,11 @@ public class INEIGuiAdapter implements INEIGuiHandler
 	public List<TaggedInventoryArea> getInventoryAreas(GuiContainer gui)
 	{
 		return null;
-	}	
+	}
+
+    @Override
+    public boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button)
+    {
+        return false;
+    }	
 }

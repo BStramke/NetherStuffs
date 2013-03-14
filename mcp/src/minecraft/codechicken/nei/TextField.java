@@ -66,8 +66,9 @@ public abstract class TextField extends Widget
 	{
 		if(button == 1)
 		{
+		    String oldText = text;
 			text = "";
-			onTextChange();
+			onTextChange(oldText);
 		}
 		setFocus(true);
 		return true;
@@ -78,18 +79,21 @@ public abstract class TextField extends Widget
 		if(LayoutManager.getInputFocused() != this)
 			return false;
 		
+		String oldText = text;
+		
 		if(keyID == Keyboard.KEY_BACK)
 		{
 			if(text.length() > 0)
 			{
 				text = text.substring(0, text.length() - 1);
-				onTextChange();
+				onTextChange(oldText);
 				backdowntime = System.currentTimeMillis();
 			}
 		}
 		else if(keyID == Keyboard.KEY_RETURN || keyID == Keyboard.KEY_ESCAPE)
 		{
 			setFocus(false);
+			onExit();
 		}	
 		else if(keyChar == 22)//paste
 		{
@@ -102,18 +106,22 @@ public abstract class TextField extends Widget
 			if(isValid(text + pastestring))
 			{
 				text = text + pastestring;
-				onTextChange();
+				onTextChange(oldText);
 			}			
 		}
 		else if(isValid(text+keyChar)) 
 		{
 			text = text+keyChar;
-			onTextChange();
+			onTextChange(oldText);
 		}
 		return true;
 	}
 	
-	public abstract void onTextChange();
+	public void onExit()
+    {
+    }
+
+    public abstract void onTextChange(String oldText);
 
 	public boolean isValid(String string)
 	{
@@ -129,8 +137,9 @@ public abstract class TextField extends Widget
 			{
 				if(System.currentTimeMillis() - backdowntime > 200 / (1+backs * 0.3F))
 				{
+		            String oldText = text;
 					text = text.substring(0, text.length() - 1);
-					onTextChange();
+					onTextChange(oldText);
 					backdowntime = System.currentTimeMillis();
 					backs++;
 				}
@@ -145,8 +154,9 @@ public abstract class TextField extends Widget
 	
 	public void setText(String s)
 	{
+        String oldText = text;
 		text = s;
-		onTextChange();
+		onTextChange(oldText);
 	}
 	
 	private int getMaxTextLength()

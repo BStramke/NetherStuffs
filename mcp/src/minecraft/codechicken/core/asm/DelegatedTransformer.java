@@ -4,12 +4,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Stack;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
+
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.Opcodes;
 
 import cpw.mods.fml.relauncher.IClassTransformer;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
@@ -37,10 +43,10 @@ public class DelegatedTransformer implements IClassTransformer
     }
     
     @Override
-    public byte[] transform(String name, byte[] bytes)
+    public byte[] transform(String name, String tname, byte[] bytes)
     {
         for(IClassTransformer trans : delegatedTransformers)
-            bytes = trans.transform(name, bytes);
+            bytes = trans.transform(name, tname, bytes);
         return bytes;
     }
 
@@ -52,29 +58,85 @@ public class DelegatedTransformer implements IClassTransformer
             bytes = CodeChickenCorePlugin.cl.getClassBytes(transformer);
             
             if(bytes == null)
-            {            
+            {
                 String resourceName = transformer.replace('.', '/')+".class";
                 ZipEntry entry = jar.getEntry(resourceName);
                 if(entry == null)
                     throw new Exception("Failed to add transformer: "+transformer+". Entry not found in jar file "+jarFile.getName());
                 
-                bytes = readFully(jar.getInputStream(entry));                
+                bytes = readFully(jar.getInputStream(entry));
             }
             
-            Class<?> clazz = (Class<?>) m_defineClass.invoke(CodeChickenCorePlugin.cl, transformer, bytes, 0, bytes.length);            
-            ((Map<String, Class>)f_cachedClasses.get(CodeChickenCorePlugin.cl)).put(transformer, clazz);
+            defineDependancies(bytes, jar, jarFile);
+            Class<?> clazz = defineClass(transformer, bytes);
             
             if(!IClassTransformer.class.isAssignableFrom(clazz))
                 throw new Exception("Failed to add transformer: "+transformer+" is not an instance of IClassTransformer");
-            delegatedTransformers.add((IClassTransformer) clazz.newInstance());
+            
+            IClassTransformer classTransformer;
+            try
+            {
+                classTransformer = (IClassTransformer) clazz.getDeclaredConstructor(File.class).newInstance(jarFile);
+            }
+            catch(NoSuchMethodException nsme)
+            {
+                classTransformer = (IClassTransformer) clazz.newInstance();
+            }
+            delegatedTransformers.add(classTransformer);
         }
         catch(Exception e)
         {
             e.printStackTrace();
-        }
-        
+        }        
     }
     
+    private static void defineDependancies(byte[] bytes, JarFile jar, File jarFile) throws Exception
+    {
+        defineDependancies(bytes, jar, jarFile, new Stack<String>());
+    }
+
+    private static void defineDependancies(byte[] bytes, JarFile jar, File jarFile, Stack<String> depStack) throws Exception
+    {        
+        ClassReader reader = new ClassReader(bytes);
+        DependancyLister lister = new DependancyLister(Opcodes.ASM4);
+        reader.accept(lister, 0);
+        
+        depStack.push(reader.getClassName());
+        
+        for(String dependancy : lister.getDependancies())
+        {
+            if(depStack.contains(dependancy))
+                continue;
+            
+            try
+            {
+                CodeChickenCorePlugin.cl.loadClass(dependancy.replace('/', '.'));
+            }
+            catch(ClassNotFoundException cnfe)
+            {
+                ZipEntry entry = jar.getEntry(dependancy+".class");
+                if(entry == null)
+                    throw new Exception("Dependancy "+dependancy+" not found in jar file "+jarFile.getName());
+                
+                byte[] depbytes = readFully(jar.getInputStream(entry));
+                defineDependancies(depbytes, jar, jarFile, depStack);
+                
+                System.out.println("Defining dependancy: "+dependancy);
+                
+                defineClass(dependancy.replace('/', '.'), depbytes);
+            }
+        }
+        
+        depStack.pop();
+    }
+
+    private static Class<?> defineClass(String classname, byte[] bytes) throws Exception
+    {
+        Class<?> clazz = (Class<?>) m_defineClass.invoke(CodeChickenCorePlugin.cl, classname, bytes, 0, bytes.length);            
+        ((Map<String, Class>)f_cachedClasses.get(CodeChickenCorePlugin.cl)).put(classname, clazz);
+        return clazz;
+    }
+
     public static byte[] readFully(InputStream stream) throws IOException
     {
         ByteArrayOutputStream bos = new ByteArrayOutputStream(stream.available());

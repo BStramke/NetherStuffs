@@ -89,7 +89,7 @@ public class NEIClientUtils extends NEIServerUtils
 	
 	public static void deleteEverything()
 	{
-		ClientPacketHandler.sendDeleteAllItems();
+		NEICPH.sendDeleteAllItems();
 	}
     
     public static void deleteItemsOfType(ItemStack itemstack)
@@ -118,7 +118,7 @@ public class NEIClientUtils extends NEIServerUtils
 
 	public static void setSlotContents(int slot, ItemStack item, boolean containerInv)
 	{
-		ClientPacketHandler.sendSetSlot(slot, item, containerInv);
+		NEICPH.sendSetSlot(slot, item, containerInv);
 		
 		if(slot == -999)
 		{
@@ -207,7 +207,7 @@ public class NEIClientUtils extends NEIServerUtils
 	        		if(slotNo == -1)
 	        			break;
 	        		
-	        		Slot slot = gui.inventorySlots.getSlot(slotNo);
+	        		Slot slot = gui.inventorySlots.getSlot(slotNo);  
 	        		int current = (slot.getHasStack() ? slot.getStack().stackSize : 0);
 	        		qty = Math.min(qty, slot.getSlotStackLimit() - current);
 	        		
@@ -216,11 +216,11 @@ public class NEIClientUtils extends NEIServerUtils
 	                setSlotContents(slotNo, newStack, true);
 	                given+=qty;
 	        	}
-    			ClientPacketHandler.sendSpawnItem(copyStack(typestack, given), infinite, false);
+    			NEICPH.sendSpawnItem(copyStack(typestack, given), infinite, false);
     		}
     		else
     		{    		
-    			ClientPacketHandler.sendSpawnItem(itemstack1, infinite, true);
+    			NEICPH.sendSpawnItem(itemstack1, infinite, true);
     		}
     	}
     	else
@@ -321,7 +321,7 @@ public class NEIClientUtils extends NEIServerUtils
 		int mode = getCreativeMode();
 		if(NEIClientConfig.hasSMPCounterPart())
 		{
-			ClientPacketHandler.sendCycleCreativeMode();
+			NEICPH.sendCycleCreativeMode();
 		}
 		else
 		{
@@ -346,7 +346,7 @@ public class NEIClientUtils extends NEIServerUtils
         
 		if(NEIClientConfig.hasSMPCounterPart())
 		{
-			ClientPacketHandler.sendSetTime(hour);
+			NEICPH.sendSetTime(hour);
 		}
 		else
 		{	        
@@ -378,7 +378,7 @@ public class NEIClientUtils extends NEIServerUtils
     {
 		if(NEIClientConfig.hasSMPCounterPart())
 		{
-			ClientPacketHandler.sendToggleRain();
+			NEICPH.sendToggleRain();
 		}
 		else
 		{
@@ -390,7 +390,7 @@ public class NEIClientUtils extends NEIServerUtils
 	{
 		if(NEIClientConfig.hasSMPCounterPart())
 		{
-			ClientPacketHandler.sendHeal();
+			NEICPH.sendHeal();
 		}
 		else
 		{
@@ -402,7 +402,7 @@ public class NEIClientUtils extends NEIServerUtils
     {
 		if(NEIClientConfig.hasSMPCounterPart())
 		{
-			ClientPacketHandler.sendToggleMagnetMode();
+			NEICPH.sendToggleMagnetMode();
 		}
     }
 		
@@ -469,7 +469,7 @@ public class NEIClientUtils extends NEIServerUtils
 						continue;
 					
 					Block block = Block.blocksList[i];
-					String name = block.getBlockName();
+					String name = block.getUnlocalizedName();
 					if(name == null)
 						name = block.getClass().getCanonicalName();
 					
@@ -481,7 +481,7 @@ public class NEIClientUtils extends NEIServerUtils
 						continue;
 					
 					Item item = Item.itemsList[i];
-					String name = item.getItemName();
+					String name = item.getUnlocalizedName();
 					if(name == null)
 						name = item.getClass().getCanonicalName();
 					

@@ -113,5 +113,17 @@ public class ExtendedCreativeInv implements IInventory
 	public void closeChest()
 	{
 	}
+	
+	@Override
+	public boolean func_94041_b(int slot, ItemStack stack)
+	{
+	    return true;
+	}
+	
+	@Override
+	public boolean func_94042_c()
+	{
+	    return true;
+	}
 
 }

@@ -150,7 +150,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler
 	public void drawForegrounda(GuiContainerManager gui, int recipe)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        gui.bindTextureByName("/gui/alchemy.png");
+        gui.bindTexture("/gui/alchemy.png");
         
         int t = (cycleticks % 120) / 4;
         gui.drawTexturedModalRect(92, 5, 176, 0, 8, t + 1);

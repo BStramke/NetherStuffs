@@ -11,6 +11,10 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import codechicken.core.ClientUtils;
+import codechicken.core.render.TextureUtils;
 
 public class SpawnerRenderer implements IItemRenderer
 {
@@ -34,6 +38,7 @@ public class SpawnerRenderer implements IItemRenderer
 		{
 			World world = NEIClientUtils.mc().theWorld;
 			ItemMobSpawner.loadSpawners(world);
+            TextureUtils.bindTexture("/terrain.png");
 			render.renderBlockAsItem(Block.mobSpawner, 0, 1F);
 			GL11.glPushMatrix();
 	        
@@ -46,7 +51,7 @@ public class SpawnerRenderer implements IItemRenderer
 	            {
 	            	f1 = 0.1F;
 	            }
-	            GL11.glRotatef(world.getWorldTime()*10, 0.0F, 1.0F, 0.0F);
+	            GL11.glRotatef((float) (ClientUtils.getRenderTime()*10), 0.0F, 1.0F, 0.0F);
 	            GL11.glRotatef(-20F, 1.0F, 0.0F, 0.0F);
 	            GL11.glTranslatef(0.0F, -0.4F, 0.0F);
 	            GL11.glScalef(f1, f1, f1);
@@ -55,9 +60,9 @@ public class SpawnerRenderer implements IItemRenderer
 	        }
 	        GL11.glPopMatrix();
 	
-	        GL11.glEnable(32826 /*GL_RESCALE_NORMAL_EXT*/);
+	        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 	        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-	        GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+	        GL11.glDisable(GL11.GL_TEXTURE_2D);
 	        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
 		}
 		catch(Exception e)

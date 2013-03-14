@@ -5,10 +5,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import org.objectweb.asm.tree.ClassNode;
+
+import codechicken.core.asm.ASMHelper;
+import codechicken.core.asm.CodeChickenCorePlugin;
 
 import com.google.common.collect.ImmutableList;
 
@@ -21,20 +27,27 @@ import cpw.mods.fml.relauncher.RelaunchLibraryManager;
 public class ClassDiscoverer
 {
 	public IStringMatcher matcher;
-	public Class<?>[] superclasses;
+	public String[] superclasses;
 	public ArrayList<Class<?>> classes;
 	public ModClassLoader modClassLoader;
 	
 	public ClassDiscoverer(IStringMatcher matcher, Class<?>... superclasses) 
 	{
 		this.matcher = matcher;
-		this.superclasses = superclasses;
+		this.superclasses = new String[superclasses.length];
+		for(int i = 0; i < superclasses.length; i++)
+		    this.superclasses[i] = superclasses[i].getName().replace('.', '/');
 		
 		classes = new ArrayList<Class<?>>();
 		modClassLoader = (ModClassLoader)Loader.instance().getModClassLoader();
 	}	
 	
-	public ArrayList<Class<?>> findClasses()
+	public ClassDiscoverer(Class<?>... superclasses)
+    {
+        this(new IStringMatcher(){public boolean matches(String test){return true;}}, superclasses);
+    }
+
+    public ArrayList<Class<?>> findClasses()
 	{		
         try
 		{
@@ -46,27 +59,45 @@ public class ClassDiscoverer
 		}
         return classes;
 	}
+    
+    private void checkAddClass(String resource)
+    {
+        try
+        {
+            String classname = resource.replace(".class", "").replace("\\", ".").replace("/", ".");
+            byte[] bytes = CodeChickenCorePlugin.cl.getClassBytes(classname);     
+            if(bytes == null)
+                return;
+            
+            ClassNode cnode = ASMHelper.createClassNode(bytes);
+            for(String superclass : superclasses)
+                if(!cnode.interfaces.contains(superclass) && !cnode.superName.equals(superclass))
+                    return;
+            
+            addClass(classname);
+        }
+        catch(IOException e)
+        {
+            System.err.println("Unable to load class: "+resource);
+            e.printStackTrace();
+        }
+    }
 
-	private void addClass(String resource)
+	private void addClass(String classname)
 	{
 		try
         {
-			String classname = resource.replace(".class", "").replace("\\", ".").replace("/", ".");
-            Class<?> class1 = Class.forName(classname, true, modClassLoader);
-            for(Class<?> superclass : superclasses)
-                if(!superclass.isAssignableFrom(class1))
-                    return;
-            
+            Class<?> class1 = Class.forName(classname, true, modClassLoader);            
             classes.add(class1);
         }
         catch(Exception cnfe)
         {
-           	System.err.println("Unable to load class: "+resource);
+           	System.err.println("Unable to load class: "+classname);
            	cnfe.printStackTrace();
         }
 	}
 	
-	private void findClasspathMods() throws FileNotFoundException, IOException
+	private void findClasspathMods()
     {
 		List<String> knownLibraries = ImmutableList.<String>builder().addAll(modClassLoader.getDefaultLibraries()).addAll(RelaunchLibraryManager.getLibraries()).build();
         File[] minecraftSources = modClassLoader.getParentSources();
@@ -82,7 +113,15 @@ public class ClassDiscoverer
                 if (!knownLibraries.contains(minecraftSource.getName()))
                 {
                     FMLLog.fine("Found a minecraft related file at %s, examining for codechicken classes", minecraftSource.getAbsolutePath());
+                    try
+                    {
                     readFromZipFile(minecraftSource);
+                    }
+                    catch(Exception e)
+                    {
+                        System.err.println("Failed to scan "+minecraftSource.getAbsolutePath()+", the zip file is invalid");
+                        e.printStackTrace();
+                    }
                 }
             }
             else if (minecraftSource.isDirectory())
@@ -109,7 +148,7 @@ public class ClassDiscoverer
             String name = pos == -1 ? fullname : fullname.substring(pos+1);
             if(!zipentry.isDirectory() && matcher.matches(name))
             {
-            	addClass(fullname);
+                checkAddClass(fullname);
             }
         } 
         while(true);
@@ -127,8 +166,7 @@ public class ClassDiscoverer
 			else if(child.isFile() && matcher.matches(child.getName()))
 			{
 				String fullname = CommonUtils.getRelativePath(basedirectory, child);
-            	//System.out.println("Attempting load of codechicken related file: "+fullname+" in "+child.getPath());
-				addClass(fullname);
+				checkAddClass(fullname);
 			}
 		}
 	}

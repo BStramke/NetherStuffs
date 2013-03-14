@@ -3,7 +3,7 @@ package codechicken.core.data;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.liquids.LiquidStack;
-import codechicken.core.BlockCoord;
+import codechicken.core.vec.BlockCoord;
 
 public interface MCDataOutput
 {

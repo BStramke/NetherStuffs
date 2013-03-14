@@ -34,6 +34,7 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 				"codechicken.core.asm.ClassHeirachyManager",
 				"codechicken.core.asm.CodeChickenAccessTransformer",
 				"codechicken.core.asm.InterfaceDependancyTransformer",
+                "codechicken.core.asm.TweakTransformer",
 				"codechicken.core.asm.FeatureHackTransformer", 
 				"codechicken.core.asm.DelegatedTransformer"};
 	}
@@ -62,8 +63,9 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 	public Void call() throws Exception
 	{
 		CodeChickenAccessTransformer.addTransformerMap("codechickencore_at.cfg");
+		TweakTransformer.load();
 		scanCodeChickenMods();
-		if(!ObfuscationManager.obfuscated)
+		if(!ObfuscationMappings.obfuscated)
 		    ASMDev.print();
 		return null;
 	}
@@ -95,7 +97,7 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 						continue;
 					
 					String mapFile = attr.getValue("AccessTransformer");
-					if(mapFile != null && ObfuscationManager.obfuscated)
+					if(mapFile != null && ObfuscationMappings.obfuscated)
 					{
 					    File temp = extractTemp(jar, mapFile);
 					    System.out.println("Adding AccessTransformer: "+mapFile);

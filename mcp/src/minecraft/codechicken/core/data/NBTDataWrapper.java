@@ -1,6 +1,7 @@
 package codechicken.core.data;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,11 +13,12 @@ import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.liquids.LiquidStack;
-import codechicken.core.BlockCoord;
+import codechicken.core.vec.BlockCoord;
 
 public class NBTDataWrapper implements MCDataInput, MCDataOutput
 {
     private NBTTagList readList;
+    private int readTag = 0;
     private NBTTagList writeList;
     
     public NBTDataWrapper(NBTTagList input)
@@ -129,73 +131,73 @@ public class NBTDataWrapper implements MCDataInput, MCDataOutput
     @Override
     public long readLong()
     {
-        return ((NBTTagLong)readList.removeTag(0)).data;
+        return ((NBTTagLong)readTag()).data;
     }
 
     @Override
     public int readInt()
     {
-        return ((NBTTagInt)readList.removeTag(0)).data;
+        return ((NBTTagInt)readTag()).data;
     }
 
     @Override
     public short readShort()
     {
-        return ((NBTTagShort)readList.removeTag(0)).data;
+        return ((NBTTagShort)readTag()).data;
     }
 
     @Override
     public int readUnsignedShort()
     {
-        return ((NBTTagShort)readList.removeTag(0)).data & 0xFFFF;
+        return ((NBTTagShort)readTag()).data & 0xFFFF;
     }
 
     @Override
     public byte readByte()
     {
-        return ((NBTTagByte)readList.removeTag(0)).data;
+        return ((NBTTagByte)readTag()).data;
     }
 
     @Override
     public int readUnsignedByte()
     {
-        return ((NBTTagByte)readList.removeTag(0)).data & 0xFF;
+        return ((NBTTagByte)readTag()).data & 0xFF;
     }
 
     @Override
     public double readDouble()
     {
-        return ((NBTTagDouble)readList.removeTag(0)).data;
+        return ((NBTTagDouble)readTag()).data;
     }
 
     @Override
     public float readFloat()
     {
-        return ((NBTTagFloat)readList.removeTag(0)).data;
+        return ((NBTTagFloat)readTag()).data;
     }
 
     @Override
     public boolean readBoolean()
     {
-        return ((NBTTagByte)readList.removeTag(0)).data != 0;
+        return ((NBTTagByte)readTag()).data != 0;
     }
 
     @Override
     public char readChar()
     {
-        return (char)((NBTTagShort)readList.removeTag(0)).data;
+        return (char)((NBTTagShort)readTag()).data;
     }
 
     @Override
     public byte[] readByteArray(int length)
     {
-        return ((NBTTagByteArray)readList.removeTag(0)).byteArray;
+        return ((NBTTagByteArray)readTag()).byteArray;
     }
 
     @Override
     public String readString()
     {
-        return ((NBTTagString)readList.removeTag(0)).data;
+        return ((NBTTagString)readTag()).data;
     }
 
     @Override
@@ -207,7 +209,7 @@ public class NBTDataWrapper implements MCDataInput, MCDataOutput
     @Override
     public NBTTagCompound readNBTTagCompound()
     {
-        return (NBTTagCompound)readList.removeTag(0);
+        return (NBTTagCompound)readTag();
     }
 
     @Override
@@ -221,5 +223,9 @@ public class NBTDataWrapper implements MCDataInput, MCDataOutput
     {
         return LiquidStack.loadLiquidStackFromNBT(readNBTTagCompound());
     }
-
+    
+    private NBTBase readTag()
+    {
+        return readList.tagAt(readTag++);
+    }
 }

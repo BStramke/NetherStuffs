@@ -34,7 +34,7 @@ public class SearchField extends TextField
 	}
 	
 	@Override
-	public void onTextChange()
+	public void onTextChange(String oldText)
 	{
 		NEIClientConfig.setSearchExpression(text);
 		ItemList.updateSearch();

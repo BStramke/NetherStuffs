@@ -3,14 +3,23 @@ package codechicken.core;
 import java.net.Socket;
 import java.util.List;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import codechicken.core.internal.ClientTickHandler;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.MemoryConnection;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.storage.SaveFormatComparator;
 import net.minecraft.network.TcpConnection;
 import net.minecraft.world.World;
@@ -40,12 +49,13 @@ public class ClientUtils extends CommonUtils
 	
 	public static boolean inWorld()
 	{
-		return mc().getSendQueue() != null;
+		return mc().getNetHandler() != null;
 	}
-
+	
+	@Deprecated
 	public static void sendPacket(Packet packet)
 	{
-		mc().getSendQueue().addToSendQueue(packet);
+		mc().getNetHandler().addToSendQueue(packet);
 	}
 
 	public static void openSMPGui(int windowId, GuiScreen gui)
@@ -59,12 +69,17 @@ public class ClientUtils extends CommonUtils
 	{
 		return mc().timer.renderPartialTicks;
 	}
+	
+	public static double getRenderTime()
+	{
+	    return ClientTickHandler.renderTime + getRenderFrame();
+	}	
 
 	public static String getServerIP() throws NetworkClosedException
 	{
 		try
 		{
-			INetworkManager networkManager = mc().getSendQueue().netManager;
+			INetworkManager networkManager = mc().getNetHandler().netManager;
 			if(networkManager instanceof MemoryConnection)
 				return "memory";
 			
@@ -92,16 +107,20 @@ public class ClientUtils extends CommonUtils
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SideOnly(Side.CLIENT)
 	public static String getWorldSaveName(String worldName)
 	{
-		List<SaveFormatComparator> savelist = mc().getSaveLoader().getSaveList();
-		for(SaveFormatComparator comp : savelist)
-		{
-			if(comp.getDisplayName().equals(worldName))
-				return comp.getFileName();
-		}
-		System.err.println("Unable to find save location for: "+worldName);
-		return worldName;
+	    if(!isLocal())
+	        return null;
+	    return MinecraftServer.getServer().getFolderName();
 	}
+	
+    public static MovingObjectPosition retraceBlock(World world, EntityPlayer entityplayer, int x, int y, int z)
+    {
+        Vec3 headVec = Vec3.createVectorHelper(entityplayer.posX, (entityplayer.posY + 1.62) - (double)entityplayer.yOffset, entityplayer.posZ);
+        Vec3 lookVec = entityplayer.getLook(1.0F);
+        double reach = mc().playerController.getBlockReachDistance();
+        Vec3 endVec = headVec.addVector(lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
+        return Block.blocksList[world.getBlockId(x, y, z)].collisionRayTrace(world, x, y, z, headVec, endVec);
+    }
 }

@@ -15,10 +15,10 @@ import java.util.Map.Entry;
 import org.lwjgl.input.Keyboard;
 
 import codechicken.core.ClassDiscoverer;
-import codechicken.core.ConfigFile;
-import codechicken.core.ConfigTag;
 import codechicken.core.ClientUtils;
 import codechicken.core.IStringMatcher;
+import codechicken.core.config.ConfigFile;
+import codechicken.core.config.ConfigTag;
 import codechicken.nei.GuiNEISettings.NEIOption;
 import codechicken.nei.api.API;
 import codechicken.nei.api.GuiInfo;
@@ -29,6 +29,7 @@ import codechicken.nei.api.LayoutStyle;
 import codechicken.nei.api.TaggedInventoryArea;
 import codechicken.nei.asm.NEIModContainer;
 import codechicken.nei.recipe.RecipeInfo;
+import codechicken.nei.recipe.weakDependancy_Forge;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -282,10 +283,13 @@ public class NEIClientConfig
     	API.addKeyBind("recipe", "Recipe", Keyboard.KEY_R);
     	API.addKeyBind("usage", "Usage", Keyboard.KEY_U);
     	API.addKeyBind("back", "Previous Recipe", Keyboard.KEY_BACK);
-    	API.addKeyBind("enchant", "Enchantment", Keyboard.KEY_X);
+        API.addKeyBind("enchant", "Enchantment", Keyboard.KEY_X);
+        API.addKeyBind("potion", "Potion", Keyboard.KEY_P);
     	API.addKeyBind("prev", "Prev Page", Keyboard.KEY_PRIOR);
     	API.addKeyBind("next", "Next Page", Keyboard.KEY_NEXT);
     	API.addKeyBind("hide", "Hide\\Show", Keyboard.KEY_O);
+        API.addKeyBind("chunkoverlay", "Chunk Overlay", Keyboard.KEY_F9);
+        API.addKeyBind("moboverlay", "Mob Spawn Overlay", Keyboard.KEY_F7);
 	}
 
     public static void loadWorld(String saveName)
@@ -677,6 +681,8 @@ public class NEIClientConfig
 		RecipeInfo.load();
 		LayoutManager.load();
 		NEIController.load();
+		if(NEICompatibility.hasForge)
+		    weakDependancy_Forge.load();
 		
 		configLoaded = true;
 		
@@ -881,7 +887,7 @@ public class NEIClientConfig
 	public static void setPropertyDisabled(String name, boolean disable)
 	{
 		if(hasSMPCounterPart())
-			ClientPacketHandler.sendSetPropertyDisabled(name, disable);
+			NEICPH.sendSetPropertyDisabled(name, disable);
 	}
 	
 	public static void setItemQuantity(int i)

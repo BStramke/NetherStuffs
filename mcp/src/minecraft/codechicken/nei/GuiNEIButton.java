@@ -20,7 +20,7 @@ public class GuiNEIButton extends GuiButton
             return;
         }
         FontRenderer fontrenderer = minecraft.fontRenderer;
-        GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, minecraft.renderEngine.getTexture("/gui/gui.png"));
+        minecraft.renderEngine.func_98187_b("/gui/gui.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         boolean flag = i >= xPosition && j >= yPosition && i < xPosition + width && j < yPosition + height;
         int k = getHoverState(flag);

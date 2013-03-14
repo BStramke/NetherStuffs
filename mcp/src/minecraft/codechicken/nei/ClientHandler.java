@@ -5,9 +5,11 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import codechicken.core.ClientUtils;
 import codechicken.core.NetworkClosedException;
-import codechicken.core.PacketCustom;
+import codechicken.core.packet.PacketCustom;
 
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -143,7 +145,7 @@ public class ClientHandler implements ITickHandler
         
         instance = new ClientHandler();        
 
-		PacketCustom.assignHandler(ClientPacketHandler.channel, 0, 255, new ClientPacketHandler());	
+		PacketCustom.assignHandler(NEICPH.channel, 0, 255, new NEICPH());	
         TickRegistry.registerTickHandler(instance, Side.CLIENT);
         LanguageRegistry.instance().addStringLocalization("entity.SnowMan.name", "Snow Golem");
 	}
@@ -161,12 +163,14 @@ public class ClientHandler implements ITickHandler
 			NEIController.updateUnlimitedItems(mc.thePlayer.inventory);
 			NEIController.processCreativeCycling(mc.thePlayer.inventory);
 			
+			toggleChunkOverlay();
+			toggleMobOverlay();
 	        updateMagnetMode(mc.theWorld, mc.thePlayer);
 		}
 		
-		if(type.contains(TickType.CLIENTGUI))
+		if(type.contains(TickType.CLIENT))
 		{
-			GuiScreen gui = (GuiScreen) tickData[0];
+			GuiScreen gui = mc.currentScreen;
 			if(gui instanceof GuiMainMenu)
 	    	{
 	    		if(firstTick)
@@ -180,11 +184,43 @@ public class ClientHandler implements ITickHandler
 	    	}
 		}
 	}
+    private boolean mobOverlayHeld = false;
+    public int mobSpawnOverlay = 0;
+    private void toggleMobOverlay()
+    {
+        if(Keyboard.isKeyDown(NEIClientConfig.getKeyBinding("moboverlay")))
+        {
+            if(!mobOverlayHeld)
+                mobSpawnOverlay = (mobSpawnOverlay+1)%2;
+            mobOverlayHeld = true;
+        }
+        else
+        {
+            mobOverlayHeld = false;
+        }
+    }
+
+	private boolean overlayKeyHeld = false;
+	public int chunkOverlay = 0;
+    private void toggleChunkOverlay()
+    {
+        if(Keyboard.isKeyDown(NEIClientConfig.getKeyBinding("chunkoverlay")))
+        {
+            if(!overlayKeyHeld)
+                chunkOverlay = (chunkOverlay+1)%3;
+            overlayKeyHeld = true;
+        }
+        else
+        {
+            overlayKeyHeld = false;
+        }
+    }
 
     private void onWorldChange(World world) 
     {
 		NEIClientConfig.setHasSMPCounterPart(false);
 		SMPmagneticItems.clear();
+		chunkOverlay = 0;
     	
 		NEIClientConfig.setInternalEnabled(false);		
 		
@@ -193,7 +229,7 @@ public class ClientHandler implements ITickHandler
 		
 		try
 		{
-			NEIClientConfig.loadWorld(ClientUtils.getServerIP().replace(':', '~'));
+			NEIClientConfig.loadWorld("remote/"+ClientUtils.getServerIP().replace(':', '~'));
 		}
 		catch(NetworkClosedException e)
 		{
@@ -219,7 +255,7 @@ public class ClientHandler implements ITickHandler
 	@Override
 	public EnumSet<TickType> ticks() 
 	{
-		return EnumSet.of(TickType.CLIENT, TickType.CLIENTGUI, TickType.RENDER);
+		return EnumSet.of(TickType.CLIENT, TickType.CLIENT, TickType.RENDER);
 	}
 
 	@Override

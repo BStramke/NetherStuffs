@@ -255,53 +255,14 @@ public class FurnaceRecipeHandler extends TemplateRecipeHandler
 	}
 	
 	private static void findFuels()
-	{
-		Method getBurnTime;
-		try
-		{
-			getBurnTime = TileEntityFurnace.class.getDeclaredMethod("getItemBurnTime", ItemStack.class);
-			getBurnTime.setAccessible(true);
-		}
-		catch(SecurityException e)
-		{
-			e.printStackTrace();
-			return;
-		}
-		catch(NoSuchMethodException e)
-		{
-			try
-			{
-				getBurnTime = TileEntityFurnace.class.getDeclaredMethod("a", ItemStack.class);
-				getBurnTime.setAccessible(true);
-			}
-			catch(SecurityException e1)
-			{
-				e1.printStackTrace();
-				return;
-			}
-			catch(NoSuchMethodException e1)
-			{
-				e1.printStackTrace();
-				return;
-			}
-		}
-		
+	{		
 		TileEntityFurnace afurnace = new TileEntityFurnace();		
 		afuels = new ArrayList<FuelPair>();
 		for(Item item : Item.itemsList)
 		{
 			if(item != null && !efuels.contains(item.itemID))
 			{
-				int burnTime;
-				try
-				{
-					burnTime = (Integer) getBurnTime.invoke(afurnace, new ItemStack(item, 1));
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-					continue;
-				}
+				int burnTime = TileEntityFurnace.getItemBurnTime(new ItemStack(item, 1));
 				if(burnTime > 0)
 				{
 					afuels.add(new FuelPair(new ItemStack(item, 1), burnTime));

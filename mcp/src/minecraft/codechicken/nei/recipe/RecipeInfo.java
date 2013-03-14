@@ -1,6 +1,5 @@
 package codechicken.nei.recipe;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.common.base.Objects;
@@ -10,25 +9,13 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.OffsetPositioner;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IStackPositioner;
 
 public class RecipeInfo
-{
-    private static class OverlayValue
-    {
-        public OverlayValue(IOverlayHandler handler, int mode)
-        {
-            this.handler = handler;
-            this.mode = mode;
-        }
-        
-        IOverlayHandler handler;
-        int mode;
-    }
-    
+{    
     private static class OverlayKey
     {
         String ident;
@@ -46,7 +33,7 @@ public class RecipeInfo
             if(!(obj instanceof OverlayKey))
                 return false;
             OverlayKey key = (OverlayKey)obj;
-            return ident.equals(key.ident) && guiClass == key.guiClass;
+            return Objects.equal(ident, key.ident) && guiClass == key.guiClass;
         }
         
         @Override
@@ -58,6 +45,7 @@ public class RecipeInfo
     
     static HashMap<OverlayKey, IOverlayHandler> overlayMap = new HashMap<OverlayKey, IOverlayHandler>();
     static HashMap<OverlayKey, IStackPositioner> positionerMap = new HashMap<OverlayKey, IStackPositioner>();
+    static HashMap<Class<? extends GuiContainer>, int[]> offsets = new HashMap<Class<? extends GuiContainer>, int[]>();
     
     public static void registerOverlayHandler(Class<? extends GuiContainer> classz, IOverlayHandler handler, String ident)
     {
@@ -67,6 +55,16 @@ public class RecipeInfo
     public static void registerGuiOverlay(Class<? extends GuiContainer> classz, String ident, IStackPositioner positioner)
     {
         positionerMap.put(new OverlayKey(classz, ident), positioner);
+        if(positioner instanceof OffsetPositioner && !offsets.containsKey(classz))
+        {
+            OffsetPositioner p = (OffsetPositioner)positioner;
+            setGuiOffset(classz, p.offsetx, p.offsety);
+        }            
+    }
+
+    public static void setGuiOffset(Class<? extends GuiContainer> classz, int x, int y)
+    {
+        offsets.put(classz, new int[]{x, y});
     }
 
     public static boolean hasDefaultOverlay(GuiContainer gui, String ident)
@@ -87,6 +85,12 @@ public class RecipeInfo
     public static IStackPositioner getStackPositioner(GuiContainer gui, String ident)
     {
         return positionerMap.get(new OverlayKey(gui.getClass(), ident));
+    }
+    
+    public static int[] getGuiOffset(GuiContainer gui)
+    {
+        int[] offset = offsets.get(gui.getClass());
+        return offset == null ? new int[]{5, 11} : offset;
     }
 
     public static void load()

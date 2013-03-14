@@ -88,9 +88,9 @@ public abstract class CoreCommand implements ICommand
 	}
 	
 	@Override
-	public boolean isUsernameIndex(int var1)
+	public boolean isUsernameIndex(String[] astring, int i)
 	{
-		return false;
+	    return false;
 	}
 	
 	@Override

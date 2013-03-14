@@ -1,10 +1,11 @@
 package codechicken.core.inventory;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.inventory.Slot;
 
-public class SlotDummy extends Slot
+public class SlotDummy extends SlotHandleClicks
 {
     public final int stackLimit;
     public SlotDummy(IInventory inv, int slot, int x, int y)
@@ -18,16 +19,25 @@ public class SlotDummy extends Slot
         stackLimit = limit;
     }
     
-    public void slotClick(ItemStack stack, int button, boolean shift)
+    @Override
+    public ItemStack slotClick(ContainerExtended container, EntityPlayer player, int button, int modifier)
     {
-        if(stack != null && !stack.equals(getStack()))
+        ItemStack held = player.inventory.getItemStack();
+        boolean shift = modifier == 1;
+        slotClick(held, button, shift);
+        return null;
+    }
+    
+    public void slotClick(ItemStack held, int button, boolean shift)
+    {
+        if(held != null && !held.equals(getStack()))
         {
-            int quantity = Math.min(stack.stackSize, stackLimit);
+            int quantity = Math.min(held.stackSize, stackLimit);
             if(shift)
                 quantity = stackLimit;
             if(button == 1)
                 quantity = 1;
-            putStack(InventoryUtils.copyStack(stack, quantity));
+            putStack(InventoryUtils.copyStack(held, quantity));
         }
         else if(getStack() != null)
         {
@@ -40,7 +50,7 @@ public class SlotDummy extends Slot
                 putStack(null);
             else
                 putStack(InventoryUtils.copyStack(tstack, quantity));
-        }            
+        }
     }
     
     @Override

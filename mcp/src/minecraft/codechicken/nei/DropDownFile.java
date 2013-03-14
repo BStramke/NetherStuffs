@@ -8,8 +8,8 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.nbt.NBTTagCompound;
-import codechicken.core.ConfigFile;
-import codechicken.core.ConfigTag;
+import codechicken.core.config.ConfigFile;
+import codechicken.core.config.ConfigTag;
 import codechicken.nei.forge.GuiContainerManager;
 
 /**
@@ -343,7 +343,7 @@ public class DropDownFile extends ConfigFile
 		        }
 		        else
 		        {
-		        	gui.bindTextureByName("/gui/gui.png");
+		        	gui.bindTexture("/gui/gui.png");
 					if(stag.state == 1)
 					{
 				        GL11.glColor4f(0.65F, 0.65F, 0.65F, 1.0F);

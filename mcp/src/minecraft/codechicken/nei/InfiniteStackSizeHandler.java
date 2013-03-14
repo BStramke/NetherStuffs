@@ -1,5 +1,6 @@
 package codechicken.nei;
 
+import codechicken.core.inventory.InventoryUtils;
 import codechicken.nei.api.IInfiniteItemHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -51,7 +52,7 @@ public class InfiniteStackSizeHandler implements IInfiniteItemHandler
 	@Override
 	public ItemStack getInfiniteItem(ItemStack typeStack)
 	{
-		return new ItemStack(typeStack.itemID, -1, typeStack.getItemDamage());
+		return InventoryUtils.copyStack(typeStack, -1);
 	}
 
 }

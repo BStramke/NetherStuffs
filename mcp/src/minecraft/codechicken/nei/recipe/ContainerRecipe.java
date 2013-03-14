@@ -79,6 +79,18 @@ public class ContainerRecipe extends Container
 		{
 			return null;
 		}
+		
+		@Override
+		public boolean func_94041_b(int i, ItemStack itemstack)
+		{
+		    return false;
+		}
+		
+		@Override
+		public boolean func_94042_c()
+		{
+		    return false;
+		}
 	}
 	
 	private RecipeInventory recipeInventory = new RecipeInventory();
@@ -139,5 +151,11 @@ public class ContainerRecipe extends Container
 	public void putStackInSlot(int par1, ItemStack par2ItemStack)
 	{
 		//Server side updates do nothing!
+	}
+	
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+	{
+	    return null;//no shift clicking (scrolling...)
 	}
 }

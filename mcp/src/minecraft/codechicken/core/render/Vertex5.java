@@ -1,6 +1,6 @@
 package codechicken.core.render;
 
-import codechicken.core.Vector3;
+import codechicken.core.vec.Vector3;
 
 public class Vertex5
 {
@@ -22,7 +22,7 @@ public class Vertex5
 
 	public Vertex5(Vertex5 vertex5)
 	{
-		this(vertex5.vec, vertex5.u, vertex5.v);
+		this(vertex5.vec.copy(), vertex5.u, vertex5.v);
 	}
 
 	public void setUV(int u, int v)
@@ -30,4 +30,9 @@ public class Vertex5
 		this.u = u;
 		this.v = v;
 	}
+
+    public Vertex5 copy()
+    {
+        return new Vertex5(this);
+    }
 }

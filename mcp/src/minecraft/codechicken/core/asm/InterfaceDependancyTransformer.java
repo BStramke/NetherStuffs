@@ -14,7 +14,7 @@ public class InterfaceDependancyTransformer implements IClassTransformer
 {	
 	@SuppressWarnings("unchecked")
 	@Override
-	public byte[] transform(String name, byte[] bytes)
+	public byte[] transform(String name, String tname, byte[] bytes)
 	{
 		ClassReader cr = new ClassReader(bytes);
         ClassNode classNode = new ClassNode();

@@ -1,5 +1,6 @@
 package codechicken.core.asm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.objectweb.asm.ClassReader;
@@ -10,7 +11,7 @@ import cpw.mods.fml.relauncher.IClassTransformer;
 public class ClassHeirachyManager implements IClassTransformer
 {
 	public static HashSet<String> knownClasses = new HashSet<String>();
-	public static HashMap<String, String> superclasses = new HashMap<String, String>();
+	public static HashMap<String, ArrayList<String>> superclasses = new HashMap<String, ArrayList<String>>();
 	
 	/**
 	 * Returns true if clazz extends, either directly or indirectly, superclass.
@@ -22,14 +23,12 @@ public class ClassHeirachyManager implements IClassTransformer
 	public static boolean classExtends(String clazz, String superclass, byte[] bytes)
 	{
 		if(!knownClasses.contains(clazz))
-		{
-			new ClassHeirachyManager().transform(clazz, bytes);
-		}
+			new ClassHeirachyManager().transform(clazz, clazz, bytes);
 		
 		return classExtends(clazz, superclass);
 	}
 	
-	private static boolean classExtends(String clazz, String superclass)
+	public static boolean classExtends(String clazz, String superclass)
 	{		
 		if(clazz.equals(superclass))
 			return true;
@@ -37,6 +36,20 @@ public class ClassHeirachyManager implements IClassTransformer
 		if(clazz.equals("java.lang.Object"))
 			return false;
 		
+		declareClass(clazz);
+		
+		if(!superclasses.containsKey(clazz))//just can't handle this
+			return false;
+		
+		for(String s : superclasses.get(clazz))
+			if(classExtends(s, superclass))
+				return true;
+		
+		return false;
+	}
+
+	private static void declareClass(String clazz) 
+	{
 		try
 		{
 			if(!knownClasses.contains(clazz))
@@ -45,7 +58,7 @@ public class ClassHeirachyManager implements IClassTransformer
 				{
 					byte[] bytes = CodeChickenCorePlugin.cl.getClassBytes(clazz);
 					if(bytes != null)
-						new ClassHeirachyManager().transform(clazz, bytes);
+						new ClassHeirachyManager().transform(clazz, clazz, bytes);
 				}
 				catch(Exception e)
 				{
@@ -56,34 +69,49 @@ public class ClassHeirachyManager implements IClassTransformer
 					Class<?> aclass = Class.forName(clazz);
 					
 					knownClasses.add(clazz);
-					superclasses.put(clazz, aclass.getSuperclass().getName());
+					if(aclass.isInterface())
+						addSuperclass(clazz, "java.lang.Object");
+					else
+						addSuperclass(clazz, aclass.getSuperclass().getName());
+					for(Class<?> iclass : aclass.getInterfaces())
+						addSuperclass(clazz, iclass.getName());
 				}
 			}
 		}
 		catch(ClassNotFoundException e)
 		{
-			throw new RuntimeException(e);
 		}
-		
-		if(!superclasses.containsKey(clazz))//just can't handle this
-			return false;
-		
-		return classExtends(superclasses.get(clazz), superclass);
 	}
 
 	@Override
-	public byte[] transform(String name, byte[] bytes)
+	public byte[] transform(String name, String tname, byte[] bytes)
 	{
 		if(!knownClasses.contains(name))
 		{		
-			ClassNode node = new ClassNode();
-			ClassReader reader = new ClassReader(bytes);
-			reader.accept(node, 0);
+			ClassNode node = ASMHelper.createClassNode(bytes);
 			
 			knownClasses.add(name);
-			superclasses.put(name, node.superName.replace('/', '.'));
+			addSuperclass(name, node.superName.replace('/', '.'));
+			for(String iclass : node.interfaces)
+				addSuperclass(name, iclass.replace('/', '.'));
 		}
 		
 		return bytes;
+	}
+
+	private static void addSuperclass(String name, String superclass)
+	{
+		ArrayList<String> supers = superclasses.get(name);
+		if(supers == null)
+			superclasses.put(name, supers = new ArrayList<String>());
+		supers.add(superclass);
+	}
+
+	public static String getSuperClass(String c) 
+	{
+		declareClass(c);
+		if(!knownClasses.contains(c))
+			return "java.lang.Object";
+		return superclasses.get(c).get(0);
 	}
 }

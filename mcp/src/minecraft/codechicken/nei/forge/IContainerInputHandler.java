@@ -31,7 +31,7 @@ public interface IContainerInputHandler
 	 */
 	public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyID);
 	/**
-	 * 
+	 * Called when the mouse is clicked in the gui
 	 * @param gui An instance of the currentscreen
 	 * @param mousex The x position of the mouse in pixels from left
 	 * @param mousey The y position of the mouse in pixels from top
@@ -72,5 +72,15 @@ public interface IContainerInputHandler
 	 * @param scrolled The number of notches scrolled. Positive for up.
 	 */
 	public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled);
+
+    /**
+     * This version of mouseClicked is passive and will be called on every input handler before mouseClicked is processed
+     * @param gui An instance of the currentscreen
+     * @param mousex The x position of the mouse in pixels from left
+     * @param mousey The y position of the mouse in pixels from top
+     * @param button The button index being pressed, {0 = Left Click, 1 = Right Click, 2 = Middle Click}
+     * @param heldTime The number of milliseconds since the button was first pressed
+     */
+    public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime);
 
 }

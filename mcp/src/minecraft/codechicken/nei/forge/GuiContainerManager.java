@@ -108,9 +108,12 @@ public class GuiContainerManager
                 return item;
         }
 
-        Slot slot = window.getSlotAtPosition(mousePos.x, mousePos.y);
-        if(slot != null)
-            item = slot.getStack();
+        if(!objectUnderMouse(mousePos.x, mousePos.y))
+        {
+            Slot slot = window.getSlotAtPosition(mousePos.x, mousePos.y);
+            if(slot != null)
+                item = slot.getStack();
+        }
         return item;
     }
 
@@ -369,12 +372,18 @@ public class GuiContainerManager
             drawItems.renderItemAndEffectIntoGUI(fontRenderer, renderEngine, itemstack, i, j);
             drawItems.renderItemOverlayIntoGUI(fontRenderer, renderEngine, itemstack, i, j);
         }
-        catch(RuntimeException runtimeexception)
+        catch(RuntimeException e)
         {
+            System.err.println("Error while rendering: "+itemstack);
+            e.printStackTrace();
+            
+            if(Tessellator.instance.isDrawing)
+                Tessellator.instance.draw();
             drawItems.renderItemIntoGUI(fontRenderer, renderEngine, new ItemStack(51, 1, 0), i, j);
         }
         drawItems.zLevel -= 100F;
         enable2DRender();
+
         if(Tessellator.instance.isDrawing)
             Tessellator.instance.draw();
     }
@@ -386,92 +395,69 @@ public class GuiContainerManager
 
     public static void enable3DRender()
     {
-        GL11.glEnable(2896 /*GL_LIGHTING*/);
-        GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
     }
 
     public static void enable2DRender()
     {
-        GL11.glDisable(2896 /*GL_LIGHTING*/);
-        GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
     }
 
-    public int getTexture(String s)
+    public void bindTexture(String s)
     {
-        return window.mc.renderEngine.getTexture(s);
-    }
-
-    public void bindTexture(int texture)
-    {
-        window.mc.renderEngine.bindTexture(texture);
-    }
-
-    public void bindTextureByName(String s)
-    {
-        bindTexture(getTexture(s));
+        window.mc.renderEngine.func_98187_b(s);
     }
 
     public void load()
     {
         for(IContainerObjectHandler objectHandler : objectHandlers)
-        {
             objectHandler.load(window);
-        }
     }
 
     public void refresh()
     {
         for(IContainerObjectHandler objectHandler : objectHandlers)
-        {
             objectHandler.guiTick(window);
-        }
     }
 
     public void guiTick()
     {
         for(IContainerObjectHandler objectHandler : objectHandlers)
-        {
             objectHandler.guiTick(window);
-        }
     }
 
     public boolean lastKeyTyped(int keyID, char keyChar)
     {
         for(IContainerInputHandler inputhander : inputHandlers)
-        {
             if(inputhander.lastKeyTyped(window, keyChar, keyID))
                 return true;
-        }
+        
         return false;
     }
 
     public boolean firstKeyTyped(int keyID, char keyChar)
     {
         for(IContainerInputHandler inputhander : inputHandlers)
-        {
             inputhander.onKeyTyped(window, keyChar, keyID);
-        }
 
         for(IContainerInputHandler inputhander : inputHandlers)
-        {
             if(inputhander.keyTyped(window, keyChar, keyID))
                 return true;
-        }
+
         return false;
     }
 
     public boolean mouseClicked(int mousex, int mousey, int button)
     {
         for(IContainerInputHandler inputhander : inputHandlers)
-        {
             inputhander.onMouseClicked(window, mousex, mousey, button);
-        }
 
         for(IContainerInputHandler inputhander : inputHandlers)
-        {
             if(inputhander.mouseClicked(window, mousex, mousey, button))
                 return true;
-        }
+        
         return false;
     }
 
@@ -480,44 +466,38 @@ public class GuiContainerManager
         Point mousepos = getMousePosition();
 
         for(IContainerInputHandler inputHandler : inputHandlers)
-        {
             inputHandler.onMouseScrolled(window, mousepos.x, mousepos.y, scrolled);
-        }
 
         for(IContainerInputHandler inputHandler : inputHandlers)
-        {
             if(inputHandler.mouseScrolled(window, mousepos.x, mousepos.y, scrolled))
                 return;
-        }
     }
 
     public void mouseUp(int mousex, int mousey, int button)
     {
         for(IContainerInputHandler inputhander : inputHandlers)
-        {
             inputhander.onMouseUp(window, mousex, mousey, button);
-        }
+    }
+
+    public void mouseDragged(int mousex, int mousey, int button, long heldTime)
+    {
+        for(IContainerInputHandler inputhander : inputHandlers)
+            inputhander.onMouseDragged(window, mousex, mousey, button, heldTime);
     }
 
     public void preDraw()
     {
         for(IContainerDrawHandler drawHandler : drawHandlers)
-        {
             drawHandler.onPreDraw(window);
-        }
     }
 
     public void renderObjects(int mousex, int mousey)
     {
         for(IContainerDrawHandler drawHandler : drawHandlers)
-        {
             drawHandler.renderObjects(window, mousex, mousey);
-        }
 
         for(IContainerDrawHandler drawHandler : drawHandlers)
-        {
             drawHandler.postRenderObjects(window, mousex, mousey);
-        }
     }
 
     public void renderToolTips(int mousex, int mousey)
@@ -525,17 +505,14 @@ public class GuiContainerManager
         List<String> tooltip = window.handleTooltip(mousex, mousey, new LinkedList<String>());
 
         for(IContainerTooltipHandler handler : tooltipHandlers)
-        {
             tooltip = handler.handleTooltipFirst(window, mousex, mousey, tooltip);
-        }
 
         if(tooltip.isEmpty() && shouldShowTooltip())//mouseover tip, not holding an item
         {
             ItemStack stack = getStackMouseOver();
             if(stack != null)
-            {
                 tooltip = itemDisplayNameMultiline(stack, window, true);
-            }
+            
             tooltip = window.handleItemTooltip(stack, mousex, mousey, tooltip);
         }
 
@@ -554,26 +531,21 @@ public class GuiContainerManager
     public void renderSlotUnderlay(Slot slot)
     {
         for(IContainerDrawHandler drawHandler : drawHandlers)
-        {
             drawHandler.renderSlotUnderlay(window, slot);
-        }
     }
 
     public void renderSlotOverlay(Slot slot)
     {
         for(IContainerDrawHandler drawHandler : drawHandlers)
-        {
             drawHandler.renderSlotOverlay(window, slot);
-        }
     }
 
     public boolean objectUnderMouse(int mousex, int mousey)
     {
         for(IContainerObjectHandler objectHandler : objectHandlers)
-        {
             if(objectHandler.objectUnderMouse(window, mousex, mousey))
                 return true;
-        }
+
         return false;
     }
 

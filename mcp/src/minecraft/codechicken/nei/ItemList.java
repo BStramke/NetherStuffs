@@ -7,6 +7,7 @@ import java.util.regex.PatternSyntaxException;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 
 import codechicken.nei.ItemPanel.ItemPanelObject;
 import codechicken.nei.api.ItemInfo;
@@ -190,12 +191,9 @@ public class ItemList
 		            		ItemStack itemstack = new ItemStack(item, 1, damage);
 		                    try
 		                    {
-		                    	int l = item.getIconIndex(itemstack);
-		                    	String name = GuiContainerManager.concatenatedDisplayName(itemstack, false);
-		                    	//if(name.equals("Unnamed"))
-		                			//continue;
-		                    	
-		                        String s = name+"@"+l;
+		                        Icon icon = item.getIconIndex(itemstack);
+		                    	String name = GuiContainerManager.concatenatedDisplayName(itemstack, false);		                    	
+		                        String s = name+"@"+(icon == null ? 0 : icon.hashCode());
 		                        if(!damageIconSet.contains(s))
 		                        {
 		                            damageIconSet.add(s);
@@ -208,7 +206,9 @@ public class ItemList
 		                            
 		                    }
 		                    catch(Exception e)
-		                    {}
+		                    {
+		                        System.err.println("NEI: Omitting #"+itemID+" "+item.getClass().getSimpleName()+" from list due to "+e.getClass().getSimpleName());
+		                    }
 		            	}
 		            }
 		        }

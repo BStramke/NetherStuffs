@@ -369,7 +369,7 @@ public class NEIServerUtils
 	{
 		PlayerSave playerSave = NEIServerConfig.forPlayer(player.username);
 		playerSave.setMagnetMode(!playerSave.getMagnetMode());	
-		ServerPacketHandler.sendMagnetModeTo(player, playerSave.getMagnetMode());		
+		NEISPH.sendMagnetModeTo(player, playerSave.getMagnetMode());		
 	}
 
 	public static int getCreativeMode(EntityPlayerMP player)
@@ -390,7 +390,7 @@ public class NEIServerUtils
 		//player.playerNetServerHandler.sendPacket(new Packet70Bed(3, mode == 0 ? 0 : 1));
 		
 		NEIServerConfig.forPlayer(player.username).setCreativeInv(mode == 2);		
-		ServerPacketHandler.sendCreativeModeTo(player, mode);
+		NEISPH.sendCreativeModeTo(player, mode);
 	}
 
 	public static void cycleCreativeInv(EntityPlayerMP player, int steps)

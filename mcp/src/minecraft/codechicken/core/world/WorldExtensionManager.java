@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import codechicken.core.PacketCustom;
-import codechicken.core.PacketCustom.ICustomPacketHandler.IClientPacketHandler;
-
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -16,7 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.client.multiplayer.NetClientHandler;
+import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -27,14 +23,9 @@ import net.minecraftforge.event.world.ChunkWatchEvent.UnWatch;
 import net.minecraftforge.event.world.ChunkWatchEvent.Watch;
 
 public class WorldExtensionManager
-{
-    private static final String channel = "CCWEM";
-    
+{    
     public static class WorldExtensionEventHandler
     {
-        private Chunk dataLoad;
-        private Chunk dataUnload;
-
         @ForgeSubscribe
         public void onChunkDataLoad(ChunkDataEvent.Load event)
         {
@@ -45,8 +36,6 @@ public class WorldExtensionManager
 
             for(WorldExtension extension : worldMap.get(event.world))
                 extension.loadChunkData(event.getChunk(), event.getData());
-            
-            dataLoad = event.getChunk();
         }
 
         @ForgeSubscribe
@@ -55,7 +44,7 @@ public class WorldExtensionManager
             for(WorldExtension extension : worldMap.get(event.world))
                 extension.saveChunkData(event.getChunk(), event.getData());
             
-            if(dataUnload == event.getChunk())
+            if(!event.getChunk().isChunkLoaded)
                 removeChunk(event.world, event.getChunk());
         }
         
@@ -65,8 +54,7 @@ public class WorldExtensionManager
             if(!worldMap.containsKey(event.world))
                 WorldExtensionManager.onWorldLoad(event.world);
             
-            if(dataLoad != event.getChunk())
-                createChunkExtension(event.world, event.getChunk());
+            createChunkExtension(event.world, event.getChunk());
             
             for(WorldExtension extension : worldMap.get(event.world))
                 extension.loadChunk(event.getChunk());
@@ -75,13 +63,14 @@ public class WorldExtensionManager
         @ForgeSubscribe
         public void onChunkUnLoad(ChunkEvent.Unload event)
         {
+            if(event.getChunk() instanceof EmptyChunk)
+                return;
+            
             for(WorldExtension extension : worldMap.get(event.world))
                 extension.unloadChunk(event.getChunk());
             
             if(event.world.isRemote)
                 removeChunk(event.world, event.getChunk());
-            else
-                dataUnload = event.getChunk();
         }
 
         @ForgeSubscribe
@@ -101,27 +90,23 @@ public class WorldExtensionManager
         @ForgeSubscribe
         public void onWorldUnLoad(WorldEvent.Unload event)
         {
-            for(WorldExtension extension : worldMap.remove(event.world))
-                extension.unload();
+            WorldExtensionManager.onWorldUnload(event.world);
         }
-
+        
         @ForgeSubscribe
         public void onChunkWatch(Watch event)
-        {
-            PacketCustom packet = new PacketCustom(channel, 1);
-            packet.writeInt(event.chunk.chunkXPos);
-            packet.writeInt(event.chunk.chunkZPos);
-            packet.sendToPlayer(event.player);
-            
+        {            
+            Chunk chunk = event.player.worldObj.getChunkFromChunkCoords(event.chunk.chunkXPos, event.chunk.chunkZPos);
             for(WorldExtension extension : worldMap.get(event.player.worldObj))
-                extension.watchChunk(event.player.worldObj.getChunkFromChunkCoords(event.chunk.chunkXPos, event.chunk.chunkZPos), event.player);
+                extension.watchChunk(chunk, event.player);
         }
 
         @ForgeSubscribe
         public void onChunkUnWatch(UnWatch event)
         {
+            Chunk chunk = event.player.worldObj.getChunkFromChunkCoords(event.chunk.chunkXPos, event.chunk.chunkZPos);
             for(WorldExtension extension : worldMap.get(event.player.worldObj))
-                extension.unwatchChunk(event.player.worldObj.getChunkFromChunkCoords(event.chunk.chunkXPos, event.chunk.chunkZPos), event.player);
+                extension.unwatchChunk(chunk, event.player);
         }
     }
     
@@ -195,24 +180,6 @@ public class WorldExtensionManager
         }
     }
     
-    public static class WorldExtensionManagerPacketHandler implements IClientPacketHandler
-    {
-        @Override
-        public void handlePacket(PacketCustom packetCustom, NetClientHandler nethandler, Minecraft mc)
-        {
-            switch(packetCustom.getType())
-            {
-                case 1:
-                    World world = mc.theWorld;
-                    Chunk chunk = world.getChunkFromChunkCoords(packetCustom.readInt(), packetCustom.readInt());
-                    createChunkExtension(world, chunk);
-                    
-                    for(WorldExtension extension : worldMap.get(world))
-                        extension.loadChunk(chunk);
-            }
-        }        
-    }
-    
     private static boolean initialised;
     private static ArrayList<WorldExtensionInstantiator> extensionIntialisers = new ArrayList<WorldExtensionInstantiator>();
     
@@ -233,7 +200,6 @@ public class WorldExtensionManager
         if(FMLCommonHandler.instance().getSide().isClient())
         {
             TickRegistry.registerTickHandler(new WorldExtensionClientTickHandler(), Side.CLIENT);
-            PacketCustom.assignHandler(channel, 0, 255, new WorldExtensionManagerPacketHandler());
         }
     }
 
@@ -251,11 +217,18 @@ public class WorldExtensionManager
             extension.load();
     }
 
+    public static void onWorldUnload(World world)
+    {
+        for(WorldExtension extension : worldMap.remove(world))
+            extension.unload();
+    }
+
     private static void createChunkExtension(World world, Chunk chunk)
     {
         WorldExtension[] extensions = worldMap.get(world);
         for(int i = 0; i < extensionIntialisers.size(); i++)
-            extensions[i].addChunk(extensionIntialisers.get(i).createChunkExtension(chunk, extensions[i]));
+            if(!extensions[i].containsChunk(chunk))
+                extensions[i].addChunk(extensionIntialisers.get(i).createChunkExtension(chunk, extensions[i]));
     }
     
     private static void removeChunk(World world, Chunk chunk)

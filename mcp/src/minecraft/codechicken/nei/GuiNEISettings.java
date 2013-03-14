@@ -70,18 +70,18 @@ public class GuiNEISettings extends GuiNEIOptions
 			if(options.get(i).globalOnly && !global)
 				continue;
 			
-			controlList.add(new GuiOptionButton(i, (width / 2 - 155) + (i % 2) * 160, height / 6 + 24 * (i >> 1), ""));
+			buttonList.add(new GuiOptionButton(i, (width / 2 - 155) + (i % 2) * 160, height / 6 + 24 * (i >> 1), ""));
 		}
-	    controlList.add(new GuiButton(202, width / 2 - 50, height / 6 - 30, 100, 20, "NEI "+(global ? "Global" : "World")+" Options"));
-	    controlList.add(new GuiButton(201, width / 2 - 100, height / 6 + 145, "Controls"));
+	    buttonList.add(new GuiButton(202, width / 2 - 50, height / 6 - 30, 100, 20, "NEI "+(global ? "Global" : "World")+" Options"));
+	    buttonList.add(new GuiButton(201, width / 2 - 100, height / 6 + 145, "Controls"));
 	    super.initGui();
 	}
 	
 	public void updateButtonNames()
 	{
-		for(int i = 0; i < controlList.size(); i++)
+		for(int i = 0; i < buttonList.size(); i++)
 		{
-			GuiButton button = (GuiButton)controlList.get(i);
+			GuiButton button = (GuiButton)buttonList.get(i);
 			if(button.id >= options.size())
 				continue;
 			

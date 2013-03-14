@@ -80,7 +80,7 @@ public abstract class Button extends Widget
         }
         else
         {
-            GL11.glDisable(2896 /*GL_LIGHTING*/);
+            GL11.glDisable(GL11.GL_LIGHTING);
 	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	        
 	        int tex;

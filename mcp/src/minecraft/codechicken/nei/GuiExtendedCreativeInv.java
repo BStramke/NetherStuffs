@@ -23,9 +23,8 @@ public class GuiExtendedCreativeInv extends GuiContainer implements INEIGuiHandl
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
 	{
-        int texID = mc.renderEngine.getTexture("/codechicken/nei/inv.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.bindTexture(texID);
+        mc.renderEngine.func_98187_b("/codechicken/nei/inv.png");
         
         int x = guiLeft;
         int y = guiTop-4;
@@ -50,4 +49,10 @@ public class GuiExtendedCreativeInv extends GuiContainer implements INEIGuiHandl
 	{
 		return Arrays.asList(new TaggedInventoryArea("ExtendedCreativeInv", 0, 54, inventorySlots));
 	}
+
+    @Override
+    public boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button)
+    {
+        return false;
+    }
 }

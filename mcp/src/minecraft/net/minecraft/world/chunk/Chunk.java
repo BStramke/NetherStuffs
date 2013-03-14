@@ -1,5 +1,7 @@
 package net.minecraft.world.chunk;
 
+import bstramke.NetherStuffsCore.CoreModContainer;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;

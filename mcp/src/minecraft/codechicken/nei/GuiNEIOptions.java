@@ -14,7 +14,7 @@ public abstract class GuiNEIOptions extends GuiScreen
 	@SuppressWarnings("unchecked")
 	public void initGui()
 	{
-	    controlList.add(new GuiButton(200, width / 2 - 100, height / 6 + 168, "Done"));
+	    buttonList.add(new GuiButton(200, width / 2 - 100, height / 6 + 168, "Done"));
 	    addBackButton();
 	    updateButtonNames();
 	}
@@ -24,7 +24,7 @@ public abstract class GuiNEIOptions extends GuiScreen
 	@SuppressWarnings("unchecked")
 	public void addBackButton()
 	{
-	    controlList.add(new GuiButton(201, width / 2 - 100, height / 6 + 145, getBackButtonName()));
+	    buttonList.add(new GuiButton(201, width / 2 - 100, height / 6 + 145, getBackButtonName()));
 	}
 	
 	public abstract String getBackButtonName();
@@ -37,7 +37,7 @@ public abstract class GuiNEIOptions extends GuiScreen
 		if(guibutton.id == 200)
 	    {
 	        mc.displayGuiScreen(parentScreen);
-	        parentScreen.updateScreen();
+	        parentScreen.refresh();
 	    }
 	    else if(guibutton.id == 201)
 	    {
@@ -45,12 +45,12 @@ public abstract class GuiNEIOptions extends GuiScreen
 	    }
 	}
 	
-	protected void keyTyped(char keyChar, int keyID)
+	public void keyTyped(char keyChar, int keyID)
 	{
 		if(keyID == 1)
 		{
 	        mc.displayGuiScreen(parentScreen);
-			parentScreen.updateScreen();
+			parentScreen.refresh();
 		}
 		super.keyTyped(keyChar, keyID);
 		updateButtonNames();

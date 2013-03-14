@@ -16,6 +16,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 public class ItemMobSpawner extends ItemBlock
@@ -43,6 +44,12 @@ public class ItemMobSpawner extends ItemBlock
     public static int placedY;
     public static int placedZ;
     
+    @Override
+    public Icon getIconFromDamage(int par1)
+    {
+        return Block.mobSpawner.getBlockTextureFromSide(0);
+    }
+    
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int par7, float par8, float par9, float par10)
 	{
         if(super.onItemUse(itemstack, entityplayer, world, x, y, z, par7, par8, par9, par10) && world.isRemote)
@@ -54,8 +61,8 @@ public class ItemMobSpawner extends ItemBlock
             	String mobtype = IDtoNameMap.get(itemstack.getItemDamage());
             	if(mobtype != null)
             	{
-            	    ClientPacketHandler.sendMobSpawnerID(placedX, placedY, placedZ, mobtype);
-            	    tileentitymobspawner.setMobID(mobtype);
+            	    NEICPH.sendMobSpawnerID(placedX, placedY, placedZ, mobtype);
+            	    tileentitymobspawner.func_98049_a().func_98272_a(mobtype);
             	}
             }
             return true;

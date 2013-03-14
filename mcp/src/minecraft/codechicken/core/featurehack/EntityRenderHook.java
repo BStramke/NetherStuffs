@@ -8,7 +8,9 @@ public class EntityRenderHook extends Entity
 {
 	public static interface IRenderCallback
 	{
-		public void render(float frame);
+		public void render(float frame, int pass);
+		
+		public boolean shouldRenderInPass(int pass);
 
 		public boolean isValid();
 	}
@@ -42,5 +44,11 @@ public class EntityRenderHook extends Entity
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound var1)
 	{
+	}
+	
+	//TODO: @Override
+	public boolean shouldRenderInPass(int pass)
+	{
+	    return callback.shouldRenderInPass(pass);
 	}
 }

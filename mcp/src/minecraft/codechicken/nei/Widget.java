@@ -38,6 +38,11 @@ public abstract class Widget
 		return false;
 	}
 	
+    public boolean handleClickExt(int mousex, int mousey, int button)
+    {
+        return false;
+    }
+	
 	public boolean onMouseWheel(int i, int mousex, int mousey)
 	{
 		return false;
@@ -61,6 +66,10 @@ public abstract class Widget
 	{
 		return null;
 	}
+	
+    public void mouseDragged(int mx, int my, int button, long heldTime)
+    {
+    }
 	
 	public List<String> handleTooltip(int mx, int my, List<String> tooltip)
 	{

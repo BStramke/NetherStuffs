@@ -82,8 +82,8 @@ public class DropDownWidget extends Widget
         }
         else
         {
-            GL11.glDisable(2896 /*GL_LIGHTING*/);
-			gui.bindTextureByName("/gui/gui.png");
+            GL11.glDisable(GL11.GL_LIGHTING);
+			gui.bindTexture("/gui/gui.png");
 	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	        int tex = mouseover ? 2 : 1;
 	        LayoutManager.drawButtonBackground(gui, x-1, y, width+2, height, true, tex);

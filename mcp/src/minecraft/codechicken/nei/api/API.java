@@ -99,6 +99,17 @@ public class API
 	{
 	    RecipeInfo.registerOverlayHandler(classz, handler, ident);
 	}
+	
+	/**
+	 * Set the offset to be added to items to translate them into recipe coords on the actual gui, default is 5, 11. Primarily RecipeTransferRects
+     * @param classz The class of your gui
+	 * @param x
+	 * @param y
+	 */
+	public static void setGuiOffset(Class<? extends GuiContainer> classz, int x, int y)
+	{
+	    RecipeInfo.setGuiOffset(classz, x, y);
+	}
 
 	public static void registerNEIGuiHandler(INEIGuiHandler handler)
 	{
