@@ -9,19 +9,10 @@ public class SoulBombItemBlock extends ItemBlock {
 		setHasSubtypes(true);
 	}
 
-	/*
-	 * public static int getMetadataSize() { return blockNames.length; }
-	 * 
-	 * public String getItemNameIS(ItemStack is) { String name = ""; if(is.getItemDamage()<getMetadataSize() && is.getItemDamage()>=0) name = blockNames[is.getItemDamage()]; else name = blockNames[0];
-	 * 
-	 * return getItemName() + "." + name; }
-	 * 
-	 * public String getTextureFile() { return CommonProxy.BLOCKS_PNG; }
-	 */
 	@Override
-	public String getItemNameIS(ItemStack is) {
+	public String getUnlocalizedName(ItemStack is) {
 		String name = "NetherSoulBomb";
-		return getItemName() + "." + name;
+		return getUnlocalizedName() + "." + name;
 	}
 
 	@Override

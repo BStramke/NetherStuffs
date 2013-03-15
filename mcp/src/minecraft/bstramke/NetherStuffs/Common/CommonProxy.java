@@ -1,6 +1,7 @@
 package bstramke.NetherStuffs.Common;
 
 public class CommonProxy {
+		
 	private static String TEXTUREFOLDERPREFIX = "/bstramke/NetherStuffs/resources/textures/";
 	private static String GUIFOLDERPREFIX = TEXTUREFOLDERPREFIX + "gui/";
 	public static String PUDDLES_PNG = TEXTUREFOLDERPREFIX + "puddles.png";
@@ -14,6 +15,10 @@ public class CommonProxy {
 	public static String SOULFURNACE_PNG = GUIFOLDERPREFIX + "soulfurnace.png";
 	public static String MOBBUTTONS_PNG = GUIFOLDERPREFIX + "mobbuttons.png";
 
+	public static String getIconLocation(String TextureName) {
+		return "Netherstuffs:" + TextureName;
+	}
+	
 	public void registerRenderThings() {
 
 	}

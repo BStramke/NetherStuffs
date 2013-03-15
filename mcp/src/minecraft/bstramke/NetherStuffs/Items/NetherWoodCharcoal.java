@@ -2,9 +2,11 @@ package bstramke.NetherStuffs.Items;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,13 +24,9 @@ public class NetherWoodCharcoal extends Item {
 	}
 	
 	@Override
-	public int getIconFromDamage(int par1) {
-		return this.iconIndex;
-	}
-
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.ITEMS_PNG;
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherCoal"));
 	}
 	
 	public static int getMetadataSize() {

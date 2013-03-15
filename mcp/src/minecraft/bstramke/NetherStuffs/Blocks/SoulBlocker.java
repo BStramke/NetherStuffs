@@ -4,9 +4,11 @@ import java.util.List;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
@@ -15,29 +17,32 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class SoulBlocker extends BlockContainer {
 	public static final int NetherSoulBlocker = 0;
+	private Icon icoSoulBlocker;
 
-	public SoulBlocker(int par1, int par2) {
-		super(par1, par2, Material.circuits);
+	public SoulBlocker(int par1) {
+		super(par1, Material.circuits);
 		this.setCreativeTab(CreativeTabs.tabRedstone);
 		this.setRequiresSelfNotify();
 	}
 
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
-	}
 
 	public int getMetadataSize() {
 		return SoulBlockerItemBlock.blockNames.length;
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public void func_94332_a(IconRegister par1IconRegister)
+	{
+		icoSoulBlocker = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulBlocker"));
+	}
+	
+	@Override
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (meta) {
 		case NetherSoulBlocker:
-			return 114;
+			return icoSoulBlocker;
 		default:
-			return 114;
+			return icoSoulBlocker;
 		}
 	}
 

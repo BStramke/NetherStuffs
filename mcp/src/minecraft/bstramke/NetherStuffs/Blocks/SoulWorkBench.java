@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
@@ -12,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -26,6 +28,10 @@ public class SoulWorkBench extends BlockContainer {
 	private static final int METADATA_ACTIVEBIT = 0x8;
 	private static final int METADATA_CLEARACTIVEBIT = -METADATA_ACTIVEBIT - 1;
 	private Random rand = new Random();
+	private Icon icoSoulWorkbenchTop;
+	private Icon icoSoulWorkbenchBottom;
+	private Icon icoSoulWorkbenchSideWE;
+	private Icon icoSoulWorkbenchSideNS;
 	private static boolean keepFurnaceInventory = false;
 
 	public static int clearActiveOnMetadata(int metadata) {
@@ -52,10 +58,11 @@ public class SoulWorkBench extends BlockContainer {
 		this.setTickRandomly(true);
 	}
 
+	/*@Override
 	public String getItemNameIS(ItemStack is) {
 		String name = "NetherSoulWorkBench";
 		return getBlockName() + "." + name;
-	}
+	}*/
 
 	/**
 	 * Returns the ID of the items to drop on destruction.
@@ -72,9 +79,6 @@ public class SoulWorkBench extends BlockContainer {
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
 		super.onBlockAdded(par1World, par2, par3, par4);
 		this.setDefaultDirection(par1World, par2, par3, par4);
-
-		// int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
-		// par1World.setBlockMetadataWithNotify(par2, par3, par4, clearActiveOnMetadata(metadata));
 	}
 
 	/**
@@ -104,13 +108,8 @@ public class SoulWorkBench extends BlockContainer {
 				var9 = 4;
 			}
 
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9, 2);
 		}
-	}
-
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
 	}
 
 	private boolean isActive(World par1World, int par2, int par3, int par4) {
@@ -129,23 +128,28 @@ public class SoulWorkBench extends BlockContainer {
 			return false;
 	}
 
+	public void func_94332_a(IconRegister par1IconRegister)
+	{
+		icoSoulWorkbenchTop = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchTop"));
+		icoSoulWorkbenchBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchBottom"));
+		icoSoulWorkbenchSideWE = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchSideWE"));
+		icoSoulWorkbenchSideNS = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchSideNS"));
+	}
+	
 	@SideOnly(Side.CLIENT)
-	/**
-	 * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
-	 */
 	@Override
-	public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
+	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
 
 		switch (side) {
 		case NetherBlocks.sideBottom:
-			return 100; // bottom
+			return icoSoulWorkbenchBottom; // bottom
 		case NetherBlocks.sideTop:
-			return 100; // top
+			return icoSoulWorkbenchTop; // top
 		case NetherBlocks.sideEast:
 		case NetherBlocks.sideWest:
-			return 101;
+			return icoSoulWorkbenchSideWE;
 		default:
-			return 102;
+			return icoSoulWorkbenchSideNS;
 		}
 	}
 
@@ -180,25 +184,6 @@ public class SoulWorkBench extends BlockContainer {
 	}
 
 	/**
-	 * Returns the block texture based on the side being looked at. Args: side
-	 */
-	@Override
-	public int getBlockTextureFromSide(int side) // pretty similar to getBlockTexture
-	{
-		switch (side) {
-		case NetherBlocks.sideBottom:
-			return 100; // bottom
-		case NetherBlocks.sideTop:
-			return 100; // top
-		case NetherBlocks.sideEast:
-		case NetherBlocks.sideWest:
-			return 101;
-		default:
-			return 102;
-		}
-	}
-
-	/**
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
@@ -217,23 +202,23 @@ public class SoulWorkBench extends BlockContainer {
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving) {
+	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack is) {
 		int var6 = MathHelper.floor_double((double) (par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
 		if (var6 == 0) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
 		}
 
 		if (var6 == 1) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 5);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
 		}
 
 		if (var6 == 2) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
 		}
 
 		if (var6 == 3) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
 		}
 	}
 

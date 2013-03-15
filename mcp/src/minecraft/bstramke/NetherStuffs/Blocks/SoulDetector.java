@@ -59,39 +59,35 @@ public class SoulDetector extends BlockContainer {
 	public static final int mk3 = 2;
 	public static final int mk4 = 3;
 
-	public SoulDetector(int par1, int par2) {
-		super(par1, par2, Material.circuits);
+	public SoulDetector(int par1) {
+		super(par1, Material.circuits);
 		this.setCreativeTab(CreativeTabs.tabRedstone);
 		this.setRequiresSelfNotify();
 	}
 
 	@Override
-	public int tickRate() {
+	public int tickRate(World par1World) {
 		return 20;
 	}
 
 	@Override
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
 		if (!par1World.isRemote) {
-			par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
+			par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
 			setEmittingSignal(false, par1World, par2, par3, par4);
 		}
 	}
 
 	@Override
-	public boolean isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0;
+	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0 ? 1 : 0;
 	}
 
 	@Override
-	public boolean isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0;
+	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0 ? 1 : 0;
 	}
 
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKDETECTOR_PNG;
-	}
 
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
@@ -275,7 +271,7 @@ public class SoulDetector extends BlockContainer {
 				}
 			}
 
-			par1World.scheduleBlockUpdate(xCoord, yCoord, zCoord, this.blockID, this.tickRate());
+			par1World.scheduleBlockUpdate(xCoord, yCoord, zCoord, this.blockID, this.tickRate(par1World));
 		}
 	}
 

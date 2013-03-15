@@ -14,24 +14,19 @@ public class SoulSiphonItemBlock extends ItemBlock {
 		setHasSubtypes(true);
 	}
 
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
-	}
-
 	public static int getMetadataSize() {
 		return blockNames.length;
 	}
 
 	@Override
-	public String getItemNameIS(ItemStack is) {
+	public String getUnlocalizedName(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
 			name = blockNames[is.getItemDamage()];
 		else
 			name = blockNames[0];
 
-		return getItemName() + "." + name;
+		return getUnlocalizedName() + "." + name;
 	}
 
 	@Override

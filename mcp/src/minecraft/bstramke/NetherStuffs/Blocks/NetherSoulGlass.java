@@ -22,8 +22,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class NetherSoulGlass extends BlockGlass {
 
-	public NetherSoulGlass(int par1, int par2, Material par3Material, boolean par4) {
-		super(par1, par2, par3Material, par4);
+	public NetherSoulGlass(int par1, Material par3Material, boolean par4) {
+		super(par1, par3Material, par4);
 		this.setStepSound(soundGlassFootstep);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 
@@ -45,20 +45,16 @@ public class NetherSoulGlass extends BlockGlass {
 
 	}
 
+	/*@Override
 	public String getItemNameIS(ItemStack is) {
 		String name = "NetherSoulGlass";
-		return getBlockName() + "." + name;
-	}
+		return getUnlocalizedName() + "." + name;
+	}*/
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
 		list.add(new ItemStack(par1, 1, 0));
-	}
-
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
 	}
 
 	@Override

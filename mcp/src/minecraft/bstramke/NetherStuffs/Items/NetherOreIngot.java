@@ -2,6 +2,7 @@ package bstramke.NetherStuffs.Items;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -26,15 +27,11 @@ public class NetherOreIngot extends Item {
 	}
 
 	@Override
-	public String getTextureFile() {
-		return CommonProxy.ITEMS_PNG;
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("IngotDemonic"));
 	}
-
-	@Override
-	public int getIconFromDamage(int par1) {
-		return this.iconIndex + par1;
-	}
-
+	
 	@Override
 	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
 

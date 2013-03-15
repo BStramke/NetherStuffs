@@ -7,6 +7,7 @@ import java.util.Random;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.NetherStuffs;
@@ -53,28 +55,32 @@ public class SoulSiphon extends BlockContainer {
 		return metadata & METADATA_BITMASK;
 	}
 
-	public SoulSiphon(int par1, int par2) {
-		super(par1, par2, Material.iron);
+	private Icon icoSoulSiphonInactive;
+	private Icon icoSoulSiphonActive;
+
+	public SoulSiphon(int par1) {
+		super(par1, Material.iron);
 		this.setCreativeTab(CreativeTabs.tabRedstone);
 		this.setRequiresSelfNotify();
 	}
 
-	@SideOnly(Side.CLIENT)
-	/**
-	 * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
-	 */
-	@Override
-	public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
-		int nMeta = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-		if (this.isActiveSet(nMeta))
-			return 145;
-		else
-			return 144;
-	}
+	
 
 	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
+	public void func_94332_a(IconRegister par1IconRegister)
+	{
+		icoSoulSiphonInactive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulSiphonInactive"));
+		icoSoulSiphonActive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulSiphonActive"));
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
+		int nMeta = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+		if (this.isActiveSet(nMeta))
+			return icoSoulSiphonActive;
+		else
+			return icoSoulSiphonInactive;
 	}
 
 	public int getMetadataSize() {

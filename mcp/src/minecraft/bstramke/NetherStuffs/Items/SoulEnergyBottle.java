@@ -3,6 +3,7 @@ package bstramke.NetherStuffs.Items;
 import java.text.NumberFormat;
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -36,16 +37,9 @@ public class SoulEnergyBottle extends Item {
 	}
 
 	@Override
-	public String getTextureFile() {
-		return CommonProxy.ITEMS_PNG;
-	}
-
-	@Override
-	public int getIconFromDamage(int par1) {
-		/*
-		 * switch (par1) { case small: return 48; case medium: return 49; case large: return 50; default: return 19; }
-		 */
-		return 16;
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("SoulEnergyBottle"));
 	}
 
 	public static int getMetadataSize() {

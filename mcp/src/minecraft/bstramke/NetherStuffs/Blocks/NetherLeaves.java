@@ -9,9 +9,11 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -28,9 +30,12 @@ public class NetherLeaves extends Block implements IShearable {
 	public static final int death = 2;
 
 	int[] adjacentTreeBlocks;
+	private Icon icoLeafHellfire;
+	private Icon icoLeafAcid;
+	private Icon icoLeafDeath;
 
-	public NetherLeaves(int par1, int par2) {
-		super(par1, par2, NetherLeavesMaterial.netherLeaves);
+	public NetherLeaves(int par1) {
+		super(par1, NetherLeavesMaterial.netherLeaves);
 		this.setRequiresSelfNotify();
 		this.setStepSound(Block.soundGrassFootstep);
 		this.setTickRandomly(true);
@@ -235,27 +240,30 @@ public class NetherLeaves extends Block implements IShearable {
 	}
 
 	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
-	}
-
-	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
+	
+	@Override
+	public void func_94332_a(IconRegister par1IconRegister)
+	{
+		icoLeafHellfire = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("LeafHellfire"));
+		icoLeafAcid = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("LeafAcid"));
+		icoLeafDeath = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("LeafDeath"));		 
+	}
+	
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		int nRowDiff = 64;
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (unmarkedMetadata(meta)) {
 		case hellfire:
-			return hellfire + nRowDiff;
+			return icoLeafHellfire;
 		case acid:
-			return acid + nRowDiff;
+			return icoLeafAcid;
 		case death:
-			return death + nRowDiff;
+			return icoLeafDeath;
 		default:
-			return hellfire + nRowDiff;
+			return icoLeafHellfire;
 		}
 	}
 

@@ -42,10 +42,10 @@ public class NetherSoulGlassPane extends BlockPane {
 		}
 	}
 
-	public String getItemNameIS(ItemStack is) {
+	/*public String getItemNameIS(ItemStack is) {
 		String name = "NetherSoulGlassPane";
 		return getBlockName() + "." + name;
-	}
+	}*/
 
 	@SideOnly(Side.CLIENT)
 	@Override

@@ -12,6 +12,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -24,19 +25,14 @@ import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
 
 public class NetherWoodPuddle extends BlockContainer {
 	
-	public NetherWoodPuddle(int par1, int par2) {
-		super(par1, par2, NetherWoodMaterial.netherWood);
+	public NetherWoodPuddle(int par1) {
+		super(par1, NetherWoodMaterial.netherWood);
 		this.setStepSound(soundWoodFootstep);
 		this.setRequiresSelfNotify();
 		this.setTickRandomly(true);
 		this.setBurnProperties(this.blockID, 0, 0);
 	}
 	
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
-	}
-		
 	@Override
 	public void updateTick(World par1World, int x, int y, int z, Random par5Random) {
 		if (par1World.isRemote)
@@ -107,7 +103,7 @@ public class NetherWoodPuddle extends BlockContainer {
 	}
 	
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		meta = meta & 3; //remove any puddle orientation info
 		if(side==NetherBlocks.sideBottom || side==NetherBlocks.sideTop)
 			return blocksList[NetherStuffs.NetherWoodBlockId].getBlockTextureFromSideAndMetadata(side, meta);

@@ -2,9 +2,11 @@ package bstramke.NetherStuffs.Items;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,6 +19,9 @@ public class NetherStonePotionBowl extends Item {
 	public static final int hellfire = 0;
 	public static final int acid = 1;
 	public static final int death = 2;
+	private Icon icoBowlHellfire;
+	private Icon icoBowlAcid;
+	private Icon icoBowlDeath;
 
 	public NetherStonePotionBowl(int par1) {
 		super(par1);
@@ -27,21 +32,25 @@ public class NetherStonePotionBowl extends Item {
 	}
 
 	@Override
-	public String getTextureFile() {
-		return CommonProxy.ITEMS_PNG;
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherStonePotionBowl"));
+		icoBowlHellfire = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherStonePotionBowlHellfire"));
+		icoBowlAcid = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherStonePotionBowlAcid"));
+		icoBowlDeath = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherStonePotionBowlDeath"));
 	}
 
 	@Override
-	public int getIconFromDamage(int par1) {
+	public Icon getIconFromDamage(int par1) {
 		switch (par1) {
 		case hellfire:
-			return 48;
+			return icoBowlHellfire;
 		case acid:
-			return 49;
+			return icoBowlAcid;
 		case death:
-			return 50;
+			return icoBowlDeath;
 		default:
-			return 19;
+			return iconIndex;
 		}
 	}
 

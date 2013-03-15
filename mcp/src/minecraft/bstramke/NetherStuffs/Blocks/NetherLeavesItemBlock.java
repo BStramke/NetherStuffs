@@ -1,8 +1,10 @@
 package bstramke.NetherStuffs.Blocks;
 
-import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Common.CommonProxy;
 
 public class NetherLeavesItemBlock extends ItemBlock {
 
@@ -18,15 +20,20 @@ public class NetherLeavesItemBlock extends ItemBlock {
 		return blockNames.length;
 	}
 
+	@Override 
+	public void func_94581_a(IconRegister iconRegister) {
+		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherLeaves"));
+	}
+	
 	@Override
-	public String getItemNameIS(ItemStack is) {
+	public String getUnlocalizedName(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
 			name = blockNames[is.getItemDamage()];
 		else
 			name = blockNames[0];
 
-		return getItemName() + "." + name;
+		return getUnlocalizedName() + "." + name;
 	}
 
 	@Override

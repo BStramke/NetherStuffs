@@ -5,8 +5,10 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import bstramke.NetherStuffs.Client.NetherOreRenderingHelper;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Items.NetherItems;
@@ -26,24 +28,28 @@ public class NetherOre extends Block {
 	public static final int netherOreLapis = 9;
 	public static final int netherOreCobblestone = 10;
 
-	public NetherOre(int par1, int par2) {
-		super(par1, par2, Material.rock);
+	private Icon icoNetherOre;
+	private Icon icoNetherStone;
+	
+	public NetherOre(int par1) {
+		super(par1, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setRequiresSelfNotify();
 		this.setStepSound(soundStoneFootstep);
 	}
 
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
-	}
-
 	public int getMetadataSize() {
 		return NetherOreItemBlock.blockNames.length;
 	}
+	
+	@Override 
+	public void func_94332_a(IconRegister iconRegister) {
+		icoNetherOre = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre"));
+		icoNetherStone = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherStone"));
+	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (meta) {
 		case demonicOre:
 		case netherOreIron:
@@ -55,11 +61,11 @@ public class NetherOre extends Block {
 		case netherOreObsidian:
 		case netherOreLapis:
 		case netherOreCobblestone:
-			return 0;
+			return icoNetherOre;
 		case netherStone:
-			return 1;
+			return icoNetherStone;
 		default:
-			return 0;
+			return icoNetherOre;
 		}
 	}
 	

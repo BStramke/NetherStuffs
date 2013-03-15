@@ -2,6 +2,7 @@ package bstramke.NetherStuffs.Blocks;
 
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,24 +25,19 @@ public class NetherSaplingItemBlock extends ItemBlock {
 	 * Gets an icon index based on an item's damage value
 	 */
 	@Override
-	public int getIconFromDamage(int par1) {
+	public Icon getIconFromDamage(int par1) {
 		return NetherBlocks.netherSapling.getBlockTextureFromSideAndMetadata(2, par1);
 	}
 
 	@Override
-	public String getItemNameIS(ItemStack is) {
+	public String getUnlocalizedName(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
 			name = blockNames[is.getItemDamage()];
 		else
 			name = blockNames[0];
 
-		return getItemName() + "." + name;
-	}
-
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
+		return getUnlocalizedName() + "." + name;
 	}
 
 	@Override

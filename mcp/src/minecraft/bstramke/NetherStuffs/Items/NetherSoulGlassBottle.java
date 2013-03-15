@@ -2,6 +2,7 @@ package bstramke.NetherStuffs.Items;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemGlassBottle;
@@ -29,13 +30,9 @@ public class NetherSoulGlassBottle extends ItemGlassBottle {
 	}
 
 	@Override
-	public String getTextureFile() {
-		return CommonProxy.ITEMS_PNG;
-	}
-
-	@Override
-	public int getIconFromDamage(int par1) {
-		return 16;
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassBottle"));
 	}
 
 	public static int getMetadataSize() {

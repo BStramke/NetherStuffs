@@ -2,9 +2,11 @@ package bstramke.NetherStuffs.Items;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,6 +19,9 @@ public class NetherPotionBottle extends Item {
 	public static final int hellfire = 0;
 	public static final int acid = 1;
 	public static final int death = 2;
+	private Icon icoBottleHellfire;
+	private Icon icoBottleAcid;
+	private Icon icoBottleDeath;
 
 	public NetherPotionBottle(int par1) {
 		super(par1);
@@ -27,21 +32,25 @@ public class NetherPotionBottle extends Item {
 	}
 
 	@Override
-	public String getTextureFile() {
-		return CommonProxy.ITEMS_PNG;
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassPotionBottle"));
+		icoBottleHellfire = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassPotionBottleHellfire"));
+		icoBottleAcid = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassPotionBottleAcid"));
+		icoBottleDeath = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassPotionBottleDeath"));
 	}
 
 	@Override
-	public int getIconFromDamage(int par1) {
+	public Icon getIconFromDamage(int par1) {
 		switch (par1) {
 		case hellfire:
-			return 32;
+			return icoBottleHellfire;
 		case acid:
-			return 33;
+			return icoBottleAcid;
 		case death:
-			return 34;
+			return icoBottleDeath;
 		default:
-			return 16;
+			return iconIndex;
 		}
 	}
 

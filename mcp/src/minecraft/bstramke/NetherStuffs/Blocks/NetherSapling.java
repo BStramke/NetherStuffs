@@ -7,9 +7,11 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import bstramke.NetherStuffs.NetherStuffs;
@@ -38,9 +40,12 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 	public static final int hellfire = 0;
 	public static final int acid = 1;
 	public static final int death = 2;
+	private Icon icoSaplingHellfire;
+	private Icon icoSaplingAcid;
+	private Icon icoSaplingDeath;
 
-	public NetherSapling(int par1, int par2) {
-		super(par1, par2);
+	public NetherSapling(int par1) {
+		super(par1);
 		this.setRequiresSelfNotify();
 		this.setStepSound(soundGrassFootstep);
 	}
@@ -56,34 +61,29 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 	}
 
 	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
+	public void func_94332_a(IconRegister par1IconRegister)
+	{
+		icoSaplingHellfire = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SaplingHellfire"));
+		icoSaplingAcid = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SaplingAcid"));
+		icoSaplingDeath = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SaplingDeath"));		 
 	}
-
+	
 	/**
 	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		int nRowDiff = 80;
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (unmarkedMetadata(meta)) {
 		case hellfire:
-			return hellfire + nRowDiff;
+			return icoSaplingHellfire;
 		case acid:
-			return acid + nRowDiff;
+			return icoSaplingAcid;
 		case death:
-			return death + nRowDiff;
+			return icoSaplingDeath;
 		default:
-			return hellfire + nRowDiff;
+			return icoSaplingHellfire;
 		}
 	}
-
-	/*
-	 * public int getBlockTextureFromSide(int par1) { return getBlockTextureFromSideAndMetadata(par1,-1); }
-	 * 
-	 * public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) { return this.getBlockTextureFromSideAndMetadata(par5, par1IBlockAccess.getBlockMetadata(par2,
-	 * par3, par4)); }
-	 */
 
 	/**
 	 * Gets passed in the blockID of the block below and supposed to return true if its allowed to grow on the type of blockID passed in. Args: blockID

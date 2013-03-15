@@ -9,7 +9,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerRenderThings() {
-		MinecraftForgeClient.preloadTexture(CommonProxy.BLOCKS_PNG);
+		/*MinecraftForgeClient.preloadTexture(CommonProxy.BLOCKS_PNG);
 		MinecraftForgeClient.preloadTexture(CommonProxy.BLOCKDETECTOR_PNG);
 		MinecraftForgeClient.preloadTexture(CommonProxy.ITEMS_PNG);
 		MinecraftForgeClient.preloadTexture(CommonProxy.FURNANCE_PNG);
@@ -18,7 +18,7 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.preloadTexture(CommonProxy.SOULDETECTOR_PNG);
 		MinecraftForgeClient.preloadTexture(CommonProxy.SOULFURNACE_PNG);
 		MinecraftForgeClient.preloadTexture(CommonProxy.MOBBUTTONS_PNG);
-		MinecraftForgeClient.preloadTexture(CommonProxy.SOULSIPHON_PNG);
+		MinecraftForgeClient.preloadTexture(CommonProxy.SOULSIPHON_PNG);*/
 		RenderingRegistry.registerEntityRenderingHandler(EntityTorchArrow.class, new RenderTorchArrow());
 		TextureFXManager.instance().addAnimation(new TextureSoulLiquidFX());
 		

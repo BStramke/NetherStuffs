@@ -5,8 +5,10 @@ import static net.minecraftforge.common.ForgeDirection.UP;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.Common.CommonProxy;
@@ -18,9 +20,12 @@ public class NetherPlank extends Block {
 	public static final int hellfire = 0;
 	public static final int acid = 1;
 	public static final int death = 2;
+	private Icon icoPlankHellfire;
+	private Icon icoPlankAcid;
+	private Icon icoPlankDeath;
 
-	public NetherPlank(int par1, int par2) {
-		super(par1, par2, NetherWoodMaterial.netherWood);
+	public NetherPlank(int par1) {
+		super(par1, NetherWoodMaterial.netherWood);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setRequiresSelfNotify();
 		this.setStepSound(soundWoodFootstep);
@@ -35,27 +40,29 @@ public class NetherPlank extends Block {
 		return false;
 	}
 
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
-	}
-
 	public int getMetadataSize() {
 		return NetherPlankItemBlock.blockNames.length;
 	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		int nRowDiff = 48;
+	public void func_94332_a(IconRegister par1IconRegister)
+	{
+		icoPlankHellfire = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("LeafHellfire"));
+		icoPlankAcid = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("LeafAcid"));
+		icoPlankDeath = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("LeafDeath"));		 
+	}
+	
+	@Override
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (meta) {
 		case hellfire:
-			return hellfire + nRowDiff;
+			return icoPlankHellfire;
 		case acid:
-			return acid + nRowDiff;
+			return icoPlankAcid;
 		case death:
-			return death + nRowDiff;
+			return icoPlankDeath;
 		default:
-			return hellfire + nRowDiff;
+			return icoPlankHellfire;
 		}
 	}
 

@@ -17,14 +17,14 @@ public class SoulBlockerItemBlock extends ItemBlock {
 	}
 
 	@Override
-	public String getItemNameIS(ItemStack is) {
+	public String getUnlocalizedName(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
 			name = blockNames[is.getItemDamage()];
 		else
 			name = blockNames[0];
 
-		return getItemName() + "." + name;
+		return getUnlocalizedName() + "." + name;
 	}
 
 	@Override

@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -23,9 +25,15 @@ public class NetherWood extends Block {
 	public static final int hellfire = 0;
 	public static final int acid = 1;
 	public static final int death = 2;
+	private Icon icoWoodHellfireTopBottom;
+	private Icon icoWoodHellfireSide;
+	private Icon icoWoodAcidTopBottom;
+	private Icon icoWoodAcidSide;
+	private Icon icoWoodDeathTopBottom;
+	private Icon icoWoodDeathSide;
 
-	public NetherWood(int par1, int par2) {
-		super(par1, par2, NetherWoodMaterial.netherWood);
+	public NetherWood(int par1) {
+		super(par1, NetherWoodMaterial.netherWood);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setStepSound(soundWoodFootstep);
 		this.setRequiresSelfNotify();
@@ -58,11 +66,6 @@ public class NetherWood extends Block {
 		return true;
 	}
 
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
-	}
-
 	public int getMetadataSize() {
 		return NetherWoodItemBlock.blockNames.length;
 	}
@@ -74,8 +77,19 @@ public class NetherWood extends Block {
 	}
 	
 	@Override
+	public void func_94332_a(IconRegister par1IconRegister)
+	{
+		icoWoodHellfireTopBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodHellfireTopBottom"));
+		icoWoodHellfireSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodHellfireSide"));
+		icoWoodAcidTopBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodAcidTopBottom"));
+		icoWoodAcidSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodAcidSide"));
+		icoWoodDeathTopBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodDeathTopBottom"));
+		icoWoodDeathSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodDeathSide"));
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		/*
 		 * int nRowDiff = 32; // side: 1=top, 0=bottom if (side == 1 || side == 0) { nRowDiff = nRowDiff - 16;// look one row above } switch (var4) { case hellfire: return hellfire + nRowDiff; case
 		 * acid: return acid + nRowDiff; case death: return death + nRowDiff; default: return hellfire + nRowDiff; }
@@ -85,37 +99,37 @@ public class NetherWood extends Block {
 
 		if ((orientation == 0 || orientation == 12) && (side == 1 || side == 0)) {
 			if (type == hellfire)
-				return 16;
+				return icoWoodHellfireTopBottom;
 			if (type == acid)
-				return 17;
+				return icoWoodAcidTopBottom;
 			if (type == death)
-				return 18;
+				return icoWoodDeathTopBottom;
 		}
 		if (orientation == 4 && (side == 5 || side == 4)) {
 			if (type == hellfire)
-				return 16;
+				return icoWoodHellfireTopBottom;
 			if (type == acid)
-				return 17;
+				return icoWoodAcidTopBottom;
 			if (type == death)
-				return 18;
+				return icoWoodDeathTopBottom;
 		}
 		if (orientation == 8 && (side == 2 || side == 3)) {
 			if (type == hellfire)
-				return 16;
+				return icoWoodHellfireTopBottom;
 			if (type == acid)
-				return 17;
+				return icoWoodAcidTopBottom;
 			if (type == death)
-				return 18;
+				return icoWoodDeathTopBottom;
 		}
 
 		if (type == hellfire)
-			return 32;
+			return icoWoodHellfireSide;
 		if (type == acid)
-			return 33;
+			return icoWoodAcidSide;
 		if (type == death)
-			return 34;
+			return icoWoodDeathSide;
 
-		return 16;
+		return icoWoodHellfireTopBottom;
 
 	}
 

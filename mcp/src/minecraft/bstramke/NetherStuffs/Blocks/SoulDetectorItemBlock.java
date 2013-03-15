@@ -18,19 +18,15 @@ public class SoulDetectorItemBlock extends ItemBlock {
 		return blockNames.length;
 	}
 
-	public String getItemNameIS(ItemStack is) {
+	@Override
+	public String getUnlocalizedName(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
 			name = blockNames[is.getItemDamage()];
 		else
 			name = blockNames[0];
 
-		return getItemName() + "." + name;
-	}
-
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKDETECTOR_PNG;
+		return getUnlocalizedName() + "." + name;
 	}
 
 	@Override

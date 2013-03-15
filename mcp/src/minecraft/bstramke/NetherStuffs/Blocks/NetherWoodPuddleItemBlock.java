@@ -19,19 +19,14 @@ public class NetherWoodPuddleItemBlock extends ItemBlock {
 	}
 
 	@Override
-	public String getItemNameIS(ItemStack is) {
+	public String getUnlocalizedName(ItemStack is) {
 		String name = "";
 		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
 			name = blockNames[is.getItemDamage()];
 		else
 			name = blockNames[0];
 
-		return getItemName() + "." + name;
-	}
-
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
+		return getUnlocalizedName() + "." + name;
 	}
 
 	@Override

@@ -31,11 +31,6 @@ public class NetherSword extends ItemSword {
 		}
 	}
 
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.ITEMS_PNG;
-	}
-
 	protected Types nType = Types.undefined;
 
 	public NetherSword(int par1, EnumToolMaterial par2EnumToolMaterial) {

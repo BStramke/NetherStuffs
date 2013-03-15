@@ -3,6 +3,7 @@ package bstramke.NetherStuffs.Items;
 import java.text.NumberFormat;
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -18,15 +19,11 @@ public class SoulEnergyLiquidItem extends Item {
 		this.setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	
+
 	@Override
-	@SideOnly(Side.CLIENT)
-	public int getIconFromDamage(int par1) {
-		return 80;
-	}
-	
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.ITEMS_PNG;
+	public void func_94581_a(IconRegister iconRegister)
+	{
+		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("SoulEnergyLiquidItem"));
 	}
 	
 	@Override
