@@ -15,6 +15,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.relauncher.Side;
@@ -46,7 +47,7 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 
 	public NetherSapling(int par1) {
 		super(par1);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 		this.setStepSound(soundGrassFootstep);
 	}
 
@@ -131,7 +132,7 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 				int var6 = par1World.getBlockMetadata(par2, par3, par4);
 
 				if (!isMarkedMetadata(var6)) {
-					par1World.setBlockMetadataWithNotify(par2, par3, par4, markedMetadata(var6));
+					par1World.setBlockMetadataWithNotify(par2, par3, par4, markedMetadata(var6), BlockNotifyType.ALL);
 				} else {
 					this.growTree(par1World, par2, par3, par4, par5Random);
 				}
@@ -146,9 +147,9 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 	public void growTree(World par1World, int par2, int par3, int par4, Random par5Random) {
 		int meta = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
 
-		par1World.setBlock(par2, par3, par4, 0);
+		par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, BlockNotifyType.ALL);
 		if ((new WorldGenNetherStuffsTrees(true, meta)).generate(par1World, par5Random, par2, par3, par4)) {
-			par1World.setBlockAndMetadata(par2, par3, par4, NetherStuffs.NetherWoodBlockId, meta);
+			par1World.setBlockAndMetadataWithNotify(par2, par3, par4, NetherStuffs.NetherWoodBlockId, meta, BlockNotifyType.ALL);
 		}
 	}
 

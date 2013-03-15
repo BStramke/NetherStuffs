@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Client.ClientPacketHandler.PacketType;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.NetherWoodMaterial;
 import bstramke.NetherStuffs.Common.ServerPacketHandler;
@@ -28,7 +29,7 @@ public class NetherWoodPuddle extends BlockContainer {
 	public NetherWoodPuddle(int par1) {
 		super(par1, NetherWoodMaterial.netherWood);
 		this.setStepSound(soundWoodFootstep);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 		this.setTickRandomly(true);
 		this.setBurnProperties(this.blockID, 0, 0);
 	}
@@ -48,11 +49,13 @@ public class NetherWoodPuddle extends BlockContainer {
 		}
 	}
 
+	
+	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public int getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) {
+	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) {
 		int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
-		int textureIndex = getBlockTextureFromSideAndMetadata(side, meta);
+		Icon textureIndex = getBlockTextureFromSideAndMetadata(side, meta);
 	
 		TileEntity tile = par1IBlockAccess.getBlockTileEntity(x, y, z);
 		if(tile instanceof TileNetherWoodPuddle) {

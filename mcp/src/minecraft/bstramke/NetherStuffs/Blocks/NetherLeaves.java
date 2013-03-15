@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IShearable;
 import bstramke.NetherStuffs.Client.EntityDropParticleFXNetherStuffs;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.NetherLeavesMaterial;
 import cpw.mods.fml.relauncher.Side;
@@ -36,7 +37,7 @@ public class NetherLeaves extends Block implements IShearable {
 
 	public NetherLeaves(int par1) {
 		super(par1, NetherLeavesMaterial.netherLeaves);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 		this.setStepSound(Block.soundGrassFootstep);
 		this.setTickRandomly(true);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
@@ -155,7 +156,7 @@ public class NetherLeaves extends Block implements IShearable {
 				var12 = this.adjacentTreeBlocks[var11 * var10 + var11 * var9 + var11];
 
 				if (var12 >= 0) {
-					par1World.setBlockMetadata(par2, par3, par4, clearDecayOnMetadata(var6));
+					par1World.setBlockMetadataWithNotify(par2, par3, par4, clearDecayOnMetadata(var6), BlockNotifyType.ALL);
 				} else {
 					this.removeLeaves(par1World, par2, par3, par4);
 				}
@@ -192,7 +193,7 @@ public class NetherLeaves extends Block implements IShearable {
 			}
 
 			if (fx != null) {
-				Minecraft.getMinecraft().effectRenderer.addEffect((EntityFX) fx, null);
+				Minecraft.getMinecraft().effectRenderer.addEffect((EntityFX) fx);
 			}
 		}
 
@@ -200,7 +201,7 @@ public class NetherLeaves extends Block implements IShearable {
 
 	private void removeLeaves(World par1World, int par2, int par3, int par4) {
 		this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-		par1World.setBlockWithNotify(par2, par3, par4, 0);
+		par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, BlockNotifyType.ALL);
 	}
 
 	/**
@@ -326,7 +327,7 @@ public class NetherLeaves extends Block implements IShearable {
 
 	@Override
 	public void beginLeavesDecay(World world, int x, int y, int z) {
-		world.setBlockMetadata(x, y, z, setDecayOnMetadata(world.getBlockMetadata(x, y, z)));
+		world.setBlockMetadataWithNotify(x, y, z, setDecayOnMetadata(world.getBlockMetadata(x, y, z)), BlockNotifyType.ALL);
 	}
 
 	private static int setDecayOnMetadata(int metadata) {

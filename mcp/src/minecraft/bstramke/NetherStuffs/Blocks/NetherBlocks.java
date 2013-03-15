@@ -26,7 +26,7 @@ public class NetherBlocks {
 	public static final Block NetherDemonicFurnace = new NetherDemonicFurnace(NetherStuffs.NetherDemonicFurnaceBlockId).setUnlocalizedName("NetherDemonicFurnace").setHardness(3.5F).setResistance(10.0F);
 	public static final Block NetherSoulFurnace = new NetherSoulFurnace(NetherStuffs.NetherSoulFurnaceBlockId).setUnlocalizedName("NetherSoulFurnace").setHardness(3.5F).setResistance(10.0F);
 	public static final Block NetherSoulGlass = new NetherSoulGlass(NetherStuffs.NetherSoulGlassBlockid, Material.glass, false).setUnlocalizedName("NetherSoulGlass").setHardness(0.6F).setResistance(10.0F);
-	public static final Block NetherSoulGlassPane = new NetherSoulGlassPane(NetherStuffs.NetherSoulGlassPaneBlockid, 112, 113, Material.glass, false).setUnlocalizedName("NetherSoulGlassPane").setHardness(0.6F).setResistance(10.0F);
+	public static final Block NetherSoulGlassPane = new NetherSoulGlassPane(NetherStuffs.NetherSoulGlassPaneBlockid, Material.glass, false).setUnlocalizedName("NetherSoulGlassPane").setHardness(0.6F).setResistance(10.0F);
 	
 	public static final Block NetherSoulDetector = new SoulDetector(NetherStuffs.NetherSoulDetectorBlockId).setUnlocalizedName("NetherSoulDetector").setHardness(3.5F).setResistance(10.0F);
 	

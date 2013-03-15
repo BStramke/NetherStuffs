@@ -7,6 +7,7 @@ import java.util.Random;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -42,10 +43,12 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
 import cpw.mods.fml.common.network.FMLNetworkHandler;
@@ -59,10 +62,13 @@ public class SoulDetector extends BlockContainer {
 	public static final int mk3 = 2;
 	public static final int mk4 = 3;
 
+	private Icon[] icoInactive;
+	private Icon[] icoActive;
+
 	public SoulDetector(int par1) {
 		super(par1, Material.circuits);
 		this.setCreativeTab(CreativeTabs.tabRedstone);
-		this.setRequiresSelfNotify();
+		// this.setRequiresSelfNotify();
 	}
 
 	@Override
@@ -88,19 +94,52 @@ public class SoulDetector extends BlockContainer {
 		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0 ? 1 : 0;
 	}
 
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void func_94332_a(IconRegister par1IconRegister) {
+		icoActive = new Icon[6];
+		icoInactive = new Icon[6];
+
+		for (int i = 0; i < 6; i++) {
+			String side = "";
+			switch (i) {
+			case NetherBlocks.sideBottom:
+				side = "Bottom";
+				break;
+			case NetherBlocks.sideTop:
+				side = "Top";
+				break;
+			case NetherBlocks.sideNorth:
+				side = "North";
+				break;
+			case NetherBlocks.sideSouth:
+				side = "South";
+				break;
+			case NetherBlocks.sideWest:
+				side = "West";
+				break;
+			case NetherBlocks.sideEast:
+				side = "East";
+				break;
+			}
+
+			icoActive[i] = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulDetectorActive_" + side));
+			icoInactive[i] = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulDetectorInactive_" + side));
+		}
+	}
 
 	@Override
-	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		if ((meta & 8) > 0)
-			return side + 16;
+			return icoActive[side];
 		else
-			return side;
+			return icoInactive[side];
 	}
 
 	public int getMetadataSize() {
 		return SoulDetectorItemBlock.blockNames.length;
 	}
-	
+
 	@Override
 	public int damageDropped(int meta) {
 		return meta & 7;
@@ -148,12 +187,12 @@ public class SoulDetector extends BlockContainer {
 				Integer nUpperY = yCoord + nRangeUp + 1;// height has to be 1 more for upwards detection (detects Head Position)
 				Integer nUpperZ = zCoord + nRangeSouth + 1;
 
-				AxisAlignedBB axis = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ);
+				AxisAlignedBB axis = AxisAlignedBB.getAABBPool().getAABB(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ);
 				List tmp = par1World.getEntitiesWithinAABBExcludingEntity((Entity) null, axis);
 
-				List results = new ArrayList(); //this could be a boolean, but maybe we want a count based detection, like, if 5 Pigs...
+				List results = new ArrayList(); // this could be a boolean, but maybe we want a count based detection, like, if 5 Pigs...
 				Iterator it = tmp.iterator();
-				
+
 				while (it.hasNext()) {
 					Object data = it.next();
 					if (data instanceof EntityLiving || data instanceof EntityPlayerMP) {} else {
@@ -209,7 +248,8 @@ public class SoulDetector extends BlockContainer {
 							results.add(data);
 						else if (data instanceof EntityBat && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectBat])
 							results.add(data);
-						else if (data instanceof EntityWolf && ((EntityWolf) data).isAngry() == false && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWolfTameable])
+						else if (data instanceof EntityWolf && ((EntityWolf) data).isAngry() == false
+								&& ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWolfTameable])
 							results.add(data);
 						else if (data instanceof EntityIronGolem && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectIronGolem])
 							results.add(data);
@@ -224,9 +264,11 @@ public class SoulDetector extends BlockContainer {
 							results.add(data);
 						else if (data instanceof EntityWither && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWither])
 							results.add(data);
-						else if (data instanceof EntitySkeleton && ((EntitySkeleton) data).getSkeletonType() != 1 && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectSkeleton])
+						else if (data instanceof EntitySkeleton && ((EntitySkeleton) data).getSkeletonType() != 1
+								&& ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectSkeleton])
 							results.add(data);
-						else if (data instanceof EntityWolf && ((EntityWolf) data).isAngry() == true && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWolfAggressive])
+						else if (data instanceof EntityWolf && ((EntityWolf) data).isAngry() == true
+								&& ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWolfAggressive])
 							results.add(data);
 						else if (data instanceof EntitySilverfish && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectSilverfish])
 							results.add(data);
@@ -251,7 +293,8 @@ public class SoulDetector extends BlockContainer {
 							results.add(data);
 						else if (data instanceof EntityWitch && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectWitch])
 							results.add(data);
-						else if (data instanceof EntityZombie && ((EntityZombie) data).isVillager() == true && ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectZombieVillager])
+						else if (data instanceof EntityZombie && ((EntityZombie) data).isVillager() == true
+								&& ((TileSoulDetector) tile_entity).detectEntitiesMobs[TileSoulDetector.nDetectZombieVillager])
 							results.add(data);
 						else if (((Entity) data).ridingEntity instanceof EntitySpider && ((Entity) data).riddenByEntity instanceof EntitySkeleton
 								&& ((EntitySkeleton) ((Entity) data).riddenByEntity).getSkeletonType() != 1
@@ -279,9 +322,9 @@ public class SoulDetector extends BlockContainer {
 		if (!par1World.isRemote) {
 			int nMeta = par1World.getBlockMetadata(par2, par3, par4);
 			if ((nMeta & 8) > 0 && active == false) // it is active, sets to non active
-				par1World.setBlockMetadataWithNotify(par2, par3, par4, (nMeta & 7));
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, (nMeta & 7), BlockNotifyType.ALL);
 			else if ((nMeta & 8) == 0 && active == true) // it is not active, sets to active
-				par1World.setBlockMetadataWithNotify(par2, par3, par4, (nMeta | 8));
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, (nMeta | 8), BlockNotifyType.ALL);
 		}
 	}
 

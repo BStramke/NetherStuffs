@@ -213,7 +213,7 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 					nYPos = this.yTile - 1;
 
 				if (((BlockTorch)Block.torchWood).canPlaceBlockAt(this.worldObj, nXPos, nYPos, nZPos)/* && this.worldObj.getBlockId(nXPos, nYPos, nZPos) == 0*/)
-					this.worldObj.setBlock(nXPos, nYPos, nZPos, Block.torchWood.blockID);
+					this.worldObj.setBlockAndMetadataWithNotify(nXPos, nYPos, nZPos, Block.torchWood.blockID, 0, 3);
 				else {
 					if (!this.worldObj.isRemote) {
 						this.entityDropItem(new ItemStack(NetherItems.torchArrow, 1), 1);

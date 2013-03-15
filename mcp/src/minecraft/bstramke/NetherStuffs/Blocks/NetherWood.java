@@ -15,6 +15,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.NetherWoodMaterial;
 import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
@@ -36,7 +37,7 @@ public class NetherWood extends Block {
 		super(par1, NetherWoodMaterial.netherWood);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setStepSound(soundWoodFootstep);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 		this.setBurnProperties(this.blockID, 0, 0);
 	}
 	
@@ -140,7 +141,7 @@ public class NetherWood extends Block {
 			if (par1World.rand.nextInt(100) + 1 <= 15) // chance of being able to spawn a puddled block
 			{
 				int meta = par1World.getBlockMetadata(x, y, z) & 3;
-				par1World.setBlockAndMetadata(x, y, z, NetherStuffs.NetherWoodPuddleBlockId, meta);
+				par1World.setBlockAndMetadataWithNotify(x, y, z, NetherStuffs.NetherWoodPuddleBlockId, meta, BlockNotifyType.ALL);
 			}
 		}
 	}

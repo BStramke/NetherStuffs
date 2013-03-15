@@ -27,7 +27,7 @@ public class NetherPlank extends Block {
 	public NetherPlank(int par1) {
 		super(par1, NetherWoodMaterial.netherWood);
 		this.setCreativeTab(CreativeTabs.tabBlock);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 		this.setStepSound(soundWoodFootstep);
 		this.setBurnProperties(this.blockID, 0, 0);
 	}

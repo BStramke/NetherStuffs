@@ -17,12 +17,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class SoulBlocker extends BlockContainer {
 	public static final int NetherSoulBlocker = 0;
-	private Icon icoSoulBlocker;
+
 
 	public SoulBlocker(int par1) {
 		super(par1, Material.circuits);
 		this.setCreativeTab(CreativeTabs.tabRedstone);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 	}
 
 
@@ -33,17 +33,7 @@ public class SoulBlocker extends BlockContainer {
 	@Override
 	public void func_94332_a(IconRegister par1IconRegister)
 	{
-		icoSoulBlocker = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulBlocker"));
-	}
-	
-	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
-		switch (meta) {
-		case NetherSoulBlocker:
-			return icoSoulBlocker;
-		default:
-			return icoSoulBlocker;
-		}
+		this.field_94336_cN = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulBlocker"));
 	}
 
 	@Override

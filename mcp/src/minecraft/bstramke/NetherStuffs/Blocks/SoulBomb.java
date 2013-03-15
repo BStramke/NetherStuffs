@@ -18,7 +18,7 @@ public class SoulBomb extends BlockTNT {
 		super(par1);
 		this.setCreativeTab(CreativeTabs.tabRedstone);
 		this.setStepSound(soundGrassFootstep);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 	}
 
 	/**

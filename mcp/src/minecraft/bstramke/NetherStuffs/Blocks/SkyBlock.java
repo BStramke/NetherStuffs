@@ -25,7 +25,7 @@ public class SkyBlock extends Block {
 		super(par1, Material.air);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setStepSound(soundPowderFootstep);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSkyBlock.name", SkyBlock.blockDisplayNames[0]);
 	}
 

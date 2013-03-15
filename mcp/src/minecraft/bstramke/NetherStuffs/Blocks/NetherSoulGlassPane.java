@@ -20,8 +20,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class NetherSoulGlassPane extends BlockPane {
 
-	public NetherSoulGlassPane(int par1, int par2, int par3, Material par4Material, boolean par5) {
-		super(par1, par2, par3, par4Material, par5);
+	public NetherSoulGlassPane(int par1, Material par4Material, boolean par5) {
+		super(par1, CommonProxy.getIconLocation("SoulGlass"),  CommonProxy.getIconLocation("SoulGlassTop"), par4Material, par5);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 
 		try {
@@ -51,11 +51,6 @@ public class NetherSoulGlassPane extends BlockPane {
 	@Override
 	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
 		list.add(new ItemStack(par1, 1, 0));
-	}
-
-	@Override
-	public String getTextureFile() {
-		return CommonProxy.BLOCKS_PNG;
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -62,9 +63,9 @@ public class NetherSoulGlass extends BlockGlass {
 		return true;
 	}
 
-	/*
-	 * The issue is: it looks strange... public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) { int var6 =
-	 * par1IBlockAccess.getBlockId(par2, par3, par4); return var6 == Block.glass.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5); }
-	 */
-
+	@Override
+	public void func_94332_a(IconRegister par1IconRegister)
+	{	
+		field_94336_cN = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulGlass"));
+	}
 }

@@ -18,6 +18,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.DemonicFurnace.TileDemonicFurnace;
 import cpw.mods.fml.relauncher.Side;
@@ -67,7 +68,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 		super(par1, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		this.setStepSound(soundStoneFootstep);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 		this.setTickRandomly(true);
 	}
 
@@ -122,8 +123,8 @@ public class NetherDemonicFurnace extends BlockContainer {
 			if (Block.opaqueCubeLookup[var8] && !Block.opaqueCubeLookup[var7]) {
 				var9 = 4;
 			}
-
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
+			
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9, BlockNotifyType.ALL);
 		}
 	}
 

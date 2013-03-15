@@ -34,7 +34,7 @@ public class NetherOre extends Block {
 	public NetherOre(int par1) {
 		super(par1, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabBlock);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 		this.setStepSound(soundStoneFootstep);
 	}
 

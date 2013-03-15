@@ -18,6 +18,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.SoulFurnace.TileSoulFurnace;
 import cpw.mods.fml.relauncher.Side;
@@ -67,7 +68,7 @@ public class NetherSoulFurnace extends BlockContainer {
 		super(par1, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		this.setStepSound(soundStoneFootstep);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 		this.setTickRandomly(true);
 	}
 
@@ -307,7 +308,7 @@ public class NetherSoulFurnace extends BlockContainer {
 				var9 = 4;
 			}
 
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9, BlockNotifyType.ALL);
 		}
 	}
 

@@ -54,7 +54,7 @@ public class SoulWorkBench extends BlockContainer {
 		super(par1, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		this.setStepSound(soundStoneFootstep);
-		this.setRequiresSelfNotify();
+		//this.setRequiresSelfNotify();
 		this.setTickRandomly(true);
 	}
 
