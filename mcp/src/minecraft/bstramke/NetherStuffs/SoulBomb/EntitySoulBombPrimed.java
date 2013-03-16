@@ -1,13 +1,18 @@
 package bstramke.NetherStuffs.SoulBomb;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.world.World;
 
 public class EntitySoulBombPrimed extends EntityTNTPrimed {
 
-	public EntitySoulBombPrimed(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
+	public EntitySoulBombPrimed(World par1World) {
+		super(par1World);
+	}
+
+	public EntitySoulBombPrimed(World par1World, double par2, double par4, double par6, EntityLiving par8EntityLiving) {
+		super(par1World, par2, par4, par6, par8EntityLiving);
 	}
 
 	/**

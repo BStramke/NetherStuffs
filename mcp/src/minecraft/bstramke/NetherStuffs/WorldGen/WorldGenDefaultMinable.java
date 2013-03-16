@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Random;
 
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
@@ -89,7 +90,7 @@ public class WorldGenDefaultMinable implements IWorldGenerator {
 
 										System.out.println(arrMap);
 									}
-									par1World.setBlockAndMetadata(var38, var41, var44, this.minableBlockId, minableBlockMeta);
+									par1World.setBlockAndMetadataWithNotify(var38, var41, var44, this.minableBlockId, minableBlockMeta, BlockNotifyType.ALL);
 								}
 							}
 						}

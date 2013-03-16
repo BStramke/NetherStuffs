@@ -100,7 +100,7 @@ public class SoulExplosion {
 		int var7 = MathHelper.floor_double(this.explosionZ - (double) this.explosionSize - 1.0D);
 		int var29 = MathHelper.floor_double(this.explosionZ + (double) this.explosionSize + 1.0D);
 		List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this.exploder,
-				AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double) var3, (double) var5, (double) var7, (double) var4, (double) var28, (double) var29));
+				AxisAlignedBB.getAABBPool().getAABB((double) var3, (double) var5, (double) var7, (double) var4, (double) var28, (double) var29));
 		Vec3 var30 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.explosionX, this.explosionY, this.explosionZ);
 
 		for (int var11 = 0; var11 < var9.size(); ++var11) {
@@ -114,8 +114,7 @@ public class SoulExplosion {
 				double var33 = (double) MathHelper.sqrt_double(var15 * var15 + var17 * var17 + var19 * var19);
 
 				if (var33 != 0.0D) {
-					// System.out.println(var31.getEntityName());
-					var31.attackEntityFrom(DamageSource.explosion, 100);
+					var31.attackEntityFrom( (new DamageSource("explosion")).setDifficultyScaled().func_94540_d(), 100);//DamageSource.explosion
 				}
 			}
 		}

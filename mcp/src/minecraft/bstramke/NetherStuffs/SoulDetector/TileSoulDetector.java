@@ -71,32 +71,26 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 
 	@Override
 	public int getSizeInventory() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int var1) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ItemStack decrStackSize(int var1, int var2) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int var1) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -451,5 +445,17 @@ public class TileSoulDetector extends TileEntity implements IInventory {
 		if (!this.worldObj.isRemote) {
 
 		}
+	}
+
+	@Override
+	public boolean func_94042_c() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean func_94041_b(int i, ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

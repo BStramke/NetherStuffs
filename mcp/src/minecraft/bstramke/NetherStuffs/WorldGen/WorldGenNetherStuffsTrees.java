@@ -11,6 +11,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherWood;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldGenerator {
@@ -126,7 +127,7 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 							continue;
 
 						if (par2Random.nextInt(5) == 0) {
-							par1World.setBlockWithNotify(x, y + 1, z, Block.fire.blockID);
+							par1World.setBlockAndMetadataWithNotify(x, y + 1, z, Block.fire.blockID, 0, BlockNotifyType.ALL);
 							nCountFirespawn++;
 						}
 					}

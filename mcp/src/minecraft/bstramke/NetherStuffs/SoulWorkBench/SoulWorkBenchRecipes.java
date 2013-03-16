@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import cpw.mods.fml.common.Loader;
-
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -19,7 +17,7 @@ import bstramke.NetherStuffs.Blocks.SoulDetector;
 import bstramke.NetherStuffs.Blocks.SoulDetectorItemBlock;
 import bstramke.NetherStuffs.Blocks.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Items.NetherItems;
-import bstramke.NetherStuffs.mc15compat.CompatItem;
+import cpw.mods.fml.common.Loader;
 
 public class SoulWorkBenchRecipes {
 	private static final SoulWorkBenchRecipes instance = new SoulWorkBenchRecipes();
@@ -50,7 +48,8 @@ public class SoulWorkBenchRecipes {
 		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulFurnace, 1), 300, new Object[] { "IBI", "IFI", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'F',
 				new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1) });
 
-		this.addRecipe(new ItemStack(CompatItem.netherQuartz), 100, new Object[] { "BB", "BB", 'B', new ItemStack(Block.sandStone) });
+		//field_94583_ca = netherquartz item
+		this.addRecipe(new ItemStack(Item.field_94583_ca), 100, new Object[] { "BB", "BB", 'B', new ItemStack(Block.sandStone) });
 
 		// Add 4 Soul Siphons with the same Metadatas as Soul Detectors
 		for (int i = 0; i < SoulSiphonItemBlock.getMetadataSize() && i < SoulDetectorItemBlock.getMetadataSize(); i++) {

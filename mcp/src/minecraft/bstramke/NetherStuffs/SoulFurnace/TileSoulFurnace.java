@@ -13,6 +13,7 @@ import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherSoulFurnace;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
@@ -198,9 +199,9 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 				var2 = true;
 				int metadata = NetherSoulFurnace.unmarkedMetadata(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
 				if (this.furnaceCookTime > 0)
-					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherSoulFurnace.setActiveOnMetadata(metadata));
+					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherSoulFurnace.setActiveOnMetadata(metadata), BlockNotifyType.ALL);
 				else
-					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherSoulFurnace.clearActiveOnMetadata(metadata));
+					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherSoulFurnace.clearActiveOnMetadata(metadata), BlockNotifyType.ALL);
 			}
 		}
 
@@ -393,5 +394,17 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	@Override
 	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
 		return null;
+	}
+
+	@Override
+	public boolean func_94042_c() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean func_94041_b(int i, ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

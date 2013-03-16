@@ -25,6 +25,7 @@ import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.NetherStuffsEventHook;
 import bstramke.NetherStuffs.Blocks.SoulSiphon;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
@@ -169,7 +170,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 				int nMeta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 				if (this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
 					if (!SoulSiphon.isActiveSet(nMeta))
-						this.worldObj.setBlockMetadata(xCoord, yCoord, zCoord, SoulSiphon.setActiveOnMetadata(nMeta));
+						this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, SoulSiphon.setActiveOnMetadata(nMeta), BlockNotifyType.ALL);
 					int nRange;
 					switch (SoulSiphon.unmarkedMetadata(nMeta)) {
 					case SoulSiphon.mk1:
@@ -199,7 +200,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 					Integer nUpperY = yCoord + nRangeUp + 1;// height has to be 1 more for upwards detection (detects Head Position)
 					Integer nUpperZ = zCoord + nRangeSouth + 1;
 
-					AxisAlignedBB axis = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ);
+					AxisAlignedBB axis = AxisAlignedBB.getAABBPool().getAABB(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ);
 					List tmp = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity) null, axis);
 
 					List results = new ArrayList(); // this could be a boolean, but maybe we want a count based detection, like, if 5 Pigs...
@@ -230,7 +231,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 					}
 				} else {
 					if (SoulSiphon.isActiveSet(nMeta))
-						this.worldObj.setBlockMetadata(xCoord, yCoord, zCoord, SoulSiphon.clearActiveOnMetadata(nMeta));
+						this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, SoulSiphon.clearActiveOnMetadata(nMeta), BlockNotifyType.ALL);
 				}
 			}
 		}
@@ -373,5 +374,17 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 	@Override
 	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
 		return null;
+	}
+
+	@Override
+	public boolean func_94042_c() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean func_94041_b(int i, ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
