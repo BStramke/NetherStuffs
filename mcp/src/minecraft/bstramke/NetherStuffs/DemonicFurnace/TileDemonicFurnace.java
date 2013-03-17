@@ -9,6 +9,7 @@ import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.Blocks.NetherDemonicFurnace;
 import bstramke.NetherStuffs.Blocks.NetherWood;
 import bstramke.NetherStuffs.Blocks.NetherWoodItemBlock;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Items.NetherWoodCharcoal;
 import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
@@ -175,9 +176,9 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory 
 				var2 = true;
 				int metadata = NetherDemonicFurnace.unmarkedMetadata(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
 				if (this.furnaceBurnTime > 0)
-					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherDemonicFurnace.setActiveOnMetadata(metadata));
+					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherDemonicFurnace.setActiveOnMetadata(metadata), BlockNotifyType.ALL);
 				else
-					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherDemonicFurnace.clearActiveOnMetadata(metadata));
+					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherDemonicFurnace.clearActiveOnMetadata(metadata), BlockNotifyType.ALL);
 			}
 		}
 
@@ -372,5 +373,17 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory 
 			return new ItemStack[] { outputStack };
 		} else
 			return null;
+	}
+
+	@Override
+	public boolean func_94042_c() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean func_94041_b(int i, ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

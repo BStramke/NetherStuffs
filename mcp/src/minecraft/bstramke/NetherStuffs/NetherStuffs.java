@@ -747,42 +747,6 @@ public class NetherStuffs extends DummyModContainer {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherSoulSiphon." + SoulSiphonItemBlock.blockNames[i] + ".name", SoulSiphonItemBlock.blockDisplayNames[i]);
 		}
 
-		for (int i = 0; i < ((NetherOreIngot) NetherItems.NetherOreIngot).getMetadataSize(); i++) {
-			LanguageRegistry.instance().addStringLocalization("item.NetherOreIngot." + ((NetherOreIngot) NetherItems.NetherOreIngot).itemNames[i] + ".name",
-					((NetherOreIngot) NetherItems.NetherOreIngot).itemDisplayNames[i]);
-		}
-
-		for (int i = 0; i < ((NetherStoneBowl) NetherItems.NetherStoneBowl).getMetadataSize(); i++) {
-			LanguageRegistry.instance().addStringLocalization("item.NetherStoneBowl." + ((NetherStoneBowl) NetherItems.NetherStoneBowl).itemNames[i] + ".name",
-					((NetherStoneBowl) NetherItems.NetherStoneBowl).itemDisplayNames[i]);
-		}
-
-		for (int i = 0; i < ((NetherSoulGlassBottle) NetherItems.NetherSoulGlassBottleItem).getMetadataSize(); i++) {
-			LanguageRegistry.instance().addStringLocalization(
-					"item.NetherSoulGlassBottleItem." + ((NetherSoulGlassBottle) NetherItems.NetherSoulGlassBottleItem).itemNames[i] + ".name",
-					((NetherSoulGlassBottle) NetherItems.NetherSoulGlassBottleItem).itemDisplayNames[i]);
-		}
-
-		for (int i = 0; i < ((NetherPotionBottle) NetherItems.NetherPotionBottle).getMetadataSize(); i++) {
-			LanguageRegistry.instance().addStringLocalization("item.NetherPotionBottle." + ((NetherPotionBottle) NetherItems.NetherPotionBottle).itemNames[i] + ".name",
-					((NetherPotionBottle) NetherItems.NetherPotionBottle).itemDisplayNames[i]);
-		}
-
-		for (int i = 0; i < ((NetherStonePotionBowl) NetherItems.NetherStonePotionBowl).getMetadataSize(); i++) {
-			LanguageRegistry.instance().addStringLocalization("item.NetherStonePotionBowl." + ((NetherStonePotionBowl) NetherItems.NetherStonePotionBowl).itemNames[i] + ".name",
-					((NetherStonePotionBowl) NetherItems.NetherStonePotionBowl).itemDisplayNames[i]);
-		}
-
-		for (int i = 0; i < ((SoulEnergyBottle) NetherItems.SoulEnergyBottle).getMetadataSize(); i++) {
-			LanguageRegistry.instance().addStringLocalization("item.SoulEnergyBottle." + ((SoulEnergyBottle) NetherItems.SoulEnergyBottle).itemNames[i] + ".name",
-					((SoulEnergyBottle) NetherItems.SoulEnergyBottle).itemDisplayNames[i]);
-		}
-
-		for (int i = 0; i < ((NetherWoodCharcoal) NetherItems.NetherWoodCharcoal).getMetadataSize(); i++) {
-			LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal." + ((NetherWoodCharcoal) NetherItems.NetherWoodCharcoal).itemNames[i] + ".name",
-					((NetherWoodCharcoal) NetherItems.NetherWoodCharcoal).itemDisplayNames[i]);
-		}
-
 		LanguageRegistry.instance().addStringLocalization("item.NetherObsidianSword.name", "Obsidian Sword");
 		LanguageRegistry.instance().addStringLocalization("item.NetherSoulglassSword.name", "Soulglass Sword");
 

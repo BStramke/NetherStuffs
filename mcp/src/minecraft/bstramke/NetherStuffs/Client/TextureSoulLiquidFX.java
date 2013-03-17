@@ -1,13 +1,7 @@
 package bstramke.NetherStuffs.Client;
 
-import bstramke.NetherStuffs.Common.CommonProxy;
-import bstramke.NetherStuffs.Items.NetherItems;
-import bstramke.NetherStuffs.Items.SoulEnergyLiquidItem;
-import net.minecraft.client.renderer.RenderEngine;
-import net.minecraftforge.client.ForgeHooksClient;
-import cpw.mods.fml.client.FMLTextureFX;
 
-public class TextureSoulLiquidFX extends FMLTextureFX {
+public class TextureSoulLiquidFX { /*extends FMLTextureFX {
 	private final int redMin, redMax, greenMin, greenMax, blueMin, blueMax;
 	private final String texture;
 
@@ -116,4 +110,5 @@ public class TextureSoulLiquidFX extends FMLTextureFX {
 	protected float green[];
 	protected float blue[];
 	protected float alpha[];
+}*/
 }

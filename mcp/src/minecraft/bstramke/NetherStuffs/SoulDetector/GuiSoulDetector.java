@@ -48,23 +48,23 @@ public class GuiSoulDetector extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 
-		this.controlList.add(this.btnRangeIncZUp = new GuiButtonSoulDetector(1, this.guiLeft + 57, this.guiTop + 15, 9, 9, false));
-		this.controlList.add(this.btnRangeDecZUp = new GuiButtonSoulDetector(2, this.guiLeft + 57 + 9, this.guiTop + 15, 9, 9, true));
+		this.buttonList.add(this.btnRangeIncZUp = new GuiButtonSoulDetector(1, this.guiLeft + 57, this.guiTop + 15, 9, 9, false));
+		this.buttonList.add(this.btnRangeDecZUp = new GuiButtonSoulDetector(2, this.guiLeft + 57 + 9, this.guiTop + 15, 9, 9, true));
 
-		this.controlList.add(this.btnRangeIncNorth = new GuiButtonSoulDetector(3, this.guiLeft + 96, this.guiTop + 15, 9, 9, false));
-		this.controlList.add(this.btnRangeDecNorth = new GuiButtonSoulDetector(4, this.guiLeft + 96 + 9, this.guiTop + 15, 9, 9, true));
+		this.buttonList.add(this.btnRangeIncNorth = new GuiButtonSoulDetector(3, this.guiLeft + 96, this.guiTop + 15, 9, 9, false));
+		this.buttonList.add(this.btnRangeDecNorth = new GuiButtonSoulDetector(4, this.guiLeft + 96 + 9, this.guiTop + 15, 9, 9, true));
 
-		this.controlList.add(this.btnRangeIncWest = new GuiButtonSoulDetector(5, this.guiLeft + 57, this.guiTop + 33, 9, 9, false));
-		this.controlList.add(this.btnRangeDecWest = new GuiButtonSoulDetector(6, this.guiLeft + 57 + 9, this.guiTop + 33, 9, 9, true));
+		this.buttonList.add(this.btnRangeIncWest = new GuiButtonSoulDetector(5, this.guiLeft + 57, this.guiTop + 33, 9, 9, false));
+		this.buttonList.add(this.btnRangeDecWest = new GuiButtonSoulDetector(6, this.guiLeft + 57 + 9, this.guiTop + 33, 9, 9, true));
 
-		this.controlList.add(this.btnRangeIncEast = new GuiButtonSoulDetector(7, this.guiLeft + 117, this.guiTop + 33, 9, 9, false));
-		this.controlList.add(this.btnRangeDecEast = new GuiButtonSoulDetector(8, this.guiLeft + 117 + 9, this.guiTop + 33, 9, 9, true));
+		this.buttonList.add(this.btnRangeIncEast = new GuiButtonSoulDetector(7, this.guiLeft + 117, this.guiTop + 33, 9, 9, false));
+		this.buttonList.add(this.btnRangeDecEast = new GuiButtonSoulDetector(8, this.guiLeft + 117 + 9, this.guiTop + 33, 9, 9, true));
 
-		this.controlList.add(this.btnRangeIncZDown = new GuiButtonSoulDetector(9, this.guiLeft + 57, this.guiTop + 51, 9, 9, false));
-		this.controlList.add(this.btnRangeDecZDown = new GuiButtonSoulDetector(10, this.guiLeft + 57 + 9, this.guiTop + 51, 9, 9, true));
+		this.buttonList.add(this.btnRangeIncZDown = new GuiButtonSoulDetector(9, this.guiLeft + 57, this.guiTop + 51, 9, 9, false));
+		this.buttonList.add(this.btnRangeDecZDown = new GuiButtonSoulDetector(10, this.guiLeft + 57 + 9, this.guiTop + 51, 9, 9, true));
 
-		this.controlList.add(this.btnRangeIncSouth = new GuiButtonSoulDetector(11, this.guiLeft + 96, this.guiTop + 51, 9, 9, false));
-		this.controlList.add(this.btnRangeDecSouth = new GuiButtonSoulDetector(12, this.guiLeft + 96 + 9, this.guiTop + 51, 9, 9, true));
+		this.buttonList.add(this.btnRangeIncSouth = new GuiButtonSoulDetector(11, this.guiLeft + 96, this.guiTop + 51, 9, 9, false));
+		this.buttonList.add(this.btnRangeDecSouth = new GuiButtonSoulDetector(12, this.guiLeft + 96 + 9, this.guiTop + 51, 9, 9, true));
 
 		int nMeta = this.tile_entity.getBlockMetadata() & 7;
 		switch (nMeta) {
@@ -114,8 +114,8 @@ public class GuiSoulDetector extends GuiContainer {
 
 	private void drawDetectionMark1() {
 		// no settings needed as far as i know
-		this.controlList.remove(this.cbxDetectEverything);
-		this.controlList.add(this.cbxDetectEverything = new GuiButtonCheckbox(13, this.guiLeft + 6, this.guiTop + 76, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectEverything],
+		this.buttonList.remove(this.cbxDetectEverything);
+		this.buttonList.add(this.cbxDetectEverything = new GuiButtonCheckbox(13, this.guiLeft + 6, this.guiTop + 76, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectEverything],
 				"Everything"));
 		int nMeta = this.tile_entity.getBlockMetadata() & 7;
 		this.cbxDetectEverything.enabled = nMeta > 0;
@@ -125,27 +125,27 @@ public class GuiSoulDetector extends GuiContainer {
 		// Hostile / Non-Hostile Setting
 		// this.cbxDetectEverything.enabled = true;
 
-		this.controlList.remove(this.cbxDetectHostile);
-		this.controlList.remove(this.cbxDetectNonHostile);
-		this.controlList.add(this.cbxDetectHostile = new GuiButtonCheckbox(14, this.guiLeft + 6, this.guiTop + 88, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectHostile], "Hostile"));
-		this.controlList.add(this.cbxDetectNonHostile = new GuiButtonCheckbox(15, this.guiLeft + 6, this.guiTop + 100, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectNonHostile],
+		this.buttonList.remove(this.cbxDetectHostile);
+		this.buttonList.remove(this.cbxDetectNonHostile);
+		this.buttonList.add(this.cbxDetectHostile = new GuiButtonCheckbox(14, this.guiLeft + 6, this.guiTop + 88, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectHostile], "Hostile"));
+		this.buttonList.add(this.cbxDetectNonHostile = new GuiButtonCheckbox(15, this.guiLeft + 6, this.guiTop + 100, 9, 9, this.tile_entity.detectEntities[this.tile_entity.nDetectNonHostile],
 				"Friendly"));
 	}
 
 	private void drawDetectionMark3() {
 		// Mob-Selector
 		for (int i = 0; i < this.cbxDetectMobButtons.length; i++)
-			this.controlList.remove(this.cbxDetectMobButtons[i]);
+			this.buttonList.remove(this.cbxDetectMobButtons[i]);
 		
 		for (int i = 0; i < this.cbxDetectMobButtons.length; i++) {
 			if (i < 16)
-				this.controlList.add(this.cbxDetectMobButtons[i] = new GuiButtonMobCheckbox(16 + i, this.guiLeft + 6 + i * 8, this.guiTop + 112, this.tile_entity.detectEntitiesMobs[i], i));
+				this.buttonList.add(this.cbxDetectMobButtons[i] = new GuiButtonMobCheckbox(16 + i, this.guiLeft + 6 + i * 8, this.guiTop + 112, this.tile_entity.detectEntitiesMobs[i], i));
 			else
-				this.controlList.add(this.cbxDetectMobButtons[i] = new GuiButtonMobCheckbox(16 + i, this.guiLeft + 6 + (i - 16) * 8, this.guiTop + 120, this.tile_entity.detectEntitiesMobs[i], i));
+				this.buttonList.add(this.cbxDetectMobButtons[i] = new GuiButtonMobCheckbox(16 + i, this.guiLeft + 6 + (i - 16) * 8, this.guiTop + 120, this.tile_entity.detectEntitiesMobs[i], i));
 				
 		}
 
-		// this.controlList.add(this.cbxDetectPig = new GuiButtonMobCheckbox(16, this.guiLeft + 6, this.guiTop + 112, this.tile_entity.detectEntitiesMobs[this.tile_entity.nDetectPig],
+		// this.buttonList.add(this.cbxDetectPig = new GuiButtonMobCheckbox(16, this.guiLeft + 6, this.guiTop + 112, this.tile_entity.detectEntitiesMobs[this.tile_entity.nDetectPig],
 		// this.tile_entity.nDetectPig));
 	}
 
@@ -212,9 +212,8 @@ public class GuiSoulDetector extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		int var4 = this.mc.renderEngine.getTexture(CommonProxy.SOULDETECTOR_PNG);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(var4);
+		this.mc.renderEngine.func_98187_b(CommonProxy.SOULDETECTOR_PNG);
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);

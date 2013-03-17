@@ -15,7 +15,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class NetherOreIngot extends Item {
 
-	public static String[] itemNames = new String[] { "DemonicIngot" };
 	public static String[] itemDisplayNames = new String[] { "Demonic Ingot" };
 
 	public NetherOreIngot(int par1) {
@@ -68,25 +67,18 @@ public class NetherOreIngot extends Item {
 		par3EntityPlayer.addExperience(var4);
 	}
 
-	public static int getMetadataSize() {
-		return itemNames.length;
-	}
-
 	@Override
-	public String getItemNameIS(ItemStack is) {
-		String name = "";
-		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
-			name = itemNames[is.getItemDamage()];
+	public String getItemDisplayName(ItemStack is) {
+		if (is.getItemDamage() < itemDisplayNames.length && is.getItemDamage() >= 0)
+			return itemDisplayNames[is.getItemDamage()];
 		else
-			name = itemNames[0];
-
-		return getItemName() + "." + name;
+			return  itemDisplayNames[0];
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(int par1, CreativeTabs tab, List list) {
-		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
+		for (int metaNumber = 0; metaNumber < itemDisplayNames.length; metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));
 		}
 	}

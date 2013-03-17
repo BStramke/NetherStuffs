@@ -20,7 +20,7 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.preloadTexture(CommonProxy.MOBBUTTONS_PNG);
 		MinecraftForgeClient.preloadTexture(CommonProxy.SOULSIPHON_PNG);*/
 		RenderingRegistry.registerEntityRenderingHandler(EntityTorchArrow.class, new RenderTorchArrow());
-		TextureFXManager.instance().addAnimation(new TextureSoulLiquidFX());
+//		TextureFXManager.instance().addAnimation(new TextureSoulLiquidFX());
 		
 		RenderingRegistry.registerBlockHandler(new NetherOreRenderingHelper());		
 		

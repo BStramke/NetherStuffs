@@ -13,7 +13,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class NetherWoodCharcoal extends Item {
 	
-	public static String[] itemNames = new String[] { "NetherCharcoal", "NetherCoal" };
 	public static String[] itemDisplayNames = new String[] { "Nether Charcoal", "Nether Coal" };
 	
 	public static int charcoal = 0;
@@ -29,25 +28,18 @@ public class NetherWoodCharcoal extends Item {
 		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherCoal"));
 	}
 	
-	public static int getMetadataSize() {
-		return itemNames.length;
-	}
-	
 	@Override
-	public String getItemNameIS(ItemStack is) {
-		String name = "";
-		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
-			name = itemNames[is.getItemDamage()];
+	public String getItemDisplayName(ItemStack is) {
+		if (is.getItemDamage() < itemDisplayNames.length && is.getItemDamage() >= 0)
+			return itemDisplayNames[is.getItemDamage()];
 		else
-			name = itemNames[0];
-
-		return getItemName() + "." + name;
+			return  itemDisplayNames[0];
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(int par1, CreativeTabs tab, List list) {
-		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
+		for (int metaNumber = 0; metaNumber < itemDisplayNames.length; metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));
 		}
 	}

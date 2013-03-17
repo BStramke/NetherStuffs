@@ -76,8 +76,7 @@ public class NetherStuffsASM implements IClassTransformer {
 	}
 
 	@Override
-	public byte[] transform(String name, byte[] bytes) {
-		// System.out.println("try override: " + name);
+	public byte[] transform(String name, String transformedName, byte[] bytes) {
 		if (override.containsKey(name)) {
 			System.out.println("attempting override of " + name + " from " + NetherStuffsCorePlugin.myLocation.getName());
 			bytes = overrideBytes(name, bytes, NetherStuffsCorePlugin.myLocation);
@@ -104,4 +103,5 @@ public class NetherStuffsASM implements IClassTransformer {
 		}
 		return bytes;
 	}
+
 }

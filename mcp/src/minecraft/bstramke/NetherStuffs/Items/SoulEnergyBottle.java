@@ -14,8 +14,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class SoulEnergyBottle extends Item {
-
-	public static String[] itemNames = new String[] { "SoulEnergyBottleSmall", "SoulEnergyBottleMedium", "SoulEnergyBottleLarge", "SoulEnergyBottleLargeFilled" };
 	public static String[] itemDisplayNames = new String[] { "Small Soulenergy Bottle", "Medium Soulenergy Bottle", "Large Soulenergy Bottle", "Large Soulenergy Bottle FILLED" };
 
 	public static final int small = 0;
@@ -40,10 +38,6 @@ public class SoulEnergyBottle extends Item {
 	public void func_94581_a(IconRegister iconRegister)
 	{
 		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("SoulEnergyBottle"));
-	}
-
-	public static int getMetadataSize() {
-		return itemNames.length;
 	}
 
 	public static int getSoulEnergyAmount(ItemStack item) {
@@ -99,14 +93,11 @@ public class SoulEnergyBottle extends Item {
 	}
 
 	@Override
-	public String getItemNameIS(ItemStack is) {
-		String name = "";
-		if (is.getItemDamage() < getMetadataSize() && is.getItemDamage() >= 0)
-			name = itemNames[is.getItemDamage()];
+	public String getItemDisplayName(ItemStack is) {
+		if (is.getItemDamage() < itemDisplayNames.length && is.getItemDamage() >= 0)
+			return itemDisplayNames[is.getItemDamage()];
 		else
-			name = itemNames[0];
-
-		return getItemName() + "." + name;
+			return  itemDisplayNames[0];
 	}
 
 	@Override
@@ -117,7 +108,7 @@ public class SoulEnergyBottle extends Item {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(int par1, CreativeTabs tab, List list) {
-		for (int metaNumber = 0; metaNumber < getMetadataSize(); metaNumber++) {
+		for (int metaNumber = 0; metaNumber < itemDisplayNames.length; metaNumber++) {
 			list.add(new ItemStack(par1, 1, metaNumber));
 		}
 	}

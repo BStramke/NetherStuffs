@@ -18,20 +18,18 @@ public class SoulEnergyLiquidItem extends Item {
 		super(par1);
 		this.setCreativeTab(CreativeTabs.tabMaterials);
 	}
-	
 
 	@Override
-	public void func_94581_a(IconRegister iconRegister)
-	{
+	public void func_94581_a(IconRegister iconRegister) {
 		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("SoulEnergyLiquidItem"));
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		Integer nAmount = par1ItemStack.stackSize;
 
-		if(par1ItemStack.getItemDamage()>0)
+		if (par1ItemStack.getItemDamage() > 0)
 			par3List.add("Soulenergy: " + NumberFormat.getInstance().format(nAmount) + " / " + NumberFormat.getInstance().format(par1ItemStack.getItemDamage()));
 		else
 			par3List.add("Soulenergy: " + NumberFormat.getInstance().format(nAmount));

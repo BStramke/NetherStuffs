@@ -17,6 +17,7 @@ import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.Blocks.NetherWood;
 import bstramke.NetherStuffs.Client.ClientPacketHandler;
 import bstramke.NetherStuffs.Client.ClientPacketHandler.PacketType;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 
 public class TileNetherWoodPuddle extends TileEntity {
 
@@ -71,7 +72,7 @@ public class TileNetherWoodPuddle extends TileEntity {
 			meta = meta | 12;
 			break;
 		}
-		this.worldObj.setBlockMetadata(xCoord, yCoord, zCoord, meta);
+		this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, meta, BlockNotifyType.ALL);
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
@@ -104,27 +105,6 @@ public class TileNetherWoodPuddle extends TileEntity {
 		puddleSize++;
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
-
-	/*public void sendPuddleSizeToClients() {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		DataOutputStream outputStream = new DataOutputStream(bos);
-
-		try {
-			outputStream.writeShort(ClientPacketHandler.PacketType.NetherWoodPuddleSize.getValue());
-			outputStream.writeInt(this.xCoord);
-			outputStream.writeInt(this.yCoord);
-			outputStream.writeInt(this.zCoord);
-			outputStream.writeShort(this.puddleSize);
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		Packet250CustomPayload packet = new Packet250CustomPayload();
-		packet.channel = "NetherStuffs";
-		packet.data = bos.toByteArray();
-		packet.length = bos.size();
-		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 32, worldObj.provider.dimensionId, packet);
-	}*/
 
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
