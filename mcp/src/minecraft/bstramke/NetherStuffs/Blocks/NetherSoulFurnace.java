@@ -68,7 +68,7 @@ public class NetherSoulFurnace extends BlockContainer {
 		super(par1, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		this.setStepSound(soundStoneFootstep);
-		//this.setRequiresSelfNotify();
+		// this.setRequiresSelfNotify();
 		this.setTickRandomly(true);
 	}
 
@@ -82,63 +82,44 @@ public class NetherSoulFurnace extends BlockContainer {
 		return NetherStuffs.NetherSoulFurnaceBlockId;
 	}
 
-
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister)
-	{	
+	public void func_94332_a(IconRegister par1IconRegister) {
 		icoSoulFurnaceTop = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceTop"));
 		icoSoulFurnaceBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceBottom"));
 		icoSoulFurnaceSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceSide"));
 		icoSoulFurnaceFrontInactive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceFrontInactive"));
 		icoSoulFurnaceFrontActive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceFrontActive"));
 	}
-	
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
 
+	@Override
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (side) {
 		case NetherBlocks.sideBottom:
 			return icoSoulFurnaceBottom; // bottom
 		case NetherBlocks.sideTop:
 			return icoSoulFurnaceTop; // top
 		default: {
-
-			int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-			if (side != unmarkedMetadata(var6))
-				return icoSoulFurnaceSide;
-			else {
-				if (this.isActiveSet(var6))
+			if (side != unmarkedMetadata(meta)) {
+				if (side == NetherBlocks.sideSouth)
 					return icoSoulFurnaceFrontInactive;
 				else
+					return icoSoulFurnaceSide;
+			} else {
+				if (this.isActiveSet(meta))
 					return icoSoulFurnaceFrontActive;
+				else
+					return icoSoulFurnaceFrontInactive;
 			}
+		}
+		}
+	};
 
-		}
-		}
-	}
-
-	/*@Override
-	public Icon getBlockTextureFromSide(int side) // pretty similar to getBlockTexture
-	{
-		switch (side) {
-		case NetherBlocks.sideBottom:
-			return icoSoulFurnaceBottom; // bottom
-		case NetherBlocks.sideTop:
-			return icoSoulFurnaceTop; // top
-		case NetherBlocks.sideSouth:
-			return icoSoulFurnaceFrontInactive; // front
-		case NetherBlocks.sideNorth:
-			return icoSoulFurnaceSide; // back 97
-		case NetherBlocks.sideEast:
-			return icoSoulFurnaceSide; // right
-		case NetherBlocks.sideWest:
-			return icoSoulFurnaceSide; // left
-		default:
-			return icoSoulFurnaceSide;
-		}
-	}*/
+	/*
+	 * @Override public Icon getBlockTextureFromSide(int side) // pretty similar to getBlockTexture { switch (side) { case NetherBlocks.sideBottom: return icoSoulFurnaceBottom; //
+	 * bottom case NetherBlocks.sideTop: return icoSoulFurnaceTop; // top case NetherBlocks.sideSouth: return icoSoulFurnaceFrontInactive; // front case NetherBlocks.sideNorth:
+	 * return icoSoulFurnaceSide; // back 97 case NetherBlocks.sideEast: return icoSoulFurnaceSide; // right case NetherBlocks.sideWest: return icoSoulFurnaceSide; // left default:
+	 * return icoSoulFurnaceSide; } }
+	 */
 
 	/**
 	 * Called upon block activation (right click on the block.)
@@ -178,14 +159,13 @@ public class NetherSoulFurnace extends BlockContainer {
 							}
 
 							var9.stackSize -= var13;
-							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(var9.itemID, var13,
-									var9.getItemDamage()));
+							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(
+									var9.itemID, var13, var9.getItemDamage()));
 
-							
 							if (var9.hasTagCompound()) {
-								//func_92014_d() gets back an Item
-                                var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
-                            }
+								// func_92014_d() gets back an Item
+								var14.getEntityItem().setTagCompound((NBTTagCompound) var9.getTagCompound().copy());
+							}
 
 							float var15 = 0.05F;
 							var14.motionX = (double) ((float) this.furnaceRand.nextGaussian() * var15);
@@ -280,7 +260,7 @@ public class NetherSoulFurnace extends BlockContainer {
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
 		}
 	}
-	
+
 	/**
 	 * set a blocks direction
 	 */
