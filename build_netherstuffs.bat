@@ -17,7 +17,7 @@ rem mkdir reobf\minecraft\bstramke\NetherStuffsBase\bstramke\NetherStuffs\resour
 
 xcopy reobf\minecraft\forestry reobf\minecraft\bstramke\NetherStuffsBase\forestry\ /S
 xcopy reobf\minecraft\thaumcraft reobf\minecraft\bstramke\NetherStuffsBase\thaumcraft\ /S
-xcopy src\minecraft\bstramke\NetherStuffs\textures reobf\minecraft\bstramke\NetherStuffs\textures\ /S
+xcopy src\minecraft\mods reobf\minecraft\bstramke\NetherStuffs\mods\ /S
 copy reobf\minecraft\buildcraft\api\inventory\* reobf\minecraft\bstramke\NetherStuffsBase\buildcraft\api\inventory
 copy src\minecraft\bstramke\NetherStuffs\mcmod.info reobf\minecraft\bstramke\NetherStuffsBase\mcmod.info
 rem copy src\minecraft\bstramke\NetherStuffs\resources\* reobf\minecraft\bstramke\NetherStuffsBase\bstramke\NetherStuffs\resources
