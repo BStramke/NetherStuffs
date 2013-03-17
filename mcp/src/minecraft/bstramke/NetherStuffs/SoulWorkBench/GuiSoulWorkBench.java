@@ -41,7 +41,7 @@ public class GuiSoulWorkBench extends GuiContainer {
 
 		// draw fill state from bottom to top
 		int nBottomLeftY = var6 + 69;
-		this.mc.renderEngine.bindTexture(mc.renderEngine.getTexture(NetherItems.SoulEnergyLiquidItem.getTextureFile()));
+		/*this.mc.renderEngine.bindTexture(mc.renderEngine.getTexture(NetherItems.SoulEnergyLiquidItem.getTextureFile()));
 		int nFillState = this.benchInventory.getFillingScaled(32);
 		int y = 0;
 		for (int x = 16; x <= 32 && x <= nFillState; x+=16) {
@@ -52,7 +52,7 @@ public class GuiSoulWorkBench extends GuiContainer {
 		if(nFillState%16!=0){
 			nFillState -= y;
 			this.drawTexturedModalRect(var5 + 12, nBottomLeftY-y-nFillState, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)%16)*16, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)/16)*16, 16, nFillState);
-		}
+		}*/
 		
 		int nRequired = this.benchInventory.getSoulEnergyRequired();
 		if (nRequired > 0)

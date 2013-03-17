@@ -198,7 +198,7 @@ public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
 	@Override
 	public void drawBackground(GuiContainerManager gui, int recipe) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		gui.bindTextureByName(getGuiTexture());
+		gui.bindTexture(getGuiTexture());
 		gui.drawTexturedModalRect(0, 0, 4, 4, 166, 65);
 	}
 

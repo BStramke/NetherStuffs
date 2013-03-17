@@ -51,7 +51,7 @@ public class GuiSoulSiphon extends GuiContainer {
 
 		// draw fill state from bottom to top
 		int nBottomLeftY = var6 + 69;
-		this.mc.renderEngine.bindTexture(mc.renderEngine.getTexture(NetherItems.SoulEnergyLiquidItem.getTextureFile()));
+		/*this.mc.renderEngine.bindTexture(mc.renderEngine.getTexture(NetherItems.SoulEnergyLiquidItem.getTextureFile()));
 		int nFillState = this.tile_entity.getFillingScaled(32);
 		int y = 0;
 		for (int x = 16; x <= 32 && x <= nFillState; x += 16) {
@@ -64,7 +64,7 @@ public class GuiSoulSiphon extends GuiContainer {
 			nFillState -= y;
 			this.drawTexturedModalRect(var5 + 12, nBottomLeftY - y - nFillState, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0) % 16) * 16,
 					(NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0) / 16) * 16, 16, nFillState);
-		}
+		}*/
 	}
 
 	@Override
