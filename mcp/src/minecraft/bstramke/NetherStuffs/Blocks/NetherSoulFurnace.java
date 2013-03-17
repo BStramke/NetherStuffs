@@ -83,6 +83,7 @@ public class NetherSoulFurnace extends BlockContainer {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void func_94332_a(IconRegister par1IconRegister) {
 		icoSoulFurnaceTop = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceTop"));
 		icoSoulFurnaceBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceBottom"));
@@ -92,6 +93,7 @@ public class NetherSoulFurnace extends BlockContainer {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (side) {
 		case NetherBlocks.sideBottom:
@@ -137,7 +139,6 @@ public class NetherSoulFurnace extends BlockContainer {
 	}
 
 	@Override
-	// public void breakBlock(World world, int x, int y, int z, int i, int j)
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6) {
 		if (!keepFurnaceInventory) {
 			TileSoulFurnace var7 = (TileSoulFurnace) par1World.getBlockTileEntity(par2, par3, par4);

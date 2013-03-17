@@ -128,6 +128,8 @@ public class SoulWorkBench extends BlockContainer {
 			return false;
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
 	public void func_94332_a(IconRegister par1IconRegister)
 	{
 		icoSoulWorkbenchTop = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchTop"));

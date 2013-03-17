@@ -31,6 +31,8 @@ public class NetherOre extends Block {
 	private Icon icoNetherOre;
 	private Icon icoNetherStone;
 	
+	private Icon icoNetherOreOverlay[];
+	
 	public NetherOre(int par1) {
 		super(par1, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabBlock);
@@ -44,10 +46,30 @@ public class NetherOre extends Block {
 	
 	@Override 
 	public void func_94332_a(IconRegister iconRegister) {
+		icoNetherOreOverlay = new Icon[11];
 		icoNetherOre = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre"));
 		icoNetherStone = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherStone"));
+		icoNetherOreOverlay[demonicOre] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Demonic"));
+		icoNetherOreOverlay[netherStone] = icoNetherStone;
+		icoNetherOreOverlay[netherOreIron] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Iron"));
+		icoNetherOreOverlay[netherOreGold] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Gold"));
+		icoNetherOreOverlay[netherOreDiamond] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Diamond"));
+		icoNetherOreOverlay[netherOreRedstone] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Redstone"));
+		icoNetherOreOverlay[netherOreEmerald] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Emerald"));
+		icoNetherOreOverlay[netherOreCoal] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Coal"));
+		icoNetherOreOverlay[netherOreObsidian] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Obsidian"));
+		icoNetherOreOverlay[netherOreLapis] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Lapis"));
+		icoNetherOreOverlay[netherOreCobblestone] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Cobblestone"));
 	}
 
+	public Icon getIconOreOverlay(int meta)
+	{
+		if(meta >=0 && meta < icoNetherOreOverlay.length)
+			return icoNetherOreOverlay[meta];
+		else
+			return icoNetherOre;
+	}
+	
 	@Override
 	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (meta) {

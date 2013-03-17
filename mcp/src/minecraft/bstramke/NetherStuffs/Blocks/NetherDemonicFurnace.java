@@ -32,11 +32,8 @@ public class NetherDemonicFurnace extends BlockContainer {
 	private Icon icoFurnaceTop;
 
 	private Icon icoFurnaceBottom;
-
 	private Icon icoFurnaceSide;
-
 	private Icon icoFurnaceFrontInactive;
-
 	private Icon icoFurnaceFrontActive;
 
 	private static final int METADATA_BITMASK = 0x7;
@@ -68,7 +65,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 		super(par1, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		this.setStepSound(soundStoneFootstep);
-		//this.setRequiresSelfNotify();
+		// this.setRequiresSelfNotify();
 		this.setTickRandomly(true);
 	}
 
@@ -123,7 +120,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 			if (Block.opaqueCubeLookup[var8] && !Block.opaqueCubeLookup[var7]) {
 				var9 = 4;
 			}
-			
+
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9, BlockNotifyType.ALL);
 		}
 	}
@@ -173,15 +170,39 @@ public class NetherDemonicFurnace extends BlockContainer {
 	}
 
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister)
-	{	
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+		switch (side) {
+		case NetherBlocks.sideBottom:
+			return icoFurnaceBottom; // bottom
+		case NetherBlocks.sideTop:
+			return icoFurnaceTop; // top
+		default: {
+			if (side != unmarkedMetadata(meta)) {
+				if (side == NetherBlocks.sideSouth)
+					return icoFurnaceFrontInactive;
+				else
+					return icoFurnaceSide;
+			} else {
+				if (this.isActiveSet(meta))
+					return icoFurnaceFrontActive;
+				else
+					return icoFurnaceFrontInactive;
+			}
+		}
+		}
+	};
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void func_94332_a(IconRegister par1IconRegister) {
 		icoFurnaceTop = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("FurnaceTop"));
 		icoFurnaceBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("FurnaceBottom"));
 		icoFurnaceSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("FurnaceSide"));
 		icoFurnaceFrontInactive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("FurnaceFrontInactive"));
 		icoFurnaceFrontActive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("FurnaceFrontActive"));
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	/**
 	 * A randomly called display update to be able to add particles or other items for display
@@ -211,30 +232,6 @@ public class NetherDemonicFurnace extends BlockContainer {
 			}
 		}
 	}
-
-	/**
-	 * Returns the block texture based on the side being looked at. Args: side
-	 */
-	/*@Override
-	public Icon getBlockTextureFromSide(int side) // pretty similar to getBlockTexture
-	{
-		switch (side) {
-		case NetherBlocks.sideBottom:
-			return 98; // bottom
-		case NetherBlocks.sideTop:
-			return 98; // top
-		case NetherBlocks.sideSouth:
-			return 96; // front
-		case NetherBlocks.sideNorth:
-			return 97; // back 97
-		case NetherBlocks.sideEast:
-			return 97; // right
-		case NetherBlocks.sideWest:
-			return 97; // left
-		default:
-			return 98;
-		}
-	}*/
 
 	/**
 	 * Called upon block activation (right click on the block.)
@@ -318,31 +315,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 		}
 
 		super.breakBlock(par1World, par2, par3, par4, par5, par6);
-
 	}
-
-	/*
-	 * private void dropItems(World world, int x, int y, int z) { Random rand = new Random();
-	 * 
-	 * TileEntity tile_entity = world.getBlockTileEntity(x, y, z);
-	 * 
-	 * if (!(tile_entity instanceof IInventory)) { return; }
-	 * 
-	 * IInventory inventory = (IInventory) tile_entity;
-	 * 
-	 * for (int i = 0; i < inventory.getSizeInventory(); i++) { ItemStack item = inventory.getStackInSlot(i);
-	 * 
-	 * if (item != null && item.stackSize > 0) { float rx = rand.nextFloat() * 0.6F + 0.1F; float ry = rand.nextFloat() * 0.6F + 0.1F; float rz = rand.nextFloat() * 0.6F + 0.1F;
-	 * 
-	 * EntityItem entity_item = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.itemID, item.stackSize, item.getItemDamage()));
-	 * 
-	 * if (item.hasTagCompound()) { entity_item.item.setTagCompound((NBTTagCompound) item.getTagCompound().copy()); }
-	 * 
-	 * float factor = 0.5F;
-	 * 
-	 * entity_item.motionX = rand.nextGaussian() * factor; entity_item.motionY = rand.nextGaussian() * factor + 0.2F; entity_item.motionZ = rand.nextGaussian() * factor;
-	 * world.spawnEntityInWorld(entity_item); item.stackSize = 0; } } }
-	 */
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
