@@ -28,12 +28,6 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 		GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-		int nOffset = 0;
-		if (metadata == NetherOre.demonicOre)
-			nOffset = 2;
-		else
-			nOffset = 1;
-
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, -1.0F, 0.0F);
 		renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(0, metadata));
@@ -41,7 +35,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.draw();
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, -1.0F, 0.0F);
-			var4.setBrightness(1024);
+			var4.setBrightness(15);
 			renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
 		}
 
@@ -54,7 +48,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.draw();
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, 1.0F, 0.0F);
-			var4.setBrightness(1024);
+			var4.setBrightness(15);
 			renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
 		}
 		var4.draw();
@@ -66,7 +60,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.draw();
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, 0.0F, -1.0F);
-			var4.setBrightness(1024);
+			var4.setBrightness(15);
 			renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
 		}
 		var4.draw();
@@ -77,7 +71,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.draw();
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, 0.0F, 1.0F);
-			var4.setBrightness(1024);
+			var4.setBrightness(15);
 			renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
 		}
 		var4.draw();
@@ -88,7 +82,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.draw();
 			var4.startDrawingQuads();
 			var4.setNormal(-1.0F, 0.0F, 0.0F);
-			var4.setBrightness(1024);
+			var4.setBrightness(15);
 			renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
 		}
 		var4.draw();
@@ -99,7 +93,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.draw();
 			var4.startDrawingQuads();
 			var4.setNormal(1.0F, 0.0F, 0.0F);
-			var4.setBrightness(1024);
+			var4.setBrightness(15);
 			renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
 		}
 		var4.draw();
@@ -107,21 +101,17 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 	}
 
 	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+	public boolean renderWorldBlock(IBlockAccess iBlockAccess, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		renderer.renderStandardBlock(block, x, y, z);
-		int nMetadata = world.getBlockMetadata(x, y, z);
+		int nMetadata = iBlockAccess.getBlockMetadata(x, y, z);
 		if (nMetadata != NetherOre.netherStone) {
 			Tessellator var8 = Tessellator.instance;
 
-			/*int nOffset = 0;
-			if (nMetadata == NetherOre.demonicOre)
-				nOffset = 2;
-			else
-				nOffset = 1;*/
-			renderer.enableAO = false;
-			renderer.aoType = 0;
+			//renderer.enableAO = false;
+			//renderer.aoType = 0;
 			var8.setBrightness(1024);
-
+			var8.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+			
 			renderer.renderWestFace(block, x, y, z, ((NetherOre)block).getIconOreOverlay(nMetadata));
 			renderer.renderEastFace(block, x, y, z, ((NetherOre)block).getIconOreOverlay(nMetadata));
 			renderer.renderNorthFace(block, x, y, z, ((NetherOre)block).getIconOreOverlay(nMetadata));
