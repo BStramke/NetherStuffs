@@ -138,15 +138,15 @@ public class SoulWorkBench extends BlockContainer {
 		icoSoulWorkbenchSideNS = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchSideNS"));
 	}
 	
+	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
-
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (side) {
 		case NetherBlocks.sideBottom:
-			return icoSoulWorkbenchBottom; // bottom
+			return icoSoulWorkbenchBottom; 
 		case NetherBlocks.sideTop:
-			return icoSoulWorkbenchTop; // top
+			return icoSoulWorkbenchTop; 
 		case NetherBlocks.sideEast:
 		case NetherBlocks.sideWest:
 			return icoSoulWorkbenchSideWE;
@@ -154,6 +154,7 @@ public class SoulWorkBench extends BlockContainer {
 			return icoSoulWorkbenchSideNS;
 		}
 	}
+
 
 	@SideOnly(Side.CLIENT)
 	/**

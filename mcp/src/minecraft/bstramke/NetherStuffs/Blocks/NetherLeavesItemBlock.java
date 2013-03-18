@@ -19,11 +19,6 @@ public class NetherLeavesItemBlock extends ItemBlock {
 	public static int getMetadataSize() {
 		return blockNames.length;
 	}
-
-	@Override 
-	public void func_94581_a(IconRegister iconRegister) {
-		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherLeaves"));
-	}
 	
 	@Override
 	public String getUnlocalizedName(ItemStack is) {
