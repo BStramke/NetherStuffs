@@ -29,15 +29,11 @@ public class NetherSoulFurnace extends BlockContainer {
 	/** True if this is an active furnace, false if idle */
 	private Random furnaceRand = new Random();
 
-	private Icon icoSoulFurnaceTop;
-
-	private Icon icoSoulFurnaceBottom;
-
-	private Icon icoSoulFurnaceSide;
-
-	private Icon icoSoulFurnaceFrontInactive;
-
-	private Icon icoSoulFurnaceFrontActive;
+	private Icon icoFurnaceTop;
+	private Icon icoFurnaceBottom;
+	private Icon icoFurnaceSide;
+	private Icon icoFurnaceFrontInactive;
+	private Icon icoFurnaceFrontActive;
 
 	private static final int METADATA_BITMASK = 0x7;
 	private static final int METADATA_ACTIVEBIT = 0x8;
@@ -85,43 +81,50 @@ public class NetherSoulFurnace extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void func_94332_a(IconRegister par1IconRegister) {
-		icoSoulFurnaceTop = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceTop"));
-		icoSoulFurnaceBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceBottom"));
-		icoSoulFurnaceSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceSide"));
-		icoSoulFurnaceFrontInactive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceFrontInactive"));
-		icoSoulFurnaceFrontActive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceFrontActive"));
+		icoFurnaceTop = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceTop"));
+		icoFurnaceBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceBottom"));
+		icoFurnaceSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceSide"));
+		icoFurnaceFrontInactive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceFrontInactive"));
+		icoFurnaceFrontActive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceFrontActive"));
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) {
+		int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
+		switch (side) {
+		case NetherBlocks.sideBottom:
+			return icoFurnaceBottom; // bottom
+		case NetherBlocks.sideTop:
+			return icoFurnaceTop; // top
+		default: {
+				if(side == unmarkedMetadata(meta))
+				{
+					if (this.isActiveSet(meta))
+						return icoFurnaceFrontActive;
+					else
+						return icoFurnaceFrontInactive;
+				}
+				else
+					return icoFurnaceSide;
+			}
+		}
+	};
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (side) {
 		case NetherBlocks.sideBottom:
-			return icoSoulFurnaceBottom; // bottom
+			return icoFurnaceBottom; // bottom
 		case NetherBlocks.sideTop:
-			return icoSoulFurnaceTop; // top
-		default: {
-			if (side != unmarkedMetadata(meta)) {
-				if (side == NetherBlocks.sideSouth)
-					return icoSoulFurnaceFrontInactive;
-				else
-					return icoSoulFurnaceSide;
-			} else {
-				if (this.isActiveSet(meta))
-					return icoSoulFurnaceFrontActive;
-				else
-					return icoSoulFurnaceFrontInactive;
-			}
-		}
+			return icoFurnaceTop; // top
+		case NetherBlocks.sideSouth:
+			return icoFurnaceFrontInactive;
+		default:
+			return icoFurnaceSide;
 		}
 	};
-
-	/*
-	 * @Override public Icon getBlockTextureFromSide(int side) // pretty similar to getBlockTexture { switch (side) { case NetherBlocks.sideBottom: return icoSoulFurnaceBottom; //
-	 * bottom case NetherBlocks.sideTop: return icoSoulFurnaceTop; // top case NetherBlocks.sideSouth: return icoSoulFurnaceFrontInactive; // front case NetherBlocks.sideNorth:
-	 * return icoSoulFurnaceSide; // back 97 case NetherBlocks.sideEast: return icoSoulFurnaceSide; // right case NetherBlocks.sideWest: return icoSoulFurnaceSide; // left default:
-	 * return icoSoulFurnaceSide; } }
-	 */
 
 	/**
 	 * Called upon block activation (right click on the block.)
@@ -233,9 +236,6 @@ public class NetherSoulFurnace extends BlockContainer {
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
 		super.onBlockAdded(par1World, par2, par3, par4);
 		this.setDefaultDirection(par1World, par2, par3, par4);
-
-		// int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
-		// par1World.setBlockMetadataWithNotify(par2, par3, par4, clearActiveOnMetadata(metadata));
 	}
 
 	/**

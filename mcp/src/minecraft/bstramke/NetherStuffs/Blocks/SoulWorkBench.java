@@ -18,6 +18,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.SoulWorkBench.TileSoulWorkBench;
 import cpw.mods.fml.relauncher.Side;
@@ -30,20 +31,13 @@ public class SoulWorkBench extends BlockContainer {
 	private Random rand = new Random();
 	private Icon icoSoulWorkbenchTop;
 	private Icon icoSoulWorkbenchBottom;
-	private Icon icoSoulWorkbenchSideWE;
-	private Icon icoSoulWorkbenchSideNS;
+	private Icon icoSoulWorkbenchFront;
+	private Icon icoSoulWorkbenchSide;
+	private Icon icoSoulWorkbenchBack;
 	private static boolean keepFurnaceInventory = false;
-
-	public static int clearActiveOnMetadata(int metadata) {
-		return metadata & METADATA_CLEARACTIVEBIT;
-	}
 
 	public static boolean isActiveSet(int metadata) {
 		return (metadata & METADATA_ACTIVEBIT) != 0;
-	}
-
-	public static int setActiveOnMetadata(int metadata) {
-		return metadata | METADATA_ACTIVEBIT;
 	}
 
 	public static int unmarkedMetadata(int metadata) {
@@ -54,15 +48,8 @@ public class SoulWorkBench extends BlockContainer {
 		super(par1, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		this.setStepSound(soundStoneFootstep);
-		//this.setRequiresSelfNotify();
 		this.setTickRandomly(true);
 	}
-
-	/*@Override
-	public String getItemNameIS(ItemStack is) {
-		String name = "NetherSoulWorkBench";
-		return getBlockName() + "." + name;
-	}*/
 
 	/**
 	 * Returns the ID of the items to drop on destruction.
@@ -72,119 +59,76 @@ public class SoulWorkBench extends BlockContainer {
 		return NetherStuffs.SoulWorkBenchBlockId;
 	}
 
-	/**
-	 * Called whenever the block is added into the world. Args: world, x, y, z
-	 */
-	@Override
-	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
-		super.onBlockAdded(par1World, par2, par3, par4);
-		this.setDefaultDirection(par1World, par2, par3, par4);
-	}
-
-	/**
-	 * set a blocks direction
-	 */
-	private void setDefaultDirection(World par1World, int par2, int par3, int par4) {
-		if (!par1World.isRemote) {
-			int var5 = par1World.getBlockId(par2, par3, par4 - 1);
-			int var6 = par1World.getBlockId(par2, par3, par4 + 1);
-			int var7 = par1World.getBlockId(par2 - 1, par3, par4);
-			int var8 = par1World.getBlockId(par2 + 1, par3, par4);
-			byte var9 = 3;
-
-			if (Block.opaqueCubeLookup[var5] && !Block.opaqueCubeLookup[var6]) {
-				var9 = 3;
-			}
-
-			if (Block.opaqueCubeLookup[var6] && !Block.opaqueCubeLookup[var5]) {
-				var9 = 2;
-			}
-
-			if (Block.opaqueCubeLookup[var7] && !Block.opaqueCubeLookup[var8]) {
-				var9 = 5;
-			}
-
-			if (Block.opaqueCubeLookup[var8] && !Block.opaqueCubeLookup[var7]) {
-				var9 = 4;
-			}
-
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9, 2);
-		}
-	}
-
-	private boolean isActive(World par1World, int par2, int par3, int par4) {
-		int meta = par1World.getBlockMetadata(par2, par3, par4);
-		if (isActiveSet(meta))
-			return true;
-		else
-			return false;
-	}
-
-	private boolean isActive(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-		int meta = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-		if (isActiveSet(meta))
-			return true;
-		else
-			return false;
-	}
-
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void func_94332_a(IconRegister par1IconRegister)
-	{
+	public void func_94332_a(IconRegister par1IconRegister) {
 		icoSoulWorkbenchTop = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchTop"));
 		icoSoulWorkbenchBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchBottom"));
-		icoSoulWorkbenchSideWE = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchSideWE"));
-		icoSoulWorkbenchSideNS = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchSideNS"));
+		icoSoulWorkbenchFront = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchFront"));
+		icoSoulWorkbenchSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchSide"));
+		icoSoulWorkbenchBack = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchBack"));
 	}
-	
-	
-	@SideOnly(Side.CLIENT)
+
 	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) {
+		int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
+		switch (side) {
+		case NetherBlocks.sideBottom:
+			return icoSoulWorkbenchBottom; // bottom
+		case NetherBlocks.sideTop:
+			return icoSoulWorkbenchTop; // top
+		default: {
+			if (side == unmarkedMetadata(meta))
+				return icoSoulWorkbenchFront;
+			else {
+				switch (unmarkedMetadata(meta)) {
+				case NetherBlocks.sideNorth: {
+					if (side == NetherBlocks.sideSouth)
+						return icoSoulWorkbenchBack;
+					else
+						return icoSoulWorkbenchSide;
+				}
+				case NetherBlocks.sideEast: {
+					if (side == NetherBlocks.sideWest)
+						return icoSoulWorkbenchBack;
+					else
+						return icoSoulWorkbenchSide;
+				}
+				case NetherBlocks.sideSouth: {
+					if (side == NetherBlocks.sideNorth)
+						return icoSoulWorkbenchBack;
+					else
+						return icoSoulWorkbenchSide;
+				}
+				case NetherBlocks.sideWest: {
+					if (side == NetherBlocks.sideEast)
+						return icoSoulWorkbenchBack;
+					else
+						return icoSoulWorkbenchSide;
+				}
+				}
+			}
+
+			return icoSoulWorkbenchSide;
+		}
+		}
+	};
+
+	@Override
+	@SideOnly(Side.CLIENT)
 	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
 		switch (side) {
 		case NetherBlocks.sideBottom:
-			return icoSoulWorkbenchBottom; 
+			return icoSoulWorkbenchBottom;
 		case NetherBlocks.sideTop:
-			return icoSoulWorkbenchTop; 
-		case NetherBlocks.sideEast:
-		case NetherBlocks.sideWest:
-			return icoSoulWorkbenchSideWE;
+			return icoSoulWorkbenchTop;
+		case NetherBlocks.sideSouth:
+			return icoSoulWorkbenchFront;
 		default:
-			return icoSoulWorkbenchSideNS;
+			return icoSoulWorkbenchSide;
 		}
-	}
-
-
-	@SideOnly(Side.CLIENT)
-	/**
-	 * A randomly called display update to be able to add particles or other items for display
-	 */
-	@Override
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		if (this.isActive(par1World, par2, par3, par4)) {
-			int var6 = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
-			float var7 = (float) par2 + 0.5F;
-			float var8 = (float) par3 + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
-			float var9 = (float) par4 + 0.5F;
-			float var10 = 0.52F;
-			float var11 = par5Random.nextFloat() * 0.6F - 0.3F;
-
-			if (var6 == 4) {
-				par1World.spawnParticle("smoke", (double) (var7 - var10), (double) var8, (double) (var9 + var11), 0.0D, 0.0D, 0.0D);
-				par1World.spawnParticle("flame", (double) (var7 - var10), (double) var8, (double) (var9 + var11), 0.0D, 0.0D, 0.0D);
-			} else if (var6 == 5) {
-				par1World.spawnParticle("smoke", (double) (var7 + var10), (double) var8, (double) (var9 + var11), 0.0D, 0.0D, 0.0D);
-				par1World.spawnParticle("flame", (double) (var7 + var10), (double) var8, (double) (var9 + var11), 0.0D, 0.0D, 0.0D);
-			} else if (var6 == 2) {
-				par1World.spawnParticle("smoke", (double) (var7 + var11), (double) var8, (double) (var9 - var10), 0.0D, 0.0D, 0.0D);
-				par1World.spawnParticle("flame", (double) (var7 + var11), (double) var8, (double) (var9 - var10), 0.0D, 0.0D, 0.0D);
-			} else if (var6 == 3) {
-				par1World.spawnParticle("smoke", (double) (var7 + var11), (double) var8, (double) (var9 + var10), 0.0D, 0.0D, 0.0D);
-				par1World.spawnParticle("flame", (double) (var7 + var11), (double) var8, (double) (var9 + var10), 0.0D, 0.0D, 0.0D);
-			}
-		}
-	}
+	};
 
 	/**
 	 * Called upon block activation (right click on the block.)
@@ -226,7 +170,43 @@ public class SoulWorkBench extends BlockContainer {
 	}
 
 	@Override
-	// public void breakBlock(World world, int x, int y, int z, int i, int j)
+	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
+		super.onBlockAdded(par1World, par2, par3, par4);
+		this.setDefaultDirection(par1World, par2, par3, par4);
+	}
+
+	/**
+	 * set a blocks direction
+	 */
+	private void setDefaultDirection(World par1World, int par2, int par3, int par4) {
+		if (!par1World.isRemote) {
+			int var5 = par1World.getBlockId(par2, par3, par4 - 1);
+			int var6 = par1World.getBlockId(par2, par3, par4 + 1);
+			int var7 = par1World.getBlockId(par2 - 1, par3, par4);
+			int var8 = par1World.getBlockId(par2 + 1, par3, par4);
+			byte var9 = 3;
+
+			if (Block.opaqueCubeLookup[var5] && !Block.opaqueCubeLookup[var6]) {
+				var9 = 3;
+			}
+
+			if (Block.opaqueCubeLookup[var6] && !Block.opaqueCubeLookup[var5]) {
+				var9 = 2;
+			}
+
+			if (Block.opaqueCubeLookup[var7] && !Block.opaqueCubeLookup[var8]) {
+				var9 = 5;
+			}
+
+			if (Block.opaqueCubeLookup[var8] && !Block.opaqueCubeLookup[var7]) {
+				var9 = 4;
+			}
+
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9, BlockNotifyType.ALL);
+		}
+	}
+
+	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6) {
 		if (!keepFurnaceInventory) {
 			TileSoulWorkBench var7 = (TileSoulWorkBench) par1World.getBlockTileEntity(par2, par3, par4);
@@ -248,13 +228,11 @@ public class SoulWorkBench extends BlockContainer {
 							}
 
 							var9.stackSize -= var13;
-							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(var9.itemID,
-									var13, var9.getItemDamage()));
+							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(
+									var9.itemID, var13, var9.getItemDamage()));
 
-							if (var9.hasTagCompound()) {
-								//func_92014_d() gets back an Item
-                                var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
-                            }
+							if (var9.hasTagCompound())
+								var14.getEntityItem().setTagCompound((NBTTagCompound) var9.getTagCompound().copy());
 
 							float var15 = 0.05F;
 							var14.motionX = (double) ((float) this.rand.nextGaussian() * var15);

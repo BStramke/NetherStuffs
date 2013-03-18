@@ -121,7 +121,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 				var9 = 4;
 			}
 
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9, BlockNotifyType.ALL);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, var9, BlockNotifyType.CLIENT_SERVER);
 		}
 	}
 
@@ -140,35 +140,30 @@ public class NetherDemonicFurnace extends BlockContainer {
 		else
 			return false;
 	}
-
-	@SideOnly(Side.CLIENT)
-	/**
-	 * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
-	 */
+	
 	@Override
-	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
-
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) {
+		int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
 		switch (side) {
 		case NetherBlocks.sideBottom:
 			return icoFurnaceBottom; // bottom
 		case NetherBlocks.sideTop:
 			return icoFurnaceTop; // top
 		default: {
-
-			int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-			if (side != unmarkedMetadata(var6))
-				return icoFurnaceSide;
-			else {
-				if (this.isActiveSet(var6))
-					return icoFurnaceFrontActive;
+				if(side == unmarkedMetadata(meta))
+				{
+					if (this.isActiveSet(meta))
+						return icoFurnaceFrontActive;
+					else
+						return icoFurnaceFrontInactive;
+				}
 				else
-					return icoFurnaceFrontInactive;
+					return icoFurnaceSide;
 			}
-
 		}
-		}
-	}
-
+	};
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
@@ -177,19 +172,10 @@ public class NetherDemonicFurnace extends BlockContainer {
 			return icoFurnaceBottom; // bottom
 		case NetherBlocks.sideTop:
 			return icoFurnaceTop; // top
-		default: {
-			if (side != unmarkedMetadata(meta)) {
-				if (side == NetherBlocks.sideSouth)
-					return icoFurnaceFrontInactive;
-				else
-					return icoFurnaceSide;
-			} else {
-				if (this.isActiveSet(meta))
-					return icoFurnaceFrontActive;
-				else
-					return icoFurnaceFrontInactive;
-			}
-		}
+		case NetherBlocks.sideSouth:
+			return icoFurnaceFrontInactive;
+		default:
+			return icoFurnaceSide;
 		}
 	};
 
