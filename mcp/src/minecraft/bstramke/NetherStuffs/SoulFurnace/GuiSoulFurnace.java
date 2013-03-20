@@ -7,7 +7,9 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.liquids.LiquidStack;
 
 import org.lwjgl.opengl.GL11;
 
@@ -43,19 +45,21 @@ public class GuiSoulFurnace extends GuiContainer {
 		this.drawTexturedModalRect(var5 + 79, var6 + 34, 176, 0, var7 + 1, 16);
 
 		int nBottomLeftY = var6 + 69;
-		/*this.mc.renderEngine.bindTexture(mc.renderEngine.getTexture(NetherItems.SoulEnergyLiquidItem.getTextureFile()));
+		
 		int nFillState = this.inventory.getFillingScaled(32);
+		
+		this.mc.renderEngine.func_98187_b("/gui/items.png");
+		Icon LiquidIcon = NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0);
 		int y = 0;
 		for (int x = 16; x <= 32 && x <= nFillState; x+=16) {
-			this.drawTexturedModalRect(var5 + 12, nBottomLeftY-x, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)%16)*16, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)/16)*16, 16, 16);
+			func_94065_a(var5 + 12, nBottomLeftY-x, LiquidIcon, 16, 16);
 			y = x;
 		}
-		
+				
 		if(nFillState%16!=0){
 			nFillState -= y;
-			this.drawTexturedModalRect(var5 + 12, nBottomLeftY-y-nFillState, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)%16)*16, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0)/16)*16, 16, nFillState);
-		}*/
-		
+			func_94065_a(var5 + 12, nBottomLeftY-y-nFillState, LiquidIcon, 16, nFillState);
+		}
 	}
 
 	@Override
@@ -64,6 +68,8 @@ public class GuiSoulFurnace extends GuiContainer {
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 
+		
+		
 		if (par1 > var5 + 9 && par1 < var5 + 9 + 21 && par2 > var6 + 68 - 32 && par2 < var6 + 68) {
 			ItemStack par1ItemStack = NetherStuffs.SoulEnergyLiquid.asItemStack().copy();
 			par1ItemStack.stackSize = this.inventory.getCurrentTankLevel();

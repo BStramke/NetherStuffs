@@ -61,10 +61,7 @@ public class SoulSiphon extends BlockContainer {
 	public SoulSiphon(int par1) {
 		super(par1, Material.iron);
 		this.setCreativeTab(CreativeTabs.tabRedstone);
-		//this.setRequiresSelfNotify();
 	}
-
-	
 
 	@Override
 	public void func_94332_a(IconRegister par1IconRegister)
@@ -75,9 +72,8 @@ public class SoulSiphon extends BlockContainer {
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int side) {
-		int nMeta = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-		if (this.isActiveSet(nMeta))
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+		if (this.isActiveSet(meta))
 			return icoSoulSiphonActive;
 		else
 			return icoSoulSiphonInactive;

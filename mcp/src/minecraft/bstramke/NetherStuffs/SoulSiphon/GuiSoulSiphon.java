@@ -3,6 +3,7 @@ package bstramke.NetherStuffs.SoulSiphon;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
@@ -51,20 +52,19 @@ public class GuiSoulSiphon extends GuiContainer {
 
 		// draw fill state from bottom to top
 		int nBottomLeftY = var6 + 69;
-		/*this.mc.renderEngine.bindTexture(mc.renderEngine.getTexture(NetherItems.SoulEnergyLiquidItem.getTextureFile()));
 		int nFillState = this.tile_entity.getFillingScaled(32);
+		this.mc.renderEngine.func_98187_b("/gui/items.png");
+		Icon LiquidIcon = NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0);
 		int y = 0;
-		for (int x = 16; x <= 32 && x <= nFillState; x += 16) {
-			this.drawTexturedModalRect(var5 + 12, nBottomLeftY - x, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0) % 16) * 16,
-					(NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0) / 16) * 16, 16, 16);
+		for (int x = 16; x <= 32 && x <= nFillState; x+=16) {
+			func_94065_a(var5 + 12, nBottomLeftY-x, LiquidIcon, 16, 16);
 			y = x;
 		}
-
-		if (nFillState % 16 != 0) {
+				
+		if(nFillState%16!=0){
 			nFillState -= y;
-			this.drawTexturedModalRect(var5 + 12, nBottomLeftY - y - nFillState, (NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0) % 16) * 16,
-					(NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0) / 16) * 16, 16, nFillState);
-		}*/
+			func_94065_a(var5 + 12, nBottomLeftY-y-nFillState, LiquidIcon, 16, nFillState);
+		}
 	}
 
 	@Override

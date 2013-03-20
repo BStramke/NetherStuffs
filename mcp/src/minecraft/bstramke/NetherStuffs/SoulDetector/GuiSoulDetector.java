@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -67,6 +68,7 @@ public class GuiSoulDetector extends GuiContainer {
 		this.buttonList.add(this.btnRangeDecSouth = new GuiButtonSoulDetector(12, this.guiLeft + 96 + 9, this.guiTop + 51, 9, 9, true));
 
 		int nMeta = this.tile_entity.getBlockMetadata() & 7;
+		
 		switch (nMeta) {
 		case SoulDetector.mk4:
 			drawDetectionMark4();
@@ -144,9 +146,6 @@ public class GuiSoulDetector extends GuiContainer {
 				this.buttonList.add(this.cbxDetectMobButtons[i] = new GuiButtonMobCheckbox(16 + i, this.guiLeft + 6 + (i - 16) * 8, this.guiTop + 120, this.tile_entity.detectEntitiesMobs[i], i));
 				
 		}
-
-		// this.buttonList.add(this.cbxDetectPig = new GuiButtonMobCheckbox(16, this.guiLeft + 6, this.guiTop + 112, this.tile_entity.detectEntitiesMobs[this.tile_entity.nDetectPig],
-		// this.tile_entity.nDetectPig));
 	}
 
 	private void drawDetectionMark4() {
@@ -201,13 +200,12 @@ public class GuiSoulDetector extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {		
 		int nMeta = this.tile_entity.getBlockMetadata() & 7;
-
 		if (nMeta == SoulDetector.mk1 || nMeta == SoulDetector.mk2 || nMeta == SoulDetector.mk3 || nMeta == SoulDetector.mk4)
 			this.fontRenderer.drawString("Soul Detector MK " + (nMeta + 1), 6, 6, 4210752);
 		else
-			this.fontRenderer.drawString("Soul Detector", 6, 6, 4210752);
+			this.fontRenderer.drawString("Soul Detector", 6, 6, 4210752);		
 	}
 
 	@Override

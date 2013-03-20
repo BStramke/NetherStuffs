@@ -33,7 +33,7 @@ public class NetherPotionBottle extends Item {
 	@Override
 	public void func_94581_a(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassPotionBottle"));
+		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassBottle"));
 		icoBottleHellfire = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassPotionBottleHellfire"));
 		icoBottleAcid = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassPotionBottleAcid"));
 		icoBottleDeath = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassPotionBottleDeath"));

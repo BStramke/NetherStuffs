@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,8 +23,9 @@ public class SoulEnergyLiquidItem extends Item {
 	@Override
 	public void func_94581_a(IconRegister iconRegister) {
 		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("SoulEnergyLiquidItem"));
+		NetherStuffs.SoulEnergyLiquid.setRenderingIcon(iconIndex);
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
