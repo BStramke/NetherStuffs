@@ -54,10 +54,6 @@ public class NetherStuffsCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 	}
 
 	private void addOverrides() {		
-		if (CoreModContainer.bOverrideBlockBreakable)
-			NetherStuffsASM.addClassOverride("akm", "net/minecraft/src/BlockBreakable.java");
-		if (CoreModContainer.bOverrideBlockPane)
-			NetherStuffsASM.addClassOverride("amp", "net/minecraft/src/BlockPane.java");
 		if (CoreModContainer.bOverrideChunk)
 			NetherStuffsASM.addClassOverride("zz", "net.minecraft.world.chunk.Chunk");
 

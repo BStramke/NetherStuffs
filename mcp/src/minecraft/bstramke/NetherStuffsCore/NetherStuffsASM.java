@@ -42,16 +42,6 @@ public class NetherStuffsASM implements IClassTransformer {
 							CoreModContainer.bOverrideChunk = true;
 						else
 							CoreModContainer.bOverrideChunk = false;
-					} else if (line.indexOf("OverrideBlockPaneClass") >= 0) {
-						if (line.indexOf("=true") >= 0)
-							CoreModContainer.bOverrideBlockPane = true;
-						else
-							CoreModContainer.bOverrideBlockPane = false;
-					} else if (line.indexOf("OverrideBlockBreakableClass") >= 0) {
-						if (line.indexOf("=true") >= 0)
-							CoreModContainer.bOverrideBlockBreakable = true;
-						else
-							CoreModContainer.bOverrideBlockBreakable = false;
 					} 
 					line = bufRead.readLine();
 					count++;
@@ -59,18 +49,12 @@ public class NetherStuffsASM implements IClassTransformer {
 				bufRead.close();
 
 			} else {
-				CoreModContainer.bOverrideBlockBreakable = true;
-				CoreModContainer.bOverrideBlockPane = true;
 				CoreModContainer.bOverrideChunk = true;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		if (CoreModContainer.bOverrideBlockBreakable)
-			NetherStuffsASM.addClassOverride("akm", "net/minecraft/src/BlockBreakable.java");
-		if (CoreModContainer.bOverrideBlockPane)
-			NetherStuffsASM.addClassOverride("amp", "net/minecraft/src/BlockPane.java");
 		if (CoreModContainer.bOverrideChunk)
 			NetherStuffsASM.addClassOverride("zz", "net.minecraft.world.chunk.Chunk");
 	}

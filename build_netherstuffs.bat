@@ -27,10 +27,6 @@ mkdir reobf\minecraft\bstramke\NetherStuffsCoreBase\META-INF
 copy src\minecraft\bstramke\netherstuffs_at.cfg reobf\minecraft\bstramke\NetherStuffsCoreBase\netherstuffs_at.cfg
 copy src\minecraft\bstramke\NetherStuffsCore\META-INF\MANIFEST.MF reobf\minecraft\bstramke\NetherStuffsCoreBase\META-INF\MANIFEST.MF
 rem copy Custom Class Files
-rem BlockBreakable
-copy reobf\minecraft\akm.class reobf\minecraft\bstramke\NetherStuffsCoreBase\akm.class 
-rem BlockPane
-copy reobf\minecraft\amp.class reobf\minecraft\bstramke\NetherStuffsCoreBase\amp.class 
 rem Chunk
 copy reobf\minecraft\zz.class reobf\minecraft\bstramke\NetherStuffsCoreBase\zz.class 
 cd reobf\minecraft\bstramke\NetherStuffsBase
