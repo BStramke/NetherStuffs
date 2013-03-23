@@ -26,6 +26,9 @@ public class NetherSoulGlass extends BlockGlass {
 	public NetherSoulGlass(int par1, Material par3Material, boolean par4) {
 		super(par1, par3Material, par4);
 		this.setStepSound(soundGlassFootstep);
+		
+		Block.opaqueCubeLookup[this.blockID] = true;
+		
 		this.setCreativeTab(CreativeTabs.tabBlock);
 
 		try {
@@ -45,7 +48,7 @@ public class NetherSoulGlass extends BlockGlass {
 		} catch (NoSuchMethodException e) {} catch (SecurityException e) {} catch (IllegalAccessException e) {} catch (IllegalArgumentException e) {} catch (InvocationTargetException e) {}
 
 	}
-
+	
 	/*@Override
 	public String getItemNameIS(ItemStack is) {
 		String name = "NetherSoulGlass";
