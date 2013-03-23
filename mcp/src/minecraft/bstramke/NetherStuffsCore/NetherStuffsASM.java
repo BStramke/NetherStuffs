@@ -37,26 +37,26 @@ public class NetherStuffsASM implements IClassTransformer {
 				line = bufRead.readLine();
 				count++;
 				while (line != null) {
-					if (line.indexOf("OverrideChunkClass") >= 0) {
+					/*if (line.indexOf("OverrideChunkClass") >= 0) {
 						if (line.indexOf("=true") >= 0)
 							CoreModContainer.bOverrideChunk = true;
 						else
 							CoreModContainer.bOverrideChunk = false;
-					} 
+					} */
 					line = bufRead.readLine();
 					count++;
 				}
 				bufRead.close();
 
 			} else {
-				CoreModContainer.bOverrideChunk = true;
+				//CoreModContainer.bOverrideChunk = true;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		if (CoreModContainer.bOverrideChunk)
-			NetherStuffsASM.addClassOverride("zz", "net.minecraft.world.chunk.Chunk");
+		/*if (CoreModContainer.bOverrideChunk)
+			NetherStuffsASM.addClassOverride("zz", "net.minecraft.world.chunk.Chunk");*/
 	}
 
 	@Override

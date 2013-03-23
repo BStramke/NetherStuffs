@@ -32,6 +32,4 @@ public class NetherBlocks {
 	
 	public static final Block NetherSoulBlocker = new SoulBlocker(NetherStuffs.NetherSoulBlockerBlockId).setUnlocalizedName("NetherSoulBlocker").setHardness(3.5F).setResistance(10.0F);
 	public static final Block NetherSoulSiphon = new SoulSiphon(NetherStuffs.NetherSoulSiphonBlockId).setUnlocalizedName("NetherSoulSiphon").setHardness(3.5F).setResistance(10.0F);
-	
-	public static final Block skyblock = new SkyBlock(NetherStuffs.NetherSkyBlockId).setUnlocalizedName("NetherSkyBlock").setHardness(3.5F).setResistance(10.0F);
 }

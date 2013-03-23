@@ -57,11 +57,6 @@ public class SoulWorkBenchRecipes {
 					new ItemStack(NetherBlocks.netherWood, 1, NetherWood.death), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1), 'D',
 					new ItemStack(NetherBlocks.NetherSoulDetector, 1, i) });
 		}
-
-		if ((Loader.isModLoaded("NetherStuffsCore") || NetherStuffs.DevSetCoreModAvailable) && NetherStuffs.bOverrideChunk) {
-			this.addRecipe(new ItemStack(NetherBlocks.skyblock), 1000, new Object[] { "IEI", "ISI", "IEI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'E',
-					new ItemStack(Item.enderPearl), 'S', new ItemStack(Item.netherStar) });
-		}
 	}
 
 	public List getRecipeList() {

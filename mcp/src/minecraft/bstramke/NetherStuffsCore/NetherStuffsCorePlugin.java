@@ -53,11 +53,11 @@ public class NetherStuffsCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 		}
 	}
 
-	private void addOverrides() {		
+	/*private void addOverrides() {		
 		if (CoreModContainer.bOverrideChunk)
 			NetherStuffsASM.addClassOverride("zz", "net.minecraft.world.chunk.Chunk");
 
-	}
+	}*/
 
 	@Override
 	public Void call() throws Exception {

@@ -20,8 +20,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class CoreModContainer extends DummyModContainer {
-	public static int NetherSkyBlockId;
-	public static boolean bOverrideChunk;
+	//public static int NetherSkyBlockId;
+	//public static boolean bOverrideChunk;
 	
 	public CoreModContainer() {
 		super(new ModMetadata());
@@ -46,8 +46,8 @@ public class CoreModContainer extends DummyModContainer {
 		FMLLog.info("[NetherStuffsCore] preInit");
 		Configuration config = new Configuration(new File(event.getModConfigurationDirectory()+ File.separator + "NetherStuffs.cfg"));
 		config.load();
-		NetherSkyBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SkyBlock", 1245).getInt(1245);
-		bOverrideChunk = config.get(Configuration.CATEGORY_GENERAL, "OverrideChunkClass", true).getBoolean(true);
+		//NetherSkyBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SkyBlock", 1245).getInt(1245);
+		//bOverrideChunk = config.get(Configuration.CATEGORY_GENERAL, "OverrideChunkClass", true).getBoolean(true);
 		config.save();	
    }
 }

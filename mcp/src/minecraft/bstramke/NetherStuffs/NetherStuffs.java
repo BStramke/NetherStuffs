@@ -41,15 +41,11 @@ import bstramke.NetherStuffs.Client.ClientPacketHandler;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.GuiHandler;
 import bstramke.NetherStuffs.Common.NetherStuffsFuel;
-import bstramke.NetherStuffs.Common.NetherStuffsPlayerTracker;
 import bstramke.NetherStuffs.Common.ServerPacketHandler;
 import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import bstramke.NetherStuffs.DemonicFurnace.TileDemonicFurnace;
 import bstramke.NetherStuffs.Items.NetherItems;
-import bstramke.NetherStuffs.Items.NetherOreIngot;
 import bstramke.NetherStuffs.Items.NetherPotionBottle;
-import bstramke.NetherStuffs.Items.NetherSoulGlassBottle;
-import bstramke.NetherStuffs.Items.NetherStoneBowl;
 import bstramke.NetherStuffs.Items.NetherStonePotionBowl;
 import bstramke.NetherStuffs.Items.NetherWoodCharcoal;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
@@ -63,7 +59,6 @@ import bstramke.NetherStuffs.WorldGen.WorldGenDefaultMinable;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -105,7 +100,6 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherPuddleBlockId;
 	public static int SoulWorkBenchBlockId;
 	public static int NetherSoulBombBlockId;
-	public static int NetherSkyBlockId;
 	public static int NetherWoodPuddleBlockId;
 
 	public static int NetherObsidianSwordAcidItemId;
@@ -184,7 +178,6 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulBlockerBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulBlocker", 1242).getInt(1242);
 		NetherSoulFurnaceBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulFurnace", 1243).getInt(1243);
 		NetherSoulSiphonBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulSiphon", 1244).getInt(1244);
-		NetherSkyBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SkyBlock", 1245).getInt(1245);
 		NetherWoodPuddleBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "NetherWoodPuddles", 1246).getInt(1246);
 
 		NetherOreIngotItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherIngots", 5200).getInt(5200);
@@ -290,11 +283,6 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench, "NetherSoulWorkBench");
 
-		if ((Loader.isModLoaded("NetherStuffsCore") || NetherStuffs.DevSetCoreModAvailable) && NetherStuffs.bOverrideChunk) {
-			FMLLog.info("[NetherStuffs] SkyBlock is set available because NetherStuffsCore was found.");
-			GameRegistry.registerBlock(NetherBlocks.skyblock, "NetherSkyBlock");
-		}
-
 		GameRegistry.registerBlock(NetherBlocks.netherOre, NetherOreItemBlock.class, "NetherOreItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherWood, NetherWoodItemBlock.class, "NetherWoodItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherPlank, NetherPlankItemBlock.class, "NetherPlankItemBlock");
@@ -370,8 +358,6 @@ public class NetherStuffs extends DummyModContainer {
 			Block.netherrack.setHardness(1.5F);
 			Block.netherrack.setResistance(2.0F);
 		}
-
-		GameRegistry.registerPlayerTracker(new NetherStuffsPlayerTracker());
 		/*
 		 * This lets Skeletons Spawn away from NetherFortresses. Actual Idea by ErasmoGnome, made on the MinecraftForums: http://www.minecraftforum.net
 		 * /topic/1493398-move-wither-skeletons-out- of-fortresses-over-125-supporters/
