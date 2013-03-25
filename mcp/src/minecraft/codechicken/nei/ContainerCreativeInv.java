@@ -10,10 +10,10 @@ import net.minecraft.inventory.SlotArmor;
 
 public class ContainerCreativeInv extends Container
 {
-	public ContainerCreativeInv(EntityPlayer player, ExtendedCreativeInv extraInv)
-	{
-		InventoryPlayer invPlayer = player.inventory;
-		for(int row = 0; row < 6; row++)
+    public ContainerCreativeInv(EntityPlayer player, ExtendedCreativeInv extraInv)
+    {
+        InventoryPlayer invPlayer = player.inventory;
+        for(int row = 0; row < 6; row++)
         {
             for(int col = 0; col < 9; col++)
             {
@@ -39,12 +39,12 @@ public class ContainerCreativeInv extends Container
         {
             this.addSlotToContainer(new SlotArmor(null, invPlayer, invPlayer.getSizeInventory() - 1 - armourslot, -15, 23 + armourslot * 18, armourslot));
         }
-	}
-	
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotIndex)
-	{
-		ItemStack transferredStack = null;
+    }
+    
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotIndex)
+    {
+        ItemStack transferredStack = null;
         Slot slot = (Slot)inventorySlots.get(slotIndex);
 
         if (slot != null && slot.getHasStack())
@@ -54,13 +54,13 @@ public class ContainerCreativeInv extends Container
             
             if(stack.getItem() instanceof ItemArmor)
             {
-            	ItemArmor armor = (ItemArmor)stack.getItem();
-            	if(!getSlot(90+armor.armorType).getHasStack())
-            	{
-            		getSlot(90+armor.armorType).putStack(transferredStack);
+                ItemArmor armor = (ItemArmor)stack.getItem();
+                if(!getSlot(90+armor.armorType).getHasStack())
+                {
+                    getSlot(90+armor.armorType).putStack(transferredStack);
                     slot.putStack(null);
                     return transferredStack;
-            	}            	
+                }                
             }
 
             if (slotIndex < 54)
@@ -86,10 +86,10 @@ public class ContainerCreativeInv extends Container
         }
 
         return transferredStack;
-	}
-	
-	public boolean canInteractWith(EntityPlayer var1) 
-	{
-		return true;
-	}
+    }
+    
+    public boolean canInteractWith(EntityPlayer var1) 
+    {
+        return true;
+    }
 }

@@ -39,21 +39,21 @@ public class InstructionComparator
         public AbstractInsnNode last;
     }
     
-	public static boolean varInsnEqual(VarInsnNode insn1, VarInsnNode insn2)
-	{
-	    if(insn1.var == -1 || insn2.var == -1)
-	        return true;
-	    
-		return insn1.var == insn2.var;
-	}
-	
-	public static boolean methodInsnEqual(AbstractInsnNode absnode, int Opcode, DescriptorMapping method)
-	{
-		if(!(absnode instanceof MethodInsnNode) || absnode.getOpcode() != Opcode)
-			return false;
-		
-		return method.matches((MethodInsnNode)absnode);
-	}
+    public static boolean varInsnEqual(VarInsnNode insn1, VarInsnNode insn2)
+    {
+        if(insn1.var == -1 || insn2.var == -1)
+            return true;
+        
+        return insn1.var == insn2.var;
+    }
+    
+    public static boolean methodInsnEqual(AbstractInsnNode absnode, int Opcode, DescriptorMapping method)
+    {
+        if(!(absnode instanceof MethodInsnNode) || absnode.getOpcode() != Opcode)
+            return false;
+        
+        return method.matches((MethodInsnNode)absnode);
+    }
     
     public static boolean methodInsnEqual(MethodInsnNode insn1, MethodInsnNode insn2)
     {
@@ -64,22 +64,22 @@ public class InstructionComparator
     {
         return insn1.owner.equals(insn2.owner) && insn1.name.equals(insn2.name) && insn1.desc.equals(insn2.desc);
     }
-	
-	public static boolean ldcInsnEqual(LdcInsnNode insn1, LdcInsnNode insn2)
-	{
-		if(insn1.cst.equals("~") || insn2.cst.equals("~"))
-			return true;
-		
-		return insn1.cst.equals(insn2.cst);
-	}
-	
-	public static boolean typeInsnEqual(TypeInsnNode insn1, TypeInsnNode insn2)
-	{
-		if(insn1.desc.equals("~") || insn2.desc.equals("~"))
-			return true;
-		
-		return insn1.desc.equals(insn2.desc);
-	}
+    
+    public static boolean ldcInsnEqual(LdcInsnNode insn1, LdcInsnNode insn2)
+    {
+        if(insn1.cst.equals("~") || insn2.cst.equals("~"))
+            return true;
+        
+        return insn1.cst.equals(insn2.cst);
+    }
+    
+    public static boolean typeInsnEqual(TypeInsnNode insn1, TypeInsnNode insn2)
+    {
+        if(insn1.desc.equals("~") || insn2.desc.equals("~"))
+            return true;
+        
+        return insn1.desc.equals(insn2.desc);
+    }
     
     public static boolean iincInsnEqual(IincInsnNode node1, IincInsnNode node2)
     {
@@ -93,79 +93,79 @@ public class InstructionComparator
         
         return node1.operand == node2.operand;
     }
-	
-	public static boolean insnEqual(AbstractInsnNode node1, AbstractInsnNode node2)
-	{
-	    if(node1.getOpcode() != node2.getOpcode())
-	        return false;
-	    
-	    switch(node2.getType())
-	    {
-	        case VAR_INSN:
-	            return varInsnEqual((VarInsnNode) node1, (VarInsnNode) node2);
-	        case TYPE_INSN:
-	            return typeInsnEqual((TypeInsnNode) node1, (TypeInsnNode) node2);
-	        case FIELD_INSN:
+    
+    public static boolean insnEqual(AbstractInsnNode node1, AbstractInsnNode node2)
+    {
+        if(node1.getOpcode() != node2.getOpcode())
+            return false;
+        
+        switch(node2.getType())
+        {
+            case VAR_INSN:
+                return varInsnEqual((VarInsnNode) node1, (VarInsnNode) node2);
+            case TYPE_INSN:
+                return typeInsnEqual((TypeInsnNode) node1, (TypeInsnNode) node2);
+            case FIELD_INSN:
                 return fieldInsnEqual((FieldInsnNode) node1, (FieldInsnNode) node2);
-	        case METHOD_INSN:
-	            return methodInsnEqual((MethodInsnNode) node1, (MethodInsnNode) node2);
-	        case LDC_INSN:
-	            return ldcInsnEqual((LdcInsnNode) node1, (LdcInsnNode) node2);
-	        case IINC_INSN:
-	            return iincInsnEqual((IincInsnNode) node1, (IincInsnNode) node2);
-	        case INT_INSN:
-	            return intInsnEqual((IntInsnNode)node1, (IntInsnNode)node2);
-	        default:
-	            return true;
-	    }
-	}
+            case METHOD_INSN:
+                return methodInsnEqual((MethodInsnNode) node1, (MethodInsnNode) node2);
+            case LDC_INSN:
+                return ldcInsnEqual((LdcInsnNode) node1, (LdcInsnNode) node2);
+            case IINC_INSN:
+                return iincInsnEqual((IincInsnNode) node1, (IincInsnNode) node2);
+            case INT_INSN:
+                return intInsnEqual((IntInsnNode)node1, (IntInsnNode)node2);
+            default:
+                return true;
+        }
+    }
 
     public static InsnList getImportantList(InsnList list)
-	{
-		if(list.size() == 0)
-			return list;
-		
-		HashMap<LabelNode, LabelNode> labels = new HashMap<LabelNode, LabelNode>();
-		for(AbstractInsnNode insn = list.getFirst(); insn != null; insn = insn.getNext())
-		{
-			if(insn instanceof LabelNode)
-				labels.put((LabelNode)insn, (LabelNode)insn);
-		}		
-		
-		InsnList importantNodeList = new InsnList();
-		for(AbstractInsnNode insn = list.getFirst(); insn != null; insn = insn.getNext())
-		{
-			if(insn instanceof LabelNode || insn instanceof LineNumberNode)
-				continue;
-			
-			importantNodeList.add(insn.clone(labels));
-		}
-		return importantNodeList;
-	}
-	
-	public static boolean insnListMatches(InsnList haystack, InsnList needle, int start)
-	{
-		if(haystack.size()-start < needle.size())
-			return false;
-		
-		for(int i = 0; i < needle.size(); i++)
-		{
-			if(!insnEqual(haystack.get(i+start), needle.get(i)))
-				return false;
-		}
-		return true;
-	}
-	
-	public static List<Integer> insnListFind(InsnList haystack, InsnList needle)
-	{
-		LinkedList<Integer> list = new LinkedList<Integer>();
-		for(int start = 0; start <= haystack.size()-needle.size(); start++)
-			if(insnListMatches(haystack, needle, start))
-				list.add(start);
-		
-		return list;
-	}
-	
+    {
+        if(list.size() == 0)
+            return list;
+        
+        HashMap<LabelNode, LabelNode> labels = new HashMap<LabelNode, LabelNode>();
+        for(AbstractInsnNode insn = list.getFirst(); insn != null; insn = insn.getNext())
+        {
+            if(insn instanceof LabelNode)
+                labels.put((LabelNode)insn, (LabelNode)insn);
+        }        
+        
+        InsnList importantNodeList = new InsnList();
+        for(AbstractInsnNode insn = list.getFirst(); insn != null; insn = insn.getNext())
+        {
+            if(insn instanceof LabelNode || insn instanceof LineNumberNode)
+                continue;
+            
+            importantNodeList.add(insn.clone(labels));
+        }
+        return importantNodeList;
+    }
+    
+    public static boolean insnListMatches(InsnList haystack, InsnList needle, int start)
+    {
+        if(haystack.size()-start < needle.size())
+            return false;
+        
+        for(int i = 0; i < needle.size(); i++)
+        {
+            if(!insnEqual(haystack.get(i+start), needle.get(i)))
+                return false;
+        }
+        return true;
+    }
+    
+    public static List<Integer> insnListFind(InsnList haystack, InsnList needle)
+    {
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        for(int start = 0; start <= haystack.size()-needle.size(); start++)
+            if(insnListMatches(haystack, needle, start))
+                list.add(start);
+        
+        return list;
+    }
+    
     public static List<AbstractInsnNode> insnListFindStart(InsnList haystack, InsnList needle)
     {
         LinkedList<AbstractInsnNode> callNodes = new LinkedList<AbstractInsnNode>();

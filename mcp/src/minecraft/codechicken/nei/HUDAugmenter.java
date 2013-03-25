@@ -18,49 +18,49 @@ import net.minecraft.world.World;
 
 public class HUDAugmenter
 {
-	public static void renderOverlay()
-	{
-		Minecraft mc = Minecraft.getMinecraft();
-		if(mc.currentScreen == null &&
-				mc.theWorld != null &&
-				NEIClientConfig.getBooleanSetting("options.inworld tooltips") && 
-				mc.objectMouseOver != null && 
-				mc.objectMouseOver.typeOfHit == EnumMovingObjectType.TILE)
-		{
-			World world = mc.theWorld;
-			ArrayList<ItemStack> items = ItemInfo.getIdentifierItems(world, mc.thePlayer, mc.objectMouseOver);
-			
-			String name = null;
-			ItemStack stack = null;
-			for(int i = 0; i < items.size(); i++)
-			{
-				try
-				{
-					String s = GuiContainerManager.itemDisplayNameShort(items.get(i));
-					if(s != null && !s.endsWith("Unnamed"))
-					{
-						name = s;
-						stack = items.get(i);
-						break;
-					}
-				}
-				catch(Exception e){}
-			}
-			if(name == null)
-				return;
+    public static void renderOverlay()
+    {
+        Minecraft mc = Minecraft.getMinecraft();
+        if(mc.currentScreen == null &&
+                mc.theWorld != null &&
+                NEIClientConfig.getBooleanSetting("options.inworld tooltips") && 
+                mc.objectMouseOver != null && 
+                mc.objectMouseOver.typeOfHit == EnumMovingObjectType.TILE)
+        {
+            World world = mc.theWorld;
+            ArrayList<ItemStack> items = ItemInfo.getIdentifierItems(world, mc.thePlayer, mc.objectMouseOver);
+            
+            String name = null;
+            ItemStack stack = null;
+            for(int i = 0; i < items.size(); i++)
+            {
+                try
+                {
+                    String s = GuiContainerManager.itemDisplayNameShort(items.get(i));
+                    if(s != null && !s.endsWith("Unnamed"))
+                    {
+                        name = s;
+                        stack = items.get(i);
+                        break;
+                    }
+                }
+                catch(Exception e){}
+            }
+            if(name == null)
+                return;
 
-			ScaledResolution res = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-			
-			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-	        RenderHelper.disableStandardItemLighting();
-	        GL11.glDisable(GL11.GL_LIGHTING);
-	        GL11.glDisable(GL11.GL_DEPTH_TEST);
+            ScaledResolution res = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+            
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            RenderHelper.disableStandardItemLighting();
+            GL11.glDisable(GL11.GL_LIGHTING);
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-	        int w = GuiContainerManager.getStringWidthNoColours(mc.fontRenderer, name)+22;
-	        int h = 16;
-	        int drawx = res.getScaledWidth()-w-5;
-	        int drawy = 5;
-	        
+            int w = GuiContainerManager.getStringWidthNoColours(mc.fontRenderer, name)+22;
+            int h = 16;
+            int drawx = res.getScaledWidth()-w-5;
+            int drawy = 5;
+            
             int i4 = 0xf0100010;
             drawGradientRect(drawx - 3, drawy - 4, w + 6, 1, i4, i4, 0);
             drawGradientRect(drawx - 3, drawy + h + 3, w + 6, 1, i4, i4, 0);
@@ -75,14 +75,14 @@ public class HUDAugmenter
             drawGradientRect(drawx - 3, drawy + h + 2, w + 6, 1, colour2, colour2, 0);
             
             mc.fontRenderer.drawStringWithShadow(name, drawx+20, 9, 0xFFA0A0A0);
-						
-	        RenderHelper.enableGUIStandardItemLighting();
-	        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-			GuiContainerManager.drawItem(drawx+1, 5, stack, mc.fontRenderer, mc.renderEngine);
-		}
-	}
+                        
+            RenderHelper.enableGUIStandardItemLighting();
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GuiContainerManager.drawItem(drawx+1, 5, stack, mc.fontRenderer, mc.renderEngine);
+        }
+    }
 
-	public static void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6, int zLevel)
+    public static void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6, int zLevel)
     {
         float var7 = (float)(par5 >> 24 & 255) / 255.0F;
         float var8 = (float)(par5 >> 16 & 255) / 255.0F;

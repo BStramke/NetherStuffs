@@ -11,8 +11,8 @@ public class NetherSoulglassSwordAcid extends NetherSword {
 	}
 	
 	@Override
-	public void func_94581_a(IconRegister iconRegister)
+	public void updateIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("SwordSoulglassAcid"));
+		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("SwordSoulglassAcid"));
 	}
 }

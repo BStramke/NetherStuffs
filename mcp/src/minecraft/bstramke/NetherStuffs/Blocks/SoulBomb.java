@@ -1,5 +1,7 @@
 package bstramke.NetherStuffs.Blocks;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -53,7 +55,7 @@ public class SoulBomb extends BlockTNT {
        if (par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().itemID == Item.flintAndSteel.itemID)
        {
            this.PrimeTnt(par1World, par2, par3, par4, 1, par5EntityPlayer);
-           par1World.func_94571_i(par2, par3, par4);
+           par1World.setBlockToAir(par2, par3, par4);
            return true;
        }
        else
@@ -63,10 +65,11 @@ public class SoulBomb extends BlockTNT {
    }
 
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister) {
-		icoSoulBombTop = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulBombTop"));
-		icoSoulBombBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulBombBottom"));
-		icoSoulBombSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulBombSide"));
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
+		icoSoulBombTop = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulBombTop"));
+		icoSoulBombBottom = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulBombBottom"));
+		icoSoulBombSide = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulBombSide"));
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public class RenderCustomEndPortal
     private double surfaceZ1;
     private double surfaceZ2;
     
-	FloatBuffer field_40448_a;
+    FloatBuffer field_40448_a;
 
     public RenderCustomEndPortal(double y, double x1, double x2, double z1, double z2)
     {
@@ -32,7 +32,7 @@ public class RenderCustomEndPortal
 
     public void render(double posX, double posY, double posZ, float frame, double playerX, double playerY, double playerZ, RenderEngine r)
     {
-    	if(r == null)return;
+        if(r == null)return;
         GL11.glDisable(GL11.GL_LIGHTING);
         Random random = new Random(31100L);
         for(int i = 0; i < 16; i++)
@@ -43,7 +43,7 @@ public class RenderCustomEndPortal
             float f7 = 1.0F / (f5 + 1.0F);
             if(i == 0)
             {
-                r.func_98187_b("/misc/tunnel.png");
+                r.bindTexture("/misc/tunnel.png");
                 f7 = 0.1F;
                 f5 = 65F;
                 f6 = 0.125F;
@@ -52,7 +52,7 @@ public class RenderCustomEndPortal
             }
             if(i == 1)
             {
-                r.func_98187_b("/misc/particlefield.png");
+                r.bindTexture("/misc/particlefield.png");
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(1, 1);
                 f6 = 0.5F;

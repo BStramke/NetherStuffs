@@ -29,7 +29,7 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 	// "fill source" for
 	// internal Tank Level
 	private int nTicksToComplete = 400;
-	//public int currentTankLevel = 0;
+	// public int currentTankLevel = 0;
 	public int processTime = 0;
 	public int maxTankLevel = 1000;
 	public int energyUsedPerTick = 1;
@@ -109,7 +109,7 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 				SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.maxTankLevel - this.getCurrentTankLevel());
 				this.setCurrentTankLevel(this.maxTankLevel);
 			} else {
-				this.setCurrentTankLevel(this.getCurrentTankLevel()+SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]));
+				this.setCurrentTankLevel(this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]));
 				SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot], 0);
 			}
 		}
@@ -208,8 +208,8 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 			}
 		}
 
-		if(tagCompound.getShort("TankLevel")>0) {
-			tagCompound.setShort("TankLevelNew", (short) (tagCompound.getShort("TankLevel")*10));
+		if (tagCompound.getShort("TankLevel") > 0) {
+			tagCompound.setShort("TankLevelNew", (short) (tagCompound.getShort("TankLevel") * 10));
 			tagCompound.removeTag("TankLevel");
 		}
 		this.setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));
@@ -353,7 +353,7 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 		else
 			return this.tank.getLiquid().amount;
 	}
-	
+
 	public void setCurrentTankLevel(int nAmount) {
 		if (this.tank.getLiquid() != null)
 			this.tank.getLiquid().amount = nAmount;
@@ -364,7 +364,7 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 		}
 
 	}
-	
+
 	@Override
 	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
 		return fill(0, resource, doFill);
@@ -398,14 +398,20 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 	}
 
 	@Override
-	public boolean func_94042_c() {
+	public boolean isInvNameLocalized() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		switch (i) {
+		case nOutputSlot:
+			return false;
+		case nTankFillSlot:
+			return itemstack.itemID == NetherItems.SoulEnergyBottle.itemID;
+		default:
+			return true;
+		}
 	}
 }

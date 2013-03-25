@@ -20,130 +20,130 @@ import net.minecraft.world.WorldServer;
 
 public class CommonUtils
 {
-	private static File minecraftDir;
-	
-	public static boolean isClient()
-	{
-		return FMLCommonHandler.instance().getSide().isClient();
-	}
-	
-	public static File getWorldBaseSaveLocation(World world)
-	{
-		File savedir = getWorldSaveLocation(world);
-		if(savedir == null)
-		{
-			return null;
-		}
-		else if(savedir.getName().contains("DIM"))
-		{
-			return savedir.getParentFile();
-		}
-		else
-		{
-			return savedir;
-		}
-	}
-	
-	public static File getWorldSaveLocation(World world, int dimension)
-	{
-		File basesave = getWorldBaseSaveLocation(world); 
-		if(dimension != 0)
-		{			
-			return new File(basesave, world.provider.getSaveFolder());
-		}
-		else
-		{
-			return basesave;
-		}
-	}
-	
-	private static File getWorldSaveLocation(World world)
-	{
-		try
-		{
-			ISaveHandler worldsaver = world.getSaveHandler();
-			IChunkLoader loader = worldsaver.getChunkLoader(world.provider);
-			if(loader instanceof AnvilChunkLoader)
-			{
-				return ((AnvilChunkLoader)loader).chunkSaveLocation;
-			}
-			return null;
-		}
-		catch(IllegalAccessError e)
-		{
-			return ((WorldServer)world).getChunkSaveLocation();
-		}
-		catch(Exception e)
-		{
+    private static File minecraftDir;
+    
+    public static boolean isClient()
+    {
+        return FMLCommonHandler.instance().getSide().isClient();
+    }
+    
+    public static File getWorldBaseSaveLocation(World world)
+    {
+        File savedir = getWorldSaveLocation(world);
+        if(savedir == null)
+        {
+            return null;
+        }
+        else if(savedir.getName().contains("DIM"))
+        {
+            return savedir.getParentFile();
+        }
+        else
+        {
+            return savedir;
+        }
+    }
+    
+    public static File getWorldSaveLocation(World world, int dimension)
+    {
+        File basesave = getWorldBaseSaveLocation(world); 
+        if(dimension != 0)
+        {            
+            return new File(basesave, world.provider.getSaveFolder());
+        }
+        else
+        {
+            return basesave;
+        }
+    }
+    
+    private static File getWorldSaveLocation(World world)
+    {
+        try
+        {
+            ISaveHandler worldsaver = world.getSaveHandler();
+            IChunkLoader loader = worldsaver.getChunkLoader(world.provider);
+            if(loader instanceof AnvilChunkLoader)
+            {
+                return ((AnvilChunkLoader)loader).chunkSaveLocation;
+            }
+            return null;
+        }
+        catch(IllegalAccessError e)
+        {
+            return ((WorldServer)world).getChunkSaveLocation();
+        }
+        catch(Exception e)
+        {
             FMLCommonHandler.instance().raiseException(e, "Code Chicken Core", true);
-			return null;
-		}
-	}
-	
-	public static String getWorldName(World world)
-	{
-		return world.getWorldInfo().getWorldName();
-	}
-	
-	public static int getDimension(World world)
-	{
-		return world.provider.dimensionId;
-	}
-	
-	public static File getModsFolder()
-	{
-		return new File(getMinecraftDir(), "mods");
-	}
-	
-	public static File getMinecraftDir()
-	{
-		if(minecraftDir == null)
-			minecraftDir = ReflectionManager.getField(Loader.class, File.class, Loader.instance(), "minecraftDir");
-		
-		return minecraftDir;
-	}		
+            return null;
+        }
+    }
+    
+    public static String getWorldName(World world)
+    {
+        return world.getWorldInfo().getWorldName();
+    }
+    
+    public static int getDimension(World world)
+    {
+        return world.provider.dimensionId;
+    }
+    
+    public static File getModsFolder()
+    {
+        return new File(getMinecraftDir(), "mods");
+    }
+    
+    public static File getMinecraftDir()
+    {
+        if(minecraftDir == null)
+            minecraftDir = ReflectionManager.getField(Loader.class, File.class, Loader.instance(), "minecraftDir");
+        
+        return minecraftDir;
+    }        
 
-	public static String getRelativePath(File parent, File child)
-	{
-		if(parent.isFile() || !child.getPath().startsWith(parent.getPath()))
-		{
-			return null;
-		}
-		return child.getPath().substring(parent.getPath().length() + 1);
-	}
-	
-	public static int getFreeBlockID(int preferred)
-	{
-		for(int i = preferred; i < 255; i++)
-		{
-			if(Block.blocksList[i] == null)
-			{
-				return i;
-			}
-		}
-		for(int i = preferred - 1; i > 0; i--)
-		{
-			if(Block.blocksList[i] == null)
-			{
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static <T> T[] subArray(T[] args, int i)
-	{
-		if(i > args.length)			
-			return (T[]) Array.newInstance(args.getClass().getComponentType(), 0);
-		
-		T[] narray = (T[]) Array.newInstance(args.getClass().getComponentType(), args.length-i);
-		System.arraycopy(args, i, narray, 0, narray.length);
-		return narray;
-	}
-	
-	private static byte[] charWidth = new byte[]{4, 2, 5, 6, 6, 6, 6, 3, 5, 5, 5, 6, 2, 6, 2, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 2, 2, 5, 6, 5, 6, 7, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 4, 6, 6, 3, 6, 6, 6, 6, 6, 5, 6, 6, 2, 6, 5, 3, 6, 6, 6, 6, 6, 6, 6, 4, 6, 6, 6, 6, 6, 6, 5, 2, 5, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 3, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 6, 3, 6, 6, 6, 6, 6, 6, 6, 7, 6, 6, 6, 2, 6, 6};
-	
+    public static String getRelativePath(File parent, File child)
+    {
+        if(parent.isFile() || !child.getPath().startsWith(parent.getPath()))
+        {
+            return null;
+        }
+        return child.getPath().substring(parent.getPath().length() + 1);
+    }
+    
+    public static int getFreeBlockID(int preferred)
+    {
+        for(int i = preferred; i < 255; i++)
+        {
+            if(Block.blocksList[i] == null)
+            {
+                return i;
+            }
+        }
+        for(int i = preferred - 1; i > 0; i--)
+        {
+            if(Block.blocksList[i] == null)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T> T[] subArray(T[] args, int i)
+    {
+        if(i > args.length)            
+            return (T[]) Array.newInstance(args.getClass().getComponentType(), 0);
+        
+        T[] narray = (T[]) Array.newInstance(args.getClass().getComponentType(), args.length-i);
+        System.arraycopy(args, i, narray, 0, narray.length);
+        return narray;
+    }
+    
+    private static byte[] charWidth = new byte[]{4, 2, 5, 6, 6, 6, 6, 3, 5, 5, 5, 6, 2, 6, 2, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 2, 2, 5, 6, 5, 6, 7, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 4, 6, 6, 3, 6, 6, 6, 6, 6, 5, 6, 6, 2, 6, 5, 3, 6, 6, 6, 6, 6, 6, 6, 4, 6, 6, 6, 6, 6, 6, 5, 2, 5, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 3, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 6, 3, 6, 6, 6, 6, 6, 6, 6, 7, 6, 6, 6, 2, 6, 6};
+    
     public static int getCharWidth(char c)
     {
         if (c == 167)
@@ -152,13 +152,13 @@ public class CommonUtils
         {
             int charIndex = ChatAllowedCharacters.allowedCharacters.indexOf(c);
             if(charIndex + 32 > charWidth.length || charIndex < 0)
-            	return 0;
+                return 0;
             return charWidth[charIndex + 32];
         }
     }
-	
-	public static int getStringWidth(String s)
-	{
+    
+    public static int getStringWidth(String s)
+    {
         if (s == null)
         {
             return 0;
@@ -203,60 +203,60 @@ public class CommonUtils
 
             return width;
         }
-	}
-	
-	public static List<String> formatMessage(String message)
-	{
-		LinkedList<String> splitNotice = new LinkedList<String>();
-		String[] splits = message.split(" ");
-		String partial = "";
-		int colour = 7;
-		for(int i = 0; i < splits.length; i++)
-		{
-			String next = partial.length() == 0 ? splits[i] : partial+" "+splits[i];
-			if(getStringWidth(next) > 377)
-			{
-				splitNotice.add(colourPrefix(colour)+partial);
-	            for(int charPos = 0; charPos < partial.length(); charPos++)
-	            {
-		            for(; partial.length() > charPos + 1 && partial.charAt(charPos) == '\247'; charPos++)
-					{
-					    char c = partial.toLowerCase().charAt(charPos + 1);
-					    if(c == 'k')
-					    {
-					        continue;
-					    }
-					    colour = "0123456789abcdef".indexOf(c);
-					    if(colour < 0 || colour > 15)
-					    {
-					        colour = 15;
-					    }
-					}
-	            }
-				
-				partial = splits[i];
-	            	            
-	            continue;
-			}
-			partial = next;
-		}
-		splitNotice.add(colourPrefix(colour)+partial);
-		
-		return splitNotice;
-	}
-	
-	public static String colourPrefix(int colour)
-	{
-		if(colour == -1)
-			return "";
-		return "\247"+"0123456789abcdef".charAt(colour);
-	}
+    }
+    
+    public static List<String> formatMessage(String message)
+    {
+        LinkedList<String> splitNotice = new LinkedList<String>();
+        String[] splits = message.split(" ");
+        String partial = "";
+        int colour = 7;
+        for(int i = 0; i < splits.length; i++)
+        {
+            String next = partial.length() == 0 ? splits[i] : partial+" "+splits[i];
+            if(getStringWidth(next) > 377)
+            {
+                splitNotice.add(colourPrefix(colour)+partial);
+                for(int charPos = 0; charPos < partial.length(); charPos++)
+                {
+                    for(; partial.length() > charPos + 1 && partial.charAt(charPos) == '\247'; charPos++)
+                    {
+                        char c = partial.toLowerCase().charAt(charPos + 1);
+                        if(c == 'k')
+                        {
+                            continue;
+                        }
+                        colour = "0123456789abcdef".indexOf(c);
+                        if(colour < 0 || colour > 15)
+                        {
+                            colour = 15;
+                        }
+                    }
+                }
+                
+                partial = splits[i];
+                                
+                continue;
+            }
+            partial = next;
+        }
+        splitNotice.add(colourPrefix(colour)+partial);
+        
+        return splitNotice;
+    }
+    
+    public static String colourPrefix(int colour)
+    {
+        if(colour == -1)
+            return "";
+        return "\247"+"0123456789abcdef".charAt(colour);
+    }
 
-	
-	public static boolean isBlock(int ID)
-	{
-		return ID < Block.blocksList.length && Block.blocksList[ID] != null && Block.blocksList[ID].blockID != 0;
-	}
+    
+    public static boolean isBlock(int ID)
+    {
+        return ID < Block.blocksList.length && Block.blocksList[ID] != null && Block.blocksList[ID].blockID != 0;
+    }
 
     public static ModContainer findModContainer(String modID)
     {

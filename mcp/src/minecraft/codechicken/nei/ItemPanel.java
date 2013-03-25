@@ -17,28 +17,28 @@ import net.minecraft.inventory.Slot;
 
 public class ItemPanel extends Widget
 {
-	public class ItemPanelSlot
-	{
-		public ItemPanelObject contents;
-		public int slotIndex;
-		
-		public ItemPanelSlot(int index)
-		{
-			contents = visibleitems.get(index);
-			slotIndex = index;
-		}
+    public class ItemPanelSlot
+    {
+        public ItemPanelObject contents;
+        public int slotIndex;
+        
+        public ItemPanelSlot(int index)
+        {
+            contents = visibleitems.get(index);
+            slotIndex = index;
+        }
 
-		public ItemStack getItemStack()
-		{
-			return contents instanceof ItemPanelStack ? ((ItemPanelStack)contents).item : null;
-		}
-	}
-	
-	public static interface ItemPanelObject
-	{
-		void draw(GuiContainerManager gui, int x, int y);
-		List<String> handleTooltip(List<String> tooltip);	
-	}
+        public ItemStack getItemStack()
+        {
+            return contents instanceof ItemPanelStack ? ((ItemPanelStack)contents).item : null;
+        }
+    }
+    
+    public static interface ItemPanelObject
+    {
+        void draw(GuiContainerManager gui, int x, int y);
+        List<String> handleTooltip(List<String> tooltip);    
+    }
 
     public void resize()
     {
@@ -54,9 +54,9 @@ public class ItemPanel extends Widget
 
     public void draw(GuiContainerManager gui, int mousex, int mousey)
     {
-    	if(visibleitems.size() == 0)
-    		return;
-    	
+        if(visibleitems.size() == 0)
+            return;
+        
         int itemIndex = page * itemsPerPage;
         int lastIndex = itemsPerPage * (page + 1);
         int colIndex = 0;
@@ -65,20 +65,18 @@ public class ItemPanel extends Widget
         ItemPanelSlot hoverSlot = getSlotMouseOver(mousex, mousey);
         if(hoverSlot != null)
         {
-        	int relIndex = hoverSlot.slotIndex-itemIndex;
-        	gui.drawRect(marginLeft+(relIndex%columns)*18-1, marginTop+(relIndex/columns)*18-1, 18, 18, 0xee555555);//highlight
+            int relIndex = hoverSlot.slotIndex-itemIndex;
+            gui.drawRect(marginLeft+(relIndex%columns)*18-1, marginTop+(relIndex/columns)*18-1, 18, 18, 0xee555555);//highlight
         }
         
         while(itemIndex < lastIndex && itemIndex < visibleitems.size())
         {
-        	ItemPanelObject item = visibleitems.get(itemIndex);
+            ItemPanelObject item = visibleitems.get(itemIndex);
             
             int posX = marginLeft + colIndex * 18;
             int posY = marginTop + rowIndex * 18;
             
             item.draw(gui, posX, posY);
-            if(Tessellator.instance.isDrawing)
-                new Object();
             
             itemIndex++;
             colIndex++;
@@ -95,9 +93,9 @@ public class ItemPanel extends Widget
     {       
         if(draggedStack != null)
         {
-        	GuiContainerManager.drawItems.zLevel += 100;
-        	gui.drawItem(mousex - 8, mousey - 8, draggedStack);
-        	GuiContainerManager.drawItems.zLevel -= 100;
+            GuiContainerManager.drawItems.zLevel += 100;
+            gui.drawItem(mousex - 8, mousey - 8, draggedStack);
+            GuiContainerManager.drawItems.zLevel -= 100;
         }
     }
     
@@ -124,47 +122,47 @@ public class ItemPanel extends Widget
         if(handleDraggedClick(mousex, mousey, button))
             return true;
         
-    	if(NEIClientUtils.getHeldItem() != null)
-    	{
-    		if(NEIClientConfig.isActionPermissable(InterActionMap.DELETE))
-    		{
-    			if(button == 1)
-    			{
-    				NEIClientUtils.decreaseSlotStack(-999);
-    			}
-    			else
-    			{
-    				NEIClientUtils.deleteHeldItem();
-    			}
-    		}
-    		else
-    		{
-    			NEIClientUtils.dropHeldItem();
-    		}
-    		return true;
-    	}
-    	
-    	ItemPanelSlot hoverSlot = getSlotMouseOver(mousex, mousey);    	
-    	if(hoverSlot != null)
-    	{
-    	    if(button == 2)
-    	    {
-    	        ItemStack stack = hoverSlot.getItemStack();
-    	        if(stack != null)
-    	        {
-        	        int amount = NEIClientConfig.getItemQuantity();
+        if(NEIClientUtils.getHeldItem() != null)
+        {
+            if(NEIClientConfig.isActionPermissable(InterActionMap.DELETE))
+            {
+                if(button == 1)
+                {
+                    NEIClientUtils.decreaseSlotStack(-999);
+                }
+                else
+                {
+                    NEIClientUtils.deleteHeldItem();
+                }
+            }
+            else
+            {
+                NEIClientUtils.dropHeldItem();
+            }
+            return true;
+        }
+        
+        ItemPanelSlot hoverSlot = getSlotMouseOver(mousex, mousey);        
+        if(hoverSlot != null)
+        {
+            if(button == 2)
+            {
+                ItemStack stack = hoverSlot.getItemStack();
+                if(stack != null)
+                {
+                    int amount = NEIClientConfig.getItemQuantity();
                     if(amount == 0)
                         amount = stack.getMaxStackSize();
                     
                     draggedStack = NEIClientUtils.copyStack(stack, amount);
-    	        }
-    	    }
-    	    else
-    	    {
-    	        mouseDownSlot = hoverSlot.slotIndex;
-    	    }
-    		return true;
-    	}
+                }
+            }
+            else
+            {
+                mouseDownSlot = hoverSlot.slotIndex;
+            }
+            return true;
+        }
         return false;
     }
     
@@ -232,35 +230,35 @@ public class ItemPanel extends Widget
     @Override
     public void mouseUp(int mousex, int mousey, int button)
     {
-    	ItemPanelSlot hoverSlot = getSlotMouseOver(mousex, mousey);    	
-    	if(hoverSlot != null && hoverSlot.slotIndex == mouseDownSlot && hoverSlot.getItemStack() != null && draggedStack == null)
-    	{
-    		ItemStack item = hoverSlot.getItemStack();
-    		if(NEIController.manager.window instanceof GuiRecipe || !NEIClientConfig.isActionPermissable(InterActionMap.ITEM))
-        	{
-        		if(button == 0)
-    				GuiCraftingRecipe.openRecipeGui("item", item);
-    			else if(button == 1)
-    				GuiUsageRecipe.openRecipeGui("item", item);
+        ItemPanelSlot hoverSlot = getSlotMouseOver(mousex, mousey);        
+        if(hoverSlot != null && hoverSlot.slotIndex == mouseDownSlot && hoverSlot.getItemStack() != null && draggedStack == null)
+        {
+            ItemStack item = hoverSlot.getItemStack();
+            if(NEIController.manager.window instanceof GuiRecipe || !NEIClientConfig.isActionPermissable(InterActionMap.ITEM))
+            {
+                if(button == 0)
+                    GuiCraftingRecipe.openRecipeGui("item", item);
+                else if(button == 1)
+                    GuiUsageRecipe.openRecipeGui("item", item);
 
-            	draggedStack = null;
-        		mouseDownSlot = -1;
-        		return;
-        	}
-        	
+                draggedStack = null;
+                mouseDownSlot = -1;
+                return;
+            }
+            
             NEIClientUtils.cheatItem(item, button, -1);
-    	}
-    	
-		mouseDownSlot = -1;
+        }
+        
+        mouseDownSlot = -1;
     }
     
     public boolean onMouseWheel(int i, int mousex, int mousey)
     {
-    	if(!contains(mousex, mousey))
-    		return false;
-    	
-    	scroll(-i);
-    	return true;
+        if(!contains(mousex, mousey))
+            return false;
+        
+        scroll(-i);
+        return true;
     }
     
     @Override
@@ -268,74 +266,74 @@ public class ItemPanel extends Widget
     {
         if(keyID == NEIClientConfig.getKeyBinding("next"))
         {
-        	scroll(1);
-        	return true;
+            scroll(1);
+            return true;
         }
         if(keyID == NEIClientConfig.getKeyBinding("prev"))
         {
-        	scroll(-1);
-        	return true;
+            scroll(-1);
+            return true;
         }
         return false;
     }
     
-	public ItemStack getStackMouseOver(int mousex, int mousey)
-	{
-		ItemPanelSlot slot = getSlotMouseOver(mousex, mousey);
-		return slot == null ? null : slot.getItemStack();
-	}
-	
-	public ItemPanelSlot getSlotMouseOver(int mousex, int mousey)
-	{
-		int relX = mousex-marginLeft+1;
-		int relY = mousey-marginTop+1;
-		
-		if(relX < 0 || relY < 0)
-			return null;
-		
-		int col = relX/18;
-		int row = relY/18;
-		
-		int index = itemsPerPage*page+row*columns+col;
-		
-		if(index >= 0 && index < visibleitems.size() && index < itemsPerPage*(page+1))
-			return new ItemPanelSlot(index);
-		
-		return null;
-	}
-	
-	@Override
-	public List<String> handleTooltip(int mx, int my, List<String> tooltip)
-	{
-		if(getSlotMouseOver(mx, my) == null)
-			return tooltip;
-		
-		return getSlotMouseOver(mx, my).contents.handleTooltip(tooltip);
-	}
-	
-	public void scroll(int i)
-	{
-		setPage(page+i);
-	}
-	
-	public void setPage(int i)
-	{
-		if(numPages == 0)
-			page = 0;
-		else
-			page = (i+numPages)%numPages;
-	}
-	
-	public int getPage()
-	{
-		return page;
-	}
-	
-	public int getNumPages()
-	{
-		return numPages;
-	}
-	
+    public ItemStack getStackMouseOver(int mousex, int mousey)
+    {
+        ItemPanelSlot slot = getSlotMouseOver(mousex, mousey);
+        return slot == null ? null : slot.getItemStack();
+    }
+    
+    public ItemPanelSlot getSlotMouseOver(int mousex, int mousey)
+    {
+        int relX = mousex-marginLeft+1;
+        int relY = mousey-marginTop+1;
+        
+        if(relX < 0 || relY < 0)
+            return null;
+        
+        int col = relX/18;
+        int row = relY/18;
+        
+        int index = itemsPerPage*page+row*columns+col;
+        
+        if(index >= 0 && index < visibleitems.size() && index < itemsPerPage*(page+1))
+            return new ItemPanelSlot(index);
+        
+        return null;
+    }
+    
+    @Override
+    public List<String> handleTooltip(int mx, int my, List<String> tooltip)
+    {
+        if(getSlotMouseOver(mx, my) == null)
+            return tooltip;
+        
+        return getSlotMouseOver(mx, my).contents.handleTooltip(tooltip);
+    }
+    
+    public void scroll(int i)
+    {
+        setPage(page+i);
+    }
+    
+    public void setPage(int i)
+    {
+        if(numPages == 0)
+            page = 0;
+        else
+            page = (i+numPages)%numPages;
+    }
+    
+    public int getPage()
+    {
+        return page;
+    }
+    
+    public int getNumPages()
+    {
+        return numPages;
+    }
+    
     public static ArrayList<ItemPanelObject> visibleitems = new ArrayList<ItemPanelObject>();
     
     public ItemStack draggedStack;

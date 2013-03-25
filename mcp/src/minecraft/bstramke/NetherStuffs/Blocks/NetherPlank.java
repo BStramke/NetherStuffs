@@ -45,11 +45,12 @@ public class NetherPlank extends Block {
 	}
 
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister)
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		icoPlankHellfire = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("PlankHellfire"));
-		icoPlankAcid = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("PlankAcid"));
-		icoPlankDeath = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("PlankDeath"));		 
+		icoPlankHellfire = par1IconRegister.registerIcon(CommonProxy.getIconLocation("PlankHellfire"));
+		icoPlankAcid = par1IconRegister.registerIcon(CommonProxy.getIconLocation("PlankAcid"));
+		icoPlankDeath = par1IconRegister.registerIcon(CommonProxy.getIconLocation("PlankDeath"));		 
 	}
 	
 	@Override

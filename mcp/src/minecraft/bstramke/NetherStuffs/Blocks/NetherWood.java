@@ -78,14 +78,15 @@ public class NetherWood extends Block {
 	}
 	
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister)
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		icoWoodHellfireTopBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodHellfireTopBottom"));
-		icoWoodHellfireSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodHellfireSide"));
-		icoWoodAcidTopBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodAcidTopBottom"));
-		icoWoodAcidSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodAcidSide"));
-		icoWoodDeathTopBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodDeathTopBottom"));
-		icoWoodDeathSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodDeathSide"));
+		icoWoodHellfireTopBottom = par1IconRegister.registerIcon(CommonProxy.getIconLocation("WoodHellfireTopBottom"));
+		icoWoodHellfireSide = par1IconRegister.registerIcon(CommonProxy.getIconLocation("WoodHellfireSide"));
+		icoWoodAcidTopBottom = par1IconRegister.registerIcon(CommonProxy.getIconLocation("WoodAcidTopBottom"));
+		icoWoodAcidSide = par1IconRegister.registerIcon(CommonProxy.getIconLocation("WoodAcidSide"));
+		icoWoodDeathTopBottom = par1IconRegister.registerIcon(CommonProxy.getIconLocation("WoodDeathTopBottom"));
+		icoWoodDeathSide = par1IconRegister.registerIcon(CommonProxy.getIconLocation("WoodDeathSide"));
 	}
 	
 	@Override
@@ -141,7 +142,7 @@ public class NetherWood extends Block {
 			if (par1World.rand.nextInt(100) + 1 <= 15) // chance of being able to spawn a puddled block
 			{
 				int meta = par1World.getBlockMetadata(x, y, z) & 3;
-				par1World.setBlockAndMetadataWithNotify(x, y, z, NetherStuffs.NetherWoodPuddleBlockId, meta, BlockNotifyType.ALL);
+				par1World.setBlock(x, y, z, NetherStuffs.NetherWoodPuddleBlockId, meta, BlockNotifyType.ALL);
 			}
 		}
 	}

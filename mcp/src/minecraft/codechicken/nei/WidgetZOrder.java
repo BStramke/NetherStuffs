@@ -5,10 +5,10 @@ import java.util.Comparator;
 public class WidgetZOrder
     implements Comparator<Widget>
 {
-	boolean topfirst;
+    boolean topfirst;
     public WidgetZOrder(boolean topfirst)
     {
-    	this.topfirst = topfirst;
+        this.topfirst = topfirst;
     }
 
     public int compare(Widget w1, Widget w2)

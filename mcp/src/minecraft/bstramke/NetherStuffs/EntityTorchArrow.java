@@ -16,6 +16,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Items.NetherItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -213,7 +214,7 @@ public class EntityTorchArrow extends Entity implements IProjectile {
 					nYPos = this.yTile - 1;
 
 				if (((BlockTorch)Block.torchWood).canPlaceBlockAt(this.worldObj, nXPos, nYPos, nZPos)/* && this.worldObj.getBlockId(nXPos, nYPos, nZPos) == 0*/)
-					this.worldObj.setBlockAndMetadataWithNotify(nXPos, nYPos, nZPos, Block.torchWood.blockID, 0, 3);
+					this.worldObj.setBlock(nXPos, nYPos, nZPos, Block.torchWood.blockID, 0, BlockNotifyType.ALL);
 				else {
 					if (!this.worldObj.isRemote) {
 						this.entityDropItem(new ItemStack(NetherItems.torchArrow, 1), 1);

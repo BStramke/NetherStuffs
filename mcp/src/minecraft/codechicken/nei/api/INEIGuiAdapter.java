@@ -11,27 +11,27 @@ import codechicken.nei.VisiblityData;
  */
 public class INEIGuiAdapter implements INEIGuiHandler
 {
-	@Override
-	public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility)
-	{
-		return currentVisibility;
-	}
+    @Override
+    public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility)
+    {
+        return currentVisibility;
+    }
 
-	@Override
-	public int getItemSpawnSlot(GuiContainer gui, ItemStack item)
-	{
-		return -1;
-	}
+    @Override
+    public int getItemSpawnSlot(GuiContainer gui, ItemStack item)
+    {
+        return -1;
+    }
 
-	@Override
-	public List<TaggedInventoryArea> getInventoryAreas(GuiContainer gui)
-	{
-		return null;
-	}
+    @Override
+    public List<TaggedInventoryArea> getInventoryAreas(GuiContainer gui)
+    {
+        return null;
+    }
 
     @Override
     public boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button)
     {
         return false;
-    }	
+    }    
 }

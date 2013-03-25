@@ -1,6 +1,5 @@
 package codechicken.core.liquid;
 
-import codechicken.core.CommonUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -8,6 +7,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidStack;
+import codechicken.core.CommonUtils;
 
 public class LiquidUtils
 {
@@ -69,5 +69,17 @@ public class LiquidUtils
         liquid = liquid.copy();
         liquid.amount = quantity;
         return liquid;
+    }
+
+    public static int getRenderPass(LiquidStack liquid)
+    {
+        if(liquid == null)
+            return 0;
+        return isLiquidTranslucent(liquid) ? 1 : 0;
+    }
+
+    public static boolean isLiquidTranslucent(LiquidStack liquid)
+    {
+        return liquid.isLiquidEqual(water);
     }
 }

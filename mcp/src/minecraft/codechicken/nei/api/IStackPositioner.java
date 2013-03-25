@@ -10,5 +10,5 @@ import codechicken.nei.PositionedStack;
  */
 public interface IStackPositioner
 {
-	public ArrayList<PositionedStack> positionStacks(ArrayList<PositionedStack> ai);
+    public ArrayList<PositionedStack> positionStacks(ArrayList<PositionedStack> ai);
 }

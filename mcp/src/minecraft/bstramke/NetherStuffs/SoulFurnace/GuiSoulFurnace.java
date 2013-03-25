@@ -36,7 +36,7 @@ public class GuiSoulFurnace extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.func_98187_b(CommonProxy.SOULFURNACE_PNG);
+		this.mc.renderEngine.bindTexture(CommonProxy.SOULFURNACE_PNG);
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
@@ -48,17 +48,17 @@ public class GuiSoulFurnace extends GuiContainer {
 		
 		int nFillState = this.inventory.getFillingScaled(32);
 		
-		this.mc.renderEngine.func_98187_b("/gui/items.png");
+		this.mc.renderEngine.bindTexture("/gui/items.png");
 		Icon LiquidIcon = NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0);
 		int y = 0;
 		for (int x = 16; x <= 32 && x <= nFillState; x+=16) {
-			func_94065_a(var5 + 12, nBottomLeftY-x, LiquidIcon, 16, 16);
+			drawTexturedModelRectFromIcon(var5 + 12, nBottomLeftY-x, LiquidIcon, 16, 16);
 			y = x;
 		}
 				
 		if(nFillState%16!=0){
 			nFillState -= y;
-			func_94065_a(var5 + 12, nBottomLeftY-y-nFillState, LiquidIcon, 16, nFillState);
+			drawTexturedModelRectFromIcon(var5 + 12, nBottomLeftY-y-nFillState, LiquidIcon, 16, nFillState);
 		}
 	}
 

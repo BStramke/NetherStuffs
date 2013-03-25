@@ -32,6 +32,8 @@ public class MappedInventoryAccess implements IInventory
         
         for(InventoryAccessor a : accessors)
             this.accessors.add(a);
+        
+        reset();
     }
     
     public void reset()
@@ -120,13 +122,13 @@ public class MappedInventoryAccess implements IInventory
     }
     
     @Override
-    public boolean func_94041_b(int slot, ItemStack stack)
+    public boolean isStackValidForSlot(int slot, ItemStack stack)
     {
-        return inv.func_94041_b(slotMap.get(slot), stack);
+        return inv.isStackValidForSlot(slotMap.get(slot), stack);
     }
     
     @Override
-    public boolean func_94042_c()
+    public boolean isInvNameLocalized()
     {
         return true;
     }

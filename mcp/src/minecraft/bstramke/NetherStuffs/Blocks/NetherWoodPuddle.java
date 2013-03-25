@@ -53,15 +53,16 @@ public class NetherWoodPuddle extends BlockContainer {
 	}
 
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister) {
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
 		icoHellfireWoodPuddles = new Icon[5];
 		icoAcidWoodPuddles = new Icon[5];
 		icoDeathWoodPuddles = new Icon[5];
 
 		for (Integer i = 0; i < icoHellfireWoodPuddles.length; i++) {
-			icoHellfireWoodPuddles[i] = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodHellfirePuddle_" + i));
-			icoAcidWoodPuddles[i] = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodAcidPuddle_" + i));
-			icoDeathWoodPuddles[i] = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("WoodDeathPuddle_" + i));
+			icoHellfireWoodPuddles[i] = par1IconRegister.registerIcon(CommonProxy.getIconLocation("WoodHellfirePuddle_" + i));
+			icoAcidWoodPuddles[i] = par1IconRegister.registerIcon(CommonProxy.getIconLocation("WoodAcidPuddle_" + i));
+			icoDeathWoodPuddles[i] = par1IconRegister.registerIcon(CommonProxy.getIconLocation("WoodDeathPuddle_" + i));
 		}
 	}
 

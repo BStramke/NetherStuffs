@@ -8,11 +8,11 @@ package codechicken.nei.recipe;
  */
 public interface ICraftingHandler extends IRecipeHandler
 {
-	/**
-	 * 
-	 * @param outputId A String identifier representing the type of output produced. Eg. {"item", "fuel"}
-	 * @param results Objects representing the results that matching recipes must produce.
-	 * @return An instance of {@link ICraftingHandler} configured with a list of recipes that produce matching output.
-	 */
-	public ICraftingHandler getRecipeHandler(String outputId, Object... results);
+    /**
+     * 
+     * @param outputId A String identifier representing the type of output produced. Eg. {"item", "fuel"}
+     * @param results Objects representing the results that matching recipes must produce.
+     * @return An instance of {@link ICraftingHandler} configured with a list of recipes that produce matching output.
+     */
+    public ICraftingHandler getRecipeHandler(String outputId, Object... results);
 }

@@ -64,10 +64,11 @@ public class SoulSiphon extends BlockContainer {
 	}
 
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister)
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		icoSoulSiphonInactive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulSiphonInactive"));
-		icoSoulSiphonActive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulSiphonActive"));
+		icoSoulSiphonInactive = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulSiphonInactive"));
+		icoSoulSiphonActive = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulSiphonActive"));
 	}
 	
 	@SideOnly(Side.CLIENT)

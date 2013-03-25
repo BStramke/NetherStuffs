@@ -9,24 +9,24 @@ import codechicken.nei.forge.GuiContainerManager;
 
 public class UnusedBlock implements ItemPanelObject
 {
-	public UnusedBlock(int id)
-	{
-		blockID = id;
-	}
-	
-	int blockID;
+    public UnusedBlock(int id)
+    {
+        blockID = id;
+    }
+    
+    int blockID;
 
-	@Override
-	public void draw(GuiContainerManager gui, int x, int y)
-	{
-    	gui.drawItem(x, y, new ItemStack(Block.vine));
-    	gui.drawTextCentered(x, y, 16, 16, ""+blockID, 0xFFFFFF);
-	}
+    @Override
+    public void draw(GuiContainerManager gui, int x, int y)
+    {
+        gui.drawItem(x, y, new ItemStack(Block.vine));
+        gui.drawTextCentered(x, y, 16, 16, ""+blockID, 0xFFFFFF);
+    }
 
-	@Override
-	public List<String> handleTooltip(List<String> tooltip)
-	{
-		tooltip.add("Unused BlockID: "+blockID);
-		return tooltip;
-	}
+    @Override
+    public List<String> handleTooltip(List<String> tooltip)
+    {
+        tooltip.add("Unused BlockID: "+blockID);
+        return tooltip;
+    }
 }

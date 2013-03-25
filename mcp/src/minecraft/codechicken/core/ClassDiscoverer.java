@@ -26,39 +26,39 @@ import cpw.mods.fml.relauncher.RelaunchLibraryManager;
 
 public class ClassDiscoverer
 {
-	public IStringMatcher matcher;
-	public String[] superclasses;
-	public ArrayList<Class<?>> classes;
-	public ModClassLoader modClassLoader;
-	
-	public ClassDiscoverer(IStringMatcher matcher, Class<?>... superclasses) 
-	{
-		this.matcher = matcher;
-		this.superclasses = new String[superclasses.length];
-		for(int i = 0; i < superclasses.length; i++)
-		    this.superclasses[i] = superclasses[i].getName().replace('.', '/');
-		
-		classes = new ArrayList<Class<?>>();
-		modClassLoader = (ModClassLoader)Loader.instance().getModClassLoader();
-	}	
-	
-	public ClassDiscoverer(Class<?>... superclasses)
+    public IStringMatcher matcher;
+    public String[] superclasses;
+    public ArrayList<Class<?>> classes;
+    public ModClassLoader modClassLoader;
+    
+    public ClassDiscoverer(IStringMatcher matcher, Class<?>... superclasses) 
+    {
+        this.matcher = matcher;
+        this.superclasses = new String[superclasses.length];
+        for(int i = 0; i < superclasses.length; i++)
+            this.superclasses[i] = superclasses[i].getName().replace('.', '/');
+        
+        classes = new ArrayList<Class<?>>();
+        modClassLoader = (ModClassLoader)Loader.instance().getModClassLoader();
+    }    
+    
+    public ClassDiscoverer(Class<?>... superclasses)
     {
         this(new IStringMatcher(){public boolean matches(String test){return true;}}, superclasses);
     }
 
     public ArrayList<Class<?>> findClasses()
-	{		
+    {        
         try
-		{
-        	findClasspathMods();
-		}
+        {
+            findClasspathMods();
+        }
         catch(Exception e)
-		{
-        	FMLCommonHandler.instance().raiseException(e, "Code Chicken Core", true);
-		}
+        {
+            FMLCommonHandler.instance().raiseException(e, "Code Chicken Core", true);
+        }
         return classes;
-	}
+    }
     
     private void checkAddClass(String resource)
     {
@@ -83,31 +83,31 @@ public class ClassDiscoverer
         }
     }
 
-	private void addClass(String classname)
-	{
-		try
+    private void addClass(String classname)
+    {
+        try
         {
             Class<?> class1 = Class.forName(classname, true, modClassLoader);            
             classes.add(class1);
         }
         catch(Exception cnfe)
         {
-           	System.err.println("Unable to load class: "+classname);
-           	cnfe.printStackTrace();
+               System.err.println("Unable to load class: "+classname);
+               cnfe.printStackTrace();
         }
-	}
-	
-	private void findClasspathMods()
+    }
+    
+    private void findClasspathMods()
     {
-		List<String> knownLibraries = ImmutableList.<String>builder().addAll(modClassLoader.getDefaultLibraries()).addAll(RelaunchLibraryManager.getLibraries()).build();
+        List<String> knownLibraries = ImmutableList.<String>builder().addAll(modClassLoader.getDefaultLibraries()).addAll(RelaunchLibraryManager.getLibraries()).build();
         File[] minecraftSources = modClassLoader.getParentSources();
         HashSet<String> searchedSources = new HashSet<String>();
         for (File minecraftSource : minecraftSources)
         {
-        	if(searchedSources.contains(minecraftSource.getAbsolutePath()))
-        		continue;
-        	searchedSources.add(minecraftSource.getAbsolutePath());
-        	
+            if(searchedSources.contains(minecraftSource.getAbsolutePath()))
+                continue;
+            searchedSources.add(minecraftSource.getAbsolutePath());
+            
             if (minecraftSource.isFile())
             {
                 if (!knownLibraries.contains(minecraftSource.getName()))
@@ -131,10 +131,10 @@ public class ClassDiscoverer
             }
         }
     }
-	
-	private void readFromZipFile(File file) throws IOException
-	{
-		FileInputStream fileinputstream = new FileInputStream(file);
+    
+    private void readFromZipFile(File file) throws IOException
+    {
+        FileInputStream fileinputstream = new FileInputStream(file);
         ZipInputStream zipinputstream = new ZipInputStream(fileinputstream);
         do
         {
@@ -153,21 +153,21 @@ public class ClassDiscoverer
         } 
         while(true);
         fileinputstream.close();
-	}
+    }
 
-	private void readFromDirectory(File directory, File basedirectory)
-	{
-		for(File child : directory.listFiles())
-		{
-			if(child.isDirectory())
-			{
-				readFromDirectory(child, basedirectory);
-			}
-			else if(child.isFile() && matcher.matches(child.getName()))
-			{
-				String fullname = CommonUtils.getRelativePath(basedirectory, child);
-				checkAddClass(fullname);
-			}
-		}
-	}
+    private void readFromDirectory(File directory, File basedirectory)
+    {
+        for(File child : directory.listFiles())
+        {
+            if(child.isDirectory())
+            {
+                readFromDirectory(child, basedirectory);
+            }
+            else if(child.isFile() && matcher.matches(child.getName()))
+            {
+                String fullname = CommonUtils.getRelativePath(basedirectory, child);
+                checkAddClass(fullname);
+            }
+        }
+    }
 }

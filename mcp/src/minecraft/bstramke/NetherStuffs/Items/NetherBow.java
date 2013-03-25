@@ -32,14 +32,14 @@ public class NetherBow extends ItemBow {
 	}
 
 	@Override
-	public void func_94581_a(IconRegister iconRegister) {
-		iconIndex = iconRegister.func_94245_a(CommonProxy
+	public void updateIcons(IconRegister iconRegister) {
+		iconIndex = iconRegister.registerIcon(CommonProxy
 				.getIconLocation("TorchBow"));
-		icoTorchBowStrain1 = iconRegister.func_94245_a(CommonProxy
+		icoTorchBowStrain1 = iconRegister.registerIcon(CommonProxy
 				.getIconLocation("TorchBowStrain1"));
-		icoTorchBowStrain2 = iconRegister.func_94245_a(CommonProxy
+		icoTorchBowStrain2 = iconRegister.registerIcon(CommonProxy
 				.getIconLocation("TorchBowStrain2"));
-		icoTorchBowStrain3 = iconRegister.func_94245_a(CommonProxy
+		icoTorchBowStrain3 = iconRegister.registerIcon(CommonProxy
 				.getIconLocation("TorchBowStrain3"));
 	}
 

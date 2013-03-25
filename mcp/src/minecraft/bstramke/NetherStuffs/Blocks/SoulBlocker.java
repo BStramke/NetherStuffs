@@ -29,11 +29,12 @@ public class SoulBlocker extends BlockContainer {
 	public int getMetadataSize() {
 		return SoulBlockerItemBlock.blockNames.length;
 	}
-
+	
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister)
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		this.field_94336_cN = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulBlocker"));
+		this.blockIcon = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulBlocker"));
 	}
 
 	@Override

@@ -211,7 +211,7 @@ public class GuiSoulDetector extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.func_98187_b(CommonProxy.SOULDETECTOR_PNG);
+		this.mc.renderEngine.bindTexture(CommonProxy.SOULDETECTOR_PNG);
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);

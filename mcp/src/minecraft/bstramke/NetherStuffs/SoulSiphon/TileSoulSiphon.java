@@ -377,14 +377,13 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 	}
 
 	@Override
-	public boolean func_94042_c() {
+	public boolean isInvNameLocalized() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return itemstack.itemID == NetherItems.SoulEnergyBottle.itemID;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import codechicken.core.ClientUtils;
+import codechicken.core.asm.CodeChickenCorePlugin;
 import codechicken.nei.ClientHandler;
 import codechicken.nei.ServerHandler;
 import codechicken.nei.api.IConfigureNEI;
@@ -20,29 +21,31 @@ import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
+import cpw.mods.fml.common.versioning.VersionParser;
+import cpw.mods.fml.common.versioning.VersionRange;
 
 @SrcPackager(getName="NotEnoughItems", getClasses = {""}, getMappedDirectories = {"NEI"})
-@Packager(getName = "NotEnoughItems", getClasses = {""}, getBaseDirectories = {"NEI"}, getVersion = "1.5.2.0")
+@Packager(getName = "NotEnoughItems", getClasses = {""}, getBaseDirectories = {"NEI"}, getVersion = "1.5.2.6")
 public class NEIModContainer extends DummyModContainer
 {    
     public static LinkedList<IConfigureNEI> plugins = new LinkedList<IConfigureNEI>();
     
-	public NEIModContainer()
+    public NEIModContainer()
     {
         super(new ModMetadata());
         getMetadata();
     }
-	
-	@Override
-	public List<ArtifactVersion> getDependencies()
-	{
-		return super.getDependencies();
-	}
-	
-	@Override
-	public ModMetadata getMetadata()
-	{
-		ModMetadata meta = super.getMetadata();
+    
+    @Override
+    public List<ArtifactVersion> getDependencies()
+    {
+        return super.getDependencies();
+    }
+    
+    @Override
+    public ModMetadata getMetadata()
+    {
+        ModMetadata meta = super.getMetadata();
 
         meta.modId       = "NotEnoughItems";
         meta.name        = "Not Enough Items";
@@ -54,37 +57,43 @@ public class NEIModContainer extends DummyModContainer
         
         if(plugins.size() == 0)
         {
-        	meta.description += "\247cNo installed plugins.";
+            meta.description += "\247cNo installed plugins.";
         }
         else
         {
-        	meta.description += "\247aInstalled plugins: ";
-        	for(int i = 0; i < plugins.size(); i++)
-        	{
-        		if(i > 0)
-            		meta.description += ", ";
-        		IConfigureNEI plugin = plugins.get(i);
-        		meta.description += plugin.getName()+" "+plugin.getVersion();
-        	}
-        	meta.description += ".";
+            meta.description += "\247aInstalled plugins: ";
+            for(int i = 0; i < plugins.size(); i++)
+            {
+                if(i > 0)
+                    meta.description += ", ";
+                IConfigureNEI plugin = plugins.get(i);
+                meta.description += plugin.getName()+" "+plugin.getVersion();
+            }
+            meta.description += ".";
         }
         
         return meta;
-	}
-	
-	@Override
-	public boolean registerBus(EventBus bus, LoadController controller)
-	{
-		bus.register(this);
-		return true;		
-	}
-	
-	@Subscribe
+    }
+    
+    @Override
+    public boolean registerBus(EventBus bus, LoadController controller)
+    {
+        bus.register(this);
+        return true;        
+    }
+    
+    @Subscribe
     public void init(FMLInitializationEvent event)
-    {		
-		if(ClientUtils.isClient())
-        	ClientHandler.load();
-	    
+    {        
+        if(ClientUtils.isClient())
+            ClientHandler.load();
+        
         ServerHandler.load();
+    }
+    
+    @Override
+    public VersionRange acceptableMinecraftVersionRange()
+    {
+        return VersionParser.parseRange(CodeChickenCorePlugin.mcVersion);
     }
 }

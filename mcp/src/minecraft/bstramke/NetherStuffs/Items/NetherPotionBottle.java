@@ -31,12 +31,12 @@ public class NetherPotionBottle extends Item {
 	}
 
 	@Override
-	public void func_94581_a(IconRegister iconRegister)
+	public void updateIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassBottle"));
-		icoBottleHellfire = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassPotionBottleHellfire"));
-		icoBottleAcid = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassPotionBottleAcid"));
-		icoBottleDeath = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherSoulglassPotionBottleDeath"));
+		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherSoulglassBottle"));
+		icoBottleHellfire = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherSoulglassPotionBottleHellfire"));
+		icoBottleAcid = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherSoulglassPotionBottleAcid"));
+		icoBottleDeath = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherSoulglassPotionBottleDeath"));
 	}
 
 	@Override

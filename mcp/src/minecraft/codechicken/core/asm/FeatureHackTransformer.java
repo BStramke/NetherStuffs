@@ -1,15 +1,15 @@
 package codechicken.core.asm;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.JarURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.security.CodeSigner;
 import java.security.CodeSource;
-import java.security.ProtectionDomain;
-import java.security.SecureClassLoader;
-import java.util.HashMap;
+import java.security.cert.Certificate;
+import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
+import java.util.jar.JarFile;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -29,23 +29,22 @@ import org.objectweb.asm.tree.VarInsnNode;
 import codechicken.core.asm.ObfuscationMappings.DescriptorMapping;
 
 import cpw.mods.fml.common.asm.ASMTransformer;
-import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 public class FeatureHackTransformer extends ASMTransformer implements Opcodes
-{	
-	public FeatureHackTransformer()
-	{
-	}
-	
-	/**
-	 * Allow GameData to hide some items.
-	 */
+{    
+    public FeatureHackTransformer()
+    {
+    }
+    
+    /**
+     * Allow GameData to hide some items.
+     */
     DescriptorMapping m_newItemAdded = new DescriptorMapping("cpw/mods/fml/common/registry/GameData", "newItemAdded", "(Lnet/minecraft/item/Item;)V");
-	DescriptorMapping f_lastBrightness = new DescriptorMapping("net/minecraft/client/renderer/OpenGlHelper", "lastBrightness", "I");
+    DescriptorMapping f_lastBrightness = new DescriptorMapping("net/minecraft/client/renderer/OpenGlHelper", "lastBrightness", "I");
     DescriptorMapping m_startGame = new DescriptorMapping("net/minecraft/client/Minecraft", "startGame", "()V");
     DescriptorMapping m_findClass = new DescriptorMapping("cpw/mods/fml/relauncher/RelaunchClassLoader", "findClass", "(Ljava/lang/String;)Ljava/lang/Class;");
-	private byte[] transformer001(String name, byte[] bytes)
-	{
+    private byte[] transformer001(String name, byte[] bytes)
+    {
         ClassNode cnode = ASMHelper.createClassNode(bytes);
         MethodNode mnode = ASMHelper.findMethod(m_newItemAdded, cnode);
         
@@ -58,12 +57,12 @@ public class FeatureHackTransformer extends ASMTransformer implements Opcodes
         mnode.instructions.insert(mnode.instructions.get(1), overrideList);
         
         bytes = ASMHelper.createBytes(cnode, ClassWriter.COMPUTE_FRAMES|ClassWriter.COMPUTE_MAXS);
-	    return bytes;
-	}
-	
-	@Override
-	public byte[] transform(String name, String tname, byte[] bytes)
-	{
+        return bytes;
+    }
+    
+    @Override
+    public byte[] transform(String name, String tname, byte[] bytes)
+    {
         if(m_newItemAdded.isClass(name))
             bytes = transformer001(name, bytes);
         if(f_lastBrightness.isClass(name))
@@ -72,8 +71,8 @@ public class FeatureHackTransformer extends ASMTransformer implements Opcodes
             bytes = transformer003(name, bytes);
         if(name.startsWith("net.minecraftforge"))
             usp(name);
-		return bytes;
-	}
+        return bytes;
+    }
 
     private byte[] transformer002(String name, byte[] bytes)
     {
@@ -140,17 +139,30 @@ public class FeatureHackTransformer extends ASMTransformer implements Opcodes
         return bytes;
     }
     
-    public static void usp(String name)
+    @SuppressWarnings("unchecked")
+	public static void usp(String name)
     {
         int ld = name.lastIndexOf('.');
         String pkg = ld == -1 ? "" : name.substring(0, ld);
-        URL res = CodeChickenCorePlugin.cl.findResource(name);
+        String rname = name.replace('.', '/')+".class";
+        URL res = CodeChickenCorePlugin.cl.findResource(rname);
         try
         {
-            Field f = SecureClassLoader.class.getDeclaredField("pdcache");
+            Field f = ClassLoader.class.getDeclaredField("package2certs");
             f.setAccessible(true);
-            HashMap<CodeSource, ProtectionDomain> pdmap = (HashMap<CodeSource, ProtectionDomain>) f.get(CodeChickenCorePlugin.cl);
-            pdmap.remove(new CodeSource(res, (CodeSigner[])null));
+            Hashtable<String, Certificate[]> cmap = (Hashtable<String, Certificate[]>) f.get(CodeChickenCorePlugin.cl);
+
+            CodeSigner[] cs = null;
+            URLConnection urlconn = res.openConnection();
+            if(urlconn instanceof JarURLConnection && ld >= 0)
+            {
+                JarFile jf = ((JarURLConnection)urlconn).getJarFile();
+                if (jf != null && jf.getManifest() != null)
+                	cs = jf.getJarEntry(rname).getCodeSigners();
+            }
+            
+            Certificate[] certs = new CodeSource(res, cs).getCertificates();
+            cmap.put(pkg, certs == null ? new Certificate[0] : certs);
         }
         catch (Exception e)
         {

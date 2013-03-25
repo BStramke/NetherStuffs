@@ -201,7 +201,7 @@ public class NetherLeaves extends Block implements IShearable {
 
 	private void removeLeaves(World par1World, int par2, int par3, int par4) {
 		this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-		par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, BlockNotifyType.ALL);
+		par1World.setBlockToAir(par2, par3, par4);
 	}
 
 	/**
@@ -246,11 +246,12 @@ public class NetherLeaves extends Block implements IShearable {
 	}
 	
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister)
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		icoLeafHellfire = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("LeafHellfire"));
-		icoLeafAcid = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("LeafAcid"));
-		icoLeafDeath = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("LeafDeath"));		 
+		icoLeafHellfire = par1IconRegister.registerIcon(CommonProxy.getIconLocation("LeafHellfire"));
+		icoLeafAcid = par1IconRegister.registerIcon(CommonProxy.getIconLocation("LeafAcid"));
+		icoLeafDeath = par1IconRegister.registerIcon(CommonProxy.getIconLocation("LeafDeath"));		 
 	}
 	
 

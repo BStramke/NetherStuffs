@@ -1,8 +1,11 @@
 package codechicken.core.render;
 
 import codechicken.core.render.SpriteSheetManager.SpriteSheet;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 
+@SideOnly(Side.CLIENT)
 public class TextureFX
 {
     public byte[] imageData;

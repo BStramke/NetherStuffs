@@ -67,8 +67,9 @@ public class NetherSoulGlass extends BlockGlass {
 	}
 
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister)
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
 	{	
-		field_94336_cN = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulGlass"));
+		blockIcon = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulGlass"));
 	}
 }

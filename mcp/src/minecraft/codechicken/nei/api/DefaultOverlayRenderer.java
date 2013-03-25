@@ -19,26 +19,26 @@ public class DefaultOverlayRenderer implements IRecipeOverlayRenderer
         ingreds = positioner.positionStacks(ingreds);
     }
     
-	@Override
-	public void renderOverlay(GuiContainerManager gui, Slot slot)
-	{
-		GL11.glEnable(GL11.GL_BLEND);
+    @Override
+    public void renderOverlay(GuiContainerManager gui, Slot slot)
+    {
+        GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(770, 1);
-		GL11.glColor4d(0.6, 0.6, 0.6, 0.7);
-		
-		gui.setColouredItemRender(true);
-		for(PositionedStack stack : ingreds)
-		{
-			if(stack.relx == slot.xDisplayPosition && stack.rely == slot.yDisplayPosition)
-				gui.drawItem(stack.relx, stack.rely, stack.item);
-		}
-		gui.setColouredItemRender(false);
-		
-		GL11.glColor4f(1, 1, 1, 1);
-		GL11.glDisable(GL11.GL_BLEND);
+        GL11.glColor4d(0.6, 0.6, 0.6, 0.7);
+        
+        gui.setColouredItemRender(true);
+        for(PositionedStack stack : ingreds)
+        {
+            if(stack.relx == slot.xDisplayPosition && stack.rely == slot.yDisplayPosition)
+                gui.drawItem(stack.relx, stack.rely, stack.item);
+        }
+        gui.setColouredItemRender(false);
+        
+        GL11.glColor4f(1, 1, 1, 1);
+        GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_LIGHTING);
-	}
-	
-	IStackPositioner positioner;	
-	ArrayList<PositionedStack> ingreds;
+    }
+    
+    IStackPositioner positioner;    
+    ArrayList<PositionedStack> ingreds;
 }

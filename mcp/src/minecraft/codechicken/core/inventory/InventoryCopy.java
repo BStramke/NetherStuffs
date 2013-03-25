@@ -109,13 +109,13 @@ public class InventoryCopy implements IInventory
     }
     
     @Override
-    public boolean func_94041_b(int i, ItemStack itemstack)
+    public boolean isStackValidForSlot(int i, ItemStack itemstack)
     {
-        return inv.func_94041_b(i, itemstack);
+        return inv.isStackValidForSlot(i, itemstack);
     }
     
     @Override
-    public boolean func_94042_c()
+    public boolean isInvNameLocalized()
     {
         return true;
     }

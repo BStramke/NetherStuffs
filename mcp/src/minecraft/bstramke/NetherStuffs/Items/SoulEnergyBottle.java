@@ -55,12 +55,12 @@ public class SoulEnergyBottle extends Item {
 	}
 	
 	@Override
-	public void func_94581_a(IconRegister iconRegister)
+	public void updateIcons(IconRegister iconRegister)
 	{
 		icoFillings = new Icon[8];
-		iconIndex = iconRegister.func_94245_a(CommonProxy.getIconLocation("SoulEnergyBottle"));
+		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("SoulEnergyBottle"));
 		for(int i = 1; i <= icoFillings.length; i++)
-			icoFillings[i-1] = iconRegister.func_94245_a(CommonProxy.getIconLocation("SoulEnergyBottle_"+i));
+			icoFillings[i-1] = iconRegister.registerIcon(CommonProxy.getIconLocation("SoulEnergyBottle_"+i));
 	}
 
 	public static int getSoulEnergyAmount(ItemStack item) {

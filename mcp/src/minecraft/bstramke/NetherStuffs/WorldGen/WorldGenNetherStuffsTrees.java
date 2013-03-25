@@ -127,7 +127,7 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 							continue;
 
 						if (par2Random.nextInt(5) == 0) {
-							par1World.setBlockAndMetadataWithNotify(x, y + 1, z, Block.fire.blockID, 0, BlockNotifyType.ALL);
+							par1World.setBlock(x, y + 1, z, Block.fire.blockID, 0, BlockNotifyType.ALL);
 							nCountFirespawn++;
 						}
 					}

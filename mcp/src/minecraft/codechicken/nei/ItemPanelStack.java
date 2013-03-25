@@ -8,22 +8,22 @@ import codechicken.nei.forge.GuiContainerManager;
 
 public class ItemPanelStack implements ItemPanelObject
 {
-	ItemStack item;
-	
-	public ItemPanelStack(ItemStack itemstack)
-	{
-		item = itemstack;
-	}
-	
-	@Override
-	public void draw(GuiContainerManager gui, int x, int y)
-	{
+    ItemStack item;
+    
+    public ItemPanelStack(ItemStack itemstack)
+    {
+        item = itemstack;
+    }
+    
+    @Override
+    public void draw(GuiContainerManager gui, int x, int y)
+    {
         gui.drawItem(x, y, (ItemStack) item);
-	}
+    }
 
-	@Override
-	public List<String> handleTooltip(List<String> tooltip)
-	{
-		return tooltip;
-	}
+    @Override
+    public List<String> handleTooltip(List<String> tooltip)
+    {
+        return tooltip;
+    }
 }

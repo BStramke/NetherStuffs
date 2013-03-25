@@ -62,11 +62,12 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 	}
 
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister)
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		icoSaplingHellfire = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SaplingHellfire"));
-		icoSaplingAcid = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SaplingAcid"));
-		icoSaplingDeath = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SaplingDeath"));		 
+		icoSaplingHellfire = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SaplingHellfire"));
+		icoSaplingAcid = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SaplingAcid"));
+		icoSaplingDeath = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SaplingDeath"));		 
 	}
 	
 	/**
@@ -147,9 +148,9 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 	public void growTree(World par1World, int par2, int par3, int par4, Random par5Random) {
 		int meta = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
 
-		par1World.setBlockAndMetadataWithNotify(par2, par3, par4, 0, 0, BlockNotifyType.ALL);
+		par1World.setBlockToAir(par2, par3, par4);
 		if ((new WorldGenNetherStuffsTrees(true, meta)).generate(par1World, par5Random, par2, par3, par4)) {
-			par1World.setBlockAndMetadataWithNotify(par2, par3, par4, NetherStuffs.NetherWoodBlockId, meta, BlockNotifyType.ALL);
+			par1World.setBlock(par2, par3, par4, NetherStuffs.NetherWoodBlockId, meta, BlockNotifyType.ALL);
 		}
 	}
 

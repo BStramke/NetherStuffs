@@ -16,7 +16,7 @@ public abstract class Widget
 
     public void postDraw(GuiContainerManager gui, int mousex, int mousey)
     {
-    	
+        
     }
     
     public boolean handleClick(int mousex, int mousey, int button)
@@ -24,35 +24,35 @@ public abstract class Widget
         return true;
     }
     
-	public void onGuiClick(int mousex, int mousey)
-	{
-	}
+    public void onGuiClick(int mousex, int mousey)
+    {
+    }
     
-	public void mouseUp(int mousex, int mousey, int button)
-	{
+    public void mouseUp(int mousex, int mousey, int button)
+    {
         return;
-	}
+    }
 
-	public boolean handleKeyPress(int keyID, char keyChar)
-	{
-		return false;
-	}
-	
+    public boolean handleKeyPress(int keyID, char keyChar)
+    {
+        return false;
+    }
+    
     public boolean handleClickExt(int mousex, int mousey, int button)
     {
         return false;
     }
-	
-	public boolean onMouseWheel(int i, int mousex, int mousey)
-	{
-		return false;
-	}
-	
-	public void update(GuiContainerManager gui)
-	{
-		
-	}
-	
+    
+    public boolean onMouseWheel(int i, int mousex, int mousey)
+    {
+        return false;
+    }
+    
+    public void update(GuiContainerManager gui)
+    {
+        
+    }
+    
     public boolean contains(int posx, int posy)
     {
         return posx >= x && posx < x + width && posy >= y && posy < y + height;
@@ -62,29 +62,29 @@ public abstract class Widget
     {
     }
     
-	public ItemStack getStackMouseOver(int mousex, int mousey)
-	{
-		return null;
-	}
-	
+    public ItemStack getStackMouseOver(int mousex, int mousey)
+    {
+        return null;
+    }
+    
     public void mouseDragged(int mx, int my, int button, long heldTime)
     {
     }
-	
-	public List<String> handleTooltip(int mx, int my, List<String> tooltip)
-	{
-		return tooltip;
-	}
-	
-	public void loseFocus()
-	{
-		
-	}
-	
-	public void gainFocus()
-	{
-		
-	}
+    
+    public List<String> handleTooltip(int mx, int my, List<String> tooltip)
+    {
+        return tooltip;
+    }
+    
+    public void loseFocus()
+    {
+        
+    }
+    
+    public void gainFocus()
+    {
+        
+    }
 
     public int x;
     public int y;

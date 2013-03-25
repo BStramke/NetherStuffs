@@ -29,8 +29,8 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	private ItemStack[] inventory = new ItemStack[3];
 
 	private int nTicksToComplete = 195;
-	//public int currentTankLevel = 0;
-	public int maxTankLevel = 19200; //19200 equals 2 stacks of Smelting Ores
+	// public int currentTankLevel = 0;
+	public int maxTankLevel = 19200; // 19200 equals 2 stacks of Smelting Ores
 
 	/** The number of ticks that the current item has been cooking for */
 	public int furnaceCookTime = 0;
@@ -39,7 +39,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	public int getSizeInventory() {
 		return this.inventory.length;
 	}
-	
+
 	public TileSoulFurnace() {
 		tank = new LiquidTank(maxTankLevel);
 	}
@@ -62,7 +62,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	public int getFillingScaled(int nPixelMax) {
 		return (int) (((float) this.getCurrentTankLevel() / (float) this.maxTankLevel) * nPixelMax);
 	}
-	
+
 	public int getCurrentTankLevel() {
 		if (this.tank.getLiquid() == null || this.tank.getLiquid().amount < 0)
 			return 0;
@@ -179,8 +179,10 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 			if (this.canSmelt() && this.getCurrentTankLevel() > 10) {
 				++this.furnaceCookTime;
 
-				if (this.furnaceCookTime % 13 == 0) // every 13 Ticks needs 10 energy, 15 energy for each smelting
-					this.setCurrentTankLevel(this.getCurrentTankLevel()-10);
+				if (this.furnaceCookTime % 13 == 0) // every 13 Ticks needs 10
+					// energy, 15 energy for
+					// each smelting
+					this.setCurrentTankLevel(this.getCurrentTankLevel() - 10);
 
 				if (this.furnaceCookTime == nTicksToComplete) {
 					this.furnaceCookTime = 0;
@@ -192,7 +194,9 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 					var2 = true;
 				}
 			} else {
-				this.furnaceCookTime = 0; // basically its ran out of fuel or something in the inventory changed
+				this.furnaceCookTime = 0; // basically its ran out of fuel or
+				// something in the inventory
+				// changed
 			}
 
 			if (bActive != this.furnaceCookTime > 0) {
@@ -227,8 +231,8 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 		}
 
 		this.furnaceCookTime = tagCompound.getShort("CookTime");
-		if(tagCompound.getShort("TankLevel")>0) {
-			tagCompound.setShort("TankLevelNew", (short) (tagCompound.getShort("TankLevel")*10));
+		if (tagCompound.getShort("TankLevel") > 0) {
+			tagCompound.setShort("TankLevelNew", (short) (tagCompound.getShort("TankLevel") * 10));
 			tagCompound.removeTag("TankLevel");
 		}
 		this.setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));
@@ -307,7 +311,8 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	@Override
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
 		int nTargetSlot = 0;
-		// every Soul Energy Bottle may go to the TankFillSlot, every Item that has a recipe will go to the Smelted Slot, regardless of input Side
+		// every Soul Energy Bottle may go to the TankFillSlot, every Item that
+		// has a recipe will go to the Smelted Slot, regardless of input Side
 		if (stack.itemID == NetherItems.SoulEnergyBottle.itemID && getStackInSlot(nTankFillSlot) == null)
 			nTargetSlot = nTankFillSlot;
 		else if (DemonicFurnaceRecipes.smelting().getSmeltingResult(stack) != null || FurnaceRecipes.smelting().getSmeltingResult(stack) != null)
@@ -397,14 +402,19 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	}
 
 	@Override
-	public boolean func_94042_c() {
+	public boolean isInvNameLocalized() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		switch (i) {
+		case nSmeltedSlot:
+			return (DemonicFurnaceRecipes.smelting().getSmeltingResult(itemstack) != null || FurnaceRecipes.smelting().getSmeltingResult(itemstack) != null);
+		case nTankFillSlot:
+			return itemstack.itemID == NetherItems.SoulEnergyBottle.itemID;
+		}
 		return false;
 	}
 }

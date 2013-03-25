@@ -141,7 +141,7 @@ public class GuiContainerManager
     }
 
     /**
-     * 	Extra lines are often used for more information. For example enchantments, potion effects and mob spawner contents.
+     *     Extra lines are often used for more information. For example enchantments, potion effects and mob spawner contents.
      * @param itemstack The item to get the name for.
      * @param gui An instance of the currentscreen passed to tooltip handlers. If null, only gui inspecific handlers should respond
      * @param includeHandlers If true tooltip handlers will add to the item tip
@@ -390,7 +390,7 @@ public class GuiContainerManager
 
     public void setColouredItemRender(boolean enable)
     {
-        drawItems.field_77024_a = !enable;
+        drawItems.renderWithColor = !enable;
     }
 
     public static void enable3DRender()
@@ -407,7 +407,7 @@ public class GuiContainerManager
 
     public void bindTexture(String s)
     {
-        window.mc.renderEngine.func_98187_b(s);
+        window.mc.renderEngine.bindTexture(s);
     }
 
     public void load()

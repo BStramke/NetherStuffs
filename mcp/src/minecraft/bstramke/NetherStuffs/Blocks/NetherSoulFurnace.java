@@ -80,12 +80,12 @@ public class NetherSoulFurnace extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void func_94332_a(IconRegister par1IconRegister) {
-		icoFurnaceTop = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceTop"));
-		icoFurnaceBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceBottom"));
-		icoFurnaceSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceSide"));
-		icoFurnaceFrontInactive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceFrontInactive"));
-		icoFurnaceFrontActive = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulFurnaceFrontActive"));
+	public void registerIcons(IconRegister par1IconRegister) {
+		icoFurnaceTop = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulFurnaceTop"));
+		icoFurnaceBottom = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulFurnaceBottom"));
+		icoFurnaceSide = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulFurnaceSide"));
+		icoFurnaceFrontInactive = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulFurnaceFrontInactive"));
+		icoFurnaceFrontActive = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulFurnaceFrontActive"));
 	}
 
 	@Override

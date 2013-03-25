@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Map;
 
 import codechicken.core.asm.CodeChickenAccessTransformer;
+import codechicken.core.asm.CodeChickenCorePlugin;
 import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
@@ -20,6 +21,7 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook
     @Override
     public String[] getASMTransformerClass()
     {
+        CodeChickenCorePlugin.versionCheck(CodeChickenCorePlugin.mcVersion, "NotEnoughItems");
         return new String[]{"codechicken.nei.asm.NEITransformer"};
     }
 

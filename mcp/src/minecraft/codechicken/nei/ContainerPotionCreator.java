@@ -69,8 +69,11 @@ public class ContainerPotionCreator extends ContainerExtended
             }
             else if(held != null)
             {
-                putStack(InventoryUtils.copyStack(held, 1));
-                player.inventory.setItemStack(null);
+                if(isItemValid(held))
+                {
+                    putStack(InventoryUtils.copyStack(held, 1));
+                    player.inventory.setItemStack(null);
+                }
             }
             else if(getHasStack())
                 player.inventory.setItemStack(getStack());

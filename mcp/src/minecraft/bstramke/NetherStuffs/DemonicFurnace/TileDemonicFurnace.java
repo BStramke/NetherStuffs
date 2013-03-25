@@ -376,14 +376,21 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory 
 	}
 
 	@Override
-	public boolean func_94042_c() {
+	public boolean isInvNameLocalized() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean func_94041_b(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		switch(i)
+		{
+			case nSmeltedSlot:
+				return DemonicFurnaceRecipes.smelting().getSmeltingResult(itemstack) != null;
+			case nFuelSlot:
+				return isItemFuel(itemstack);
+			default: 
+				return false;
+		}
 	}
 }

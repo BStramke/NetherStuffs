@@ -43,22 +43,23 @@ public class NetherOre extends Block {
 		return NetherOreItemBlock.blockNames.length;
 	}
 	
-	@Override 
-	public void func_94332_a(IconRegister iconRegister) {
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister) {
 		icoNetherOreOverlay = new Icon[11];
-		icoNetherOre = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre"));
-		icoNetherStone = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherStone"));
-		icoNetherOreOverlay[demonicOre] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Demonic"));
+		icoNetherOre = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre"));
+		icoNetherStone = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherStone"));
+		icoNetherOreOverlay[demonicOre] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Demonic"));
 		icoNetherOreOverlay[netherStone] = icoNetherStone;
-		icoNetherOreOverlay[netherOreIron] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Iron"));
-		icoNetherOreOverlay[netherOreGold] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Gold"));
-		icoNetherOreOverlay[netherOreDiamond] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Diamond"));
-		icoNetherOreOverlay[netherOreRedstone] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Redstone"));
-		icoNetherOreOverlay[netherOreEmerald] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Emerald"));
-		icoNetherOreOverlay[netherOreCoal] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Coal"));
-		icoNetherOreOverlay[netherOreObsidian] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Obsidian"));
-		icoNetherOreOverlay[netherOreLapis] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Lapis"));
-		icoNetherOreOverlay[netherOreCobblestone] = iconRegister.func_94245_a(CommonProxy.getIconLocation("NetherOre_Cobblestone"));
+		icoNetherOreOverlay[netherOreIron] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Iron"));
+		icoNetherOreOverlay[netherOreGold] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Gold"));
+		icoNetherOreOverlay[netherOreDiamond] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Diamond"));
+		icoNetherOreOverlay[netherOreRedstone] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Redstone"));
+		icoNetherOreOverlay[netherOreEmerald] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Emerald"));
+		icoNetherOreOverlay[netherOreCoal] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Coal"));
+		icoNetherOreOverlay[netherOreObsidian] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Obsidian"));
+		icoNetherOreOverlay[netherOreLapis] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Lapis"));
+		icoNetherOreOverlay[netherOreCobblestone] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Cobblestone"));
 	}
 
 	public Icon getIconOreOverlay(int meta)

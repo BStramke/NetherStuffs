@@ -5,5 +5,5 @@ import codechicken.nei.forge.GuiContainerManager;
 
 public interface IRecipeOverlayRenderer
 {
-	public void renderOverlay(GuiContainerManager gui, Slot slot);
+    public void renderOverlay(GuiContainerManager gui, Slot slot);
 }

@@ -8,90 +8,90 @@ public class BlockCoord implements Comparable<BlockCoord>
     public int y;
     public int z;
     
-	public BlockCoord(int x, int y, int z)
-	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
-	
-	public BlockCoord(TileEntity tile)
-	{
-		this(tile.xCoord, tile.yCoord, tile.zCoord);
-	}
+    public BlockCoord(int x, int y, int z)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    
+    public BlockCoord(TileEntity tile)
+    {
+        this(tile.xCoord, tile.yCoord, tile.zCoord);
+    }
 
-	public BlockCoord(int[] ia)
+    public BlockCoord(int[] ia)
     {
         this(ia[0], ia[1], ia[2]);
     }
-	
-	public BlockCoord()
+    
+    public BlockCoord()
     {
     }
 
     @Override
-	public boolean equals(Object obj)
-	{
-	    if(!(obj instanceof BlockCoord))
-	        return false;
-	    BlockCoord o2 = (BlockCoord)obj;
-	    return x == o2.x && y == o2.y && z == o2.z;
-	}
-	
-	@Override
-	public int hashCode()
-	{
+    public boolean equals(Object obj)
+    {
+        if(!(obj instanceof BlockCoord))
+            return false;
+        BlockCoord o2 = (BlockCoord)obj;
+        return x == o2.x && y == o2.y && z == o2.z;
+    }
+    
+    @Override
+    public int hashCode()
+    {
         return (x^z)*31 + y;
-	}
+    }
 
     public int compareTo(BlockCoord o)
-	{
-		if(x != o.x)return x < o.x ? 1 : -1;
-		if(y != o.y)return y < o.y ? 1 : -1;
-		if(z != o.z)return z < o.z ? 1 : -1;
-		return 0;
-	}
+    {
+        if(x != o.x)return x < o.x ? 1 : -1;
+        if(y != o.y)return y < o.y ? 1 : -1;
+        if(z != o.z)return z < o.z ? 1 : -1;
+        return 0;
+    }
 
-	public Vector3 toVector3Centered()
-	{
-		return new Vector3(x+0.5, y+0.5, z+0.5);
-	}
+    public Vector3 toVector3Centered()
+    {
+        return new Vector3(x+0.5, y+0.5, z+0.5);
+    }
 
-	public BlockCoord multiply(int i)
-	{
-		x*=i;
-		y*=i;
-		z*=i;
-		return this;
-	}
+    public BlockCoord multiply(int i)
+    {
+        x*=i;
+        y*=i;
+        z*=i;
+        return this;
+    }
 
-	public double mag_()
-	{
-		return Math.sqrt(x*x+y*y+z*z);
-	}
-	
-	public int mag2()
-	{
-		return x*x+y*y+z*z;
-	}
+    public double mag_()
+    {
+        return Math.sqrt(x*x+y*y+z*z);
+    }
+    
+    public int mag2()
+    {
+        return x*x+y*y+z*z;
+    }
 
-	public boolean isZero()
-	{
-		return x == 0 && y == 0 && z == 0;
-	}
+    public boolean isZero()
+    {
+        return x == 0 && y == 0 && z == 0;
+    }
 
-	public boolean isAxial()
-	{
-		return x == 0 ? (y == 0 || z == 0) : (y == 0 && z == 0);
-	}
-	
-	public BlockCoord add(BlockCoord coord2)
-	{
-	    x+=coord2.x;
-	    y+=coord2.y;
-	    z+=coord2.z;
-		return this;
-	}
+    public boolean isAxial()
+    {
+        return x == 0 ? (y == 0 || z == 0) : (y == 0 && z == 0);
+    }
+    
+    public BlockCoord add(BlockCoord coord2)
+    {
+        x+=coord2.x;
+        y+=coord2.y;
+        z+=coord2.z;
+        return this;
+    }
 
     public BlockCoord add(int i, int j, int k)
     {
@@ -100,14 +100,14 @@ public class BlockCoord implements Comparable<BlockCoord>
         z+=k;
         return this;
     }
-	
-	public BlockCoord sub(BlockCoord coord2)
-	{
+    
+    public BlockCoord sub(BlockCoord coord2)
+    {
         x-=coord2.x;
         y-=coord2.y;
         z-=coord2.z;
         return this;
-	}
+    }
 
     public BlockCoord sub(int i, int j, int k)
     {
@@ -116,38 +116,38 @@ public class BlockCoord implements Comparable<BlockCoord>
         z-=k;
         return this;
     }
-	
-	public BlockCoord offset(int side)
+    
+    public BlockCoord offset(int side)
     {
-	    return offset(side, 1);
+        return offset(side, 1);
     }
 
-	public BlockCoord offset(int side, int amount)
-	{
-	    BlockCoord offset = sideOffsets[side];
-		x+=offset.x*amount;
-		y+=offset.y*amount;
-		z+=offset.z*amount;
-		return this;
-	}
+    public BlockCoord offset(int side, int amount)
+    {
+        BlockCoord offset = sideOffsets[side];
+        x+=offset.x*amount;
+        y+=offset.y*amount;
+        z+=offset.z*amount;
+        return this;
+    }
     
     public BlockCoord inset(int side)
     {
         return inset(side, 1);
     }
 
-	public BlockCoord inset(int side, int amount)
-	{
+    public BlockCoord inset(int side, int amount)
+    {
         return offset(side, -amount);
-	}
-	
-	public static final BlockCoord[] sideOffsets = new BlockCoord[]{
-		new BlockCoord( 0,-1, 0),
-		new BlockCoord( 0, 1, 0),
-		new BlockCoord( 0, 0,-1),
-		new BlockCoord( 0, 0, 1),
-		new BlockCoord(-1, 0, 0),
-		new BlockCoord( 1, 0, 0)};
+    }
+    
+    public static final BlockCoord[] sideOffsets = new BlockCoord[]{
+        new BlockCoord( 0,-1, 0),
+        new BlockCoord( 0, 1, 0),
+        new BlockCoord( 0, 0,-1),
+        new BlockCoord( 0, 0, 1),
+        new BlockCoord(-1, 0, 0),
+        new BlockCoord( 1, 0, 0)};
 
     public int[] intArray()
     {

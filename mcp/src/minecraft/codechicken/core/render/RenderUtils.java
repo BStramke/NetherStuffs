@@ -1,5 +1,8 @@
 package codechicken.core.render;
 
+import static net.minecraftforge.client.IItemRenderer.ItemRenderType.ENTITY;
+import static net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D;
+
 import java.awt.Dimension;
 
 import org.lwjgl.opengl.GL11;
@@ -11,22 +14,44 @@ import cpw.mods.fml.client.TextureFXManager;
 
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
+import net.minecraft.world.World;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.liquids.LiquidStack;
 
 public class RenderUtils
 {
     static Vector3[] vectors = new Vector3[8];
+    static RenderItem uniformRenderItem = new RenderItem()
+    {
+    	public boolean shouldBob()
+    	{
+    		return false;
+    	}
+    };
+    static EntityItem entityItem;
     
     static
     {
         for(int i = 0; i < vectors.length; i++)
             vectors[i] = new Vector3();
+        
+        uniformRenderItem.setRenderManager(RenderManager.instance);
+        
+        entityItem = new EntityItem(null);
+        entityItem.hoverStart = 0;
     }
     
     public static void addVecWithUV(Vector3 vec, double u, double v)
@@ -34,68 +59,68 @@ public class RenderUtils
         Tessellator.instance.addVertexWithUV(vec.x, vec.y, vec.z, u, v);
     }
     
-	public static Icon bindLiquidTexture(int liquidID, int liquidMeta)
-	{
-		if(liquidID < Block.blocksList.length && Block.blocksList[liquidID] != null)
-		{
-	    	Block liquidBlock = Block.blocksList[liquidID];
-	    	return liquidBlock.getBlockTextureFromSideAndMetadata(0, liquidMeta);
-		}
-		else
-		{
-	    	Item liquidItem = Item.itemsList[liquidID];
-	    	if(liquidItem == null) 
+    public static Icon bindLiquidTexture(int liquidID, int liquidMeta)
+    {
+        if(liquidID < Block.blocksList.length && Block.blocksList[liquidID] != null)
+        {
+            Block liquidBlock = Block.blocksList[liquidID];
+            return liquidBlock.getBlockTextureFromSideAndMetadata(0, liquidMeta);
+        }
+        else
+        {
+            Item liquidItem = Item.itemsList[liquidID];
+            if(liquidItem == null) 
                 return null;
-	    	return liquidItem.getIconFromDamage(liquidMeta);
-		}
-	}
-	
-	public static void renderLiquidQuad(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, Icon icon, double res)
-	{
-    	double u1 = icon.func_94209_e();
-    	double du = icon.func_94212_f()-icon.func_94209_e();
-    	double v2 = icon.func_94210_h();
-    	double dv = icon.func_94210_h()-icon.func_94206_g();
-		
-		Vector3 wide = vectors[0].set(point4).subtract(point1);
-		Vector3 high = vectors[1].set(point1).subtract(point2);
-		Tessellator t = Tessellator.instance;
-		
-		double wlen = wide.mag();
-		double hlen = high.mag();
-		
-		double x = 0;
-		while(x < wlen)
-		{
-			double rx = wlen - x;
-    		if(rx > res)
-    			rx = res;
-
-    		double y = 0;
-    		while(y < hlen)
-    		{
-    			double ry = hlen-y;
-    			if(ry > res)
-    				ry = res;
-
-    			Vector3 dx1 = vectors[2].set(wide).multiply(x/wlen);
-    			Vector3 dx2 = vectors[3].set(wide).multiply((x+rx)/wlen);    
-    			Vector3 dy1 = vectors[4].set(high).multiply(y/hlen);    
-    			Vector3 dy2 = vectors[5].set(high).multiply((y+ry)/hlen);
-
-    			t.addVertexWithUV(point2.x+dx1.x+dy2.x, point2.y+dx1.y+dy2.y, point2.z+dx1.z+dy2.z, u1, v2-ry/res*dv);
-    			t.addVertexWithUV(point2.x+dx1.x+dy1.x, point2.y+dx1.y+dy1.y, point2.z+dx1.z+dy1.z, u1, v2);
-    			t.addVertexWithUV(point2.x+dx2.x+dy1.x, point2.y+dx2.y+dy1.y, point2.z+dx2.z+dy1.z, u1+rx/res*du, v2);
-    			t.addVertexWithUV(point2.x+dx2.x+dy2.x, point2.y+dx2.y+dy2.y, point2.z+dx2.z+dy2.z, u1+rx/res*du, v2-ry/res*dv);
-    			
-    			y+=ry;
-    		}
-    		
-    		x+=rx;
-		}
-	}
+            return liquidItem.getIconFromDamage(liquidMeta);
+        }
+    }
     
-	public static void translateToWorldCoords(Entity entity, float frame)
+    public static void renderLiquidQuad(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, Icon icon, double res)
+    {
+        double u1 = icon.getMinU();
+        double du = icon.getMaxU()-icon.getMinU();
+        double v2 = icon.getMaxV();
+        double dv = icon.getMaxV()-icon.getMinV();
+        
+        Vector3 wide = vectors[0].set(point4).subtract(point1);
+        Vector3 high = vectors[1].set(point1).subtract(point2);
+        Tessellator t = Tessellator.instance;
+        
+        double wlen = wide.mag();
+        double hlen = high.mag();
+        
+        double x = 0;
+        while(x < wlen)
+        {
+            double rx = wlen - x;
+            if(rx > res)
+                rx = res;
+
+            double y = 0;
+            while(y < hlen)
+            {
+                double ry = hlen-y;
+                if(ry > res)
+                    ry = res;
+
+                Vector3 dx1 = vectors[2].set(wide).multiply(x/wlen);
+                Vector3 dx2 = vectors[3].set(wide).multiply((x+rx)/wlen);    
+                Vector3 dy1 = vectors[4].set(high).multiply(y/hlen);    
+                Vector3 dy2 = vectors[5].set(high).multiply((y+ry)/hlen);
+
+                t.addVertexWithUV(point2.x+dx1.x+dy2.x, point2.y+dx1.y+dy2.y, point2.z+dx1.z+dy2.z, u1, v2-ry/res*dv);
+                t.addVertexWithUV(point2.x+dx1.x+dy1.x, point2.y+dx1.y+dy1.y, point2.z+dx1.z+dy1.z, u1, v2);
+                t.addVertexWithUV(point2.x+dx2.x+dy1.x, point2.y+dx2.y+dy1.y, point2.z+dx2.z+dy1.z, u1+rx/res*du, v2);
+                t.addVertexWithUV(point2.x+dx2.x+dy2.x, point2.y+dx2.y+dy2.y, point2.z+dx2.z+dy2.z, u1+rx/res*du, v2-ry/res*dv);
+                
+                y+=ry;
+            }
+            
+            x+=rx;
+        }
+    }
+    
+    public static void translateToWorldCoords(Entity entity, float frame)
     {       
         double interpPosX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)frame;
         double interpPosY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)frame;
@@ -103,8 +128,8 @@ public class RenderUtils
         
         GL11.glTranslated(-interpPosX, -interpPosY, -interpPosZ);
     }
-	
-	public static void drawOutlinedBoundingBox(AxisAlignedBB par1AxisAlignedBB)
+    
+    public static void drawOutlinedBoundingBox(AxisAlignedBB par1AxisAlignedBB)
     {
         Tessellator var2 = Tessellator.instance;
         var2.startDrawing(3);
@@ -135,37 +160,37 @@ public class RenderUtils
     
     public static void renderLiquidCuboid(Cuboid6 bound, Icon tex, double res)
     {
-        RenderUtils.renderLiquidQuad(//bottom
+        renderLiquidQuad(//bottom
                 new Vector3(bound.min.x, bound.min.y, bound.min.z),
                 new Vector3(bound.max.x, bound.min.y, bound.min.z),
                 new Vector3(bound.max.x, bound.min.y, bound.max.z),
                 new Vector3(bound.min.x, bound.min.y, bound.max.z), 
                 tex, res);
-        RenderUtils.renderLiquidQuad(//top
+        renderLiquidQuad(//top
                 new Vector3(bound.min.x, bound.max.y, bound.min.z),
                 new Vector3(bound.min.x, bound.max.y, bound.max.z),
                 new Vector3(bound.max.x, bound.max.y, bound.max.z),
                 new Vector3(bound.max.x, bound.max.y, bound.min.z), 
                 tex, res);
-        RenderUtils.renderLiquidQuad(//-x
+        renderLiquidQuad(//-x
                 new Vector3(bound.min.x, bound.max.y, bound.min.z),
                 new Vector3(bound.min.x, bound.min.y, bound.min.z),
                 new Vector3(bound.min.x, bound.min.y, bound.max.z),
                 new Vector3(bound.min.x, bound.max.y, bound.max.z), 
                 tex, res);
-        RenderUtils.renderLiquidQuad(//+x
+        renderLiquidQuad(//+x
                 new Vector3(bound.max.x, bound.max.y, bound.max.z),
                 new Vector3(bound.max.x, bound.min.y, bound.max.z),
                 new Vector3(bound.max.x, bound.min.y, bound.min.z),
                 new Vector3(bound.max.x, bound.max.y, bound.min.z), 
                 tex, res);
-        RenderUtils.renderLiquidQuad(//-z
+        renderLiquidQuad(//-z
                 new Vector3(bound.max.x, bound.max.y, bound.min.z),
                 new Vector3(bound.max.x, bound.min.y, bound.min.z),
                 new Vector3(bound.min.x, bound.min.y, bound.min.z),
                 new Vector3(bound.min.x, bound.max.y, bound.min.z), 
                 tex, res);
-        RenderUtils.renderLiquidQuad(//+z
+        renderLiquidQuad(//+z
                 new Vector3(bound.min.x, bound.max.y, bound.max.z),
                 new Vector3(bound.min.x, bound.min.y, bound.max.z),
                 new Vector3(bound.max.x, bound.min.y, bound.max.z),
@@ -226,11 +251,11 @@ public class RenderUtils
 
     public static void renderLiquidCuboid(LiquidStack liquid, Cuboid6 bound, double res)
     {
-        if(!RenderUtils.shouldRenderLiquid(liquid))
+        if(!shouldRenderLiquid(liquid))
             return;
 
         GL11.glDisable(GL11.GL_LIGHTING);
-        if(liquid.isLiquidEqual(LiquidUtils.water))
+        if(LiquidUtils.isLiquidTranslucent(liquid))
         {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -247,6 +272,33 @@ public class RenderUtils
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
     }
+	
+	public static void renderItemUniform(ItemStack item)
+	{
+        IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(item, ENTITY);
+        boolean is3D = customRenderer != null && customRenderer.shouldUseRenderHelper(ENTITY, item, BLOCK_3D);
+
+        boolean larger = false;
+        if (item.getItem() instanceof ItemBlock && (is3D || RenderBlocks.renderItemIn3d(Block.blocksList[item.itemID].getRenderType())))
+        {
+            int renderType = Block.blocksList[item.itemID].getRenderType();
+            larger = !(renderType == 1 || renderType == 19 || renderType == 12 || renderType == 2);
+        }
+        
+        double d = 2;
+        double d1 = 1/d;
+        if(larger)
+        	GL11.glScaled(d, d, d);
+
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        
+        entityItem.setEntityItemStack(item);
+		uniformRenderItem.doRenderItem(entityItem, 0, larger ? 0.09 : 0.06, 0, 0, 0);
+		
+		if(larger)
+			GL11.glScaled(d1, d1, d1);
+	}
     
     /*public static void renderQuad3D(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, 
             int tx1, int ty1, int tx2, int ty2, int tw, int th, double depth)

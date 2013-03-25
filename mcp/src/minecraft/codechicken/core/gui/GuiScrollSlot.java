@@ -33,8 +33,8 @@ public abstract class GuiScrollSlot extends GuiWidget
     
     public GuiScrollSlot(int x, int y, int width, int height)
     {
-    	super(x, y, width, height);
-    	setContentSize(x+3, y+2, height-2);
+        super(x, y, width, height);
+        setContentSize(x+3, y+2, height-2);
     }
     
     public void setSmoothScroll(boolean b)
@@ -47,21 +47,21 @@ public abstract class GuiScrollSlot extends GuiWidget
         int cx = contentx-this.x;
         int cy = contenty-this.y;
         int ch = height-contentheight;
-    	super.setSize(x, y, width, height);
-    	
-    	setContentSize(x+cx, y+cy, height-ch);
+        super.setSize(x, y, width, height);
+        
+        setContentSize(x+cx, y+cy, height-ch);
     }
     
     public void setContentSize(int x, int y, int h)
     {
-    	this.contentx = x;
-    	this.contenty = y;
-    	this.contentheight = h;
+        this.contentx = x;
+        this.contenty = y;
+        this.contentheight = h;
     }
     
     public void registerButtons(GuiButton up, GuiButton down, String selectionCommand)
     {
-    	scrollupbutton = up;
+        scrollupbutton = up;
         scrolldownbutton = down;
         actionCommand = selectionCommand;
     }
@@ -87,20 +87,20 @@ public abstract class GuiScrollSlot extends GuiWidget
     public void setFocused(boolean focus)
     {
         focused = focus;
-    	if(!focused)
-    		unfocus();
+        if(!focused)
+            unfocus();
     }
     
     public void scrollUp()
     {
-    	percentscrolled -= 0.05;
-    	calculatePercentScrolled();
+        percentscrolled -= 0.05;
+        calculatePercentScrolled();
     }
     
     public void scrollDown()
     {
-    	percentscrolled += 0.05;
-    	calculatePercentScrolled();
+        percentscrolled += 0.05;
+        calculatePercentScrolled();
     }
     
     public int totalContentHeight()
@@ -132,38 +132,38 @@ public abstract class GuiScrollSlot extends GuiWidget
     
     public int getScrollBarWidth()
     {
-    	return 5;
+        return 5;
     }
     
     public int getScrollBarHeight()
     {
-    	int sbarh = (int)((contentheight  / (float)totalContentHeight()) * height);
-    	if(sbarh > height)
-    	{
-    		return height;
-    	}
-    	else if(sbarh < height / 15)
-    	{
-    		return height / 15;
-    	}
-    	else
-    	{
-    		return sbarh;
-    	}
+        int sbarh = (int)((contentheight  / (float)totalContentHeight()) * height);
+        if(sbarh > height)
+        {
+            return height;
+        }
+        else if(sbarh < height / 15)
+        {
+            return height / 15;
+        }
+        else
+        {
+            return sbarh;
+        }
     }
     
     public void calculatePercentScrolled()
     {
-		int barempty = height - getScrollBarHeight();
-    	if(scrollclicky >= 0)
-    	{
-    		int scrolldiff = scrollmousey - scrollclicky;
-    		percentscrolled = scrolldiff / (float)barempty + scrollpercent;
-    	}
-    	percentscrolled = (float) MathHelper.clip(percentscrolled, 0, 1);
-    	
-    	//int sbary = y + (int)(barempty * percentscrolled + 0.5);
-    	//percentscrolled = (sbary - y) / (float) barempty;
+        int barempty = height - getScrollBarHeight();
+        if(scrollclicky >= 0)
+        {
+            int scrolldiff = scrollmousey - scrollclicky;
+            percentscrolled = scrolldiff / (float)barempty + scrollpercent;
+        }
+        percentscrolled = (float) MathHelper.clip(percentscrolled, 0, 1);
+        
+        //int sbary = y + (int)(barempty * percentscrolled + 0.5);
+        //percentscrolled = (sbary - y) / (float) barempty;
     }
     
     public void showSlot(int slot)
@@ -185,21 +185,21 @@ public abstract class GuiScrollSlot extends GuiWidget
 
     public void processMouse(int mousex, int mousey)
     {
-		if(scrollclicky >= 0)
-    	{
-    		int scrolldiff = mousey - scrollclicky;
-    		int barupallowed = (int)((height - getScrollBarHeight()) * scrollpercent + 0.5);
-    		int bardownallowed = (height - getScrollBarHeight()) - barupallowed;
-    		
-    		if(-scrolldiff > barupallowed)
-    			scrollmousey = scrollclicky - barupallowed;
-    		else if(scrolldiff > bardownallowed)
-    			scrollmousey = scrollclicky + bardownallowed;
-    		else
-    			scrollmousey = mousey;
-    		
-    		calculatePercentScrolled();
-    	}
+        if(scrollclicky >= 0)
+        {
+            int scrolldiff = mousey - scrollclicky;
+            int barupallowed = (int)((height - getScrollBarHeight()) * scrollpercent + 0.5);
+            int bardownallowed = (height - getScrollBarHeight()) - barupallowed;
+            
+            if(-scrolldiff > barupallowed)
+                scrollmousey = scrollclicky - barupallowed;
+            else if(scrolldiff > bardownallowed)
+                scrollmousey = scrollclicky + bardownallowed;
+            else
+                scrollmousey = mousey;
+            
+            calculatePercentScrolled();
+        }
     }
     
     public void actionPerformed(GuiButton guibutton)
@@ -210,81 +210,81 @@ public abstract class GuiScrollSlot extends GuiWidget
         }
         if(scrollupbutton != null && guibutton.id == scrollupbutton.id)
         {
-        	scrollUp();
+            scrollUp();
         }
         else if(scrolldownbutton != null && guibutton.id == scrolldownbutton.id)
         {
-        	scrollDown();
+            scrollDown();
         }
     }
 
     @Override
     public void mouseClicked(int mousex, int mousey, int button)
     {
-    	boolean needsfocus = (mousex >= x && mousex < x + width &&
-    			mousey >= y && mousey <= y + height);
-    	if(needsfocus != focused)
-    	{
-    		setFocused(needsfocus);
-    	}
-    	
-    	int barempty = height - getScrollBarHeight();
-    	int sbarx = x + width - getScrollBarWidth();
-    	int sbary = y + (int)(barempty * percentscrolled + 0.5);
-    	
-    	if(button == 0 &&
-    	        getScrollBarHeight() < height && //the scroll bar can move (not full length)
-    			mousex >= sbarx && mousex <= x + width &&
-    			mousey >= y && mousey <= y + height)//in the scroll pane
-    	{
-    		if(mousey < sbary)
-    		{
-    			percentscrolled = (mousey - y) / (float)barempty;
-    			calculatePercentScrolled();
-    		}
-    		else if(mousey > sbary + getScrollBarHeight())
-    		{
-    			percentscrolled = (mousey - y - getScrollBarHeight() + 1) / (float)barempty;
-    			calculatePercentScrolled();
-    		}
-    		else
-    		{
-	    		scrollclicky = mousey;
-	    		scrollpercent = percentscrolled;
-	    		scrollmousey = mousey;
-    		}
-    	}
-    	else if(mousex >= contentx && mousex < sbarx &&
-    			mousey >= contenty && mousey <= contenty + contentheight)//in the box
-    	{
-    		int slot = getClickedSlot(mousey);
-    		slotClicked(slot, button, slot == lastslotclicked && button == lastbuttonclicked && System.currentTimeMillis() - lastslotclicktime < 500);
-    		
-    		lastslotclicked = slot;
-    		lastbuttonclicked = button;
-    		lastslotclicktime = System.currentTimeMillis();
-    	}
+        boolean needsfocus = (mousex >= x && mousex < x + width &&
+                mousey >= y && mousey <= y + height);
+        if(needsfocus != focused)
+        {
+            setFocused(needsfocus);
+        }
+        
+        int barempty = height - getScrollBarHeight();
+        int sbarx = x + width - getScrollBarWidth();
+        int sbary = y + (int)(barempty * percentscrolled + 0.5);
+        
+        if(button == 0 &&
+                getScrollBarHeight() < height && //the scroll bar can move (not full length)
+                mousex >= sbarx && mousex <= x + width &&
+                mousey >= y && mousey <= y + height)//in the scroll pane
+        {
+            if(mousey < sbary)
+            {
+                percentscrolled = (mousey - y) / (float)barempty;
+                calculatePercentScrolled();
+            }
+            else if(mousey > sbary + getScrollBarHeight())
+            {
+                percentscrolled = (mousey - y - getScrollBarHeight() + 1) / (float)barempty;
+                calculatePercentScrolled();
+            }
+            else
+            {
+                scrollclicky = mousey;
+                scrollpercent = percentscrolled;
+                scrollmousey = mousey;
+            }
+        }
+        else if(mousex >= contentx && mousex < sbarx &&
+                mousey >= contenty && mousey <= contenty + contentheight)//in the box
+        {
+            int slot = getClickedSlot(mousey);
+            slotClicked(slot, button, slot == lastslotclicked && button == lastbuttonclicked && System.currentTimeMillis() - lastslotclicktime < 500);
+            
+            lastslotclicked = slot;
+            lastbuttonclicked = button;
+            lastslotclicktime = System.currentTimeMillis();
+        }
     }
 
     @Override
     public void mouseMovedOrUp(int mousex, int mousey, int button)
     {
-    	if(scrollclicky >= 0 && button == 0)//we were scrolling and we released mouse
-    		scrollclicky = -1;
+        if(scrollclicky >= 0 && button == 0)//we were scrolling and we released mouse
+            scrollclicky = -1;
     }
 
     @Override
     public void keyTyped(char c, int keycode)
     {
-    	if(!focused)
-    		return;
-    	
-		if(keycode == Keyboard.KEY_UP)
-			selectPrev();
-		if(keycode == Keyboard.KEY_DOWN)
-			selectNext();
-		if(keycode == Keyboard.KEY_RETURN && actionCommand != null)
-			parentscreen.actionPerformed(actionCommand);
+        if(!focused)
+            return;
+        
+        if(keycode == Keyboard.KEY_UP)
+            selectPrev();
+        if(keycode == Keyboard.KEY_DOWN)
+            selectNext();
+        if(keycode == Keyboard.KEY_RETURN && actionCommand != null)
+            parentscreen.actionPerformed(actionCommand);
     }
     
     public void drawSlotBox()
@@ -294,30 +294,30 @@ public abstract class GuiScrollSlot extends GuiWidget
     
     public void drawBackground()
     {
-    	
+        
     }
     
     public void drawOverlay()
     {
-    	//outlines
-    	drawRect(x, y - 1, x + width, y, 0xffa0a0a0);//top
-    	drawRect(x, y + height, x + width, y + height + 1, 0xffa0a0a0);//bottom
-    	drawRect(x - 1, y - 1, x, y + height + 1, 0xffa0a0a0);//left
-    	drawRect(x + width, y - 1, x + width + 1, y + height + 1, 0xffa0a0a0);//right
+        //outlines
+        drawRect(x, y - 1, x + width, y, 0xffa0a0a0);//top
+        drawRect(x, y + height, x + width, y + height + 1, 0xffa0a0a0);//bottom
+        drawRect(x - 1, y - 1, x, y + height + 1, 0xffa0a0a0);//left
+        drawRect(x + width, y - 1, x + width + 1, y + height + 1, 0xffa0a0a0);//right
     }
     
     public void drawScrollBar()
     {
         int sbarw = getScrollBarWidth();
         int sbarh = getScrollBarHeight()-1;
-    	int sbarx = x + width - sbarw;
-    	int sbary = y + (int)((height - sbarh) * percentscrolled + 0.4999);
-    	
-    	drawRect(sbarx, sbary, sbarx+sbarw, sbary+sbarh, 0xFF8B8B8B);//corners
+        int sbarx = x + width - sbarw;
+        int sbary = y + (int)((height - sbarh) * percentscrolled + 0.4999);
+        
+        drawRect(sbarx, sbary, sbarx+sbarw, sbary+sbarh, 0xFF8B8B8B);//corners
         drawRect(sbarx, sbary, sbarx+sbarw-1, sbary+sbarh - 1, 0xFFF0F0F0);//topleft up
         drawRect(sbarx + 1, sbary + 1, sbarx+sbarw, sbary+sbarh, 0xFF555555);//bottom right down
         drawRect(sbarx + 1, sbary + 1, sbarx+sbarw-1, sbary+sbarh - 1, 0xFFC6C6C6);//scrollbar
-    	
+        
         if(drawLineGuide())
             drawRect(sbarx - 1, y, sbarx, y + height, 0xFF808080);//lineguide
     }
@@ -329,12 +329,12 @@ public abstract class GuiScrollSlot extends GuiWidget
     
     public void drawSlots()
     {
-    	for(int slot = 0; slot < getNumSlots(); slot++)
-    	{
-    		int sloty = getSlotY(slot);
-    		if(sloty > contenty - getSlotHeight() && sloty < contenty + contentheight)
-    			drawSlot(slot, contentx, sloty, isSlotSelected(slot));
-    	}
+        for(int slot = 0; slot < getNumSlots(); slot++)
+        {
+            int sloty = getSlotY(slot);
+            if(sloty > contenty - getSlotHeight() && sloty < contenty + contentheight)
+                drawSlot(slot, contentx, sloty, isSlotSelected(slot));
+        }
     }
     
     @Override
@@ -346,10 +346,10 @@ public abstract class GuiScrollSlot extends GuiWidget
     @Override
     public void draw(int mousex, int mousey, float partialframe)
     {
-    	drawBackground();
-    	drawSlotBox();
-    	drawSlots();
-    	drawScrollBar();
-    	drawOverlay();
+        drawBackground();
+        drawSlotBox();
+        drawSlots();
+        drawScrollBar();
+        drawOverlay();
     }
 }

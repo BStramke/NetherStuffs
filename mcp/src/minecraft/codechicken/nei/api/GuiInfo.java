@@ -10,20 +10,20 @@ import codechicken.nei.NEICreativeGuiHandler;
 import codechicken.nei.NEIDummySlotHandler;
 
 public class GuiInfo
-{	
-	public static LinkedList<INEIGuiHandler> guiHandlers = new LinkedList<INEIGuiHandler>();
-	
-	public static void load()
-	{
-		API.registerNEIGuiHandler(new NEICreativeGuiHandler());
-		API.registerNEIGuiHandler(new NEIChestGuiHandler());
-		API.registerNEIGuiHandler(new NEIDummySlotHandler());
-	}
+{    
+    public static LinkedList<INEIGuiHandler> guiHandlers = new LinkedList<INEIGuiHandler>();
+    
+    public static void load()
+    {
+        API.registerNEIGuiHandler(new NEICreativeGuiHandler());
+        API.registerNEIGuiHandler(new NEIChestGuiHandler());
+        API.registerNEIGuiHandler(new NEIDummySlotHandler());
+    }
 
-	public static void clearGuiHandlers()
-	{
-		for(Iterator<INEIGuiHandler> iterator = guiHandlers.iterator(); iterator.hasNext();)
-			if(iterator.next() instanceof GuiContainer)
-				iterator.remove();
-	}
+    public static void clearGuiHandlers()
+    {
+        for(Iterator<INEIGuiHandler> iterator = guiHandlers.iterator(); iterator.hasNext();)
+            if(iterator.next() instanceof GuiContainer)
+                iterator.remove();
+    }
 }

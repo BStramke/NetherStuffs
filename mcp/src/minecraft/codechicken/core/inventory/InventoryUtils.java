@@ -20,10 +20,10 @@ import net.minecraftforge.common.ISpecialSlotInventory;
 
 public class InventoryUtils
 {
-	public static ItemStack decrStackSize(IInventory inv, int slot, int size)
-	{
-		ItemStack item = inv.getStackInSlot(slot);    	
-    	
+    public static ItemStack decrStackSize(IInventory inv, int slot, int size)
+    {
+        ItemStack item = inv.getStackInSlot(slot);        
+        
         if(item != null)
         {
             if(item.stackSize <= size)
@@ -36,7 +36,7 @@ public class InventoryUtils
             ItemStack itemstack1 = item.splitStack(size);
             if(item.stackSize == 0)
             {
-            	inv.setInventorySlotContents(slot, null);
+                inv.setInventorySlotContents(slot, null);
             }
             inv.onInventoryChanged();
             return itemstack1;
@@ -45,32 +45,32 @@ public class InventoryUtils
         {
             return null;
         }
-	}
+    }
 
-	public static ItemStack getStackInSlotOnClosing(IInventory inv, int slot)
-	{
-		ItemStack stack = inv.getStackInSlot(slot);
-		inv.setInventorySlotContents(slot, null);
-		return stack;
-	}
+    public static ItemStack getStackInSlotOnClosing(IInventory inv, int slot)
+    {
+        ItemStack stack = inv.getStackInSlot(slot);
+        inv.setInventorySlotContents(slot, null);
+        return stack;
+    }
 
-	/**
-	 * 
-	 * @param base
-	 * @param addition
-	 * @return The quantity of items from addition that can be added to base
-	 */
-	public static int incrStackSize(ItemStack base, ItemStack addition)
-	{
-		if (canStack(base, addition))
+    /**
+     * 
+     * @param base
+     * @param addition
+     * @return The quantity of items from addition that can be added to base
+     */
+    public static int incrStackSize(ItemStack base, ItemStack addition)
+    {
+        if (canStack(base, addition))
         {
             return incrStackSize(base, addition.stackSize);
         }
-		
-		return 0;
-	}
-	
-	/**
+        
+        return 0;
+    }
+    
+    /**
      * 
      * @param base
      * @param addition
@@ -92,39 +92,39 @@ public class InventoryUtils
         return 0;
     }
 
-	public static NBTTagList writeItemStacksToTag(ItemStack[] items)
-	{
-		NBTTagList tagList = new NBTTagList();
-		for(int i = 0; i < items.length; i++)
-		{
-			if (items[i] != null)
+    public static NBTTagList writeItemStacksToTag(ItemStack[] items)
+    {
+        NBTTagList tagList = new NBTTagList();
+        for(int i = 0; i < items.length; i++)
+        {
+            if (items[i] != null)
             {
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setShort("Slot", (short) i);
                 items[i].writeToNBT(tag);
                 tagList.appendTag(tag);
             }
-		}
-		return tagList;
-	}
-	
-	public static void readItemStacksFromTag(ItemStack[] items, NBTTagList tagList)
-	{
-		for(int i = 0; i < tagList.tagCount(); i++)
-		{
-			NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
-			items[tag.getShort("Slot")] = ItemStack.loadItemStackFromNBT(tag);
-		}
-	}
+        }
+        return tagList;
+    }
+    
+    public static void readItemStacksFromTag(ItemStack[] items, NBTTagList tagList)
+    {
+        for(int i = 0; i < tagList.tagCount(); i++)
+        {
+            NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
+            items[tag.getShort("Slot")] = ItemStack.loadItemStackFromNBT(tag);
+        }
+    }
 
-	public static void dropItem(ItemStack stack, World world, Vector3 dropLocation)
-	{
-		EntityItem item = new EntityItem(world, dropLocation.x, dropLocation.y, dropLocation.z, stack);
+    public static void dropItem(ItemStack stack, World world, Vector3 dropLocation)
+    {
+        EntityItem item = new EntityItem(world, dropLocation.x, dropLocation.y, dropLocation.z, stack);
         item.motionX = world.rand.nextGaussian() * 0.05;
         item.motionY = world.rand.nextGaussian() * 0.05 + 0.2F;
         item.motionZ = world.rand.nextGaussian() * 0.05;
         world.spawnEntityInWorld(item);
-	}
+    }
 
     public static ItemStack copyStack(ItemStack stack, int quantity)
     {

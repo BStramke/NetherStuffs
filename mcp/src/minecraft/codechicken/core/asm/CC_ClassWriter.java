@@ -10,20 +10,20 @@ public class CC_ClassWriter extends ClassWriter
     }
     
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     protected String getCommonSuperClass(String type1, String type2)
     {
-    	String c = type1.replace('/', '.');
-    	String d = type2.replace('/', '.');
-    	if(ClassHeirachyManager.classExtends(d, c))
-    		return type1;
-    	if(ClassHeirachyManager.classExtends(c, d))
-    		return type2;
-    	do
-    	{
-    		c = ClassHeirachyManager.getSuperClass(c);
-    	}
-    	while(!ClassHeirachyManager.classExtends(d, c));
-    	return c.replace('.', '/');
+        String c = type1.replace('/', '.');
+        String d = type2.replace('/', '.');
+        if(ClassHeirachyManager.classExtends(d, c))
+            return type1;
+        if(ClassHeirachyManager.classExtends(c, d))
+            return type2;
+        do
+        {
+            c = ClassHeirachyManager.getSuperClass(c);
+        }
+        while(!ClassHeirachyManager.classExtends(d, c));
+        return c.replace('.', '/');
     }
 }

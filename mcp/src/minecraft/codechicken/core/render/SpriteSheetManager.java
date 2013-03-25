@@ -7,6 +7,8 @@ import java.util.HashSet;
 import org.lwjgl.util.Dimension;
 
 import codechicken.core.render.TextureUtils.IIconRegister;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.client.renderer.texture.Texture;
@@ -15,6 +17,7 @@ import net.minecraft.util.Icon;
 
 public class SpriteSheetManager
 {
+    @SideOnly(Side.CLIENT)
     public static class SpriteSheet implements IIconRegister
     {
         private int tilesX;
@@ -49,12 +52,12 @@ public class SpriteSheetManager
                 reloadTexture();
                 for(int i = 0; i < sprites.length; i++)
                     if(sprites[i] != null)
-                        textureMap.setTextureEntry(sprites[i].func_94215_i(), sprites[i]);
+                        textureMap.setTextureEntry(sprites[i].getIconName(), sprites[i]);
             }
             else
             {
                 for(int i : newSprites)
-                    textureMap.setTextureEntry(sprites[i].func_94215_i(), sprites[i]);
+                    textureMap.setTextureEntry(sprites[i].getIconName(), sprites[i]);
             }
             newSprites.clear();
         }

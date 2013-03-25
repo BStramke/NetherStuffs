@@ -90,7 +90,7 @@ public class WorldGenDefaultMinable implements IWorldGenerator {
 
 										System.out.println(arrMap);
 									}
-									par1World.setBlockAndMetadataWithNotify(var38, var41, var44, this.minableBlockId, minableBlockMeta, BlockNotifyType.ALL);
+									par1World.setBlock(var38, var41, var44, this.minableBlockId, minableBlockMeta, BlockNotifyType.CLIENT_SERVER);
 								}
 							}
 						}

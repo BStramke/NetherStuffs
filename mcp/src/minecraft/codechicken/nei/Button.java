@@ -18,12 +18,12 @@ public abstract class Button extends Widget
         label = "";
     }
 
-	public int contentWidth(GuiContainerManager gui)
+    public int contentWidth(GuiContainerManager gui)
     {
         int textw = getRenderIcon() == null ? gui.getStringWidth(label) : getRenderIcon().width;
         if(NEIClientConfig.getLayoutStyle() == 0)
         {
-        	textw+=4;
+            textw+=4;
         }
         else if((state & 0x4) != 0)
         {
@@ -44,7 +44,7 @@ public abstract class Button extends Widget
     
     public void draw(GuiContainerManager gui, int mousex, int mousey)
     {
-    	boolean mouseover = contains(mousex, mousey);
+        boolean mouseover = contains(mousex, mousey);
         Image renderIcon = getRenderIcon();
         if(NEIClientConfig.getLayoutStyle() == 1)//TMI
         {
@@ -53,7 +53,7 @@ public abstract class Button extends Widget
             int texty = y + (height - 8) / 2;
             
             gui.drawRect(x, y, width, height, contains(mousex, mousey) ? 0xee401008 : 0xee000000);
-        	
+            
             if(renderIcon == null)
             {
                 gui.drawText(textx, texty, label, -1);
@@ -63,97 +63,97 @@ public abstract class Button extends Widget
                 int icony = y + (height - renderIcon.height) / 2;
                 LayoutManager.drawIcon(gui.window, textx, icony, renderIcon);
                 if((state & 0x3) == 2)
-                	gui.drawRect(textx, icony, renderIcon.width, renderIcon.height, 0x80000000);
+                    gui.drawRect(textx, icony, renderIcon.width, renderIcon.height, 0x80000000);
             
-	            if((state & 0x4) != 0)
-	            {
-	                Image stateimage;
-	                if((state & 0x3) == 1)
-	    	        	stateimage = stateOn;
-	    	        else if((state & 0x3) == 2)
-	    	        	stateimage = stateDisabled;
-	    	        else
-	    	        	stateimage = stateOff;
-	                LayoutManager.drawIcon(gui.window, textx+renderIcon.width, icony, stateimage);
-	            }
+                if((state & 0x4) != 0)
+                {
+                    Image stateimage;
+                    if((state & 0x3) == 1)
+                        stateimage = stateOn;
+                    else if((state & 0x3) == 2)
+                        stateimage = stateDisabled;
+                    else
+                        stateimage = stateOff;
+                    LayoutManager.drawIcon(gui.window, textx+renderIcon.width, icony, stateimage);
+                }
             }
         }
         else
         {
             GL11.glDisable(GL11.GL_LIGHTING);
-	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	        
-	        int tex;
-	        if((state & 0x3) == 1)
-	        	tex = 2;
-	        else if((state & 0x3) == 2)
-	        	tex = 0;
-	        else
-	        	tex = 1;
-	        LayoutManager.drawButtonBackground(gui, x, y, width, height, true, tex);
-	        
-	        if(renderIcon == null)
-	        {
-		        if(mouseover && (state & 0x3) != 2 || (state & 0x3) == 1)
-		        {
-		        	gui.drawTextCentered(label, x + width / 2, y + (height - 8) / 2, 0xffffa0);
-		        } 
-		        else if((state & 0x3) == 2)
-		        {
-		        	gui.drawTextCentered(label, x + width / 2, y + (height - 8) / 2, 0x601010);
-		        }
-		        else
-		        {
-		        	gui.drawTextCentered(label, x + width / 2, y + (height - 8) / 2, 0xe0e0e0);
-		        }
-	        }
-	        else
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            
+            int tex;
+            if((state & 0x3) == 1)
+                tex = 2;
+            else if((state & 0x3) == 2)
+                tex = 0;
+            else
+                tex = 1;
+            LayoutManager.drawButtonBackground(gui, x, y, width, height, true, tex);
+            
+            if(renderIcon == null)
             {
-	        	if(!iconHighlight)
-		        {
-		        	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		        }
-	            int iconx = x + (width - icon.width) / 2;
-	            int icony = y + (height - icon.height) / 2;
-	            LayoutManager.drawIcon(gui.window, iconx, icony, renderIcon);
+                if(mouseover && (state & 0x3) != 2 || (state & 0x3) == 1)
+                {
+                    gui.drawTextCentered(label, x + width / 2, y + (height - 8) / 2, 0xffffa0);
+                } 
+                else if((state & 0x3) == 2)
+                {
+                    gui.drawTextCentered(label, x + width / 2, y + (height - 8) / 2, 0x601010);
+                }
+                else
+                {
+                    gui.drawTextCentered(label, x + width / 2, y + (height - 8) / 2, 0xe0e0e0);
+                }
+            }
+            else
+            {
+                if(!iconHighlight)
+                {
+                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                }
+                int iconx = x + (width - icon.width) / 2;
+                int icony = y + (height - icon.height) / 2;
+                LayoutManager.drawIcon(gui.window, iconx, icony, renderIcon);
             }
         }
         
     }
 
-	public boolean handleClick(int i, int j, int k)
+    public boolean handleClick(int i, int j, int k)
     {
         if(k == 1 || k == 0)
-        	if(onButtonPress(k == 1))
-        		NEIClientUtils.mc().sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+            if(onButtonPress(k == 1))
+                NEIClientUtils.mc().sndManager.playSoundFX("random.click", 1.0F, 1.0F);
         return true;
     }
-	
-	public abstract boolean onButtonPress(boolean rightclick);
-
-	public Image getRenderIcon()
-	{
-		return icon;
-	}
     
-	@Override
-	public List<String> handleTooltip(int mx, int my, List<String> tooltip)
-	{
-		if(!contains(mx, my))
-			return tooltip;
-		
-		String tip = getButtonTip();
-		if(tip != null)
-			tooltip.add(tip);
-		return tooltip;
-	}
-	
-    public String getButtonTip()
-	{
-		return null;
-	}
+    public abstract boolean onButtonPress(boolean rightclick);
 
-	public String label;
+    public Image getRenderIcon()
+    {
+        return icon;
+    }
+    
+    @Override
+    public List<String> handleTooltip(int mx, int my, List<String> tooltip)
+    {
+        if(!contains(mx, my))
+            return tooltip;
+        
+        String tip = getButtonTip();
+        if(tip != null)
+            tooltip.add(tip);
+        return tooltip;
+    }
+    
+    public String getButtonTip()
+    {
+        return null;
+    }
+
+    public String label;
     //public String identifier;
     public Image icon;
     public boolean iconHighlight;

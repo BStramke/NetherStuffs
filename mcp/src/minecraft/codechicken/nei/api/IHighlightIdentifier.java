@@ -7,5 +7,5 @@ import net.minecraft.world.World;
 
 public interface IHighlightIdentifier
 {
-	public ItemStack identifyHighlight(World world, EntityPlayer player, int x, int y, int z, MovingObjectPosition mop);
+    public ItemStack identifyHighlight(World world, EntityPlayer player, int x, int y, int z, MovingObjectPosition mop);
 }

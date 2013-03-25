@@ -375,7 +375,7 @@ public class FastTransferManger
         ItemStack held = NEIClientUtils.getHeldItem();
         if(held == null)
             return;
-
+        
         clickSlot(window, -999);
 
         generateSlotMap(window.inventorySlots, held);

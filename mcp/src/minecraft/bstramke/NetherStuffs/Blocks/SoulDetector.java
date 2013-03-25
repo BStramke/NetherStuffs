@@ -94,9 +94,9 @@ public class SoulDetector extends BlockContainer {
 		return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0 ? 1 : 0;
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
-	public void func_94332_a(IconRegister par1IconRegister) {
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
 		icoActive = new Icon[6];
 		icoInactive = new Icon[6];
 
@@ -123,8 +123,8 @@ public class SoulDetector extends BlockContainer {
 				break;
 			}
 
-			icoActive[i] = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulDetectorActive_" + side));
-			icoInactive[i] = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulDetectorInactive_" + side));
+			icoActive[i] = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulDetectorActive_" + side));
+			icoInactive[i] = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulDetectorInactive_" + side));
 		}
 	}
 

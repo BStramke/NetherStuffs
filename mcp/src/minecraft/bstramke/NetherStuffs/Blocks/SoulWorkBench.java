@@ -61,12 +61,12 @@ public class SoulWorkBench extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void func_94332_a(IconRegister par1IconRegister) {
-		icoSoulWorkbenchTop = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchTop"));
-		icoSoulWorkbenchBottom = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchBottom"));
-		icoSoulWorkbenchFront = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchFront"));
-		icoSoulWorkbenchSide = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchSide"));
-		icoSoulWorkbenchBack = par1IconRegister.func_94245_a(CommonProxy.getIconLocation("SoulWorkbenchBack"));
+	public void registerIcons(IconRegister par1IconRegister) {
+		icoSoulWorkbenchTop = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulWorkbenchTop"));
+		icoSoulWorkbenchBottom = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulWorkbenchBottom"));
+		icoSoulWorkbenchFront = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulWorkbenchFront"));
+		icoSoulWorkbenchSide = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulWorkbenchSide"));
+		icoSoulWorkbenchBack = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulWorkbenchBack"));
 	}
 
 	@Override
