@@ -22,8 +22,8 @@ public abstract class Engine {
 	public int maxEnergy;
 
 	protected float currentOutput = 0;
-	float progress;
-	ForgeDirection orientation;
+	public float progress;
+	public ForgeDirection orientation;
 	public float energy;
 	EnergyStage energyStage = EnergyStage.Blue;
 

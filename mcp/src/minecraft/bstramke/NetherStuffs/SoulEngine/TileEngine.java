@@ -48,7 +48,8 @@ public class TileEngine extends TileEntity implements IPowerReceptor, IInventory
 
 	public void sendNetworkUpdate() {
 		if (!worldObj.isRemote) {
-			sendToPlayers(getUpdatePacket(), worldObj, xCoord, yCoord, zCoord, 128);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			//sendToPlayers(getUpdatePacket(), worldObj, xCoord, yCoord, zCoord, 128);
 		}
 	}
 	
@@ -330,7 +331,7 @@ public class TileEngine extends TileEntity implements IPowerReceptor, IInventory
 
 		return super.getDescriptionPacket();
 	}
-
+/*
 	@Override
 	public Packet getUpdatePacket() {
 		if (engine != null) {
@@ -352,7 +353,7 @@ public class TileEngine extends TileEntity implements IPowerReceptor, IInventory
 		createEngineIfNeeded();
 
 		super.handleUpdatePacket(packet);
-	}
+	}*/
 
 	@Override
 	public void setPowerProvider(IPowerProvider provider) {

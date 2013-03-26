@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.src.ModLoader;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,6 +39,7 @@ import bstramke.NetherStuffs.Blocks.SoulDetectorItemBlock;
 import bstramke.NetherStuffs.Blocks.SoulSiphon;
 import bstramke.NetherStuffs.Blocks.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Client.ClientPacketHandler;
+import bstramke.NetherStuffs.Client.RenderEngine;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.GuiHandler;
 import bstramke.NetherStuffs.Common.NetherStuffsFuel;
@@ -52,6 +54,7 @@ import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
 import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
 import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
+import bstramke.NetherStuffs.SoulEngine.TileEngine;
 import bstramke.NetherStuffs.SoulFurnace.TileSoulFurnace;
 import bstramke.NetherStuffs.SoulSiphon.TileSoulSiphon;
 import bstramke.NetherStuffs.SoulWorkBench.TileSoulWorkBench;
@@ -340,6 +343,8 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerTileEntity(TileSoulSiphon.class, "tileEntityNetherStuffsSoulSiphon");
 		GameRegistry.registerTileEntity(TileNetherWoodPuddle.class, "tileEntityNetherWood");
 
+		ModLoader.registerTileEntity(TileEngine.class, "SoulEnergyEngine", new RenderEngine());
+		
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
 

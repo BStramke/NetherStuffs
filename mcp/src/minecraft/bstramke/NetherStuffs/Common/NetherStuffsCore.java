@@ -5,9 +5,6 @@ import bstramke.NetherStuffs.SoulEngine.NetherBCTriggers;
 import bstramke.NetherStuffs.SoulEngine.NetherTriggerEngineHeat;
 import bstramke.NetherStuffs.SoulEngine.NetherTriggerLiquidContainer;
 import buildcraft.api.core.IIconProvider;
-import buildcraft.core.DefaultProps;
-import buildcraft.core.triggers.BCTrigger;
-import buildcraft.core.triggers.TriggerLiquidContainer;
 
 public class NetherStuffsCore {
 	public static IIconProvider actionTriggerIconProvider = new ActionTriggerIconProvider();
