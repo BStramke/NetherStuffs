@@ -101,6 +101,8 @@ public class NetherStuffs extends DummyModContainer {
 	public static int SoulWorkBenchBlockId;
 	public static int NetherSoulBombBlockId;
 	public static int NetherWoodPuddleBlockId;
+	
+	public static int SoulEngineBlockId;
 
 	public static int NetherObsidianSwordAcidItemId;
 	public static int NetherObsidianSwordDeathItemId;
@@ -128,7 +130,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherBowItemId;
 	public static int TorchArrowItemId;
 	public static int SoulEnergyLiquidItemId;
-	// public static int SoulEnergyLiquidId;
+	
 
 	public static int NetherSoulDetectorBlockId;
 	public static int NetherSoulBlockerBlockId;
@@ -179,7 +181,8 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulFurnaceBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulFurnace", 1243).getInt(1243);
 		NetherSoulSiphonBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulSiphon", 1244).getInt(1244);
 		NetherWoodPuddleBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "NetherWoodPuddles", 1246).getInt(1246);
-
+		SoulEngineBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulEngine", 1247).getInt(1247);
+		
 		NetherOreIngotItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherIngots", 5200).getInt(5200);
 		NetherDemonicBarHandleItemId = config.getItem(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5201).getInt(5201);
 		NetherObsidianSwordItemId = config.getItem(Configuration.CATEGORY_ITEM, "ObsidianSword", 5202).getInt(5202);
@@ -282,6 +285,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(NetherBlocks.NetherDemonicFurnace, "NetherDemonicFurnace");
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench, "NetherSoulWorkBench");
+		GameRegistry.registerBlock(NetherBlocks.SoulEngine, "SoulEngine");
 
 		GameRegistry.registerBlock(NetherBlocks.netherOre, NetherOreItemBlock.class, "NetherOreItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherWood, NetherWoodItemBlock.class, "NetherWoodItemBlock");
