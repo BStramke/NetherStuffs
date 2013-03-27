@@ -18,6 +18,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IShearable;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Client.EntityDropParticleFXNetherStuffs;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
@@ -40,7 +41,7 @@ public class NetherLeaves extends Block implements IShearable {
 		//this.setRequiresSelfNotify();
 		this.setStepSound(Block.soundGrassFootstep);
 		this.setTickRandomly(true);
-		this.setCreativeTab(CreativeTabs.tabDecorations);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 		this.setBurnProperties(this.blockID, 0, 0);
 	}
 

@@ -67,8 +67,7 @@ public class SoulDetector extends BlockContainer {
 
 	public SoulDetector(int par1) {
 		super(par1, Material.circuits);
-		this.setCreativeTab(CreativeTabs.tabRedstone);
-		// this.setRequiresSelfNotify();
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 	}
 
 	@Override

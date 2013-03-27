@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Client.NetherOreRenderingHelper;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Items.NetherItems;
@@ -35,7 +36,7 @@ public class NetherOre extends Block {
 	
 	public NetherOre(int par1) {
 		super(par1, Material.rock);
-		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 		this.setStepSound(soundStoneFootstep);
 	}
 

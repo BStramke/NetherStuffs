@@ -7,6 +7,8 @@ import bstramke.NetherStuffs.SoulEngine.NetherTriggerLiquidContainer;
 import buildcraft.api.core.IIconProvider;
 
 public class NetherStuffsCore {
+	public static NetherStuffsCore instance = new NetherStuffsCore();
+	
 	public static IIconProvider actionTriggerIconProvider = new ActionTriggerIconProvider();
 	public static NetherBCTriggers triggerBlueEngineHeat = new NetherTriggerEngineHeat(ActionTriggerIconProvider.Trigger_EngineHeat_Blue, EnergyStage.Blue);
 	public static NetherBCTriggers triggerGreenEngineHeat = new NetherTriggerEngineHeat(ActionTriggerIconProvider.Trigger_EngineHeat_Green, EnergyStage.Green);

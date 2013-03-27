@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.NetherWoodMaterial;
 import cpw.mods.fml.relauncher.Side;
@@ -26,8 +27,7 @@ public class NetherPlank extends Block {
 
 	public NetherPlank(int par1) {
 		super(par1, NetherWoodMaterial.netherWood);
-		this.setCreativeTab(CreativeTabs.tabBlock);
-		//this.setRequiresSelfNotify();
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 		this.setStepSound(soundWoodFootstep);
 		this.setBurnProperties(this.blockID, 0, 0);
 	}

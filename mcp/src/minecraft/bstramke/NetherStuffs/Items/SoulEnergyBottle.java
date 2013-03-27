@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,7 +29,7 @@ public class SoulEnergyBottle extends Item {
 		this.setMaxStackSize(1);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
-		this.setCreativeTab(CreativeTabs.tabMisc);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 	}
 
 	@Override

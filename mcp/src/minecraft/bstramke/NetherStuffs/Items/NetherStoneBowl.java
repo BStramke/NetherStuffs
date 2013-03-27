@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherWood;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
@@ -22,7 +23,7 @@ public class NetherStoneBowl extends Item {
 
 	public NetherStoneBowl(int par1) {
 		super(par1);
-		this.setCreativeTab(CreativeTabs.tabBrewing);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 	}
 
 	@Override

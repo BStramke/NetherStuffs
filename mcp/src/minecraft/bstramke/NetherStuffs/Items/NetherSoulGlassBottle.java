@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.NetherWood;
 import bstramke.NetherStuffs.Blocks.NetherWoodPuddle;
@@ -25,8 +26,7 @@ public class NetherSoulGlassBottle extends ItemGlassBottle {
 
 	public NetherSoulGlassBottle(int par1) {
 		super(par1);
-		this.setCreativeTab(CreativeTabs.tabBrewing);
-		// this.setHasSubtypes(true);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 	}
 
 	@Override

@@ -9,21 +9,32 @@
 
 package bstramke.NetherStuffs.Client;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+
+import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.SoulEngine.Engine;
 import bstramke.NetherStuffs.SoulEngine.Engine.EnergyStage;
 import bstramke.NetherStuffs.SoulEngine.TileEngine;
 
-public class RenderEngine extends TileEntitySpecialRenderer /*implements IInventoryRenderer*/ {
+public class RenderSoulEngine extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
+	private static int renderId;
+
+	public static RenderSoulEngine instance = new RenderSoulEngine();
+	
 	private ModelBase model = new ModelBase() {
 	};
 
@@ -33,8 +44,10 @@ public class RenderEngine extends TileEntitySpecialRenderer /*implements IInvent
 	private ModelRenderer chamber;
 	private String baseTexture;
 
-	public RenderEngine() {
+	public RenderSoulEngine() {
 
+		this.renderId = RenderingRegistry.getNextAvailableRenderId();
+		
 		// constructor:
 		box = new ModelRenderer(model, 0, 1);
 		box.addBox(-8F, -8F, -8F, 16, 4, 16);
@@ -61,16 +74,15 @@ public class RenderEngine extends TileEntitySpecialRenderer /*implements IInvent
 		chamber.rotationPointZ = 8F;
 	}
 
-	public RenderEngine(String baseTexture) {
+	public RenderSoulEngine(String baseTexture) {
 		this();
 		this.baseTexture = baseTexture;
 		setTileEntityRenderer(TileEntityRenderer.instance);
 	}
 
-	/*@Override
 	public void inventoryRender(double x, double y, double z, float f, float f1) {
 		render(EnergyStage.Blue, 0.25F, ForgeDirection.UP, baseTexture, x, y, z);
-	}*/
+	}
 
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
@@ -83,8 +95,6 @@ public class RenderEngine extends TileEntitySpecialRenderer /*implements IInvent
 	}
 
 	private void render(EnergyStage energy, float progress, ForgeDirection orientation, String baseTexture, double x, double y, double z) {
-
-
 		GL11.glPushMatrix();
 		GL11.glDisable(2896 /* GL_LIGHTING */);
 
@@ -155,7 +165,7 @@ public class RenderEngine extends TileEntitySpecialRenderer /*implements IInvent
 		movingBox.render(factor);
 		GL11.glTranslatef(-translate[0] * translatefact, -translate[1] * translatefact, -translate[2] * translatefact);
 
-		bindTextureByName("/chamber.png");
+		bindTextureByName(CommonProxy.GFXFOLDERPREFIX+"chamber.png");
 
 		float chamberf = 2F / 16F;
 
@@ -172,16 +182,16 @@ public class RenderEngine extends TileEntitySpecialRenderer /*implements IInvent
 
 		switch (energy) {
 		case Blue:
-			texture = "/trunk_blue.png";
+			texture = CommonProxy.GFXFOLDERPREFIX+"trunk_blue.png";
 			break;
 		case Green:
-			texture = "/trunk_green.png";
+			texture = CommonProxy.GFXFOLDERPREFIX+"trunk_green.png";
 			break;
 		case Yellow:
-			texture = "/trunk_yellow.png";
+			texture = CommonProxy.GFXFOLDERPREFIX+"trunk_yellow.png";
 			break;
 		default:
-			texture = "/trunk_red.png";
+			texture = CommonProxy.GFXFOLDERPREFIX+"trunk_red.png";
 			break;
 		}
 
@@ -191,5 +201,26 @@ public class RenderEngine extends TileEntitySpecialRenderer /*implements IInvent
 
 		GL11.glEnable(2896 /* GL_LIGHTING */);
 		GL11.glPopMatrix();
+	}
+
+	@Override
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+		inventoryRender(-0.5, -0.5, -0.5, 0, 0);
+	}
+
+	@Override
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean shouldRender3DInInventory() {
+		return true;
+	}
+
+	@Override
+	public int getRenderId() {
+		return renderId;
 	}
 }

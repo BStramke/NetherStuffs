@@ -17,8 +17,10 @@ public class ActionTriggerIconProvider implements IIconProvider {
 	public static final int Trigger_LiquidContainer_Space = 6;
 	public static final int Trigger_LiquidContainer_Full = 7;
 
+	private boolean registered = false;
+	
 	@SideOnly(Side.CLIENT)
-	private static Icon[] icons;
+	private static Icon[] icons = new Icon[8];
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -29,17 +31,19 @@ public class ActionTriggerIconProvider implements IIconProvider {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		icons = new Icon[8];
+		if (registered)
+			return;
+		registered = true;
 
-		icons[ActionTriggerIconProvider.Trigger_EngineHeat_Blue] = iconRegister.registerIcon(CommonProxy.getIconLocation("triggers/trigger_engineheat_blue"));
-		icons[ActionTriggerIconProvider.Trigger_EngineHeat_Green] = iconRegister.registerIcon(CommonProxy.getIconLocation("triggers/trigger_engineheat_green"));
-		icons[ActionTriggerIconProvider.Trigger_EngineHeat_Yellow] = iconRegister.registerIcon(CommonProxy.getIconLocation("triggers/trigger_engineheat_yellow"));
-		icons[ActionTriggerIconProvider.Trigger_EngineHeat_Red] = iconRegister.registerIcon(CommonProxy.getIconLocation("triggers/trigger_engineheat_red"));
+		icons[ActionTriggerIconProvider.Trigger_EngineHeat_Blue] = iconRegister.registerIcon("buildcraft:triggers/trigger_engineheat_blue");
+		icons[ActionTriggerIconProvider.Trigger_EngineHeat_Green] = iconRegister.registerIcon("buildcraft:triggers/trigger_engineheat_green");
+		icons[ActionTriggerIconProvider.Trigger_EngineHeat_Yellow] = iconRegister.registerIcon("buildcraft:triggers/trigger_engineheat_yellow");
+		icons[ActionTriggerIconProvider.Trigger_EngineHeat_Red] = iconRegister.registerIcon("buildcraft:triggers/trigger_engineheat_red");
 
-		icons[ActionTriggerIconProvider.Trigger_LiquidContainer_Empty] = iconRegister.registerIcon(CommonProxy.getIconLocation("triggers/trigger_liquidcontainer_empty"));
-		icons[ActionTriggerIconProvider.Trigger_LiquidContainer_Contains] = iconRegister.registerIcon(CommonProxy.getIconLocation("triggers/trigger_liquidcontainer_contains"));
-		icons[ActionTriggerIconProvider.Trigger_LiquidContainer_Space] = iconRegister.registerIcon(CommonProxy.getIconLocation("triggers/trigger_liquidcontainer_space"));
-		icons[ActionTriggerIconProvider.Trigger_LiquidContainer_Full] = iconRegister.registerIcon(CommonProxy.getIconLocation("triggers/trigger_liquidcontainer_full"));
+		icons[ActionTriggerIconProvider.Trigger_LiquidContainer_Empty] = iconRegister.registerIcon("buildcraft:triggers/trigger_liquidcontainer_empty");
+		icons[ActionTriggerIconProvider.Trigger_LiquidContainer_Contains] = iconRegister.registerIcon("buildcraft:triggers/trigger_liquidcontainer_contains");
+		icons[ActionTriggerIconProvider.Trigger_LiquidContainer_Space] = iconRegister.registerIcon("buildcraft:triggers/trigger_liquidcontainer_space");
+		icons[ActionTriggerIconProvider.Trigger_LiquidContainer_Full] = iconRegister.registerIcon("buildcraft:triggers/trigger_liquidcontainer_full");
 	}
 
 }

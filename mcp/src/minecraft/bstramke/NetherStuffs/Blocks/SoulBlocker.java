@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
 import cpw.mods.fml.relauncher.Side;
@@ -21,8 +22,7 @@ public class SoulBlocker extends BlockContainer {
 
 	public SoulBlocker(int par1) {
 		super(par1, Material.circuits);
-		this.setCreativeTab(CreativeTabs.tabRedstone);
-		//this.setRequiresSelfNotify();
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 	}
 
 

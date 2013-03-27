@@ -13,6 +13,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -36,11 +37,13 @@ public class NetherSword extends ItemSword {
 	public NetherSword(int par1, EnumToolMaterial par2EnumToolMaterial) {
 		super(par1, par2EnumToolMaterial);
 		this.nType = Types.undefined;
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 	}
 
 	public NetherSword(int par1, EnumToolMaterial par2EnumToolMaterial, Types nType) {
 		super(par1, par2EnumToolMaterial);
 		this.nType = nType;
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 	}
 
 	@Override

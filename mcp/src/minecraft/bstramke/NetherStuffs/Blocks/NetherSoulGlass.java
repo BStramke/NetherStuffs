@@ -29,7 +29,7 @@ public class NetherSoulGlass extends BlockGlass {
 		
 		Block.opaqueCubeLookup[this.blockID] = true;
 		
-		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 
 		try {
 			Class[] args = new Class[1];

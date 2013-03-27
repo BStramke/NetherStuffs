@@ -1,6 +1,7 @@
 package bstramke.NetherStuffs;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -10,8 +11,10 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.src.ModLoader;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -39,7 +42,7 @@ import bstramke.NetherStuffs.Blocks.SoulDetectorItemBlock;
 import bstramke.NetherStuffs.Blocks.SoulSiphon;
 import bstramke.NetherStuffs.Blocks.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Client.ClientPacketHandler;
-import bstramke.NetherStuffs.Client.RenderEngine;
+import bstramke.NetherStuffs.Client.RenderSoulEngine;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.GuiHandler;
 import bstramke.NetherStuffs.Common.NetherStuffsFuel;
@@ -54,6 +57,7 @@ import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
 import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
 import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
+import bstramke.NetherStuffs.SoulEngine.SoulEngineFuel;
 import bstramke.NetherStuffs.SoulEngine.TileEngine;
 import bstramke.NetherStuffs.SoulFurnace.TileSoulFurnace;
 import bstramke.NetherStuffs.SoulSiphon.TileSoulSiphon;
@@ -163,6 +167,12 @@ public class NetherStuffs extends DummyModContainer {
 
 	public static LiquidStack SoulEnergyLiquid;
 
+	public static CreativeTabs tabNetherStuffs = new CreativeTabs("tabNetherStuffs") {
+      public ItemStack getIconItemStack() {
+              return new ItemStack(NetherBlocks.netherSoulWorkBench, 1, 0);
+      }
+	};
+	
 	@PreInit
 	public void PreLoad(FMLPreInitializationEvent event) {
 		FMLLog.info("[NetherStuffs] PreLoad");
@@ -343,8 +353,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerTileEntity(TileSoulBlocker.class, "tileEntityNetherStuffsSoulBlocker");
 		GameRegistry.registerTileEntity(TileSoulSiphon.class, "tileEntityNetherStuffsSoulSiphon");
 		GameRegistry.registerTileEntity(TileNetherWoodPuddle.class, "tileEntityNetherWood");
-
-		ClientRegistry.registerTileEntity(TileEngine.class, "SoulEnergyEngine", new RenderEngine());
+		GameRegistry.registerTileEntity(TileEngine.class, "tileEntitySoulEnergyEngine");
 		
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
@@ -353,6 +362,8 @@ public class NetherStuffs extends DummyModContainer {
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
 
 		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, 1));
+		
+		SoulEngineFuel.fuels.add(new SoulEngineFuel(LiquidDictionary.getLiquid("SoulEnergy", LiquidContainerRegistry.BUCKET_VOLUME), 1, 20000));
 
 		registerWorldGenerators();
 		initRecipes();
@@ -762,6 +773,8 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("item.NetherBow.name", "Torch Bow");
 		LanguageRegistry.instance().addStringLocalization("item.torchArrow.name", "Torch Arrow");
 		LanguageRegistry.instance().addStringLocalization("item.SoulEnergyLiquidItem.name", "Soul Energy Liquid");
+		
+		LanguageRegistry.instance().addStringLocalization("itemGroup.tabNetherStuffs", "en_US", "NetherStuffs");
 	}
 
 	@PostInit

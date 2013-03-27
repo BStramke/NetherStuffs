@@ -14,16 +14,19 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 public class ContainerEngine extends Container {
 
+	private int inventorySize = 1;
 	protected TileEngine engine;
 
-	public ContainerEngine(InventoryPlayer inventoryplayer, TileEngine tileEngine) {
+	public ContainerEngine(TileEngine tileEngine, InventoryPlayer inventoryplayer) {
 
 		engine = tileEngine;
 
-
+		addSlotToContainer(new Slot(tileEngine, 0, 52, 41));
+		
 		for (int i = 0; i < 3; i++) {
 			for (int k = 0; k < 9; k++) {
 				addSlotToContainer(new Slot(inventoryplayer, k + i * 9 + 9, 8 + k * 18, 84 + i * 18));
@@ -40,14 +43,14 @@ public class ContainerEngine extends Container {
 		super.detectAndSendChanges();
 
 		for (int i = 0; i < crafters.size(); i++) {
-			engine.engine.sendGUINetworkData(this, (ICrafting) crafters.get(i));
+			engine.sendGUINetworkData(this, (ICrafting) crafters.get(i));
 		}
 	}
 
 	@Override
 	public void updateProgressBar(int i, int j) {
-		if (engine.engine != null) {
-			engine.engine.getGUINetworkData(i, j);
+		if (engine != null) {
+			engine.getGUINetworkData(i, j);
 		}
 	}
 
@@ -58,5 +61,30 @@ public class ContainerEngine extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return engine.isUseableByPlayer(entityplayer);
+	}
+	
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer pl, int i) {
+		ItemStack itemstack = null;
+		Slot slot = (Slot) inventorySlots.get(i);
+		if (slot != null && slot.getHasStack()) {
+			ItemStack itemstack1 = slot.getStack();
+			itemstack = itemstack1.copy();
+			if (i < inventorySize) {
+				if (!mergeItemStack(itemstack1, inventorySize, inventorySlots.size(), true))
+					return null;
+			} else if (!mergeItemStack(itemstack1, 0, inventorySize, false))
+				return null;
+			if (itemstack1.stackSize == 0) {
+				slot.putStack(null);
+			} else {
+				slot.onSlotChanged();
+			}
+		}
+		return itemstack;
+	}
+
+	public int getInventorySize() {
+		return inventorySize;
 	}
 }

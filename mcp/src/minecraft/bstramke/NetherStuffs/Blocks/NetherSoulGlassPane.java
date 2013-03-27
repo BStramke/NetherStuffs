@@ -24,7 +24,7 @@ public class NetherSoulGlassPane extends BlockPane {
 
 	public NetherSoulGlassPane(int par1, Material par4Material, boolean par5) {
 		super(par1, CommonProxy.getIconLocation("SoulGlass"),  CommonProxy.getIconLocation("SoulGlassTop"), par4Material, par5);
-		this.setCreativeTab(CreativeTabs.tabDecorations);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 		Block.opaqueCubeLookup[this.blockID] = true;
 		Block.opaqueCubeLookup[Block.thinGlass.blockID] = true;
 

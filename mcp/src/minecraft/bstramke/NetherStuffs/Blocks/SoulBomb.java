@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.SoulBomb.EntitySoulBombPrimed;
 
@@ -22,9 +23,8 @@ public class SoulBomb extends BlockTNT {
 
 	public SoulBomb(int par1) {
 		super(par1);
-		this.setCreativeTab(CreativeTabs.tabRedstone);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 		this.setStepSound(soundGrassFootstep);
-		// this.setRequiresSelfNotify();
 	}
 
 	/**

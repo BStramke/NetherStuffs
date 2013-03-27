@@ -14,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import bstramke.NetherStuffs.EntityTorchArrow;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,7 +29,7 @@ public class NetherBow extends ItemBow {
 		super(par1);
 		this.maxStackSize = 1;
 		this.setMaxDamage(384);
-		this.setCreativeTab(CreativeTabs.tabCombat);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 	}
 
 	@Override

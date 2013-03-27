@@ -35,9 +35,8 @@ public class NetherWood extends Block {
 
 	public NetherWood(int par1) {
 		super(par1, NetherWoodMaterial.netherWood);
-		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 		this.setStepSound(soundWoodFootstep);
-		//this.setRequiresSelfNotify();
 		this.setBurnProperties(this.blockID, 0, 0);
 	}
 	

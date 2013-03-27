@@ -62,9 +62,8 @@ public class NetherSoulFurnace extends BlockContainer {
 
 	public NetherSoulFurnace(int par1) {
 		super(par1, Material.rock);
-		this.setCreativeTab(CreativeTabs.tabDecorations);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 		this.setStepSound(soundStoneFootstep);
-		// this.setRequiresSelfNotify();
 		this.setTickRandomly(true);
 	}
 

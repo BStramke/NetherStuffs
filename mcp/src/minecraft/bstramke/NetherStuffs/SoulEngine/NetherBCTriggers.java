@@ -17,6 +17,7 @@ public abstract class NetherBCTriggers implements ITrigger {
 	protected int id;
 
 	public NetherBCTriggers(int id) {
+		id+=500;
 		this.id = id;
 		ActionManager.triggers[id] = this;
 	}
@@ -33,7 +34,7 @@ public abstract class NetherBCTriggers implements ITrigger {
     @Override
     @SideOnly(Side.CLIENT)
     public IIconProvider getIconProvider() {
-    	return NetherStuffsCore.actionTriggerIconProvider;
+    	return NetherStuffsCore.instance.actionTriggerIconProvider;
     }
 
 	@Override

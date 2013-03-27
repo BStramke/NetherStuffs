@@ -9,7 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import bstramke.NetherStuffs.Common.NetherStuffsCore;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -21,7 +23,7 @@ public class NetherOreIngot extends Item {
 		super(par1);
 		maxStackSize = 64;
 		this.setMaxDamage(0);
-		this.setCreativeTab(CreativeTabs.tabMaterials);
+		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 		this.setHasSubtypes(true);
 	}
 
@@ -29,6 +31,7 @@ public class NetherOreIngot extends Item {
 	public void updateIcons(IconRegister iconRegister)
 	{
 		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("IngotDemonic"));
+		NetherStuffsCore.instance.actionTriggerIconProvider.registerIcons(iconRegister);
 	}
 	
 	@Override
