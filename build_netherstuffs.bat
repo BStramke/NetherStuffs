@@ -2,42 +2,19 @@
 cd mcp
 mkdir reobf\minecraft\bstramke\NetherStuffsBase
 mkdir reobf\minecraft\bstramke\NetherStuffsBase\bstramke
-mkdir reobf\minecraft\bstramke\NetherStuffsBase\buildcraft
-mkdir reobf\minecraft\bstramke\NetherStuffsBase\buildcraft\api
-mkdir reobf\minecraft\bstramke\NetherStuffsBase\buildcraft\api\inventory
-mkdir reobf\minecraft\bstramke\NetherStuffsCoreBase
-mkdir reobf\minecraft\bstramke\NetherStuffsCoreBase\bstramke
+
 move reobf\minecraft\bstramke\NetherStuffs reobf\minecraft\bstramke\NetherStuffsBase\bstramke
 move reobf\minecraft\bstramke\NetherStuffsNEIPlugin reobf\minecraft\bstramke\NetherStuffsBase\bstramke
-move reobf\minecraft\bstramke\NetherStuffsCore reobf\minecraft\bstramke\NetherStuffsCoreBase\bstramke
 
-rem mkdir reobf\minecraft\bstramke\NetherStuffsBase\bstramke\NetherStuffs\resources
-rem mkdir reobf\minecraft\bstramke\NetherStuffsBase\bstramke\NetherStuffs\resources\textures
-rem mkdir reobf\minecraft\bstramke\NetherStuffsBase\bstramke\NetherStuffs\resources\textures\gui
-
+xcopy reobf\minecraft\buildcraft reobf\minecraft\bstramke\NetherStuffsBase\buildcraft\ /S
 xcopy reobf\minecraft\forestry reobf\minecraft\bstramke\NetherStuffsBase\forestry\ /S
 xcopy reobf\minecraft\thaumcraft reobf\minecraft\bstramke\NetherStuffsBase\thaumcraft\ /S
-xcopy src\minecraft\mods reobf\minecraft\bstramke\NetherStuffs\mods\ /S
-copy reobf\minecraft\buildcraft\api\inventory\* reobf\minecraft\bstramke\NetherStuffsBase\buildcraft\api\inventory
+xcopy src\minecraft\mods reobf\minecraft\bstramke\NetherStuffsBase\mods\ /S
+
 copy src\minecraft\bstramke\NetherStuffs\mcmod.info reobf\minecraft\bstramke\NetherStuffsBase\mcmod.info
-rem copy src\minecraft\bstramke\NetherStuffs\resources\* reobf\minecraft\bstramke\NetherStuffsBase\bstramke\NetherStuffs\resources
-rem copy src\minecraft\bstramke\NetherStuffs\resources\textures\* reobf\minecraft\bstramke\NetherStuffsBase\bstramke\NetherStuffs\resources\textures
-rem copy src\minecraft\bstramke\NetherStuffs\resources\textures\gui\* reobf\minecraft\bstramke\NetherStuffsBase\bstramke\NetherStuffs\resources\textures\gui
-mkdir reobf\minecraft\bstramke\NetherStuffsCoreBase\META-INF
-copy src\minecraft\bstramke\netherstuffs_at.cfg reobf\minecraft\bstramke\NetherStuffsCoreBase\netherstuffs_at.cfg
-copy src\minecraft\bstramke\NetherStuffsCore\META-INF\MANIFEST.MF reobf\minecraft\bstramke\NetherStuffsCoreBase\META-INF\MANIFEST.MF
-rem copy Custom Class Files
-rem Chunk
-copy reobf\minecraft\zz.class reobf\minecraft\bstramke\NetherStuffsCoreBase\zz.class 
+
 cd reobf\minecraft\bstramke\NetherStuffsBase
 "C:\Program Files\7-Zip\7z.exe" a -tzip mod_NetherStuffs.zip *
-cd..
-cd NetherStuffsCoreBase
-"C:\Program Files\7-Zip\7z.exe" a -tzip mod_NetherStuffsCore.zip *
-cd ..
-move NetherStuffsBase\mod_NetherStuffs.zip mod_NetherStuffs.zip
-move NetherStuffsCoreBase\mod_NetherStuffsCore.zip mod_NetherStuffsCore.jar
 cd D:\GitHub\NetherStuffs
-copy mcp\reobf\minecraft\bstramke\mod_NetherStuffs.zip mod_NetherStuffs.zip
-copy mcp\reobf\minecraft\bstramke\mod_NetherStuffsCore.jar mod_NetherStuffsCore.jar
+copy mcp\reobf\minecraft\bstramke\NetherStuffsBase\mod_NetherStuffs.zip mod_NetherStuffs.zip
 pause
