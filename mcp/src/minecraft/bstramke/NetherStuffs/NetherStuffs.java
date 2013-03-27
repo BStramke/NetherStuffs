@@ -60,6 +60,7 @@ import bstramke.NetherStuffs.SoulSiphon.TileSoulSiphon;
 import bstramke.NetherStuffs.SoulWorkBench.TileSoulWorkBench;
 import bstramke.NetherStuffs.WorldGen.WorldGenDefaultMinable;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -343,7 +344,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerTileEntity(TileSoulSiphon.class, "tileEntityNetherStuffsSoulSiphon");
 		GameRegistry.registerTileEntity(TileNetherWoodPuddle.class, "tileEntityNetherWood");
 
-		ModLoader.registerTileEntity(TileEngine.class, "SoulEnergyEngine", new RenderEngine());
+		ClientRegistry.registerTileEntity(TileEngine.class, "SoulEnergyEngine", new RenderEngine());
 		
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);

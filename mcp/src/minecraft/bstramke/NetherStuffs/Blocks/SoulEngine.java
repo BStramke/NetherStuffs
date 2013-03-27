@@ -1,11 +1,17 @@
 package bstramke.NetherStuffs.Blocks;
 
+import java.util.List;
 import java.util.Random;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -17,8 +23,9 @@ public class SoulEngine extends BlockContainer {
 
 	protected SoulEngine(int par1) {
 		super(par1, Material.iron);
+		setCreativeTab(CreativeTabs.tabMisc);
 	}
-
+	
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
@@ -32,7 +39,7 @@ public class SoulEngine extends BlockContainer {
 	@Override
 	public int getRenderType() {
 		//TODO: custom renderer
-		return 0;
+		return -1;
 		//return BuildCraftCore.blockByEntityModel;
 	}
 

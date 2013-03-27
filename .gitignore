@@ -1,6 +1,5 @@
-!/mcp/src/minecraft/net/minecraft/block/BlockBreakable.java
-!/mcp/src/minecraft/net/minecraft/block/BlockPane.java
-!/mcp/src/minecraft/net/minecraft/world/chunk/Chunk.java
+!/mcp/src/minecraft/net/minecraft/client/gui/inventory/GuiContainer.java
+!/mcp/src/minecraft/net/minecraftforge/common/ISpecialSlotInventory.java
 !custom_formatter.xml
 !README.md
 !/mcp/build_netherstuffs.bat
@@ -9,6 +8,7 @@
 !/mcp/src/minecraft/buildcraft/*
 !/mcp/src/minecraft/codechicken/*
 
+!/mcp/src/minecraft/mods/
 
 /common/
 /client/
@@ -18,7 +18,8 @@
 *.pyc
 *.cmd
 *.properties
-*.txt
+/*.txt
+/mcp/LICENSE.txt
 *.sh
 *.jar
 *.zip
@@ -44,6 +45,6 @@
 /mcp/src/minecraft/*.java
 /mcp/src/minecraft/ibxm/
 /mcp/src/minecraft/paulscode/
-/mcp/src/minecraft/net/
+
 /mcp/src/minecraft/cpw/
 
