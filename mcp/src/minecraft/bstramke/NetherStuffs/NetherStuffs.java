@@ -58,7 +58,7 @@ import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
 import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
 import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
 import bstramke.NetherStuffs.SoulEngine.SoulEngineFuel;
-import bstramke.NetherStuffs.SoulEngine.TileEngine;
+import bstramke.NetherStuffs.SoulEngine.TileSoulEngine;
 import bstramke.NetherStuffs.SoulFurnace.TileSoulFurnace;
 import bstramke.NetherStuffs.SoulSiphon.TileSoulSiphon;
 import bstramke.NetherStuffs.SoulWorkBench.TileSoulWorkBench;
@@ -353,7 +353,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerTileEntity(TileSoulBlocker.class, "tileEntityNetherStuffsSoulBlocker");
 		GameRegistry.registerTileEntity(TileSoulSiphon.class, "tileEntityNetherStuffsSoulSiphon");
 		GameRegistry.registerTileEntity(TileNetherWoodPuddle.class, "tileEntityNetherWood");
-		GameRegistry.registerTileEntity(TileEngine.class, "tileEntitySoulEnergyEngine");
+		GameRegistry.registerTileEntity(TileSoulEngine.class, "tileEntitySoulEnergyEngine");
 		
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
@@ -362,8 +362,7 @@ public class NetherStuffs extends DummyModContainer {
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
 
 		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, 1));
-		
-		SoulEngineFuel.fuels.add(new SoulEngineFuel(LiquidDictionary.getLiquid("SoulEnergy", LiquidContainerRegistry.BUCKET_VOLUME), 1, 20000));
+		SoulEngineFuel.fuels.add(new SoulEngineFuel(SoulEnergyLiquid, 1, 20000));
 
 		registerWorldGenerators();
 		initRecipes();
@@ -765,6 +764,7 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulWorkBench.name", "Soul Workbench");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlass.name", "Soul Glass");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlassPane.name", "Soul Glass Pane");
+		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulEngine.name", "Soul Engine");
 
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulBomb.NetherSoulBomb.name", "Soul Bomb");
 

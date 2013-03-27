@@ -10,9 +10,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class NetherTriggerEngineHeat extends NetherBCTriggers {
 
-	public TileEngine.EnergyStage stage;
+	public TileSoulEngine.EnergyStage stage;
 
-	public NetherTriggerEngineHeat(int id, TileEngine.EnergyStage stage) {
+	public NetherTriggerEngineHeat(int id, TileSoulEngine.EnergyStage stage) {
 		super(id);
 
 		this.stage = stage;
@@ -34,8 +34,8 @@ public class NetherTriggerEngineHeat extends NetherBCTriggers {
 
 	@Override
 	public boolean isTriggerActive(ForgeDirection side, TileEntity tile, ITriggerParameter parameter) {
-		if (tile instanceof TileEngine) {
-			return tile != null && ((TileEngine)tile).getEnergyStage() == stage;
+		if (tile instanceof TileSoulEngine) {
+			return tile != null && ((TileSoulEngine)tile).getEnergyStage() == stage;
 		}
 		return false;
 	}

@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Client.RenderSoulEngine;
-import bstramke.NetherStuffs.SoulEngine.TileEngine;
+import bstramke.NetherStuffs.SoulEngine.TileSoulEngine;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -23,7 +23,7 @@ public class SoulEngine extends BlockContainer {
 
 	protected SoulEngine(int par1) {
 		super(par1, Material.iron);
-		setCreativeTab(CreativeTabs.tabMisc);
+		setCreativeTab(NetherStuffs.tabNetherStuffs);
 	}
 	
 	@Override
@@ -50,32 +50,22 @@ public class SoulEngine extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World var1) {
-		return new TileEngine();
+		return new TileSoulEngine();
 	}
 
 	@Override
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if (tile instanceof TileEngine) {
-			return ForgeDirection.getOrientation(((TileEngine) tile).orientation).getOpposite() == side;
+		if (tile instanceof TileSoulEngine) {
+			return ForgeDirection.getOrientation(((TileSoulEngine) tile).orientation.ordinal()).getOpposite() == side;
 		}
 		return false;
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-		TileEngine engine = ((TileEngine) world.getBlockTileEntity(x, y, z));
-
-		if (engine != null) {
-			engine.delete();
-		}
-		super.breakBlock(world, x, y, z, par5, par6);
-	}
-
-	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 
-		TileEngine tile = (TileEngine) world.getBlockTileEntity(i, j, k);
+		TileSoulEngine tile = (TileSoulEngine) world.getBlockTileEntity(i, j, k);
 
 		// Drop through if the player is sneaking
 		if (entityplayer.isSneaking())
@@ -84,7 +74,6 @@ public class SoulEngine extends BlockContainer {
 		// Switch orientation if whacked with a wrench.
 		Item equipped = entityplayer.getCurrentEquippedItem() != null ? entityplayer.getCurrentEquippedItem().getItem() : null;
 		if (equipped instanceof IToolWrench && ((IToolWrench) equipped).canWrench(entityplayer, i, j, k)) {
-
 			tile.switchOrientation();
 			((IToolWrench) equipped).wrenchUsed(entityplayer, i, j, k);
 			return true;
@@ -96,8 +85,8 @@ public class SoulEngine extends BlockContainer {
 
 	@Override
 	public void onPostBlockPlaced(World world, int x, int y, int z, int par5) {
-		TileEngine tile = (TileEngine) world.getBlockTileEntity(x, y, z);
-		tile.orientation = ForgeDirection.UP.ordinal();
+		TileSoulEngine tile = (TileSoulEngine) world.getBlockTileEntity(x, y, z);
+		tile.orientation = ForgeDirection.UP;
 		tile.switchOrientation();
 	}
 
@@ -109,7 +98,7 @@ public class SoulEngine extends BlockContainer {
 	@SuppressWarnings({ "all" })
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-		TileEngine tile = (TileEngine) world.getBlockTileEntity(i, j, k);
+		TileSoulEngine tile = (TileSoulEngine) world.getBlockTileEntity(i, j, k);
 
 		if (!tile.isBurning())
 			return;
@@ -128,7 +117,7 @@ public class SoulEngine extends BlockContainer {
 
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
-		TileEngine tile = (TileEngine) world.getBlockTileEntity(i, j, k);
+		TileSoulEngine tile = (TileSoulEngine) world.getBlockTileEntity(i, j, k);
 
 		if (tile != null) {
 			tile.checkRedstonePower();

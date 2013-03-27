@@ -11,9 +11,9 @@ import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
 import bstramke.NetherStuffs.SoulDetector.ContainerSoulDetector;
 import bstramke.NetherStuffs.SoulDetector.GuiSoulDetector;
 import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
-import bstramke.NetherStuffs.SoulEngine.ContainerEngine;
-import bstramke.NetherStuffs.SoulEngine.GuiSoulEnergyEngine;
-import bstramke.NetherStuffs.SoulEngine.TileEngine;
+import bstramke.NetherStuffs.SoulEngine.ContainerSoulEngine;
+import bstramke.NetherStuffs.SoulEngine.GuiSoulEngine;
+import bstramke.NetherStuffs.SoulEngine.TileSoulEngine;
 import bstramke.NetherStuffs.SoulFurnace.ContainerSoulFurnace;
 import bstramke.NetherStuffs.SoulFurnace.GuiSoulFurnace;
 import bstramke.NetherStuffs.SoulFurnace.TileSoulFurnace;
@@ -44,8 +44,8 @@ public class GuiHandler implements IGuiHandler {
 			return new ContainerSoulBlocker();
 		} else if (tile_entity instanceof TileSoulSiphon) {
 			return new ContainerSoulSiphon((TileSoulSiphon) tile_entity, player.inventory);
-		} else if (tile_entity instanceof TileEngine) {
-			return new ContainerEngine((TileEngine) tile_entity, player.inventory);
+		} else if (tile_entity instanceof TileSoulEngine) {
+			return new ContainerSoulEngine((TileSoulEngine) tile_entity, player.inventory);
 		}
 
 		return null;
@@ -66,8 +66,8 @@ public class GuiHandler implements IGuiHandler {
 			return new GuiSoulDetector((TileSoulDetector) tile_entity, player);
 		} else if (tile_entity instanceof TileSoulSiphon) {
 			return new GuiSoulSiphon(player.inventory, (TileSoulSiphon) tile_entity);
-		} else if (tile_entity instanceof TileEngine) {
-			return new GuiSoulEnergyEngine(player.inventory, (TileEngine) tile_entity);
+		} else if (tile_entity instanceof TileSoulEngine) {
+			return new GuiSoulEngine(player.inventory, (TileSoulEngine) tile_entity);
 		}
 
 		return null;

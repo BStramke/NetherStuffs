@@ -16,12 +16,12 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerEngine extends Container {
+public class ContainerSoulEngine extends Container {
 
 	private int inventorySize = 1;
-	protected TileEngine engine;
+	protected TileSoulEngine engine;
 
-	public ContainerEngine(TileEngine tileEngine, InventoryPlayer inventoryplayer) {
+	public ContainerSoulEngine(TileSoulEngine tileEngine, InventoryPlayer inventoryplayer) {
 
 		engine = tileEngine;
 

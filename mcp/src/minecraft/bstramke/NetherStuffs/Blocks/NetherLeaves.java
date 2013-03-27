@@ -188,7 +188,6 @@ public class NetherLeaves extends Block implements IShearable {
 				fx = new EntityDropParticleFXNetherStuffs(par1World, var6, var8, var10, "death");
 				break;
 			default:
-				System.out.println(metadata);
 				// par1World.spawnParticle("dripLava", var6, var8, var10, 0.0D, 0.0D, 0.0D);
 				break;
 			}

@@ -21,13 +21,11 @@ import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import bstramke.NetherStuffs.Common.CommonProxy;
+import bstramke.NetherStuffs.SoulEngine.TileSoulEngine;
+import bstramke.NetherStuffs.SoulEngine.TileSoulEngine.EnergyStage;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-
-import bstramke.NetherStuffs.Common.CommonProxy;
-import bstramke.NetherStuffs.SoulEngine.Engine;
-import bstramke.NetherStuffs.SoulEngine.Engine.EnergyStage;
-import bstramke.NetherStuffs.SoulEngine.TileEngine;
 
 public class RenderSoulEngine extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
@@ -86,11 +84,8 @@ public class RenderSoulEngine extends TileEntitySpecialRenderer implements ISimp
 
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
-
-		Engine engine = ((TileEngine) tileentity).getEngine();
-
-		if (engine != null) {
-			render(engine.getEnergyStage(), engine.progress, engine.orientation, engine.getTextureFile(), x, y, z);
+		if (tileentity != null && tileentity instanceof TileSoulEngine) {
+			render(((TileSoulEngine) tileentity).getEnergyStage(), ((TileSoulEngine) tileentity).progress, ((TileSoulEngine) tileentity).orientation, ((TileSoulEngine) tileentity).getTextureFile(), x, y, z);
 		}
 	}
 

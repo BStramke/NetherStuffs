@@ -12,11 +12,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 
-public class GuiSoulEnergyEngine extends GuiContainer{
+public class GuiSoulEngine extends GuiContainer{
 
-	private TileEngine tile;
-	public GuiSoulEnergyEngine(InventoryPlayer inventoryplayer, TileEngine tileEngine) {
-		super(new ContainerEngine(tileEngine, inventoryplayer));
+	private TileSoulEngine tile;
+	public GuiSoulEngine(InventoryPlayer inventoryplayer, TileSoulEngine tileEngine) {
+		super(new ContainerSoulEngine(tileEngine, inventoryplayer));
 		tile = tileEngine;
 	}
 
@@ -43,10 +43,10 @@ public class GuiSoulEnergyEngine extends GuiContainer{
 		int var6 = (this.height - this.ySize) / 2;
 		drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
-		TileEngine engine = tile;
+		TileSoulEngine engine = tile;
 
-		int nBottomLeftY = var6 + 69;
-		int nFillState = 58;// = engine.getScaledBurnTime(58);
+		int nBottomLeftY = var6 + 75;
+		int nFillState = engine.getScaledBurnTime(58);
 		
 		this.mc.renderEngine.bindTexture("/gui/items.png");
 		Icon LiquidIcon = NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0);
@@ -60,6 +60,9 @@ public class GuiSoulEnergyEngine extends GuiContainer{
 			nFillState -= y;
 			drawTexturedModelRectFromIcon(var5 + 104, nBottomLeftY-y-nFillState, LiquidIcon, 16, nFillState);
 		}
+		
+		mc.renderEngine.bindTexture(CommonProxy.SOULENERGYENGINE_PNG);
+		drawTexturedModalRect(var5 + 104, var6+19, 176, 0, 16, 60);
 	}
 	
 	@Override
@@ -68,9 +71,9 @@ public class GuiSoulEnergyEngine extends GuiContainer{
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 
-		if (par1 > var5 + 9 && par1 < var5 + 9 + 21 && par2 > var6 + 68 - 32 && par2 < var6 + 68) {
+		if (par1 > var5 + 104 && par1 < var5 + 104 + 16 && par2 > var6 + 75 - 58 && par2 < var6 + 75) {
 			ItemStack par1ItemStack = NetherStuffs.SoulEnergyLiquid.asItemStack().copy();
-			par1ItemStack.setItemDamage(tile.getMaxLiquid());
+			par1ItemStack.setItemDamage(tile.MAX_LIQUID);
 			par1ItemStack.stackSize = this.tile.getCurrentTankLevel();
 			drawItemStackTooltip(par1ItemStack, par1, par2);
 		}
