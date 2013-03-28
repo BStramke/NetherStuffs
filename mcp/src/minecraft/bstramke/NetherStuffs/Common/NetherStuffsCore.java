@@ -1,5 +1,8 @@
 package bstramke.NetherStuffs.Common;
 
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.util.Icon;
+import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.SoulEngine.NetherBCTriggers;
 import bstramke.NetherStuffs.SoulEngine.NetherTriggerEngineHeat;
 import bstramke.NetherStuffs.SoulEngine.NetherTriggerLiquidContainer;
@@ -7,6 +10,8 @@ import bstramke.NetherStuffs.SoulEngine.TileSoulEngine;
 import buildcraft.api.core.IIconProvider;
 
 public class NetherStuffsCore {
+	public static Icon icoEnergy;
+	
 	public static NetherStuffsCore instance = new NetherStuffsCore();
 	
 	public static IIconProvider actionTriggerIconProvider = new ActionTriggerIconProvider();
@@ -19,4 +24,10 @@ public class NetherStuffsCore {
 	public static NetherBCTriggers triggerContainsLiquid = new NetherTriggerLiquidContainer(ActionTriggerIconProvider.Trigger_LiquidContainer_Contains, NetherTriggerLiquidContainer.State.Contains);
 	public static NetherBCTriggers triggerSpaceLiquid = new NetherTriggerLiquidContainer(ActionTriggerIconProvider.Trigger_LiquidContainer_Space, NetherTriggerLiquidContainer.State.Space);
 	public static NetherBCTriggers triggerFullLiquid = new NetherTriggerLiquidContainer(ActionTriggerIconProvider.Trigger_LiquidContainer_Full, NetherTriggerLiquidContainer.State.Full);
+	
+	public void registerItemIcons(IconRegister iconRegister) {
+		if(NetherStuffs.bBuildcraftAvailable)
+			icoEnergy = iconRegister.registerIcon("buildcraft:icons/energy");
+		
+	}
 }

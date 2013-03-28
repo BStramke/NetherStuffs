@@ -54,7 +54,6 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	}
 
 	public TileSoulEngine() {
-		
 		fuelTank = new LiquidTank(MAX_LIQUID);
 	}
 
@@ -200,6 +199,11 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		}
 
 		burnTime = nbttagcompound.getInteger("burnTime");
+		if (nbttagcompound.hasKey("serverPistonSpeed")) 
+			serverPistonSpeed = nbttagcompound.getFloat("serverPistonSpeed");
+		
+		if (nbttagcompound.hasKey("isActive")) 
+			isActive = nbttagcompound.getBoolean("isActive");
 
 		heat = nbttagcompound.getInteger("heat");
 		penaltyCooling = nbttagcompound.getInteger("penaltyCooling");
@@ -208,11 +212,10 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 			NBTTagCompound cpt = nbttagcompound.getCompoundTag("itemInInventory");
 			itemInInventory = ItemStack.loadItemStackFromNBT(cpt);
 		}
-
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
+	public void writeToNBT(NBTTagCompound nbttagcompound) {	
 		super.writeToNBT(nbttagcompound);
 				
 		nbttagcompound.setInteger("orientation", orientation.ordinal());
@@ -716,6 +719,11 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public Packet getDescriptionPacket() {
 		NBTTagCompound var1 = new NBTTagCompound();
 		this.writeToNBT(var1);
+		if(!worldObj.isRemote)
+		{
+			var1.setFloat("serverPistonSpeed", serverPistonSpeed);
+			var1.setBoolean("isActive", isActive);
+		}
 		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, var1);
 	}
 }

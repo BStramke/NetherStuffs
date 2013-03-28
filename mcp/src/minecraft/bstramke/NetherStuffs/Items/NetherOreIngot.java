@@ -31,7 +31,10 @@ public class NetherOreIngot extends Item {
 	public void updateIcons(IconRegister iconRegister)
 	{
 		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("IngotDemonic"));
-		NetherStuffsCore.instance.actionTriggerIconProvider.registerIcons(iconRegister);
+		if(NetherStuffs.bBuildcraftAvailable)
+			NetherStuffsCore.instance.actionTriggerIconProvider.registerIcons(iconRegister);
+		//the lower one might stay
+		NetherStuffsCore.instance.registerItemIcons(iconRegister);
 	}
 	
 	@Override

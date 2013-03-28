@@ -39,6 +39,7 @@ import bstramke.NetherStuffs.Blocks.SoulBlockerItemBlock;
 import bstramke.NetherStuffs.Blocks.SoulBombItemBlock;
 import bstramke.NetherStuffs.Blocks.SoulDetector;
 import bstramke.NetherStuffs.Blocks.SoulDetectorItemBlock;
+import bstramke.NetherStuffs.Blocks.SoulEngine;
 import bstramke.NetherStuffs.Blocks.SoulSiphon;
 import bstramke.NetherStuffs.Blocks.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Client.ClientPacketHandler;
@@ -67,6 +68,7 @@ import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -93,6 +95,8 @@ public class NetherStuffs extends DummyModContainer {
 
 	@SidedProxy(clientSide = "bstramke.NetherStuffs.Client.ClientProxy", serverSide = "bstramke.NetherStuffs.Common.CommonProxy")
 	public static CommonProxy proxy;
+	
+	public static boolean bBuildcraftAvailable = false;
 
 	public static boolean ShowOreDistributions = false;
 	public static boolean DevSetCoreModAvailable = false;
@@ -289,18 +293,27 @@ public class NetherStuffs extends DummyModContainer {
 		}
 	}
 
+	private void initBuildcraftStuff()
+	{
+		Block SoulEngine = new SoulEngine(NetherStuffs.SoulEngineBlockId).setUnlocalizedName("NetherSoulEngine").setHardness(0.5F).setResistance(5.0F);
+		GameRegistry.registerBlock(SoulEngine, "SoulEngine");
+		SoulEngineFuel.fuels.add(new SoulEngineFuel(SoulEnergyLiquid, 1, 20000));
+		GameRegistry.registerTileEntity(TileSoulEngine.class, "tileEntitySoulEnergyEngine");
+	}
+	
 	@Init
 	public void load(FMLInitializationEvent event) {
 		// LiquidContainerData data = new LiquidContainerData(NetherItems.SoulEnergyLiquid, null, NetherStuffs.SoulSiphon.ContainerSoulSiphon);
 		// LiquidContainerRegistry.registerLiquid(data);
 
+		bBuildcraftAvailable = Loader.isModLoaded("BuildCraft|Core") && Loader.isModLoaded("BuildCraft|Energy");
+				
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulGlass, "NetherSoulGlass");
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulGlassPane, "NetherSoulGlassPane");
 		GameRegistry.registerBlock(NetherBlocks.NetherDemonicFurnace, "NetherDemonicFurnace");
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench, "NetherSoulWorkBench");
-		GameRegistry.registerBlock(NetherBlocks.SoulEngine, "SoulEngine");
-
+		
 		GameRegistry.registerBlock(NetherBlocks.netherOre, NetherOreItemBlock.class, "NetherOreItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherWood, NetherWoodItemBlock.class, "NetherWoodItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherPlank, NetherPlankItemBlock.class, "NetherPlankItemBlock");
@@ -353,7 +366,6 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerTileEntity(TileSoulBlocker.class, "tileEntityNetherStuffsSoulBlocker");
 		GameRegistry.registerTileEntity(TileSoulSiphon.class, "tileEntityNetherStuffsSoulSiphon");
 		GameRegistry.registerTileEntity(TileNetherWoodPuddle.class, "tileEntityNetherWood");
-		GameRegistry.registerTileEntity(TileSoulEngine.class, "tileEntitySoulEnergyEngine");
 		
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
@@ -362,8 +374,7 @@ public class NetherStuffs extends DummyModContainer {
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
 
 		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, 1));
-		SoulEngineFuel.fuels.add(new SoulEngineFuel(SoulEnergyLiquid, 1, 20000));
-
+		
 		registerWorldGenerators();
 		initRecipes();
 
@@ -456,6 +467,9 @@ public class NetherStuffs extends DummyModContainer {
 		
 		// ThaumcraftApi.registerObjectTag(NetherItems.NetherWoodStick, -1, (new ObjectTags()).add(EnumTag.WOOD, 1).add())
 
+		
+		if(bBuildcraftAvailable)
+			initBuildcraftStuff();
 	}
 
 	private void registerWorldGenerators() {
@@ -764,8 +778,6 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulWorkBench.name", "Soul Workbench");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlass.name", "Soul Glass");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlassPane.name", "Soul Glass Pane");
-		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulEngine.name", "Soul Engine");
-
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulBomb.NetherSoulBomb.name", "Soul Bomb");
 
 		// LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name", "Nether Charcoal");
@@ -775,6 +787,9 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("item.SoulEnergyLiquidItem.name", "Soul Energy Liquid");
 		
 		LanguageRegistry.instance().addStringLocalization("itemGroup.tabNetherStuffs", "en_US", "NetherStuffs");
+		
+		if(bBuildcraftAvailable)
+			LanguageRegistry.instance().addStringLocalization("tile.NetherSoulEngine.name", "Soul Engine");
 	}
 
 	@PostInit

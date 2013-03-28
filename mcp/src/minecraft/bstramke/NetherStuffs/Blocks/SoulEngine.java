@@ -21,7 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class SoulEngine extends BlockContainer {
 
-	protected SoulEngine(int par1) {
+	public SoulEngine(int par1) {
 		super(par1, Material.iron);
 		setCreativeTab(NetherStuffs.tabNetherStuffs);
 	}
