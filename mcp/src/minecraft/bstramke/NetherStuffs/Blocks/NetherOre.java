@@ -61,6 +61,8 @@ public class NetherOre extends Block {
 		icoNetherOreOverlay[netherOreObsidian] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Obsidian"));
 		icoNetherOreOverlay[netherOreLapis] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Lapis"));
 		icoNetherOreOverlay[netherOreCobblestone] = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherOre_Cobblestone"));
+		
+		blockIcon = icoNetherOre;
 	}
 
 	public Icon getIconOreOverlay(int meta)

@@ -36,7 +36,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, -1.0F, 0.0F);
 			var4.setBrightness(15);
-			renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
+			renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
 		}
 
 		var4.draw();
@@ -49,7 +49,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, 1.0F, 0.0F);
 			var4.setBrightness(15);
-			renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
+			renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
 		}
 		var4.draw();
 
@@ -61,7 +61,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, 0.0F, -1.0F);
 			var4.setBrightness(15);
-			renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
+			renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
 		}
 		var4.draw();
 		var4.startDrawingQuads();
@@ -72,7 +72,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.startDrawingQuads();
 			var4.setNormal(0.0F, 0.0F, 1.0F);
 			var4.setBrightness(15);
-			renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
+			renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
 		}
 		var4.draw();
 		var4.startDrawingQuads();
@@ -83,7 +83,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.startDrawingQuads();
 			var4.setNormal(-1.0F, 0.0F, 0.0F);
 			var4.setBrightness(15);
-			renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
+			renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
 		}
 		var4.draw();
 		var4.startDrawingQuads();
@@ -94,7 +94,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 			var4.startDrawingQuads();
 			var4.setNormal(1.0F, 0.0F, 0.0F);
 			var4.setBrightness(15);
-			renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre)par1Block).getIconOreOverlay(metadata));
+			renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
 		}
 		var4.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
@@ -107,17 +107,23 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 		if (nMetadata != NetherOre.netherStone) {
 			Tessellator var8 = Tessellator.instance;
 
-			//renderer.enableAO = false;
-			//renderer.aoType = 0;
+			// renderer.enableAO = false;
+			// renderer.aoType = 0;
 			var8.setBrightness(1024);
 			var8.setColorOpaque_F(1.0F, 1.0F, 1.0F);
-			
-			renderer.renderWestFace(block, x, y, z, ((NetherOre)block).getIconOreOverlay(nMetadata));
-			renderer.renderEastFace(block, x, y, z, ((NetherOre)block).getIconOreOverlay(nMetadata));
-			renderer.renderNorthFace(block, x, y, z, ((NetherOre)block).getIconOreOverlay(nMetadata));
-			renderer.renderSouthFace(block, x, y, z, ((NetherOre)block).getIconOreOverlay(nMetadata));
-			renderer.renderTopFace(block, x, y, z, ((NetherOre)block).getIconOreOverlay(nMetadata));
-			renderer.renderBottomFace(block, x, y, z, ((NetherOre)block).getIconOreOverlay(nMetadata));
+
+			if (block.shouldSideBeRendered(iBlockAccess, x, y - 1, z, 0))
+				renderer.renderBottomFace(block, x, y, z, ((NetherOre) block).getIconOreOverlay(nMetadata));
+			if (block.shouldSideBeRendered(iBlockAccess, x, y + 1, z, 1))
+				renderer.renderTopFace(block, x, y, z, ((NetherOre) block).getIconOreOverlay(nMetadata));
+			if (block.shouldSideBeRendered(iBlockAccess, x, y, z + 1, 3))
+				renderer.renderWestFace(block, x, y, z, ((NetherOre) block).getIconOreOverlay(nMetadata));
+			if (block.shouldSideBeRendered(iBlockAccess, x, y, z - 1, 2))
+				renderer.renderEastFace(block, x, y, z, ((NetherOre) block).getIconOreOverlay(nMetadata));
+			if (block.shouldSideBeRendered(iBlockAccess, x - 1, y, z, 4))
+				renderer.renderNorthFace(block, x, y, z, ((NetherOre) block).getIconOreOverlay(nMetadata));
+			if (block.shouldSideBeRendered(iBlockAccess, x + 1, y, z, 5))
+				renderer.renderSouthFace(block, x, y, z, ((NetherOre) block).getIconOreOverlay(nMetadata));
 		}
 		return true;
 	}
