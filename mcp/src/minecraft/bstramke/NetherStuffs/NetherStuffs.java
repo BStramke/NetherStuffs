@@ -297,7 +297,7 @@ public class NetherStuffs extends DummyModContainer {
 	{
 		Block SoulEngine = new SoulEngine(NetherStuffs.SoulEngineBlockId).setUnlocalizedName("NetherSoulEngine").setHardness(0.5F).setResistance(5.0F);
 		GameRegistry.registerBlock(SoulEngine, "SoulEngine");
-		SoulEngineFuel.fuels.add(new SoulEngineFuel(SoulEnergyLiquid, 1, 20000));
+		SoulEngineFuel.fuels.add(new SoulEngineFuel(SoulEnergyLiquid, 1, 10000));
 		GameRegistry.registerTileEntity(TileSoulEngine.class, "tileEntitySoulEnergyEngine");
 	}
 	

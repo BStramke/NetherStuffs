@@ -436,7 +436,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public int penaltyCooling = 0;
 
 	public String getTextureFile() {
-		return CommonProxy.GFXFOLDERPREFIX + "base_wood.png";
+		return CommonProxy.GFXFOLDERPREFIX + "base_soulengine.png";
 	}
 
 	public int minEnergyReceived() {
@@ -541,8 +541,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 				}
 				if (burnTime <= 0) {
 					if (fuel != null) {
-						fuel.amount -= 10;// original just -1
-						if (fuel.amount <= 0) {
+						if (--fuel.amount <= 0) {
 							fuelTank.setLiquid(null);
 						}
 						burnTime = currentFuel.totalBurningTime / LiquidContainerRegistry.BUCKET_VOLUME;
