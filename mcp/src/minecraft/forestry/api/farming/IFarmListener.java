@@ -15,12 +15,19 @@ public interface IFarmListener {
 	boolean beforeCropHarvest(ICrop crop);
 	
 	/**
-	 * Called after a crop was harvested, but before the result is added to the farm's inventory.
-	 * @param harvested Harvested itemstack.
-	 * @return true to prevent the farm from storing the crop.
+	 * Called after a crop has been harvested, but before harvested items are stowed in the farms inventory.
+	 * @param harvested Collection of harvested stacks. May be manipulated. Ensure removal of stacks with 0 or less items!
+	 * @param crop Harvested {@link ICrop}
 	 */
-	boolean beforeProduceStowing(ItemStack produce);
-	
+	void afterCropHarvest(Collection<ItemStack> harvested, ICrop crop);
+		
+	/**
+	 * Called after the stack of collected items has been returned by the farm logic, but before it is added to the farm's pending queue.
+	 * @param collected Collection of collected stacks. May be manipulated. Ensure removal of stacks with 0 or less items!
+	 * @param logic
+	 */
+	void hasCollected(Collection<ItemStack> collected, IFarmLogic logic);
+
 	/**
 	 * Called after farmland has successfully been cultivated by a farm logic.
 	 * @param logic
@@ -42,13 +49,13 @@ public interface IFarmListener {
 	 * @param direction
 	 * @param extent
 	 */
-	void hasHarvested(Collection<ICrop> harvested, IFarmLogic logic, int x, int y, int z, ForgeDirection direction, int extent);
+	void hasScheduledHarvest(Collection<ICrop> harvested, IFarmLogic logic, int x, int y, int z, ForgeDirection direction, int extent);
 	
 	/**
-	 * Called after the stack of collected items has been returned by the farm logic, but before it is added to the farm's pending queue.
-	 * @param collected
+	 * Can be used to cancel farm task on a per side/{@link IFarmLogic} basis. 
 	 * @param logic
+	 * @param direction
+	 * @return true to skip any work action on the given logic and direction for this work cycle.
 	 */
-	void hasCollected(Collection<ItemStack> collected, IFarmLogic logic);
-	
+	boolean cancelTask(IFarmLogic logic, ForgeDirection direction);
 }

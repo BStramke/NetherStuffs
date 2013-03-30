@@ -1,5 +1,8 @@
 package forestry.api.genetics;
 
+/**
+ * Used by the *alyzers to display hierarchies. 
+ */
 public interface IClassification {
 	
 	public enum EnumClassLevel {

@@ -13,7 +13,7 @@ public interface IFarmable {
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return true if the block at the given location is a "sapling" for this type.
+	 * @return true if the block at the given location is a "sapling" for this type, i.e. a non-harvestable immature version of the crop.
 	 */
 	boolean isSaplingAt(World world, int x, int y, int z);
 	
@@ -22,7 +22,7 @@ public interface IFarmable {
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return {@link ICrop} if the block at the given location is a harvestable crop, null otherwise.
+	 * @return {@link ICrop} if the block at the given location is a harvestable and mature crop, null otherwise.
 	 */
 	ICrop getCropAt(World world, int x, int y, int z);
 

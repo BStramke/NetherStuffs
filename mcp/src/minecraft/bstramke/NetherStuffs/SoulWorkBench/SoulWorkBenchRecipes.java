@@ -20,7 +20,7 @@ import bstramke.NetherStuffs.Items.NetherItems;
 import cpw.mods.fml.common.Loader;
 
 public class SoulWorkBenchRecipes {
-	private static final SoulWorkBenchRecipes instance = new SoulWorkBenchRecipes();
+	public static final SoulWorkBenchRecipes instance = new SoulWorkBenchRecipes();
 	private List recipes = new ArrayList();
 	public static int nSoulEnergyRequired = 0;
 
@@ -47,7 +47,7 @@ public class SoulWorkBenchRecipes {
 
 		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulFurnace, 1), 300, new Object[] { "IBI", "IFI", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'F',
 				new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1) });
-
+		
 		//field_94583_ca = netherquartz item
 		this.addRecipe(new ItemStack(Item.field_94583_ca), 100, new Object[] { "BB", "BB", 'B', new ItemStack(Block.sandStone) });
 

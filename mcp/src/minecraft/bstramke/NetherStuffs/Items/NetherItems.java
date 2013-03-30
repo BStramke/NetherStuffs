@@ -18,7 +18,7 @@ public class NetherItems {
 
 	public static final Item SoulEnergyBottle = new SoulEnergyBottle(NetherStuffs.SoulEnergyBottleItemId).setUnlocalizedName("SoulEnergyBottle");
 
-	public static final Item NetherOreIngot = new NetherOreIngot(NetherStuffs.NetherOreIngotItemId).setUnlocalizedName("NetherOreIngot");
+	public static final Item NetherOreIngot = new NetherOreIngot(NetherStuffs.NetherOreIngotItemId).setUnlocalizedName("NetherOreIngot");	
 
 	public static final Item NetherDemonicBarHandle = new NetherDemonicBarHandle(NetherStuffs.NetherDemonicBarHandleItemId).setUnlocalizedName("NetherDemonicBarHandle");
 	public static final Item NetherWoodStick = new NetherWoodStick(NetherStuffs.NetherWoodStickItemId).setUnlocalizedName("NetherWoodStick");

@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Client.RenderSoulEngine;
+import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.SoulEngine.TileSoulEngine;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.FMLNetworkHandler;
@@ -34,7 +35,7 @@ public class SoulEngine extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister) {
-		super.registerIcons(par1IconRegister);
+		//there should not be an icon here. thats on purpose
 	}
 	
 	@Override

@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import forestry.api.apiculture.IBreedingManager;
 
 /**
- * Can be used to garner information on bee breeding and to register new bees. See {@link IBreedingManager}
+ * Can be used to garner information on bee breeding. See {@link IBreedingManager}
  * 
  * @author SirSengir
  */
@@ -15,29 +15,65 @@ public interface IApiaristTracker {
 
 	void encodeToNBT(NBTTagCompound nbttagcompound);
 
+	/**
+	 * @return Name of the current {@link IBeekeepingMode}.
+	 */
 	String getModeName();
 
+	/**
+	 * @return Set the current {@link IBeekeepingMode}.
+	 */
 	void setModeName(String name);
 
-	void registerQueen(IIndividual bee);
+	/**
+	 * Register the birth of a queen. Will mark species as discovered.
+	 * @param bee Created queen.
+	 */
+	void registerQueen(IIndividual queen);
 
+	/**
+	 * @return Amount of queens bred with this tracker.
+	 */
 	int getQueenCount();
 
-	void registerPrincess(IIndividual bee);
+	/**
+	 * Register the birth of a princess. Will mark species as discovered.
+	 * @param bee Created princess.
+	 */
+	void registerPrincess(IIndividual princess);
 
+	/**
+	 * @return Amount of princesses bred with this tracker.
+	 */
 	int getPrincessCount();
 
-	void registerDrone(IIndividual bee);
+	/**
+	 * Register the birth of a drone. Will mark species as discovered.
+	 * @param bee Created drone.
+	 */
+	void registerDrone(IIndividual drone);
 
+	/**
+	 * @return Amount of drones bred with this tracker.
+	 */
 	int getDroneCount();
 
 	/**
-	 * @return Integer denoting the amount of species discovered.
+	 * @return Amount of species discovered.
 	 */
 	int getSpeciesBred();
 
+	/**
+	 * Register a successful mutation. Will mark it as discovered.
+	 * @param mutation
+	 */
 	void registerMutation(IMutation mutation);
 
+	/**
+	 * Queries the tracker for discovered species.
+	 * @param mutation Mutation to query for.
+	 * @return true if the mutation has been discovered.
+	 */
 	boolean isDiscovered(IMutation mutation);
 
 	/**
@@ -48,7 +84,7 @@ public interface IApiaristTracker {
 	boolean isDiscovered(IAlleleSpecies species);
 
 	/**
-	 * Synchronizes the tracker to the client side. Should be called before opening the 
+	 * Synchronizes the tracker to the client side. Should be called before opening any gui needing that information.
 	 * @param world
 	 * @param player
 	 */

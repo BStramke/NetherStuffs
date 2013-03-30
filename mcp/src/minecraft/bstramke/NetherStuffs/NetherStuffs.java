@@ -9,12 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.src.ModLoader;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -43,13 +40,13 @@ import bstramke.NetherStuffs.Blocks.SoulEngine;
 import bstramke.NetherStuffs.Blocks.SoulSiphon;
 import bstramke.NetherStuffs.Blocks.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Client.ClientPacketHandler;
-import bstramke.NetherStuffs.Client.RenderSoulEngine;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.GuiHandler;
 import bstramke.NetherStuffs.Common.NetherStuffsFuel;
 import bstramke.NetherStuffs.Common.ServerPacketHandler;
 import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import bstramke.NetherStuffs.DemonicFurnace.TileDemonicFurnace;
+import bstramke.NetherStuffs.Items.NetherGear;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.NetherPotionBottle;
 import bstramke.NetherStuffs.Items.NetherStonePotionBowl;
@@ -62,10 +59,10 @@ import bstramke.NetherStuffs.SoulEngine.SoulEngineFuel;
 import bstramke.NetherStuffs.SoulEngine.TileSoulEngine;
 import bstramke.NetherStuffs.SoulFurnace.TileSoulFurnace;
 import bstramke.NetherStuffs.SoulSiphon.TileSoulSiphon;
+import bstramke.NetherStuffs.SoulWorkBench.SoulWorkBenchRecipes;
 import bstramke.NetherStuffs.SoulWorkBench.TileSoulWorkBench;
 import bstramke.NetherStuffs.WorldGen.WorldGenDefaultMinable;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
@@ -95,7 +92,7 @@ public class NetherStuffs extends DummyModContainer {
 
 	@SidedProxy(clientSide = "bstramke.NetherStuffs.Client.ClientProxy", serverSide = "bstramke.NetherStuffs.Common.CommonProxy")
 	public static CommonProxy proxy;
-	
+
 	public static boolean bBuildcraftAvailable = false;
 
 	public static boolean ShowOreDistributions = false;
@@ -113,7 +110,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static int SoulWorkBenchBlockId;
 	public static int NetherSoulBombBlockId;
 	public static int NetherWoodPuddleBlockId;
-	
+
 	public static int SoulEngineBlockId;
 
 	public static int NetherObsidianSwordAcidItemId;
@@ -142,7 +139,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherBowItemId;
 	public static int TorchArrowItemId;
 	public static int SoulEnergyLiquidItemId;
-	
+	public static int NetherGearItemId;
 
 	public static int NetherSoulDetectorBlockId;
 	public static int NetherSoulBlockerBlockId;
@@ -153,7 +150,7 @@ public class NetherStuffs extends DummyModContainer {
 	private static boolean IncreaseNetherrackHardness;
 	private static boolean SpawnBlazesNaturally;
 	public static boolean bShowCoreModMissingWarning;
-	
+
 	public static boolean bUseNetherOreDemonic;
 	public static boolean bUseNetherOreCoal;
 	public static boolean bUseNetherOreIron;
@@ -172,11 +169,11 @@ public class NetherStuffs extends DummyModContainer {
 	public static LiquidStack SoulEnergyLiquid;
 
 	public static CreativeTabs tabNetherStuffs = new CreativeTabs("tabNetherStuffs") {
-      public ItemStack getIconItemStack() {
-              return new ItemStack(NetherBlocks.netherSoulWorkBench, 1, 0);
-      }
+		public ItemStack getIconItemStack() {
+			return new ItemStack(NetherBlocks.netherSoulWorkBench, 1, 0);
+		}
 	};
-	
+
 	@PreInit
 	public void PreLoad(FMLPreInitializationEvent event) {
 		FMLLog.info("[NetherStuffs] PreLoad");
@@ -200,7 +197,7 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulSiphonBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulSiphon", 1244).getInt(1244);
 		NetherWoodPuddleBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "NetherWoodPuddles", 1246).getInt(1246);
 		SoulEngineBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulEngine", 1247).getInt(1247);
-		
+
 		NetherOreIngotItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherIngots", 5200).getInt(5200);
 		NetherDemonicBarHandleItemId = config.getItem(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5201).getInt(5201);
 		NetherObsidianSwordItemId = config.getItem(Configuration.CATEGORY_ITEM, "ObsidianSword", 5202).getInt(5202);
@@ -223,19 +220,22 @@ public class NetherStuffs extends DummyModContainer {
 		NetherDiamondSwordAcidItemId = config.getItem(Configuration.CATEGORY_ITEM, "DiamondSwordAcid", 5220).getInt(5220);
 		NetherDiamondSwordDeathItemId = config.getItem(Configuration.CATEGORY_ITEM, "DiamondSwordDeath", 5221).getInt(5221);
 
+		NetherGearItemId = config.getItem(Configuration.CATEGORY_ITEM, "Gears", 5222).getInt(5222);
+
 		NetherWoodCharcoalItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherWoodCharcoal", 5214).getInt(5214);
 		SoulEnergyBottleItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyPotion", 5215).getInt(5215);
 		NetherBowItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherBow", 5216).getInt(5216);
 		TorchArrowItemId = config.getItem(Configuration.CATEGORY_ITEM, "TorchArrow", 5217).getInt(5217);
 
-		// SoulEnergyLiquidId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyLiquidID", 5018).getInt();
+		// SoulEnergyLiquidId = config.getItem(Configuration.CATEGORY_ITEM,
+		// "SoulEnergyLiquidID", 5018).getInt();
 		SoulEnergyLiquidItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyLiquidItemID", 5218).getInt(5218);
 
 		SpawnSkeletonsAwayFromNetherFortresses = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsAwayFromNetherFortresses", true).getBoolean(true);
 		IncreaseNetherrackHardness = config.get(Configuration.CATEGORY_GENERAL, "IncreaseNetherrackHardness", true).getBoolean(true);
 		SpawnBlazesNaturally = config.get(Configuration.CATEGORY_GENERAL, "SpawnBlazesNaturally", false).getBoolean(false);
 		bShowCoreModMissingWarning = config.get(Configuration.CATEGORY_GENERAL, "ShowCoreModMissingWarning", true).getBoolean(true);
-		
+
 		bUseNetherOreDemonic = config.get("NetherOreGeneration", "Demonic", true).getBoolean(true);
 		bUseNetherOreCoal = config.get("NetherOreGeneration", "NetherCoal", true).getBoolean(true);
 		bUseNetherOreIron = config.get("NetherOreGeneration", "Iron", true).getBoolean(true);
@@ -247,7 +247,7 @@ public class NetherStuffs extends DummyModContainer {
 		bUseNetherOreLapis = config.get("NetherOreGeneration", "Lapis", true).getBoolean(true);
 		bUseNetherOreCobblestone = config.get("NetherOreGeneration", "Cobblestone", true).getBoolean(true);
 
-		//set and save 2 overrides for display purposes inside the config
+		// set and save 2 overrides for display purposes inside the config
 		bOverrideBlockBreakable = config.get(Configuration.CATEGORY_GENERAL, "OverrideBlockBreakableClass", true).getBoolean(true);
 		bOverrideBlockPane = config.get(Configuration.CATEGORY_GENERAL, "OverrideBlockPaneClass", true).getBoolean(true);
 		bOverrideChunk = config.get(Configuration.CATEGORY_GENERAL, "OverrideChunkClass", true).getBoolean(true);
@@ -266,9 +266,11 @@ public class NetherStuffs extends DummyModContainer {
 		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.stairsNetherBrick.blockID);
 		NetherStuffsEventHook.lAllowedSpawnNetherBlockIds.add(Block.gravel.blockID);
 
-		String tmpString = config.get(Configuration.CATEGORY_GENERAL, "BlockIDNetherSpawningBlacklist", NetherLeavesBlockId + "," + NetherSoulDetectorBlockId + ","
-				+ NetherSoulBlockerBlockId + "," + NetherSoulFurnaceBlockId + "," + SoulWorkBenchBlockId + "," + NetherDemonicFurnaceBlockId + "," + NetherSoulGlassBlockid + ","
-				+ NetherSoulGlassPaneBlockid + "," + NetherSoulBombBlockId).getString();
+		String tmpString = config.get(
+				Configuration.CATEGORY_GENERAL,
+				"BlockIDNetherSpawningBlacklist",
+				NetherLeavesBlockId + "," + NetherSoulDetectorBlockId + "," + NetherSoulBlockerBlockId + "," + NetherSoulFurnaceBlockId + "," + SoulWorkBenchBlockId + ","
+						+ NetherDemonicFurnaceBlockId + "," + NetherSoulGlassBlockid + "," + NetherSoulGlassPaneBlockid + "," + NetherSoulBombBlockId).getString();
 		String[] tmp = tmpString.split(",");
 		for (int i = 0; i < tmp.length; i++) {
 			int intVal = Integer.parseInt(tmp[i].trim());
@@ -278,7 +280,7 @@ public class NetherStuffs extends DummyModContainer {
 
 		FMLLog.info("[NetherStuffs] Blocked Nether Spawns on Block IDs: %s", NetherStuffsEventHook.lBlockSpawnListForced.toString());
 		config.save();
-		
+
 		if (ShowOreDistributions) {
 			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID + ":" + NetherOre.demonicOre), 1);
 			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID + ":" + NetherOre.netherOreCoal), 1);
@@ -293,27 +295,36 @@ public class NetherStuffs extends DummyModContainer {
 		}
 	}
 
-	private void initBuildcraftStuff()
-	{
+	private void initBuildcraftStuff() {
 		Block SoulEngine = new SoulEngine(NetherStuffs.SoulEngineBlockId).setUnlocalizedName("NetherSoulEngine").setHardness(0.5F).setResistance(5.0F);
+		Item NetherGear = new NetherGear(NetherGearItemId).setUnlocalizedName("NetherGear");
+
 		GameRegistry.registerBlock(SoulEngine, "SoulEngine");
-		SoulEngineFuel.fuels.add(new SoulEngineFuel(SoulEnergyLiquid, 1, 10000));
+		SoulEngineFuel.fuels.add(new SoulEngineFuel(SoulEnergyLiquid, 1, 10000)); //20000 = Lava
 		GameRegistry.registerTileEntity(TileSoulEngine.class, "tileEntitySoulEnergyEngine");
+
+		SoulWorkBenchRecipes.instance.addRecipe(new ItemStack(NetherGear, 1, 0), 50, " S ", "SIS", " S ", 'S', new ItemStack(NetherItems.NetherWoodStick, 1, 0), 'I', new ItemStack(
+				NetherItems.NetherOreIngot, 1, 0));
+		
+		SoulWorkBenchRecipes.instance.addRecipe(new ItemStack(SoulEngine, 1, 0), 250, new Object[] { "III", " S ", "GPG", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'S',
+				new ItemStack(NetherBlocks.NetherSoulGlass, 1, 0), 'G', new ItemStack(NetherGear, 1, 0), 'P', new ItemStack(Block.pistonBase, 1, 0) });
 	}
-	
+
 	@Init
 	public void load(FMLInitializationEvent event) {
-		// LiquidContainerData data = new LiquidContainerData(NetherItems.SoulEnergyLiquid, null, NetherStuffs.SoulSiphon.ContainerSoulSiphon);
+		// LiquidContainerData data = new
+		// LiquidContainerData(NetherItems.SoulEnergyLiquid, null,
+		// NetherStuffs.SoulSiphon.ContainerSoulSiphon);
 		// LiquidContainerRegistry.registerLiquid(data);
 
 		bBuildcraftAvailable = Loader.isModLoaded("BuildCraft|Core") && Loader.isModLoaded("BuildCraft|Energy");
-				
+
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulGlass, "NetherSoulGlass");
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulGlassPane, "NetherSoulGlassPane");
 		GameRegistry.registerBlock(NetherBlocks.NetherDemonicFurnace, "NetherDemonicFurnace");
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(NetherBlocks.netherSoulWorkBench, "NetherSoulWorkBench");
-		
+
 		GameRegistry.registerBlock(NetherBlocks.netherOre, NetherOreItemBlock.class, "NetherOreItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherWood, NetherWoodItemBlock.class, "NetherWoodItemBlock");
 		GameRegistry.registerBlock(NetherBlocks.netherPlank, NetherPlankItemBlock.class, "NetherPlankItemBlock");
@@ -366,7 +377,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerTileEntity(TileSoulBlocker.class, "tileEntityNetherStuffsSoulBlocker");
 		GameRegistry.registerTileEntity(TileSoulSiphon.class, "tileEntityNetherStuffsSoulSiphon");
 		GameRegistry.registerTileEntity(TileNetherWoodPuddle.class, "tileEntityNetherWood");
-		
+
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
 
@@ -374,7 +385,7 @@ public class NetherStuffs extends DummyModContainer {
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
 
 		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, 1));
-		
+
 		registerWorldGenerators();
 		initRecipes();
 
@@ -411,7 +422,8 @@ public class NetherStuffs extends DummyModContainer {
 				(new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1).add(EnumTag.VALUABLE, 4));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreEmerald,
 				(new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1).add(EnumTag.VALUABLE, 2));
-		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreRedstone, (new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1).add(EnumTag.POWER, 1).add(EnumTag.MECHANISM, 1));
+		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreRedstone,
+				(new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1).add(EnumTag.POWER, 1).add(EnumTag.MECHANISM, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreObsidian,
 				(new ObjectTags()).add(EnumTag.ROCK, 5).add(EnumTag.DESTRUCTION, 1).add(EnumTag.DARK, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherOre.blockID, NetherOre.netherOreLapis,
@@ -421,18 +433,19 @@ public class NetherStuffs extends DummyModContainer {
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherWood.blockID, NetherWood.hellfire, (new ObjectTags()).add(EnumTag.FIRE, 4).add(EnumTag.WOOD, 8).add(EnumTag.EVIL, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherWood.blockID, NetherWood.death, (new ObjectTags()).add(EnumTag.DEATH, 4).add(EnumTag.WOOD, 8).add(EnumTag.EVIL, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherWood.blockID, NetherWood.acid, (new ObjectTags()).add(EnumTag.POISON, 4).add(EnumTag.WOOD, 8).add(EnumTag.EVIL, 1));
-		
-		//ThaumcraftApi.registerObjectTag(NetherBlocks.NetherSoulGlass, -1, (new ObjectTags()).add(EnumTag.CRYSTAL, 2).add(EnumTag.POWER, 1);
+
+		// ThaumcraftApi.registerObjectTag(NetherBlocks.NetherSoulGlass, -1,
+		// (new ObjectTags()).add(EnumTag.CRYSTAL, 2).add(EnumTag.POWER, 1);
 		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulGlass.blockID, -1, (new ObjectTags()).add(EnumTag.CRYSTAL, 3).add(EnumTag.SPIRIT, 1));
 		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulGlassPane.blockID, -1, (new ObjectTags()).add(EnumTag.CRYSTAL, 1));
-		
+
 		ThaumcraftApi
 				.registerObjectTag(NetherBlocks.netherSapling.blockID, NetherSapling.hellfire, (new ObjectTags()).add(EnumTag.FIRE, 1).add(EnumTag.WOOD, 2).add(EnumTag.EVIL, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherSapling.blockID, NetherSapling.death, (new ObjectTags()).add(EnumTag.DEATH, 1).add(EnumTag.WOOD, 2).add(EnumTag.EVIL, 1));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.netherSapling.blockID, NetherSapling.acid, (new ObjectTags()).add(EnumTag.POISON, 1).add(EnumTag.WOOD, 2).add(EnumTag.EVIL, 1));
 
 		ThaumcraftApi.registerComplexObjectTag(NetherItems.NetherOreIngot.itemID, -1, (new ObjectTags()).add(EnumTag.EVIL, 1).add(EnumTag.METAL, 4).add(EnumTag.FLUX, 1));
-		
+
 		ThaumcraftApi.registerObjectTag(NetherItems.NetherStonePotionBowl.itemID, 0, (new ObjectTags()).add(EnumTag.EVIL, 1).add(EnumTag.FIRE, 5));
 		ThaumcraftApi.registerObjectTag(NetherItems.NetherStonePotionBowl.itemID, 1, (new ObjectTags()).add(EnumTag.EVIL, 1).add(EnumTag.POISON, 5));
 		ThaumcraftApi.registerObjectTag(NetherItems.NetherStonePotionBowl.itemID, 2, (new ObjectTags()).add(EnumTag.EVIL, 1).add(EnumTag.DEATH, 5));
@@ -440,63 +453,72 @@ public class NetherStuffs extends DummyModContainer {
 		ThaumcraftApi.registerObjectTag(NetherItems.NetherPotionBottle.itemID, NetherPotionBottle.hellfire, (new ObjectTags()).add(EnumTag.EVIL, 2).add(EnumTag.FIRE, 10));
 		ThaumcraftApi.registerObjectTag(NetherItems.NetherPotionBottle.itemID, NetherPotionBottle.acid, (new ObjectTags()).add(EnumTag.EVIL, 2).add(EnumTag.POISON, 10));
 		ThaumcraftApi.registerObjectTag(NetherItems.NetherPotionBottle.itemID, NetherPotionBottle.death, (new ObjectTags()).add(EnumTag.EVIL, 2).add(EnumTag.DEATH, 10));
-		
-		ThaumcraftApi.registerObjectTag(NetherItems.SoulEnergyBottle.itemID, SoulEnergyBottle.small, (new ObjectTags()).add(EnumTag.EVIL, 2).add(EnumTag.POWER, 2).add(EnumTag.SPIRIT, 4));
-		ThaumcraftApi.registerObjectTag(NetherItems.SoulEnergyBottle.itemID, SoulEnergyBottle.medium, (new ObjectTags()).add(EnumTag.EVIL, 3).add(EnumTag.POWER, 3).add(EnumTag.SPIRIT, 8));
-		ThaumcraftApi.registerObjectTag(NetherItems.SoulEnergyBottle.itemID, SoulEnergyBottle.large, (new ObjectTags()).add(EnumTag.EVIL, 4).add(EnumTag.POWER, 4).add(EnumTag.SPIRIT, 16));
-		
+
+		ThaumcraftApi.registerObjectTag(NetherItems.SoulEnergyBottle.itemID, SoulEnergyBottle.small,
+				(new ObjectTags()).add(EnumTag.EVIL, 2).add(EnumTag.POWER, 2).add(EnumTag.SPIRIT, 4));
+		ThaumcraftApi.registerObjectTag(NetherItems.SoulEnergyBottle.itemID, SoulEnergyBottle.medium,
+				(new ObjectTags()).add(EnumTag.EVIL, 3).add(EnumTag.POWER, 3).add(EnumTag.SPIRIT, 8));
+		ThaumcraftApi.registerObjectTag(NetherItems.SoulEnergyBottle.itemID, SoulEnergyBottle.large,
+				(new ObjectTags()).add(EnumTag.EVIL, 4).add(EnumTag.POWER, 4).add(EnumTag.SPIRIT, 16));
+
 		ThaumcraftApi.registerComplexObjectTag(NetherItems.NetherSoulGlassBottleItem.itemID, -1, (new ObjectTags()).add(EnumTag.CRYSTAL, 1).add(EnumTag.VOID, 1));
 		ThaumcraftApi.registerComplexObjectTag(NetherItems.NetherStoneBowl.itemID, -1, (new ObjectTags()).add(EnumTag.VOID, 1));
-		
+
 		ThaumcraftApi.registerObjectTag(NetherBlocks.NetherSoulFurnace.blockID, -1, (new ObjectTags()).add(EnumTag.TRAP, 2).add(EnumTag.EVIL, 5).add(EnumTag.SPIRIT, 5));
 		ThaumcraftApi.registerObjectTag(NetherBlocks.NetherDemonicFurnace.blockID, -1, (new ObjectTags()).add(EnumTag.TRAP, 1).add(EnumTag.EVIL, 2).add(EnumTag.SPIRIT, 2));
-		
-		ThaumcraftApi.registerObjectTag(NetherBlocks.netherSoulBomb.blockID, -1, (new ObjectTags()).add(EnumTag.TRAP, 5).add(EnumTag.EVIL, 5).add(EnumTag.SPIRIT, 5).add(EnumTag.DEATH, 3));
 
-		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk1, (new ObjectTags()).add(EnumTag.MECHANISM, 2).add(EnumTag.CONTROL, 2).add(EnumTag.VISION, 1));
-		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk2, (new ObjectTags()).add(EnumTag.MECHANISM, 4).add(EnumTag.CONTROL, 4).add(EnumTag.VISION, 2));
-		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk3, (new ObjectTags()).add(EnumTag.MECHANISM, 6).add(EnumTag.CONTROL, 6).add(EnumTag.VISION, 3));
-		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk4, (new ObjectTags()).add(EnumTag.MECHANISM, 8).add(EnumTag.CONTROL, 8).add(EnumTag.VISION, 4));
-		
-		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk1, (new ObjectTags()).add(EnumTag.TRAP, 3).add(EnumTag.WEAPON, 3).add(EnumTag.SPIRIT, 3).add(EnumTag.VOID, 1));
-		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk2, (new ObjectTags()).add(EnumTag.TRAP, 5).add(EnumTag.WEAPON, 5).add(EnumTag.SPIRIT, 6).add(EnumTag.VOID, 2));
-		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk3, (new ObjectTags()).add(EnumTag.TRAP, 7).add(EnumTag.WEAPON, 7).add(EnumTag.SPIRIT, 9).add(EnumTag.VOID, 3));
-		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk4, (new ObjectTags()).add(EnumTag.TRAP, 10).add(EnumTag.WEAPON, 10).add(EnumTag.SPIRIT, 12).add(EnumTag.VOID, 4));
-		
-		
-		
-		// ThaumcraftApi.registerObjectTag(NetherItems.NetherWoodStick, -1, (new ObjectTags()).add(EnumTag.WOOD, 1).add())
+		ThaumcraftApi.registerObjectTag(NetherBlocks.netherSoulBomb.blockID, -1,
+				(new ObjectTags()).add(EnumTag.TRAP, 5).add(EnumTag.EVIL, 5).add(EnumTag.SPIRIT, 5).add(EnumTag.DEATH, 3));
 
-		
-		if(bBuildcraftAvailable)
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk1,
+				(new ObjectTags()).add(EnumTag.MECHANISM, 2).add(EnumTag.CONTROL, 2).add(EnumTag.VISION, 1));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk2,
+				(new ObjectTags()).add(EnumTag.MECHANISM, 4).add(EnumTag.CONTROL, 4).add(EnumTag.VISION, 2));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk3,
+				(new ObjectTags()).add(EnumTag.MECHANISM, 6).add(EnumTag.CONTROL, 6).add(EnumTag.VISION, 3));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulDetector.blockID, SoulDetector.mk4,
+				(new ObjectTags()).add(EnumTag.MECHANISM, 8).add(EnumTag.CONTROL, 8).add(EnumTag.VISION, 4));
+
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk1,
+				(new ObjectTags()).add(EnumTag.TRAP, 3).add(EnumTag.WEAPON, 3).add(EnumTag.SPIRIT, 3).add(EnumTag.VOID, 1));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk2,
+				(new ObjectTags()).add(EnumTag.TRAP, 5).add(EnumTag.WEAPON, 5).add(EnumTag.SPIRIT, 6).add(EnumTag.VOID, 2));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk3,
+				(new ObjectTags()).add(EnumTag.TRAP, 7).add(EnumTag.WEAPON, 7).add(EnumTag.SPIRIT, 9).add(EnumTag.VOID, 3));
+		ThaumcraftApi.registerComplexObjectTag(NetherBlocks.NetherSoulSiphon.blockID, SoulSiphon.mk4,
+				(new ObjectTags()).add(EnumTag.TRAP, 10).add(EnumTag.WEAPON, 10).add(EnumTag.SPIRIT, 12).add(EnumTag.VOID, 4));
+
+		// ThaumcraftApi.registerObjectTag(NetherItems.NetherWoodStick, -1, (new
+		// ObjectTags()).add(EnumTag.WOOD, 1).add())
+
+		if (bBuildcraftAvailable)
 			initBuildcraftStuff();
 	}
 
 	private void registerWorldGenerators() {
-		if(bUseNetherOreDemonic)
+		if (bUseNetherOreDemonic)
 			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.demonicOre, 10));
-		if(bUseNetherOreCoal)
+		if (bUseNetherOreCoal)
 			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 16, NetherOre.netherOreCoal, 10));
-		if(bUseNetherOreIron)
+		if (bUseNetherOreIron)
 			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreIron, 15));
-		if(bUseNetherOreGold)
+		if (bUseNetherOreGold)
 			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreGold, 4));
-		if(bUseNetherOreDiamond)
+		if (bUseNetherOreDiamond)
 			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreDiamond, 1));
-		if(bUseNetherOreEmerald)
+		if (bUseNetherOreEmerald)
 			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreEmerald, 1));
-		if(bUseNetherOreRedstone)
+		if (bUseNetherOreRedstone)
 			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 7, NetherOre.netherOreRedstone, 6));
-		if(bUseNetherOreObsidian)
+		if (bUseNetherOreObsidian)
 			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreObsidian, 8));
-		if(bUseNetherOreLapis)
+		if (bUseNetherOreLapis)
 			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 8, NetherOre.netherOreLapis, 1));
-		if(bUseNetherOreCobblestone)
+		if (bUseNetherOreCobblestone)
 			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(NetherBlocks.netherOre.blockID, 13, NetherOre.netherOreCobblestone, 10));
 
 		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsTrees(false, 4, false));
 	}
-
 
 	private void initRecipes() {
 		initDefaultMinecraftRecipes();
@@ -516,12 +538,12 @@ public class NetherStuffs extends DummyModContainer {
 
 		Item netherBrick = Item.field_94584_bZ;
 		Item netherQuartz = Item.field_94583_ca;
-		
+
 		CraftingManager
 				.getInstance()
 				.getRecipeList()
-				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), true, new Object[] { "I#I", "#W#", "I#I", '#', new ItemStack(netherBrick, 1),
-						'W', new ItemStack(Block.workbench), 'I', "ingotDemonic" }));
+				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), true, new Object[] { "I#I", "#W#", "I#I", '#', new ItemStack(netherBrick, 1), 'W',
+						new ItemStack(Block.workbench), 'I', "ingotDemonic" }));
 
 		GameRegistry.addRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[] { "I#I", "#W#", "I#I", '#', new ItemStack(netherBrick, 1), 'W',
 				new ItemStack(Block.workbench), 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0) });
@@ -535,8 +557,8 @@ public class NetherStuffs extends DummyModContainer {
 		CraftingManager
 				.getInstance()
 				.getRecipeList()
-				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[] { "#I#", "IWI", "#I#", '#', netherBrick, 'W',
-						new ItemStack(Block.workbench), 'I', "ingotDemonic" }));
+				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[] { "#I#", "IWI", "#I#", '#', netherBrick, 'W', new ItemStack(Block.workbench),
+						'I', "ingotDemonic" }));
 
 		CraftingManager.getInstance().getRecipeList()
 				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), new Object[] { "NNN", "N N", "NNN", 'N', netherBrick }));
@@ -604,22 +626,22 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.addRecipe(new ItemStack(Block.torchWood, 10), new Object[] { "X", "#", 'X', new ItemStack(NetherItems.NetherWoodCharcoal, 1, NetherWoodCharcoal.coal), '#',
 				NetherItems.NetherWoodStick });
 
-		GameRegistry.addShapelessRecipe(new ItemStack(NetherItems.NetherWoodCharcoal, 1), new Object[]{new ItemStack(Item.coal, 1, 1), new ItemStack(Item.gunpowder, 1)});
-		
+		GameRegistry.addShapelessRecipe(new ItemStack(NetherItems.NetherWoodCharcoal, 1), new Object[] { new ItemStack(Item.coal, 1, 1), new ItemStack(Item.gunpowder, 1) });
+
 		CraftingManager
 				.getInstance()
 				.getRecipeList()
 				.add(new ShapedOreRecipe(new ItemStack(NetherItems.NetherDemonicBarHandle, 1), new Object[] { "NIN", " S ", 'N', netherBrick, 'I', "ingotDemonic", 'S',
 						NetherItems.NetherWoodStick }));
-		CraftingManager.getInstance().getRecipeList()
-				.add(new ShapedOreRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3), new Object[] { "N N", " N ", 'N', netherBrick }));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3), new Object[] { "N N", " N ", 'N', netherBrick }));
 
 		/*
 		 * GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDemonicBarHandle, 1), new Object[] { "NIN", " S ", 'N', CompatItem.netherBrick, 'I', new
 		 * ItemStack(NetherItems.NetherOreIngot, 1, 0), 'S', NetherItems.NetherWoodStick });
 		 */
 
-		// GameRegistry.addRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3), new Object[] { "N N", " N ", 'N', CompatItem.netherBrick });
+		// GameRegistry.addRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3),
+		// new Object[] { "N N", " N ", 'N', CompatItem.netherBrick });
 
 		GameRegistry.addRecipe(new ItemStack(NetherBlocks.NetherSoulGlassPane, 16), new Object[] { "###", "###", '#', NetherBlocks.NetherSoulGlass });
 		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulGlassBottleItem, 3), new Object[] { "# #", " # ", '#', NetherBlocks.NetherSoulGlass });
@@ -698,7 +720,7 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.addRecipe(new ItemStack(Block.workbench), new Object[] { "##", "##", '#', NetherBlocks.netherPlank });
 
 		Item netherBrick = Item.field_94584_bZ;
-		
+
 		GameRegistry.addShapelessRecipe(new ItemStack(netherBrick), new Object[] { new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone) });
 		GameRegistry.addShapelessRecipe(new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone), new Object[] { netherBrick });
 
@@ -738,9 +760,10 @@ public class NetherStuffs extends DummyModContainer {
 		for (int i = 0; i < NetherWoodItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherWood." + NetherWoodItemBlock.blockNames[i] + ".name", NetherWoodItemBlock.blockDisplayNames[i]);
 		}
-		
+
 		for (int i = 0; i < NetherWoodPuddleItemBlock.getMetadataSize(); i++) {
-			LanguageRegistry.instance().addStringLocalization("tile.NetherWoodPuddle." + NetherWoodPuddleItemBlock.blockNames[i] + ".name", NetherWoodPuddleItemBlock.blockDisplayNames[i]);
+			LanguageRegistry.instance().addStringLocalization("tile.NetherWoodPuddle." + NetherWoodPuddleItemBlock.blockNames[i] + ".name",
+					NetherWoodPuddleItemBlock.blockDisplayNames[i]);
 		}
 
 		for (int i = 0; i < NetherPlankItemBlock.getMetadataSize(); i++) {
@@ -780,15 +803,16 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulGlassPane.name", "Soul Glass Pane");
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulBomb.NetherSoulBomb.name", "Soul Bomb");
 
-		// LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name", "Nether Charcoal");
+		// LanguageRegistry.instance().addStringLocalization("item.NetherWoodCharcoal.name",
+		// "Nether Charcoal");
 
 		LanguageRegistry.instance().addStringLocalization("item.NetherBow.name", "Torch Bow");
 		LanguageRegistry.instance().addStringLocalization("item.torchArrow.name", "Torch Arrow");
 		LanguageRegistry.instance().addStringLocalization("item.SoulEnergyLiquidItem.name", "Soul Energy Liquid");
-		
+
 		LanguageRegistry.instance().addStringLocalization("itemGroup.tabNetherStuffs", "en_US", "NetherStuffs");
-		
-		if(bBuildcraftAvailable)
+
+		if (bBuildcraftAvailable)
 			LanguageRegistry.instance().addStringLocalization("tile.NetherSoulEngine.name", "Soul Engine");
 	}
 

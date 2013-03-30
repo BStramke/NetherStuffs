@@ -15,6 +15,9 @@ public class Farmables {
 	 * farmPoales
 	 * farmSucculentes
 	 * farmVegetables
+	 * farmShroom
 	 */
 	public static HashMap<String, Collection<IFarmable>> farmables = new HashMap<String, Collection<IFarmable>>();
+	
+	public static IFarmInterface farmInterface;
 }

@@ -4,6 +4,9 @@ import java.util.List;
 
 import forestry.api.core.INBTTagable;
 
+/**
+ * Implementations other than Forestry's default one are not supported!
+ */
 public interface IIndividual extends INBTTagable {
 
 	boolean analyze();

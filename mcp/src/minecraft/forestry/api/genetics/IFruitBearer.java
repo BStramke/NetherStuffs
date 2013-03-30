@@ -24,6 +24,9 @@ public interface IFruitBearer {
 	 * @return float indicating the ripeness of the fruit with >= 1.0f indicating full ripeness.
 	 */
 	float getRipeness();
-	
+	/**
+	 * Increases the ripeness of the fruit.
+	 * @param add Float to add to the ripeness. Will truncate to valid values.
+	 */
 	void addRipeness(float add);
 }

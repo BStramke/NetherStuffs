@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 public interface IAlleleRegistry {
 	
 	/* INDIVIDUAL */
+	
 	/**
 	 * Tests the itemstack for genetic information. 
 	 * @param stack
@@ -18,9 +19,15 @@ public interface IAlleleRegistry {
 	 */
 	boolean isIndividual(ItemStack stack);
 	
+	/**
+	 * Retrieve genetic information from an itemstack.
+	 * @param stack Stack to retrieve genetic information for.
+	 * @return IIndividual containing genetic information, null if none could be extracted.
+	 */
 	IIndividual getIndividual(ItemStack stack);
 	
 	/* ALLELES */
+	
 	/**
 	 * @return HashMap of all currently registered alleles.
 	 */
