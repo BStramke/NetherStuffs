@@ -341,11 +341,6 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public void closeChest() {}
 
 	@Override
-	public int powerRequest() {
-		return 0;
-	}
-
-	@Override
 	public LinkedList<ITrigger> getTriggers() {
 		LinkedList<ITrigger> triggers = new LinkedList<ITrigger>();
 
@@ -725,5 +720,10 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 			var1.setBoolean("isActive", isActive);
 		}
 		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, var1);
+	}
+
+	@Override
+	public int powerRequest(ForgeDirection from) {
+		return 0;
 	}
 }
