@@ -615,14 +615,14 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 			if (fuelTank.getLiquid() == null) {
 				fuelTank.setLiquid(new LiquidStack(j, 0));
 			} else {
-				fuelTank.getLiquid().itemID = j;
+				fuelTank.setLiquid(new LiquidStack(j,fuelTank.getLiquid().amount,fuelTank.getLiquid().itemMeta));
 			}
 			break;
 		case 9:
 			if (fuelTank.getLiquid() == null) {
 				fuelTank.setLiquid(new LiquidStack(0, 0, j));
 			} else {
-				fuelTank.getLiquid().itemMeta = j;
+				fuelTank.setLiquid(new LiquidStack(fuelTank.getLiquid().itemID,fuelTank.getLiquid().amount,j));
 			}
 			break;
 		}

@@ -56,9 +56,10 @@ public class ExtendedLiquidTank implements ILiquidTank
         int tofill = Math.min(getCapacity()-liquid.amount, resource.amount);
         if(doFill && tofill > 0)
         {
+        	
             liquid.amount+=tofill;
-            liquid.itemID = resource.itemID;
-            liquid.itemMeta = resource.itemMeta;
+            //liquid.itemID = resource.itemID;
+            //liquid.itemMeta = resource.itemMeta;
             onLiquidChanged();
         }
         
