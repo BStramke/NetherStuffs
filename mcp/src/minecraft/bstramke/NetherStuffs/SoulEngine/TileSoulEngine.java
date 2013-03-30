@@ -450,13 +450,13 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public float getPistonSpeed() {
 		switch (getEnergyStage()) {
 		case Blue:
-			return 0.04F;
-		case Green:
 			return 0.05F;
-		case Yellow:
+		case Green:
 			return 0.06F;
-		case Red:
+		case Yellow:
 			return 0.07F;
+		case Red:
+			return 0.08F;
 		default:
 			return 0.0f;
 		}
