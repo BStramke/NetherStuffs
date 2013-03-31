@@ -298,11 +298,33 @@ public class NetherStuffs extends DummyModContainer {
 	
 	private void initHarkenScytheCompatibility()
 	{
+		FMLLog.info("[NetherStuffs] adding Stuff for HarkenScythe use");
 		//90 SoulEnergy should be 1 Soul, but as its working differently i use 250 Energy = 1 Soul
+		int nSoulVessel = 0;
+		int nSoulKeeper = 0;
+		for(int itemID=20000; itemID < Item.itemsList.length && nSoulVessel==0 && nSoulKeeper==0; itemID++)
+		{
+			if(Item.itemsList[itemID] != null)
+			{
+				if(Item.itemsList[itemID].getUnlocalizedName() == "item.HSSoulKeeper")
+					nSoulVessel = itemID;
+				else if(Item.itemsList[itemID].getUnlocalizedName() == "item.HSSoulVessel")
+					nSoulKeeper = itemID;
+			}
+		}
 		
+		if(nSoulVessel == 0 || nSoulKeeper == 0)
+		{
+			FMLLog.warning("[NetherStuffs] Could not find HarkenScythe SoulKeeper or SoulVessel items");
+			return;
+		}
+		
+		Item SoulKeeper = Item.itemsList[nSoulKeeper];
+		Item SoulVessel = Item.itemsList[nSoulVessel];
 	}
 
 	private void initBuildcraftStuff() {
+		FMLLog.info("[NetherStuffs] adding Stuff for Buildcraft use");
 		Block SoulEngine = new SoulEngine(NetherStuffs.SoulEngineBlockId).setUnlocalizedName("NetherSoulEngine").setHardness(0.5F).setResistance(5.0F);
 		Item NetherGear = new NetherGear(NetherGearItemId).setUnlocalizedName("NetherGear");
 
