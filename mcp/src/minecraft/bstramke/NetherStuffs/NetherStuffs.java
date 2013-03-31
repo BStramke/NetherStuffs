@@ -94,6 +94,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static CommonProxy proxy;
 
 	public static boolean bBuildcraftAvailable = false;
+	public static boolean bHarkenScytheAvailable = false;
 
 	public static boolean ShowOreDistributions = false;
 	public static boolean DevSetCoreModAvailable = false;
@@ -294,6 +295,12 @@ public class NetherStuffs extends DummyModContainer {
 			WorldGenDefaultMinable.arrMap.put(new String(NetherBlocks.netherOre.blockID + ":" + NetherOre.netherOreCobblestone), 1);
 		}
 	}
+	
+	private void initHarkenScytheCompatibility()
+	{
+		//90 SoulEnergy should be 1 Soul, but as its working differently i use 250 Energy = 1 Soul
+		
+	}
 
 	private void initBuildcraftStuff() {
 		Block SoulEngine = new SoulEngine(NetherStuffs.SoulEngineBlockId).setUnlocalizedName("NetherSoulEngine").setHardness(0.5F).setResistance(5.0F);
@@ -318,6 +325,9 @@ public class NetherStuffs extends DummyModContainer {
 		// LiquidContainerRegistry.registerLiquid(data);
 
 		bBuildcraftAvailable = Loader.isModLoaded("BuildCraft|Core") && Loader.isModLoaded("BuildCraft|Energy");
+		bHarkenScytheAvailable = Loader.isModLoaded("HarkenScythe_Core");
+		
+		NetherItems.init();
 
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulGlass, "NetherSoulGlass");
 		GameRegistry.registerBlock(NetherBlocks.NetherSoulGlassPane, "NetherSoulGlassPane");
@@ -490,9 +500,12 @@ public class NetherStuffs extends DummyModContainer {
 
 		// ThaumcraftApi.registerObjectTag(NetherItems.NetherWoodStick, -1, (new
 		// ObjectTags()).add(EnumTag.WOOD, 1).add())
-
+		
 		if (bBuildcraftAvailable)
 			initBuildcraftStuff();
+		
+		if(bHarkenScytheAvailable)
+			initHarkenScytheCompatibility();
 	}
 
 	private void registerWorldGenerators() {
