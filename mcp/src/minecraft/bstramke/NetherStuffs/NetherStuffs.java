@@ -151,6 +151,8 @@ public class NetherStuffs extends DummyModContainer {
 	private static boolean IncreaseNetherrackHardness;
 	private static boolean SpawnBlazesNaturally;
 	public static boolean bShowCoreModMissingWarning;
+	private static boolean bUseSoulEngineBlock;
+	private static boolean bUseHarkenScytheCondenserBlock;
 
 	public static boolean bUseNetherOreDemonic;
 	public static boolean bUseNetherOreCoal;
@@ -197,7 +199,13 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulFurnaceBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulFurnace", 1243).getInt(1243);
 		NetherSoulSiphonBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulSiphon", 1244).getInt(1244);
 		NetherWoodPuddleBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "NetherWoodPuddles", 1246).getInt(1246);
-		SoulEngineBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulEngine", 1247).getInt(1247);
+		
+		
+		bUseSoulEngineBlock = config.get(Configuration.CATEGORY_GENERAL, "useSoulEngineIfBCAvailable", true).getBoolean(true);
+		if(bUseSoulEngineBlock)
+			SoulEngineBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulEngine", 1247).getInt(1247);
+		
+		bUseHarkenScytheCondenserBlock= config.get(Configuration.CATEGORY_GENERAL, "useSoulCondenserBlockIfHarkenScytheAvailable", true).getBoolean(true);
 
 		NetherOreIngotItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherIngots", 5200).getInt(5200);
 		NetherDemonicBarHandleItemId = config.getItem(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5201).getInt(5201);
@@ -298,6 +306,9 @@ public class NetherStuffs extends DummyModContainer {
 	
 	private void initHarkenScytheCompatibility()
 	{
+		if(bUseHarkenScytheCondenserBlock == false)
+			return;
+		
 		FMLLog.info("[NetherStuffs] adding Stuff for HarkenScythe use");
 		//90 SoulEnergy should be 1 Soul, but as its working differently i use 250 Energy = 1 Soul
 		int nSoulVessel = 0;
@@ -324,7 +335,10 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	private void initBuildcraftStuff() {
-		FMLLog.info("[NetherStuffs] adding Stuff for Buildcraft use");
+		if(bUseSoulEngineBlock == false)
+			return;
+		
+		FMLLog.info("[NetherStuffs] adding Stuff for Buildcraft use");		
 		Block SoulEngine = new SoulEngine(NetherStuffs.SoulEngineBlockId).setUnlocalizedName("NetherSoulEngine").setHardness(0.5F).setResistance(5.0F);
 		Item NetherGear = new NetherGear(NetherGearItemId).setUnlocalizedName("NetherGear");
 
