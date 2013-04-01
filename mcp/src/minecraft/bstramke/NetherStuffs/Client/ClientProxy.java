@@ -20,7 +20,7 @@ public class ClientProxy extends CommonProxy {
 		if(NetherStuffs.bBuildcraftAvailable)
 		{
 			ClientRegistry.bindTileEntitySpecialRenderer(TileSoulEngine.class, new RenderSoulEngine());
-			RenderingRegistry.registerBlockHandler(new RenderSoulEngine(CommonProxy.GFXFOLDERPREFIX+"base_wood.png"));
+			RenderingRegistry.registerBlockHandler(new RenderSoulEngine(CommonProxy.GFXFOLDERPREFIX+"base_soulengine.png"));
 		}
 	}
 }

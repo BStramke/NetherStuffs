@@ -8,6 +8,11 @@ import bstramke.NetherStuffs.DemonicFurnace.GuiDemonicFurnace;
 import bstramke.NetherStuffs.DemonicFurnace.TileDemonicFurnace;
 import bstramke.NetherStuffs.SoulBlocker.ContainerSoulBlocker;
 import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
+import bstramke.NetherStuffs.SoulCondenser.ContainerSoulCondenser;
+import bstramke.NetherStuffs.SoulCondenser.ContainerSoulSmelter;
+import bstramke.NetherStuffs.SoulCondenser.GuiSoulCondenser;
+import bstramke.NetherStuffs.SoulCondenser.GuiSoulSmelter;
+import bstramke.NetherStuffs.SoulCondenser.TileSoulCondenser;
 import bstramke.NetherStuffs.SoulDetector.ContainerSoulDetector;
 import bstramke.NetherStuffs.SoulDetector.GuiSoulDetector;
 import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
@@ -46,6 +51,11 @@ public class GuiHandler implements IGuiHandler {
 			return new ContainerSoulSiphon((TileSoulSiphon) tile_entity, player.inventory);
 		} else if (tile_entity instanceof TileSoulEngine) {
 			return new ContainerSoulEngine((TileSoulEngine) tile_entity, player.inventory);
+		} else if (tile_entity instanceof TileSoulCondenser) {
+			if (world.getBlockMetadata(x, y, z) == 0)
+				return new ContainerSoulCondenser((TileSoulCondenser) tile_entity, player.inventory);
+			else if (world.getBlockMetadata(x, y, z) == 1)
+				return new ContainerSoulSmelter((TileSoulCondenser) tile_entity, player.inventory);
 		}
 
 		return null;
@@ -68,6 +78,12 @@ public class GuiHandler implements IGuiHandler {
 			return new GuiSoulSiphon(player.inventory, (TileSoulSiphon) tile_entity);
 		} else if (tile_entity instanceof TileSoulEngine) {
 			return new GuiSoulEngine(player.inventory, (TileSoulEngine) tile_entity);
+		} else if (tile_entity instanceof TileSoulCondenser) {
+			if (world.getBlockMetadata(x, y, z) == 0)
+				return new GuiSoulCondenser(player.inventory, (TileSoulCondenser) tile_entity);
+			else if (world.getBlockMetadata(x, y, z) == 1)
+				return new GuiSoulSmelter(player.inventory, (TileSoulCondenser) tile_entity);
+
 		}
 
 		return null;

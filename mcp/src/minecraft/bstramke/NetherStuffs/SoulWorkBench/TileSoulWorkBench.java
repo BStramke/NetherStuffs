@@ -379,11 +379,13 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 
 	@Override
 	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return null;
+		return drain(0, maxDrain, doDrain);
 	}
 
 	@Override
 	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
+		if (tankIndex == 0)
+			return tank.drain(maxDrain, doDrain);
 		return null;
 	}
 
@@ -394,12 +396,14 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 
 	@Override
 	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
-		return null;
+		if (type.isLiquidEqual(NetherStuffs.SoulEnergyLiquid))
+			return tank;
+		else
+			return null;
 	}
 
 	@Override
 	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -398,7 +398,10 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 
 	@Override
 	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
-		return null;
+		if (type.isLiquidEqual(NetherStuffs.SoulEnergyLiquid))
+			return tank;
+		else
+			return null;
 	}
 
 	@Override

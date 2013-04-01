@@ -325,7 +325,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 				ItemStack outputStack = getStackInSlot(this.nTankFillSlot).copy();
 				outputStack.stackSize = 1;
 				if (doRemove)
-					decrStackSize(this.nTankDrainSlot, 1);
+					decrStackSize(this.nTankFillSlot, 1);
 				return new ItemStack[] { outputStack };
 			}
 		} else {
@@ -373,12 +373,14 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 
 	@Override
 	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
-		return null;
+		if (type.isLiquidEqual(NetherStuffs.SoulEnergyLiquid))
+			return tank;
+		else
+			return null;
 	}
 
 	@Override
 	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

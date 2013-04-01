@@ -34,7 +34,6 @@ public class SoulWorkBench extends BlockContainer {
 	private Icon icoSoulWorkbenchFront;
 	private Icon icoSoulWorkbenchSide;
 	private Icon icoSoulWorkbenchBack;
-	private static boolean keepFurnaceInventory = false;
 
 	public static boolean isActiveSet(int metadata) {
 		return (metadata & METADATA_ACTIVEBIT) != 0;
@@ -208,38 +207,37 @@ public class SoulWorkBench extends BlockContainer {
 
 	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6) {
-		if (!keepFurnaceInventory) {
-			TileSoulWorkBench var7 = (TileSoulWorkBench) par1World.getBlockTileEntity(par2, par3, par4);
 
-			if (var7 != null) {
-				for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8) {
-					ItemStack var9 = var7.getStackInSlot(var8);
+		TileSoulWorkBench var7 = (TileSoulWorkBench) par1World.getBlockTileEntity(par2, par3, par4);
 
-					if (var9 != null) {
-						float var10 = this.rand.nextFloat() * 0.8F + 0.1F;
-						float var11 = this.rand.nextFloat() * 0.8F + 0.1F;
-						float var12 = this.rand.nextFloat() * 0.8F + 0.1F;
+		if (var7 != null) {
+			for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8) {
+				ItemStack var9 = var7.getStackInSlot(var8);
 
-						while (var9.stackSize > 0) {
-							int var13 = this.rand.nextInt(21) + 10;
+				if (var9 != null) {
+					float var10 = this.rand.nextFloat() * 0.8F + 0.1F;
+					float var11 = this.rand.nextFloat() * 0.8F + 0.1F;
+					float var12 = this.rand.nextFloat() * 0.8F + 0.1F;
 
-							if (var13 > var9.stackSize) {
-								var13 = var9.stackSize;
-							}
+					while (var9.stackSize > 0) {
+						int var13 = this.rand.nextInt(21) + 10;
 
-							var9.stackSize -= var13;
-							EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(
-									var9.itemID, var13, var9.getItemDamage()));
-
-							if (var9.hasTagCompound())
-								var14.getEntityItem().setTagCompound((NBTTagCompound) var9.getTagCompound().copy());
-
-							float var15 = 0.05F;
-							var14.motionX = (double) ((float) this.rand.nextGaussian() * var15);
-							var14.motionY = (double) ((float) this.rand.nextGaussian() * var15 + 0.2F);
-							var14.motionZ = (double) ((float) this.rand.nextGaussian() * var15);
-							par1World.spawnEntityInWorld(var14);
+						if (var13 > var9.stackSize) {
+							var13 = var9.stackSize;
 						}
+
+						var9.stackSize -= var13;
+						EntityItem var14 = new EntityItem(par1World, (double) ((float) par2 + var10), (double) ((float) par3 + var11), (double) ((float) par4 + var12), new ItemStack(
+								var9.itemID, var13, var9.getItemDamage()));
+
+						if (var9.hasTagCompound())
+							var14.getEntityItem().setTagCompound((NBTTagCompound) var9.getTagCompound().copy());
+
+						float var15 = 0.05F;
+						var14.motionX = (double) ((float) this.rand.nextGaussian() * var15);
+						var14.motionY = (double) ((float) this.rand.nextGaussian() * var15 + 0.2F);
+						var14.motionZ = (double) ((float) this.rand.nextGaussian() * var15);
+						par1World.spawnEntityInWorld(var14);
 					}
 				}
 			}

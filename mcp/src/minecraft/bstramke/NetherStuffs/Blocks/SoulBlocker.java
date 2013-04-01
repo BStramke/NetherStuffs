@@ -18,7 +18,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class SoulBlocker extends BlockContainer {
 	public static final int NetherSoulBlocker = 0;
-
+	private Icon icoSoulBlockerTop;
+	private Icon icoSoulBlockerBottom;
 
 	public SoulBlocker(int par1) {
 		super(par1, Material.circuits);
@@ -35,6 +36,8 @@ public class SoulBlocker extends BlockContainer {
 	public void registerIcons(IconRegister par1IconRegister)
 	{
 		this.blockIcon = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulBlocker"));
+		icoSoulBlockerTop = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulBlocker_Top"));
+		icoSoulBlockerBottom = par1IconRegister.registerIcon(CommonProxy.getIconLocation("SoulBlocker_Bottom"));
 	}
 
 	@Override
@@ -47,6 +50,16 @@ public class SoulBlocker extends BlockContainer {
 		return new TileSoulBlocker();
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+		if(side == NetherBlocks.sideBottom)
+			return icoSoulBlockerBottom;
+		else if(side == NetherBlocks.sideTop)
+			return icoSoulBlockerTop;
+		else
+			return super.getBlockTextureFromSideAndMetadata(side, meta);
+	}
 	
 	@SideOnly(Side.CLIENT)
 	@Override
