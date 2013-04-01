@@ -42,12 +42,12 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public ForgeDirection orientation = ForgeDirection.UP;
 	IPowerProvider provider;
 	public boolean isRedstonePowered = false;
-	public int maxEnergy = 100000;
+	public int maxEnergy = 10000;
 	protected float currentOutput = 0;
 	public float progress = 0;
 	public float energy = 0;
 	EnergyStage energyStage = EnergyStage.Blue;
-	public int maxEnergyExtracted = 500;
+	public int maxEnergyExtracted = 100;
 
 	public enum EnergyStage {
 		Blue, Green, Yellow, Red
@@ -564,13 +564,13 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	}
 
 	public void computeEnergyStage() {
-		if (heat <= MAX_HEAT / 4) {
+		if (energy / (double) maxEnergy * 100.0 <= 25.0) {
 			energyStage = EnergyStage.Blue;
-		} else if (heat <= MAX_HEAT / 2) {
+		} else if (energy / (double) maxEnergy * 100.0 <= 50.0) {
 			energyStage = EnergyStage.Green;
-		} else if (heat <= MAX_HEAT * 3F / 4F) {
+		} else if (energy / (double) maxEnergy * 100.0 <= 75.0) {
 			energyStage = EnergyStage.Yellow;
-		} else if (heat <= MAX_HEAT) {
+		} else if (energy / (double) maxEnergy * 100.0 <= 100.0) {
 			energyStage = EnergyStage.Red;
 		} else {
 			energyStage = EnergyStage.Red;
