@@ -49,8 +49,7 @@ public class PluginForestry implements IPlugin {
 
 	@Override
 	public boolean isAvailable() {
-		// return Loader.isModLoaded("mod_Forestry");
-		return true;
+		return NetherStuffs.bUseForestry;
 	}
 
 	@Override

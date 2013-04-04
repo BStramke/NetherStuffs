@@ -159,6 +159,7 @@ public class NetherStuffs extends DummyModContainer {
 	private static boolean bUseSoulEngineBlock;
 	private static boolean bUseHarkenScytheCondenserBlock;
 	private static boolean bUseThaumcraft;
+	public static boolean bUseForestry;
 
 	public static boolean bUseNetherOreDemonic;
 	public static boolean bUseNetherOreCoal;
@@ -212,6 +213,7 @@ public class NetherStuffs extends DummyModContainer {
 		bUseThaumcraft = config.get("ModCompatibility", "UseThaumcraft", true).getBoolean(true);
 		bUseSoulEngineBlock = config.get("ModCompatibility", "UseBuildcraft", true).getBoolean(true);
 		bUseHarkenScytheCondenserBlock = config.get("ModCompatibility", "UseHarkenScythe", true).getBoolean(true);
+		bUseForestry = config.get("ModCompatibility",  "UseForestry",  true, "this switch does nothing").getBoolean(true);
 
 		if (bUseSoulEngineBlock)
 			SoulEngineBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulEngine", 1247).getInt(1247);

@@ -114,7 +114,7 @@ public class SoulExplosion {
 				double var33 = (double) MathHelper.sqrt_double(var15 * var15 + var17 * var17 + var19 * var19);
 
 				if (var33 != 0.0D) {
-					var31.attackEntityFrom( (new DamageSource("explosion")).setDifficultyScaled().setExplosion(), 100);//DamageSource.explosion
+					var31.attackEntityFrom( DamageSource.generic.setDifficultyScaled().setExplosion(), 100);//DamageSource.explosion
 				}
 			}
 		}
