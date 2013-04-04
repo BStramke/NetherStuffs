@@ -1,6 +1,7 @@
 package bstramke.NetherStuffs.SoulCondenser;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,7 +17,7 @@ import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulCondenser extends TileEntity implements ISpecialInventory, ITankContainer {
+public class TileSoulCondenser extends TileEntity implements ISpecialInventory, ITankContainer, IInventory  {
 	private static int nTickCounter = 0;
 	private LiquidTank tank;
 	// public int currentTankLevel = 0;

@@ -1,6 +1,7 @@
 package bstramke.NetherStuffs.DemonicFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,7 +16,7 @@ import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileDemonicFurnace extends TileEntity implements ISpecialInventory {
+public class TileDemonicFurnace extends TileEntity implements ISpecialInventory, IInventory {
 	public static final int nSmeltedSlot = 0;
 	public static final int nFuelSlot = 1;
 	public static final int nOutputSlot = 2;

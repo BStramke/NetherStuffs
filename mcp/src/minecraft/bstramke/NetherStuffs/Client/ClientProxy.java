@@ -7,6 +7,7 @@ import bstramke.NetherStuffs.EntityTorchArrow;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import bstramke.NetherStuffs.SoulBomb.EntitySoulBombPrimed;
 import bstramke.NetherStuffs.SoulEngine.TileSoulEngine;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -16,6 +17,7 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenderThings() {
 		RenderingRegistry.registerBlockHandler(new NetherOreRenderingHelper());
 		RenderingRegistry.registerEntityRenderingHandler(EntityTorchArrow.class, new RenderTorchArrow());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySoulBombPrimed.class, new RenderSoulBombPrimed());
 		
 		if(NetherStuffs.bBuildcraftAvailable)
 		{

@@ -10,6 +10,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -30,7 +31,7 @@ import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITankContainer {
+public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITankContainer, IInventory  {
 	private static int nTickCounter = 0;
 	private LiquidTank tank;
 	public int nTankFillSlot = 1;

@@ -56,6 +56,7 @@ import bstramke.NetherStuffs.Items.NetherWoodCharcoal;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
 import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
+import bstramke.NetherStuffs.SoulBomb.EntitySoulBombPrimed;
 import bstramke.NetherStuffs.SoulCondenser.TileSoulCondenser;
 import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
 import bstramke.NetherStuffs.SoulEngine.SoulEngineFuel;
@@ -85,7 +86,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "0.15", modid = "NetherStuffs")
+@Mod(name = "NetherStuffs", version = "0.16.1", modid = "NetherStuffs")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
 public class NetherStuffs extends DummyModContainer {
 	@Instance
@@ -213,7 +214,7 @@ public class NetherStuffs extends DummyModContainer {
 		bUseThaumcraft = config.get("ModCompatibility", "UseThaumcraft", true).getBoolean(true);
 		bUseSoulEngineBlock = config.get("ModCompatibility", "UseBuildcraft", true).getBoolean(true);
 		bUseHarkenScytheCondenserBlock = config.get("ModCompatibility", "UseHarkenScythe", true).getBoolean(true);
-		bUseForestry = config.get("ModCompatibility",  "UseForestry",  true, "this switch does nothing").getBoolean(true);
+		bUseForestry = config.get("ModCompatibility", "UseForestry", true).getBoolean(true);
 
 		if (bUseSoulEngineBlock)
 			SoulEngineBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulEngine", 1247).getInt(1247);
@@ -531,7 +532,8 @@ public class NetherStuffs extends DummyModContainer {
 
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
-
+		EntityRegistry.registerModEntity(EntitySoulBombPrimed.class, "SoulBomb", 2, instance, 160, 10, true);	
+		
 		OreDictionary.registerOre("oreDemonic", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.demonicOre));
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
 
@@ -739,55 +741,59 @@ public class NetherStuffs extends DummyModContainer {
 		/**
 		 * Obsidian Sword & Obsidian Acid/Death Sword
 		 */
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherObsidianSword, 1), new Object[] { " O ", " O ", " H ", 'O', Block.obsidian, 'H', NetherItems.NetherDemonicBarHandle });
+		if (NetherItems.NetherObsidianSword != null) {
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherObsidianSword, 1),
+					new Object[] { " O ", " O ", " H ", 'O', Block.obsidian, 'H', NetherItems.NetherDemonicBarHandle });
 
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherObsidianSwordAcid, 1), new Object[] { "#S#", '#',
-				new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.acid), 'S', NetherItems.NetherObsidianSword });
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherObsidianSwordDeath, 1), new Object[] { "#S#", '#',
-				new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.death), 'S', NetherItems.NetherObsidianSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherObsidianSwordAcid, 1), new Object[] { "#S#", '#',
+					new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.acid), 'S', NetherItems.NetherObsidianSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherObsidianSwordDeath, 1), new Object[] { "#S#", '#',
+					new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.death), 'S', NetherItems.NetherObsidianSword });
 
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherObsidianSwordAcid, 1), new Object[] { " # ", "#S#", " # ", '#',
-				new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.acid), 'S', NetherItems.NetherObsidianSword });
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherObsidianSwordDeath, 1), new Object[] { " # ", "#S#", " # ", '#',
-				new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.death), 'S', NetherItems.NetherObsidianSword });
-
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherObsidianSwordAcid, 1), new Object[] { " # ", "#S#", " # ", '#',
+					new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.acid), 'S', NetherItems.NetherObsidianSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherObsidianSwordDeath, 1), new Object[] { " # ", "#S#", " # ", '#',
+					new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.death), 'S', NetherItems.NetherObsidianSword });
+		}
 		/**
 		 * Soulglass Swords
 		 */
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSword, 1), new Object[] { " # ", " # ", " H ", '#', NetherBlocks.NetherSoulGlass, 'H',
-				NetherItems.NetherDemonicBarHandle });
+		if (NetherItems.NetherSoulglassSword != null) {
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSword, 1), new Object[] { " # ", " # ", " H ", '#', NetherBlocks.NetherSoulGlass, 'H',
+					NetherItems.NetherDemonicBarHandle });
 
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordHellfire, 1), new Object[] { "#S#", '#',
-				new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.hellfire), 'S', NetherItems.NetherSoulglassSword });
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordDeath, 1), new Object[] { "#S#", '#',
-				new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.death), 'S', NetherItems.NetherSoulglassSword });
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordAcid, 1), new Object[] { "#S#", '#',
-				new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.acid), 'S', NetherItems.NetherSoulglassSword });
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordDeath, 1), new Object[] { "#S#", '#',
-				new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.death), 'S', NetherItems.NetherSoulglassSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordHellfire, 1), new Object[] { "#S#", '#',
+					new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.hellfire), 'S', NetherItems.NetherSoulglassSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordDeath, 1), new Object[] { "#S#", '#',
+					new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.death), 'S', NetherItems.NetherSoulglassSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordAcid, 1), new Object[] { "#S#", '#',
+					new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.acid), 'S', NetherItems.NetherSoulglassSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordDeath, 1), new Object[] { "#S#", '#',
+					new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.death), 'S', NetherItems.NetherSoulglassSword });
 
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordHellfire, 1), new Object[] { " # ", "#S#", " # ", '#',
-				new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.hellfire), 'S', NetherItems.NetherSoulglassSword });
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordAcid, 1), new Object[] { " # ", "#S#", " # ", '#',
-				new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.acid), 'S', NetherItems.NetherSoulglassSword });
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordDeath, 1), new Object[] { " # ", "#S#", " # ", '#',
-				new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.death), 'S', NetherItems.NetherSoulglassSword });
-
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordHellfire, 1), new Object[] { " # ", "#S#", " # ", '#',
+					new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.hellfire), 'S', NetherItems.NetherSoulglassSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordAcid, 1), new Object[] { " # ", "#S#", " # ", '#',
+					new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.acid), 'S', NetherItems.NetherSoulglassSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulglassSwordDeath, 1), new Object[] { " # ", "#S#", " # ", '#',
+					new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.death), 'S', NetherItems.NetherSoulglassSword });
+		}
 		/**
 		 * Diamond Swords
 		 */
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDiamondSword, 1), new Object[] { " D ", " D ", " H ", 'D', Item.diamond, 'H', NetherItems.NetherDemonicBarHandle });
+		if (NetherItems.NetherDiamondSword != null) {
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDiamondSword, 1), new Object[] { " D ", " D ", " H ", 'D', Item.diamond, 'H', NetherItems.NetherDemonicBarHandle });
 
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDiamondSwordAcid, 1), new Object[] { "#S#", '#',
-				new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.acid), 'S', NetherItems.NetherDiamondSword });
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDiamondSwordDeath, 1), new Object[] { "#S#", '#',
-				new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.death), 'S', NetherItems.NetherDiamondSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDiamondSwordAcid, 1), new Object[] { "#S#", '#',
+					new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.acid), 'S', NetherItems.NetherDiamondSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDiamondSwordDeath, 1), new Object[] { "#S#", '#',
+					new ItemStack(NetherItems.NetherPotionBottle, 1, NetherPotionBottle.death), 'S', NetherItems.NetherDiamondSword });
 
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDiamondSwordAcid, 1), new Object[] { " # ", "#S#", " # ", '#',
-				new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.acid), 'S', NetherItems.NetherDiamondSword });
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDiamondSwordDeath, 1), new Object[] { " # ", "#S#", " # ", '#',
-				new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.death), 'S', NetherItems.NetherDiamondSword });
-
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDiamondSwordAcid, 1), new Object[] { " # ", "#S#", " # ", '#',
+					new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.acid), 'S', NetherItems.NetherDiamondSword });
+			GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDiamondSwordDeath, 1), new Object[] { " # ", "#S#", " # ", '#',
+					new ItemStack(NetherItems.NetherStonePotionBowl, 1, NetherStonePotionBowl.death), 'S', NetherItems.NetherDiamondSword });
+		}
 	}
 
 	/**

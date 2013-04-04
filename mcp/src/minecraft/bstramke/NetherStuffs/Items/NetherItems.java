@@ -6,12 +6,12 @@ import net.minecraftforge.common.EnumHelper;
 import bstramke.NetherStuffs.NetherStuffs;
 
 public class NetherItems {
-	private static EnumToolMaterial EnumToolMaterialDemonicIngot;
+	//private static EnumToolMaterial EnumToolMaterialDemonicIngot;
 	private static EnumToolMaterial EnumToolMaterialObsidian;
 	private static EnumToolMaterial EnumToolMaterialSoulGlass;
 	private static EnumToolMaterial EnumToolMaterialSoulGlassDemonic;
 	private static EnumToolMaterial EnumToolMaterialDiamond;
-	
+
 	/**
 	 * Swords
 	 */
@@ -28,31 +28,36 @@ public class NetherItems {
 	public static Item NetherDiamondSwordAcid;
 	public static Item NetherDiamondSwordDeath;
 
-	
 	public static final void init() {
-		EnumToolMaterialDemonicIngot = EnumHelper.addToolMaterial("DemonicIngot", 2, 300, 6.0F, 6, 15);
+		//EnumToolMaterialDemonicIngot = EnumHelper.addToolMaterial("DemonicIngot", 2, 300, 6.0F, 6, 15);
 		EnumToolMaterialObsidian = EnumHelper.addToolMaterial("Obsidian", 2, 350, 6.0F, 3, 15);
 		EnumToolMaterialSoulGlass = EnumHelper.addToolMaterial("SoulGlass", 2, 40, 6.0F, 3, 15);
 		EnumToolMaterialSoulGlassDemonic = EnumHelper.addToolMaterial("Demonic", 2, 300, 6.5F, 3, 15);
 		EnumToolMaterialDiamond = EnumHelper.addToolMaterial("Diamond", 3, 1561, 8.0F, 3, 15);
 
-		NetherObsidianSword = new NetherObsidianSword(NetherStuffs.NetherObsidianSwordItemId, EnumToolMaterialObsidian).setUnlocalizedName("NetherObsidianSword");
+		if (EnumToolMaterialObsidian != null) {
+			NetherObsidianSword = new NetherObsidianSword(NetherStuffs.NetherObsidianSwordItemId, EnumToolMaterialObsidian).setUnlocalizedName("NetherObsidianSword");
+			NetherObsidianSwordAcid = new NetherObsidianSwordAcid(NetherStuffs.NetherObsidianSwordAcidItemId, EnumToolMaterialObsidian).setUnlocalizedName("NetherObsidianSword");
+			NetherObsidianSwordDeath = new NetherObsidianSwordDeath(NetherStuffs.NetherObsidianSwordDeathItemId, EnumToolMaterialObsidian).setUnlocalizedName("NetherObsidianSword");
+		}
 
-		NetherObsidianSwordAcid = new NetherObsidianSwordAcid(NetherStuffs.NetherObsidianSwordAcidItemId, EnumToolMaterialObsidian).setUnlocalizedName("NetherObsidianSword");
+		if (EnumToolMaterialSoulGlass != null)
+			NetherSoulglassSword = new NetherSoulglassSword(NetherStuffs.NetherSoulglassSwordItemId, EnumToolMaterialSoulGlass).setUnlocalizedName("NetherSoulglassSword");
 
-		NetherObsidianSwordDeath = new NetherObsidianSwordDeath(NetherStuffs.NetherObsidianSwordDeathItemId, EnumToolMaterialObsidian).setUnlocalizedName("NetherObsidianSword");
+		if (EnumToolMaterialSoulGlassDemonic != null) {
+			NetherSoulglassSwordHellfire = new NetherSoulglassSwordHellfire(NetherStuffs.NetherSoulglassSwordHellfireItemId, EnumToolMaterialSoulGlassDemonic)
+					.setUnlocalizedName("NetherSoulglassSword");
+			NetherSoulglassSwordAcid = new NetherSoulglassSwordAcid(NetherStuffs.NetherSoulglassSwordAcidItemId, EnumToolMaterialSoulGlassDemonic)
+					.setUnlocalizedName("NetherSoulglassSword");
+			NetherSoulglassSwordDeath = new NetherSoulglassSwordDeath(NetherStuffs.NetherSoulglassSwordDeathItemId, EnumToolMaterialSoulGlassDemonic)
+					.setUnlocalizedName("NetherSoulglassSword");
+		}
 
-		NetherSoulglassSword = new NetherSoulglassSword(NetherStuffs.NetherSoulglassSwordItemId, EnumToolMaterialSoulGlass).setUnlocalizedName("NetherSoulglassSword");
-		NetherSoulglassSwordHellfire = new NetherSoulglassSwordHellfire(NetherStuffs.NetherSoulglassSwordHellfireItemId, EnumToolMaterialSoulGlassDemonic)
-				.setUnlocalizedName("NetherSoulglassSword");
-		NetherSoulglassSwordAcid = new NetherSoulglassSwordAcid(NetherStuffs.NetherSoulglassSwordAcidItemId, EnumToolMaterialSoulGlassDemonic)
-				.setUnlocalizedName("NetherSoulglassSword");
-		NetherSoulglassSwordDeath = new NetherSoulglassSwordDeath(NetherStuffs.NetherSoulglassSwordDeathItemId, EnumToolMaterialSoulGlassDemonic)
-				.setUnlocalizedName("NetherSoulglassSword");
-
-		NetherDiamondSword = new NetherDiamondSword(NetherStuffs.NetherDiamondSwordItemId, EnumToolMaterialDiamond).setUnlocalizedName("NetherDiamondSword");
-		NetherDiamondSwordAcid = new NetherDiamondSwordAcid(NetherStuffs.NetherDiamondSwordAcidItemId, EnumToolMaterialDiamond).setUnlocalizedName("NetherDiamondSword");
-		NetherDiamondSwordDeath = new NetherDiamondSwordDeath(NetherStuffs.NetherDiamondSwordDeathItemId, EnumToolMaterialDiamond).setUnlocalizedName("NetherDiamondSword");
+		if (EnumToolMaterialDiamond != null) {
+			NetherDiamondSword = new NetherDiamondSword(NetherStuffs.NetherDiamondSwordItemId, EnumToolMaterialDiamond).setUnlocalizedName("NetherDiamondSword");
+			NetherDiamondSwordAcid = new NetherDiamondSwordAcid(NetherStuffs.NetherDiamondSwordAcidItemId, EnumToolMaterialDiamond).setUnlocalizedName("NetherDiamondSword");
+			NetherDiamondSwordDeath = new NetherDiamondSwordDeath(NetherStuffs.NetherDiamondSwordDeathItemId, EnumToolMaterialDiamond).setUnlocalizedName("NetherDiamondSword");
+		}
 	}
 
 	public static final Item NetherPotionBottle = new NetherPotionBottle(NetherStuffs.NetherPotionBottleItemId).setUnlocalizedName("NetherPotionBottle");
@@ -70,6 +75,6 @@ public class NetherItems {
 
 	public static final Item NetherBow = new NetherBow(NetherStuffs.NetherBowItemId).setUnlocalizedName("NetherBow");
 	public static final Item torchArrow = new NetherTorchArrow(NetherStuffs.TorchArrowItemId).setUnlocalizedName("torchArrow");
-	
+
 	public static final Item SoulEnergyLiquidItem = new SoulEnergyLiquidItem(NetherStuffs.SoulEnergyLiquidItemId).setUnlocalizedName("SoulEnergyLiquidItem");
 }

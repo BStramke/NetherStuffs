@@ -2,7 +2,7 @@
 cd mcp
 
 rem this removes forestry but allows me to keep it in my sourcecode for future use
-del reobf\minecraft\bstramke\NetherStuffs\PluginForestry.class
+rem del reobf\minecraft\bstramke\NetherStuffs\PluginForestry.class
 
 mkdir reobf\minecraft\bstramke\NetherStuffsBase
 mkdir reobf\minecraft\bstramke\NetherStuffsBase\bstramke
@@ -11,7 +11,7 @@ move reobf\minecraft\bstramke\NetherStuffs reobf\minecraft\bstramke\NetherStuffs
 move reobf\minecraft\bstramke\NetherStuffsNEIPlugin reobf\minecraft\bstramke\NetherStuffsBase\bstramke
 
 xcopy reobf\minecraft\buildcraft reobf\minecraft\bstramke\NetherStuffsBase\buildcraft\ /S
-rem xcopy reobf\minecraft\forestry reobf\minecraft\bstramke\NetherStuffsBase\forestry\ /S
+xcopy reobf\minecraft\forestry reobf\minecraft\bstramke\NetherStuffsBase\forestry\ /S
 xcopy reobf\minecraft\thaumcraft reobf\minecraft\bstramke\NetherStuffsBase\thaumcraft\ /S
 xcopy src\minecraft\mods reobf\minecraft\bstramke\NetherStuffsBase\mods\ /S
 

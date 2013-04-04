@@ -60,7 +60,7 @@ public class SoulBomb extends BlockTNT {
        }
        else
        {
-           return super.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, par6, par7, par8, par9);
+           return false;
        }
    }
 

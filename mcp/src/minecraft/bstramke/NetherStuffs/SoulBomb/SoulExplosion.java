@@ -50,7 +50,7 @@ public class SoulExplosion {
 		double var15;
 		double var17;
 		double var19;
-
+		System.out.println("doExplosionA");
 		for (var3 = 0; var3 < this.field_77289_h; ++var3) {
 			for (var4 = 0; var4 < this.field_77289_h; ++var4) {
 				for (var5 = 0; var5 < this.field_77289_h; ++var5) {
@@ -132,6 +132,8 @@ public class SoulExplosion {
 			this.worldObj.spawnParticle("largeexplode", this.explosionX, this.explosionY, this.explosionZ, 1.0D, 0.0D, 0.0D);
 		}
 
+		System.out.println("doExplosionB");
+		
 		Iterator var2;
 		ChunkPosition var3;
 		int var4;

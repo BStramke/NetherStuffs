@@ -1,6 +1,7 @@
 package bstramke.NetherStuffs.SoulFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,7 +22,7 @@ import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileSoulFurnace extends TileEntity implements ISpecialInventory, ITankContainer {
+public class TileSoulFurnace extends TileEntity implements ISpecialInventory, ITankContainer, IInventory  {
 	private LiquidTank tank;
 	public static final int nSmeltedSlot = 0;
 	public static final int nTankFillSlot = 1;

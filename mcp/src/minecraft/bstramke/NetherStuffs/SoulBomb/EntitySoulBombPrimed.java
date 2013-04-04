@@ -5,7 +5,12 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.world.World;
 
-public class EntitySoulBombPrimed extends EntityTNTPrimed {
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+
+public class EntitySoulBombPrimed extends EntityTNTPrimed implements IEntityAdditionalSpawnData {
 
 	public EntitySoulBombPrimed(World par1World) {
 		super(par1World);
@@ -50,4 +55,15 @@ public class EntitySoulBombPrimed extends EntityTNTPrimed {
 		float var1 = 4.0F; // explosion size
 		new SoulExplosion(this.worldObj, (Entity) this, this.posX, this.posY, this.posZ, var1);
 	}
+	
+	@Override
+	public void writeSpawnData(ByteArrayDataOutput data) {
+		data.writeInt(this.fuse);
+	}
+
+	@Override
+	public void readSpawnData(ByteArrayDataInput data) {
+		this.fuse = data.readInt();
+	}
+
 }

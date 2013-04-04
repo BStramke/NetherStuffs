@@ -2,6 +2,7 @@ package bstramke.NetherStuffs.SoulWorkBench;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,7 +20,7 @@ import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, ITankContainer {
+public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, ITankContainer, IInventory  {
 	private LiquidTank tank;
 	public static final int nTankFillSlot = 9;
 	public static final int nOutputSlot = 10;
