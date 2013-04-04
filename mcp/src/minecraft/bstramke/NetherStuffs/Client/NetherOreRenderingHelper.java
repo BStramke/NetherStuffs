@@ -3,8 +3,9 @@ package bstramke.NetherStuffs.Client;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
@@ -31,75 +32,70 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, -1.0F, 0.0F);
 		renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(0, metadata));
-		if (metadata != NetherOre.netherStone) {
-			var4.draw();
-			var4.startDrawingQuads();
-			var4.setNormal(0.0F, -1.0F, 0.0F);
-			var4.setBrightness(15);
-			renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
-		}
-
 		var4.draw();
 
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, 1.0F, 0.0F);
 		renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(1, metadata));
-		if (metadata != NetherOre.netherStone) {
-			var4.draw();
-			var4.startDrawingQuads();
-			var4.setNormal(0.0F, 1.0F, 0.0F);
-			var4.setBrightness(15);
-			renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
-		}
 		var4.draw();
 
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, 0.0F, -1.0F);
 		renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(2, metadata));
-		if (metadata != NetherOre.netherStone) {
-			var4.draw();
-			var4.startDrawingQuads();
-			var4.setNormal(0.0F, 0.0F, -1.0F);
-			var4.setBrightness(15);
-			renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
-		}
 		var4.draw();
+
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, 0.0F, 1.0F);
 		renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(3, metadata));
-		if (metadata != NetherOre.netherStone) {
-			var4.draw();
-			var4.startDrawingQuads();
-			var4.setNormal(0.0F, 0.0F, 1.0F);
-			var4.setBrightness(15);
-			renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
-		}
 		var4.draw();
+
 		var4.startDrawingQuads();
 		var4.setNormal(-1.0F, 0.0F, 0.0F);
 		renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(4, metadata));
-		if (metadata != NetherOre.netherStone) {
-			var4.draw();
-			var4.startDrawingQuads();
-			var4.setNormal(-1.0F, 0.0F, 0.0F);
-			var4.setBrightness(15);
-			renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
-		}
 		var4.draw();
+
 		var4.startDrawingQuads();
 		var4.setNormal(1.0F, 0.0F, 0.0F);
 		renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(5, metadata));
+		var4.draw();
+		
+		
 		if (metadata != NetherOre.netherStone) {
+			var4.startDrawingQuads();
+			var4.setNormal(0.0F, -1.0F, 0.0F);
+			var4.setBrightness(1024);
+			renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
 			var4.draw();
+			
+			var4.startDrawingQuads();
+			var4.setNormal(0.0F, 1.0F, 0.0F);
+			renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
+			var4.draw();
+			
+			var4.startDrawingQuads();
+			var4.setNormal(0.0F, 0.0F, -1.0F);
+			renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
+			var4.draw();
+			
+			var4.startDrawingQuads();
+			var4.setNormal(0.0F, 0.0F, 1.0F);
+			renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
+			var4.draw();
+			
+			var4.startDrawingQuads();
+			var4.setNormal(-1.0F, 0.0F, 0.0F);
+			renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
+			var4.draw();
+			
 			var4.startDrawingQuads();
 			var4.setNormal(1.0F, 0.0F, 0.0F);
-			var4.setBrightness(15);
 			renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, ((NetherOre) par1Block).getIconOreOverlay(metadata));
+			var4.draw();
 		}
-		var4.draw();
+
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}
-
+	
 	@Override
 	public boolean renderWorldBlock(IBlockAccess iBlockAccess, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		renderer.renderStandardBlock(block, x, y, z);

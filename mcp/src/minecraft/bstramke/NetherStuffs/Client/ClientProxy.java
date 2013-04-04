@@ -19,6 +19,7 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTorchArrow.class, new RenderTorchArrow());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySoulBombPrimed.class, new RenderSoulBombPrimed());
 		
+		
 		if(NetherStuffs.bBuildcraftAvailable)
 		{
 			ClientRegistry.bindTileEntitySpecialRenderer(TileSoulEngine.class, new RenderSoulEngine());
