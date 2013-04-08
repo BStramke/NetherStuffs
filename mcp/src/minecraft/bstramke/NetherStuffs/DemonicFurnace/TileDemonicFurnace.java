@@ -2,21 +2,25 @@ package bstramke.NetherStuffs.DemonicFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.NetherDemonicFurnace;
 import bstramke.NetherStuffs.Blocks.NetherWood;
 import bstramke.NetherStuffs.Blocks.NetherWoodItemBlock;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
+import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.NetherWoodCharcoal;
+import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileDemonicFurnace extends TileEntity implements ISpecialInventory, IInventory {
+public class TileDemonicFurnace extends TileEntity implements ISpecialInventory, ISidedInventory {
 	public static final int nSmeltedSlot = 0;
 	public static final int nFuelSlot = 1;
 	public static final int nOutputSlot = 2;
@@ -393,5 +397,43 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory,
 			default: 
 				return false;
 		}
+	}
+	
+	/**
+	 * Get the size of the side inventory.
+	 */
+	@Override
+	public int[] getSizeInventorySide(int par1) {
+		if (par1 == NetherBlocks.sideTop)
+			return new int[] { nSmeltedSlot };
+		else if (par1 == NetherBlocks.sideBottom)
+			return new int[] { nOutputSlot };
+		else
+			return new int[] { nFuelSlot };
+	}
+
+	/**
+	 * Description : Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item, side
+	 */
+	@Override
+	public boolean func_102007_a(int slot, ItemStack par2ItemStack, int side) {
+		return this.isStackValidForSlot(slot, par2ItemStack);
+	}
+
+	/**
+	 * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item, side
+	 */
+	@Override
+	public boolean func_102008_b(int slot, ItemStack par2ItemStack, int side) {
+		if(side == NetherBlocks.sideTop && slot == nSmeltedSlot)
+			return true;
+		
+		if(side == NetherBlocks.sideBottom && slot == nOutputSlot) //bottom gets the output slot
+			return true;
+		
+		if(side != NetherBlocks.sideTop && slot != NetherBlocks.sideBottom && slot == nFuelSlot) //enables output from sides of the tankfillslot
+			return true;
+		
+		return false;
 	}
 }

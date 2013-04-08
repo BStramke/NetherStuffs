@@ -10,7 +10,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -25,13 +25,14 @@ import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.NetherStuffsEventHook;
+import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.SoulSiphon;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITankContainer, IInventory  {
+public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory  {
 	private static int nTickCounter = 0;
 	private LiquidTank tank;
 	public int nTankFillSlot = 1;
@@ -321,7 +322,7 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 
 	@Override
 	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from, int maxItemCount) {
-		if (from == ForgeDirection.DOWN || from == ForgeDirection.UP) {
+		if (from != ForgeDirection.DOWN || from == ForgeDirection.UP) {
 			if (getStackInSlot(this.nTankFillSlot) != null) {
 				ItemStack outputStack = getStackInSlot(this.nTankFillSlot).copy();
 				outputStack.stackSize = 1;
@@ -388,5 +389,44 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		return itemstack.itemID == NetherItems.SoulEnergyBottle.itemID;
+	}
+
+	/**
+	 * Get the size of the side inventory.
+	 */
+	@Override
+	public int[] getSizeInventorySide(int par1) {
+		if (par1 == NetherBlocks.sideTop)
+			return new int[] { nTankFillSlot };
+		else if (par1 == NetherBlocks.sideBottom)
+			return new int[] { nTankDrainSlot };
+		else
+			return new int[] { nTankFillSlot }; //sides
+	}
+
+	/**
+	 * Description : Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item, side
+	 */
+	@Override
+	public boolean func_102007_a(int slot, ItemStack par2ItemStack, int side) {
+		return this.isStackValidForSlot(slot, par2ItemStack);
+	}
+
+	/**
+	 * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item, side
+	 */
+	@Override
+	public boolean func_102008_b(int slot, ItemStack par2ItemStack, int side) {
+		
+		if(side == NetherBlocks.sideTop && slot == nTankFillSlot)
+			return true;
+		
+		if(side == NetherBlocks.sideBottom && slot == nTankDrainSlot) //bottom gets the output slot
+			return true;
+		
+		if(side != NetherBlocks.sideTop && slot != NetherBlocks.sideBottom && slot == nTankFillSlot) //enables output from sides of the tankfillslot
+			return true;
+		
+		return false;
 	}
 }

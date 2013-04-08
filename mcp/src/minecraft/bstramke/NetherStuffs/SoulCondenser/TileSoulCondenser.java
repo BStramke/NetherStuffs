@@ -1,7 +1,7 @@
 package bstramke.NetherStuffs.SoulCondenser;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -12,12 +12,13 @@ import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.SoulCondenser;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulCondenser extends TileEntity implements ISpecialInventory, ITankContainer, IInventory  {
+public class TileSoulCondenser extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory {
 	private static int nTickCounter = 0;
 	private LiquidTank tank;
 	// public int currentTankLevel = 0;
@@ -27,7 +28,7 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 
 	public static int nToHarkenScytheRate = 250;
 	public static int nFromHarkenScytheRate = 150;
-	
+
 	private ItemStack inventory[] = new ItemStack[2]; // 2 slots for bottles, one is SoulEnergyBottle, one is HarkenScythe Soul Vessel/Keeper
 
 	public TileSoulCondenser() {
@@ -89,7 +90,7 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 
 	@Override
 	public String getInvName() {
-		if(getBlockMetadata() == 0)
+		if (getBlockMetadata() == 0)
 			return "container.soulcondenser";
 		else
 			return "container.soulsmelter";
@@ -157,7 +158,7 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 		if (!this.worldObj.isRemote) {
 			fillFuelToTank();
 			fillFuelToBottle();
-		}	
+		}
 	}
 
 	public int getCurrentTankLevel() {
@@ -182,7 +183,7 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 	public int getBlockMetadata() {
 		return this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 	}
-	
+
 	private void fillFuelToBottle() {
 		if (this.inventory[this.nTankDrainSlot] != null) {
 			if (getBlockMetadata() == 0) {
@@ -422,6 +423,45 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 					return true;
 			}
 		}
+		return false;
+	}
+
+	/**
+	 * Get the size of the side inventory.
+	 */
+	@Override
+	public int[] getSizeInventorySide(int par1) {
+		if (par1 == NetherBlocks.sideTop)
+			return new int[] { nTankFillSlot };
+		else if (par1 == NetherBlocks.sideBottom)
+			return new int[] { nTankDrainSlot };
+		else
+			return new int[] { nTankFillSlot }; // sides
+	}
+
+	/**
+	 * Description : Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item, side
+	 */
+	@Override
+	public boolean func_102007_a(int slot, ItemStack par2ItemStack, int side) {
+		return this.isStackValidForSlot(slot, par2ItemStack);
+	}
+
+	/**
+	 * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item, side
+	 */
+	@Override
+	public boolean func_102008_b(int slot, ItemStack par2ItemStack, int side) {
+
+		if (side == NetherBlocks.sideTop && slot == nTankFillSlot)
+			return true;
+
+		if (side == NetherBlocks.sideBottom && slot == nTankDrainSlot) // bottom gets the output slot
+			return true;
+
+		if (side != NetherBlocks.sideTop && slot != NetherBlocks.sideBottom && slot == nTankFillSlot) // enables output from sides of the tankfillslot
+			return true;
+
 		return false;
 	}
 }

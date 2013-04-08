@@ -2,6 +2,8 @@ package bstramke.NetherStuffs.SoulFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,6 +15,7 @@ import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.NetherSoulFurnace;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
@@ -22,7 +25,7 @@ import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileSoulFurnace extends TileEntity implements ISpecialInventory, ITankContainer, IInventory  {
+public class TileSoulFurnace extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory {
 	private LiquidTank tank;
 	public static final int nSmeltedSlot = 0;
 	public static final int nTankFillSlot = 1;
@@ -407,7 +410,6 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 
 	@Override
 	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -417,8 +419,61 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 		case nSmeltedSlot:
 			return (DemonicFurnaceRecipes.smelting().getSmeltingResult(itemstack) != null || FurnaceRecipes.smelting().getSmeltingResult(itemstack) != null);
 		case nTankFillSlot:
-			return itemstack.itemID == NetherItems.SoulEnergyBottle.itemID;
+			if( itemstack.itemID == NetherItems.SoulEnergyBottle.itemID)
+			{
+				if(SoulEnergyBottle.getSoulEnergyAmount(itemstack) > 0) //only accept bottles that have an amount of energy in them
+					return true; 
+				else
+					return false;
+			}
 		}
+		
+		return false;
+	}
+
+	/**
+	 * Get the size of the side inventory.
+	 */
+	@Override
+	public int[] getSizeInventorySide(int par1) {
+		if (par1 == NetherBlocks.sideTop)
+			return new int[] { nSmeltedSlot };
+		else if (par1 == NetherBlocks.sideBottom)
+			return new int[] { nOutputSlot };
+		else
+			return new int[] { nTankFillSlot }; //sides
+	}
+
+	/**
+	 * Description : Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item, side
+	 */
+	@Override
+	public boolean func_102007_a(int slot, ItemStack par2ItemStack, int side) {
+		return this.isStackValidForSlot(slot, par2ItemStack);
+	}
+
+	/**
+	 * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item, side
+	 */
+	@Override
+	public boolean func_102008_b(int slot, ItemStack par2ItemStack, int side) {
+		if(par2ItemStack.itemID == NetherItems.SoulEnergyBottle.itemID)
+		{
+			if(SoulEnergyBottle.getSoulEnergyAmount(par2ItemStack) == 0)
+				return true; //empty bottle is extractable always
+			else
+				return false; //partially filled bottle is not extractable
+		}
+		
+		if(side == NetherBlocks.sideTop && slot == nSmeltedSlot)
+			return true;
+		
+		if(side == NetherBlocks.sideBottom && slot == nOutputSlot) //bottom gets the output slot
+			return true;
+		
+		if(side != NetherBlocks.sideTop && slot != NetherBlocks.sideBottom && slot == nTankFillSlot) //enables output from sides of the tankfillslot
+			return true;
+		
 		return false;
 	}
 }

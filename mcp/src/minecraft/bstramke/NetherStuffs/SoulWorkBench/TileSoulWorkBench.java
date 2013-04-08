@@ -2,7 +2,7 @@ package bstramke.NetherStuffs.SoulWorkBench;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,13 +14,14 @@ import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, ITankContainer, IInventory  {
+public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory  {
 	private LiquidTank tank;
 	public static final int nTankFillSlot = 9;
 	public static final int nOutputSlot = 10;
@@ -418,5 +419,44 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 		default:
 			return true;
 		}
+	}
+	
+	/**
+	 * Get the size of the side inventory.
+	 */
+	@Override
+	public int[] getSizeInventorySide(int par1) {
+		if (par1 == NetherBlocks.sideTop)
+			return new int[] { 0,1,2,3,4,5,6,7,8 }; //crafting grid
+		else if (par1 == NetherBlocks.sideBottom)
+			return new int[] { nOutputSlot };
+		else
+			return new int[] { nTankFillSlot }; //sides
+	}
+
+	/**
+	 * Description : Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item, side
+	 */
+	@Override
+	public boolean func_102007_a(int slot, ItemStack par2ItemStack, int side) {
+		return this.isStackValidForSlot(slot, par2ItemStack);
+	}
+
+	/**
+	 * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item, side
+	 */
+	@Override
+	public boolean func_102008_b(int slot, ItemStack par2ItemStack, int side) {
+		
+		if(side == NetherBlocks.sideTop && slot >= 0 && slot <= 8)
+			return true;
+		
+		if(side == NetherBlocks.sideBottom && slot == nOutputSlot) //bottom gets the output slot
+			return true;
+		
+		if(side != NetherBlocks.sideTop && slot != NetherBlocks.sideBottom && slot == nTankFillSlot) //enables output from sides of the tankfillslot
+			return true;
+		
+		return false;
 	}
 }

@@ -625,7 +625,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	 * etc.
 	 */
 	public void computeEnergyStage() {
-		double Percentage = (heat / (double) MAX_HEAT) * 100;
+		double Percentage = ((double) heat / (double) MAX_HEAT) * 100.0;
 		if (Percentage <= 25.0)
 			energyStage = EnergyStage.Blue;
 		else if (Percentage <= 50.0)
