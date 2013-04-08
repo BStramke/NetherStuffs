@@ -26,6 +26,7 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 	public void renderInventoryBlock(Block par1Block, int metadata, int modelID, RenderBlocks renderer) {
 		Tessellator var4 = Tessellator.instance;
 		par1Block.setBlockBoundsForItemRender();
+		
 		GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 

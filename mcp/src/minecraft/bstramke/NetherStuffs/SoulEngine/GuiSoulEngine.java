@@ -87,7 +87,7 @@ public class GuiSoulEngine extends GuiLedger {
 		TileSoulEngine engine = tile;
 
 		int nBottomLeftY = var6 + 77;
-		int nFillState = engine.getScaledBurnTime(58);
+		int nFillState = engine.getScaledTankLevel(58);
 
 		this.mc.renderEngine.bindTexture("/gui/items.png");
 		Icon LiquidIcon = NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0);
