@@ -43,8 +43,7 @@ public class GuiUsageRecipe extends GuiRecipe
         if(handlers.isEmpty())
             return false;
 
-        mc.currentScreen = null;
-        mc.displayGuiScreen(new GuiUsageRecipe(prevscreen, handlers));
+        NEIClientUtils.overlayScreen(new GuiUsageRecipe(prevscreen, handlers));
         return true;
     }
     

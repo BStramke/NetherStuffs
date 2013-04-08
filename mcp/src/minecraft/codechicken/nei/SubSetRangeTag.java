@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 import codechicken.core.config.ConfigFile;
 import codechicken.core.config.ConfigTag;
+import codechicken.core.inventory.ItemKey;
 import codechicken.nei.forge.GuiContainerManager;
 
 public class SubSetRangeTag extends ConfigTag
@@ -324,13 +325,9 @@ public class SubSetRangeTag extends ConfigTag
         {
             int slot = getClickedSlot(mousey);
             if(slot == lastslotclicked && System.currentTimeMillis() - lastslotclicktime < 500 && button == 0)
-            {
                 slotClicked(slot, button, true);
-            }
             else
-            {
                 slotClicked(slot, button, false);
-            }
             
             if(button == 0)
             {
@@ -391,13 +388,9 @@ public class SubSetRangeTag extends ConfigTag
         if(button == 0 && !doubleclick)//show
         {
             if(NEIClientUtils.shiftKey())
-            {
                 LayoutManager.searchField.setText("@"+qualifiedname);
-            }
             else
-            {
                 showAllItems();
-            }
         }
         else if(button == 0 && doubleclick)//show only
         {
@@ -456,9 +449,7 @@ public class SubSetRangeTag extends ConfigTag
     public void draw(GuiContainerManager gui, int mousex, int mousey)
     {
         if(!expanded)
-        {
             return;
-        }
         
         drawScrollBar(gui);        
         
@@ -469,9 +460,7 @@ public class SubSetRangeTag extends ConfigTag
         {
             slot++;
             if(slot <= getScrolledSlots())
-            {
                 continue;
-            }
             
             SubSetRangeTag stag = (SubSetRangeTag) tag;
             if(!hidden)
@@ -506,9 +495,7 @@ public class SubSetRangeTag extends ConfigTag
             
             drawy+=slotheight;
             if(drawy >= y + height)
-            {
                 break;
-            }
         }
         
         if(validranges != null && drawy < y + height)
@@ -529,7 +516,7 @@ public class SubSetRangeTag extends ConfigTag
                         continue;
                     }
                     
-                    ItemHash itemh = range.encompasseditems.get(item);
+                    ItemKey itemh = range.encompasseditems.get(item);
                     int itemx = drawx + slotwidth / 2 - 8;
                     int itemy = drawy + 1;
                     boolean itemvisible = !NEIClientConfig.vishash.isItemHidden(itemh);
@@ -546,26 +533,19 @@ public class SubSetRangeTag extends ConfigTag
                         
                     }
                     
-                    ItemStack stack = itemh.toStack();
+                    ItemStack stack = itemh.item;
                     gui.drawItem(itemx, itemy, stack);
                     
-                    if(itemx <= mousex && itemx + 16 > mousex &&
-                            itemy + 1 <= mousey && itemy + 16 > mousey)
-                    {
-                        LayoutManager.dropDown.setHoverItem(itemh.toStack());
-                    }
+                    if(itemx <= mousex && itemx + 16 > mousex && itemy + 1 <= mousey && itemy + 16 > mousey)
+                        LayoutManager.dropDown.setHoverItem(itemh.item);
                     
                     drawy+=slotheight;
                     if(drawy >= y + height)
-                    {
                         break;
-                    }
                 }
                 
                 if(drawy >= y + height)
-                {
                     break;
-                }
             }
         }
     }

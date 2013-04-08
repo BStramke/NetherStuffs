@@ -22,7 +22,7 @@ public class TextureLavaFlowFX extends TextureFX
 
     public TextureLavaFlowFX()
     {
-    	super(32, "lava_flow_fx");
+        super(32, "lava_flow_fx");
     }
 
     @Override
@@ -114,21 +114,21 @@ public class TextureLavaFlowFX extends TextureFX
                 var7 = var10;
             }
 
-        	int px = var2&tileSizeMask;
-        	int py = var2/tileSizeBase;
-        	writeColour(px, py, var5, var6, var7, -1);
-        	writeColour(px+16, py, var5, var6, var7, -1);
-        	writeColour(px, py+16, var5, var6, var7, -1);
-        	writeColour(px+16, py+16, var5, var6, var7, -1);
+            int px = var2&tileSizeMask;
+            int py = var2/tileSizeBase;
+            writeColour(px, py, var5, var6, var7, -1);
+            writeColour(px+16, py, var5, var6, var7, -1);
+            writeColour(px, py+16, var5, var6, var7, -1);
+            writeColour(px+16, py+16, var5, var6, var7, -1);
         }
     }
 
-	private void writeColour(int px, int py, int var5, int var6, int var7, int var8)
-	{
-		int var2 = (py*32+px)*4;
-		this.imageData[var2 + 0] = (byte)var5;
+    private void writeColour(int px, int py, int var5, int var6, int var7, int var8)
+    {
+        int var2 = (py*32+px)*4;
+        this.imageData[var2 + 0] = (byte)var5;
         this.imageData[var2 + 1] = (byte)var6;
         this.imageData[var2 + 2] = (byte)var7;
         this.imageData[var2 + 3] = (byte)var8;
-	}
+    }
 }

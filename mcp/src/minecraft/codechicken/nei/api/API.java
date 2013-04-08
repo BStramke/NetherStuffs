@@ -6,10 +6,10 @@ import java.util.LinkedList;
 
 import org.lwjgl.input.Keyboard;
 
+import codechicken.core.inventory.ItemKey;
 import codechicken.nei.DropDownFile;
 import codechicken.nei.GuiNEIControls;
 import codechicken.nei.GuiNEISettings;
-import codechicken.nei.ItemHash;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.MultiItemRange;
 import codechicken.nei.NEIClientConfig;
@@ -142,7 +142,7 @@ public class API
     */
     public static void setOverrideName(int itemID, int itemDamage, String name)
     {
-        ItemInfo.fallbackNames.put(new ItemHash(itemID, itemDamage), name);
+        ItemInfo.fallbackNames.put(new ItemKey(itemID, itemDamage), name);
     }
    
    /**

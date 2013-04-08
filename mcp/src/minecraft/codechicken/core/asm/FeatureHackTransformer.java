@@ -28,9 +28,9 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import codechicken.core.asm.ObfuscationMappings.DescriptorMapping;
 
-import cpw.mods.fml.common.asm.ASMTransformer;
+import cpw.mods.fml.relauncher.IClassTransformer;
 
-public class FeatureHackTransformer extends ASMTransformer implements Opcodes
+public class FeatureHackTransformer implements Opcodes, IClassTransformer
 {    
     public FeatureHackTransformer()
     {
@@ -43,6 +43,9 @@ public class FeatureHackTransformer extends ASMTransformer implements Opcodes
     DescriptorMapping f_lastBrightness = new DescriptorMapping("net/minecraft/client/renderer/OpenGlHelper", "lastBrightness", "I");
     DescriptorMapping m_startGame = new DescriptorMapping("net/minecraft/client/Minecraft", "startGame", "()V");
     DescriptorMapping m_findClass = new DescriptorMapping("cpw/mods/fml/relauncher/RelaunchClassLoader", "findClass", "(Ljava/lang/String;)Ljava/lang/Class;");
+	DescriptorMapping m_canPlaceBlockAt = new DescriptorMapping("net/minecraft/block/Block", "canPlaceBlockAt", "(Lnet/minecraft/world/World;III)Z");
+	DescriptorMapping m_isBlockReplaceable = new DescriptorMapping("net/minecraft/block/Block", "isBlockReplaceable", "(Lnet/minecraft/world/World;III)Z");
+	
     private byte[] transformer001(String name, byte[] bytes)
     {
         ClassNode cnode = ASMHelper.createClassNode(bytes);
@@ -71,7 +74,33 @@ public class FeatureHackTransformer extends ASMTransformer implements Opcodes
             bytes = transformer003(name, bytes);
         if(name.startsWith("net.minecraftforge"))
             usp(name);
-        return bytes;
+        if(m_canPlaceBlockAt.isClass(name))
+            bytes = transformer004(name, bytes);
+		return bytes;
+	}
+
+    private byte[] transformer004(String name, byte[] bytes)
+    {
+        ClassNode cnode = ASMHelper.createClassNode(bytes);
+        MethodNode method1 = ASMHelper.findMethod(m_isBlockReplaceable, cnode);
+        InsnList replacement1 = new InsnList();
+        replacement1.add(new VarInsnNode(ALOAD, 0));
+        replacement1.add(new FieldInsnNode(GETFIELD, "net/minecraft/block/Block", "blockMaterial", "Lnet/minecraft/block/material/Material;"));
+        replacement1.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/block/material/Material", "isReplaceable", "()Z"));
+        replacement1.add(new InsnNode(IRETURN));
+        method1.instructions = replacement1;
+        
+        MethodNode method2 = ASMHelper.findMethod(m_canPlaceBlockAt, cnode);
+        InsnList replacement2 = new InsnList();
+        replacement2.add(new VarInsnNode(ALOAD, 1));
+        replacement2.add(new VarInsnNode(ILOAD, 2));
+        replacement2.add(new VarInsnNode(ILOAD, 3));
+        replacement2.add(new VarInsnNode(ILOAD, 4));
+        replacement2.add(new MethodInsnNode(INVOKESTATIC, "codechicken/core/featurehack/TweakTransformerHelper", "canPlaceBlockAt", "(Lnet/minecraft/world/World;III)Z"));
+        replacement2.add(new InsnNode(IRETURN));
+        method2.instructions = replacement2;
+        
+        return ASMHelper.createBytes(cnode, 3);
     }
 
     private byte[] transformer002(String name, byte[] bytes)
@@ -140,7 +169,7 @@ public class FeatureHackTransformer extends ASMTransformer implements Opcodes
     }
     
     @SuppressWarnings("unchecked")
-	public static void usp(String name)
+    public static void usp(String name)
     {
         int ld = name.lastIndexOf('.');
         String pkg = ld == -1 ? "" : name.substring(0, ld);
@@ -158,7 +187,7 @@ public class FeatureHackTransformer extends ASMTransformer implements Opcodes
             {
                 JarFile jf = ((JarURLConnection)urlconn).getJarFile();
                 if (jf != null && jf.getManifest() != null)
-                	cs = jf.getJarEntry(rname).getCodeSigners();
+                    cs = jf.getJarEntry(rname).getCodeSigners();
             }
             
             Certificate[] certs = new CodeSource(res, cs).getCertificates();

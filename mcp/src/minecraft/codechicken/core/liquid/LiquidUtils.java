@@ -1,5 +1,6 @@
 package codechicken.core.liquid;
 
+import codechicken.core.CommonUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -7,7 +8,6 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidStack;
-import codechicken.core.CommonUtils;
 
 public class LiquidUtils
 {

@@ -1,6 +1,5 @@
 package codechicken.core.vec;
 
-
 public class Matrix4 implements ITransformation
 {
     //m<row><column>    
@@ -52,6 +51,16 @@ public class Matrix4 implements ITransformation
         return this;
     }
     
+    public Matrix4 rotate(Quat quat)
+    {
+        double angle = Math.acos(quat.s)*2;
+        if(angle == 0)
+            return this;
+        
+        double sa = Math.sin(angle*0.5);
+        return rotate(angle, new Vector3(quat.x/sa, quat.y/sa, quat.z/sa));
+    }
+    
     public Matrix4 rotate(double angle, Vector3 axis)
     {
         double c = Math.cos(angle);
@@ -97,6 +106,12 @@ public class Matrix4 implements ITransformation
         m21 = t21;
         m31 = t31;
         
+        return this;
+    }
+    
+    public Matrix4 rotate(Rotation rotation)
+    {
+        rotation.apply(this);
         return this;
     }
     

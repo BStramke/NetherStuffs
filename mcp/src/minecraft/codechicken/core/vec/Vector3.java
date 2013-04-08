@@ -358,4 +358,23 @@ public class Vector3
     {
         return new Translation(this);
     }
+
+    public double scalarProject(Vector3 b)
+    {
+        double l = b.mag();
+        return l == 0 ? 0 : dotProduct(b)/l;
+    }
+    
+    public Vector3 project(Vector3 b)
+    {
+        double l = b.magSquared();
+        if(l == 0)
+        {
+            set(0, 0, 0);
+            return this;
+        }
+        double m = dotProduct(b)/l;
+        set(b).multiply(m);
+        return this;
+    }
 }

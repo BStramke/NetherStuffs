@@ -12,6 +12,7 @@ import codechicken.nei.forge.GuiContainerManager;
 import codechicken.core.ClientUtils;
 import codechicken.core.NetworkClosedException;
 import codechicken.core.inventory.InventoryUtils;
+import codechicken.core.inventory.ItemKey;
 import codechicken.core.packet.PacketCustom;
 import codechicken.core.packet.PacketCustom.ICustomPacketHandler.IClientPacketHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -72,11 +73,10 @@ public class NEICPH implements IClientPacketHandler
     private void handleBannedBlocks(PacketCustom packet)
     {
         int num = packet.readInt();
-        ArrayList<ItemHash> items = new ArrayList<ItemHash>(num);
+        ArrayList<ItemKey> items = new ArrayList<ItemKey>(num);
         for(int i = 0; i < num; i++)
-        {
-            items.add(new ItemHash(packet.readUnsignedShort(), packet.readUnsignedShort()));
-        }
+            items.add(new ItemKey(packet.readUnsignedShort(), packet.readUnsignedShort()));
+
         NEIClientConfig.setBannedBlocks(items);
         
         if(NEIClientUtils.getGuiContainer() != null)
@@ -288,7 +288,7 @@ public class NEICPH implements IClientPacketHandler
     {
         PacketCustom packet = new PacketCustom(channel, 25);
         packet.writeShort(slotNumber);
-        packet.writeItemStack(stack);
+        packet.writeItemStack(stack, true);
         packet.sendToServer();
     }
 }

@@ -14,6 +14,7 @@ public class PlaceholderTexture extends TextureStitched
         super(par1);
     }
     
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean loadTexture(TextureManager manager, ITexturePack texturepack, String name, String fileName, BufferedImage image, ArrayList textures)
     {

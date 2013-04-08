@@ -77,7 +77,7 @@ public class GuiPotionCreator extends GuiContainerWidget
         }
 
         @Override
-        protected void drawSlot(int slot, int x, int y, boolean selected)
+        protected void drawSlot(int slot, int x, int y, int mx, int my, boolean selected)
         {
             GL11.glColor4f(1, 1, 1, 1);
             Potion potion = validPotions.get(slot);
@@ -145,7 +145,7 @@ public class GuiPotionCreator extends GuiContainerWidget
         }
 
         @Override
-        protected void slotClicked(int slot, int button, boolean doubleclick)
+        protected void slotClicked(int slot, int button, int mx, int my, boolean doubleclick)
         {
             if(!enabled)
                 return;

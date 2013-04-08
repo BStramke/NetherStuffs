@@ -10,6 +10,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.Dimension;
 
 import net.minecraft.client.Minecraft;
@@ -198,5 +199,21 @@ public class TextureUtils
     public static Icon getIconFromTexture(String name, IconRegister iconRegister)
     {
         return getIconFromTexture(name, iconRegister, true);
+    }
+
+    public static void prepareTexture(int target, int texture, int min_mag_filter, int wrap)
+    {
+        GL11.glBindTexture(target, texture);
+        GL11.glTexParameteri(target, GL11.GL_TEXTURE_MIN_FILTER, min_mag_filter);
+        GL11.glTexParameteri(target, GL11.GL_TEXTURE_MAG_FILTER, min_mag_filter);
+        switch(target)
+        {
+            case GL12.GL_TEXTURE_3D:
+                GL11.glTexParameteri(target, GL12.GL_TEXTURE_WRAP_R, wrap);
+            case GL11.GL_TEXTURE_2D:
+                GL11.glTexParameteri(target, GL11.GL_TEXTURE_WRAP_T, wrap);
+            case GL11.GL_TEXTURE_1D:
+                GL11.glTexParameteri(target, GL11.GL_TEXTURE_WRAP_S, wrap);
+        }
     }
 }

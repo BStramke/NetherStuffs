@@ -1,12 +1,10 @@
 package codechicken.core.gui;
 
+import net.minecraft.client.gui.GuiButton;
+
 import org.lwjgl.input.Keyboard;
 
 import codechicken.core.alg.MathHelper;
-
-
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
 
 public abstract class GuiScrollSlot extends GuiWidget
 {    
@@ -74,11 +72,11 @@ public abstract class GuiScrollSlot extends GuiWidget
     
     public abstract void selectPrev();
 
-    protected abstract void slotClicked(int slot, int button, boolean doubleclick);
+    protected abstract void slotClicked(int slot, int button, int mousex, int mousey, boolean doubleclick);
 
     protected abstract boolean isSlotSelected(int slot);
 
-    protected abstract void drawSlot(int slot, int x, int y, boolean selected);
+    protected abstract void drawSlot(int slot, int x, int y, int mousex, int mousey, boolean selected);
 
     protected void unfocus()
     {
@@ -258,7 +256,8 @@ public abstract class GuiScrollSlot extends GuiWidget
                 mousey >= contenty && mousey <= contenty + contentheight)//in the box
         {
             int slot = getClickedSlot(mousey);
-            slotClicked(slot, button, slot == lastslotclicked && button == lastbuttonclicked && System.currentTimeMillis() - lastslotclicktime < 500);
+            slotClicked(slot, button, mousex-contentx, mousey-getSlotY(slot), 
+                    slot == lastslotclicked && button == lastbuttonclicked && System.currentTimeMillis() - lastslotclicktime < 500);
             
             lastslotclicked = slot;
             lastbuttonclicked = button;
@@ -327,13 +326,13 @@ public abstract class GuiScrollSlot extends GuiWidget
         return true;
     }
     
-    public void drawSlots()
+    public void drawSlots(int mousex, int mousey)
     {
         for(int slot = 0; slot < getNumSlots(); slot++)
         {
             int sloty = getSlotY(slot);
             if(sloty > contenty - getSlotHeight() && sloty < contenty + contentheight)
-                drawSlot(slot, contentx, sloty, isSlotSelected(slot));
+                drawSlot(slot, contentx, sloty, mousex-contentx, mousey-sloty, isSlotSelected(slot));
         }
     }
     
@@ -348,7 +347,7 @@ public abstract class GuiScrollSlot extends GuiWidget
     {
         drawBackground();
         drawSlotBox();
-        drawSlots();
+        drawSlots(mousex, mousey);
         drawScrollBar();
         drawOverlay();
     }

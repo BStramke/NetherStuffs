@@ -2,8 +2,6 @@ package codechicken.core.render;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-
 import org.lwjgl.util.Dimension;
 
 import codechicken.core.render.TextureUtils.IIconRegister;

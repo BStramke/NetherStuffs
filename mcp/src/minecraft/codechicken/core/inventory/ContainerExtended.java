@@ -1,5 +1,7 @@
 package codechicken.core.inventory;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import codechicken.core.packet.PacketCustom;
@@ -11,8 +13,91 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.inventory.Slot;
 
-public abstract class ContainerExtended extends Container
+public abstract class ContainerExtended extends Container implements ICrafting
 {
+    public LinkedList<EntityPlayerMP> playerCrafters = new LinkedList<EntityPlayerMP>();
+    
+    public ContainerExtended()
+    {
+        crafters.add(this);
+    }
+    
+    @Override
+    public void addCraftingToCrafters(ICrafting icrafting)
+    {
+        if(icrafting instanceof EntityPlayerMP)
+        {
+            playerCrafters.add((EntityPlayerMP) icrafting);
+            sendContainerAndContentsToPlayer(this, getInventory(), Arrays.asList((EntityPlayerMP) icrafting));
+            detectAndSendChanges();
+        }
+        else
+            super.addCraftingToCrafters(icrafting);
+    }
+    
+    @Override
+    public void removeCraftingFromCrafters(ICrafting icrafting)
+    {
+        if(icrafting instanceof EntityPlayerMP)
+            playerCrafters.remove(icrafting);
+        else
+            super.removeCraftingFromCrafters(icrafting);
+    }
+    
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public void sendContainerAndContentsToPlayer(Container container, List list)
+    {
+        sendContainerAndContentsToPlayer(container, list, playerCrafters);
+    }
+    
+    public void sendContainerAndContentsToPlayer(Container container, List<ItemStack> list, List<EntityPlayerMP> playerCrafters)
+    {
+        LinkedList<ItemStack> largeStacks = new LinkedList<ItemStack>();
+        for(int i = 0; i < list.size(); i++)
+        {
+            ItemStack stack = (ItemStack) list.get(i);
+            if(stack != null && stack.stackSize > Byte.MAX_VALUE)
+            {
+                list.set(i, null);
+                largeStacks.add(stack);
+            }
+            else
+                largeStacks.add(null);
+        }
+        
+        for(EntityPlayerMP player : playerCrafters)
+            player.sendContainerAndContentsToPlayer(container, list);
+        
+        for(int i = 0; i < largeStacks.size(); i++)
+        {
+            ItemStack stack = largeStacks.get(i);
+            if(stack != null)
+                sendLargeStack(stack, i, playerCrafters);
+        }
+    }
+    
+    public void sendLargeStack(ItemStack stack, int slot, List<EntityPlayerMP> players)
+    {
+    }
+
+    @Override
+    public void sendProgressBarUpdate(Container container, int i, int j)
+    {
+        for(EntityPlayerMP player : playerCrafters)
+            player.sendProgressBarUpdate(container, i, j);
+    }
+    
+    @Override
+    public void sendSlotContents(Container container, int slot, ItemStack stack)
+    {
+        if(stack != null && stack.stackSize > Byte.MAX_VALUE)
+            sendLargeStack(stack, slot, playerCrafters);
+        else
+            for(EntityPlayerMP player : playerCrafters)
+                player.sendSlotContents(container, slot, stack);
+    }
+    
     @Override
     public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer player)
     {

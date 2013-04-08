@@ -3,6 +3,8 @@ package codechicken.core.packet;
 import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+
 import codechicken.core.data.MCDataInput;
 import codechicken.core.data.MCDataOutput;
 import codechicken.core.packet.PacketCustom.ICustomPacketHandler.IClientPacketHandler;
@@ -165,7 +167,7 @@ public final class PacketCustom implements MCDataInput, MCDataOutput
             if(handler instanceof NetServerHandler)
                 serverDelegate.handle(packetCustom, handler);
             else
-                clientDelegate.handle(packetCustom, handler);                
+                clientDelegate.handle(packetCustom, handler);
         }
 
         private void registerSidedHandler(ICustomPacketHandler handler)
@@ -412,18 +414,26 @@ public final class PacketCustom implements MCDataInput, MCDataOutput
         }
     }
     
-    public void writeItemStack(ItemStack spawnstack)
+    public void writeItemStack(ItemStack stack)
     {
-        if (spawnstack == null)
+        writeItemStack(stack, false);
+    }
+    
+    public void writeItemStack(ItemStack stack, boolean large)
+    {
+        if (stack == null)
         {
             writeShort(-1);
         }
         else
         {
-            writeShort(spawnstack.itemID);
-            writeByte(spawnstack.stackSize);
-            writeShort(spawnstack.getItemDamage());
-            writeNBTTagCompound(spawnstack.stackTagCompound);
+            writeShort(stack.itemID);
+            if(large)
+                writeInt(stack.stackSize);
+            else
+                writeByte(stack.stackSize);
+            writeShort(stack.getItemDamage());
+            writeNBTTagCompound(stack.stackTagCompound);
         }
     }
         
@@ -615,15 +625,20 @@ public final class PacketCustom implements MCDataInput, MCDataOutput
         }
         
     }
-    
+
     public ItemStack readItemStack()
+    {
+        return readItemStack(false);
+    }
+    
+    public ItemStack readItemStack(boolean large)
     {
         ItemStack var2 = null;
         short itemID = readShort();
 
         if (itemID >= 0)
         {
-            byte stackSize = readByte();
+            int stackSize = large ? readInt() : readByte();
             short damage = readShort();
             var2 = new ItemStack(itemID, stackSize, damage);
             var2.stackTagCompound = readNBTTagCompound();
@@ -714,14 +729,17 @@ public final class PacketCustom implements MCDataInput, MCDataOutput
         ((CustomTinyPacketHandler)nmh.getTinyPacketHandler()).registerSidedHandler(handler);
     }
     
-    public void sendToPlayer(EntityPlayerMP player)
+    public void sendToPlayer(EntityPlayer player)
     {
         sendToPlayer(toPacket(), player);
     }
     
     public static void sendToPlayer(Packet packet, EntityPlayer player)
     {
-        ((EntityPlayerMP)player).playerNetServerHandler.sendPacketToPlayer(packet);
+        if(player == null)
+            sendToClients(packet);
+        else
+            ((EntityPlayerMP)player).playerNetServerHandler.sendPacketToPlayer(packet);
     }
     
     public void sentToClients()
@@ -764,6 +782,19 @@ public final class PacketCustom implements MCDataInput, MCDataOutput
         PlayerInstance p = ((WorldServer)world).getPlayerManager().getOrCreateChunkWatcher(chunkX, chunkZ, false);
         if(p != null)
             p.sendToAllPlayersWatchingChunk(packet);
+    }
+    
+    public void sendToOps()
+    {
+        sendToOps(toPacket());
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void sendToOps(Packet packet)
+    {
+        for(EntityPlayerMP player : (List<EntityPlayerMP>)MinecraftServer.getServer().getConfigurationManager().playerEntityList)
+            if(MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(player.username))
+                sendToPlayer(packet, player);
     }
     
     @SideOnly(Side.CLIENT)

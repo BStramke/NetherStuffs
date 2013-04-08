@@ -14,10 +14,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.Icon;
 import codechicken.core.vec.CoordinateSystem;
 import codechicken.core.vec.ITransformation;
 import codechicken.core.vec.RightHanded;
 import codechicken.core.vec.Quat;
+import codechicken.core.vec.Rotation;
 import codechicken.core.vec.Vector3;
 
 public class CCModel
@@ -143,55 +145,55 @@ public class CCModel
      * @param x2 maxX
      * @param y2 maxY
      * @param z2 maxZ
-     * @return The generated model
+     * @return The generated model. When rendering an icon will need to be supplied for the UV transformation.
      */
     public CCModel generateBlock(int i, double x1, double y1, double z1, double x2, double y2, double z2)
     {
         double u1, v1, u2, v2;
-    
+        
         //bottom face
-        u1 = x1 / 16; v1 = z1 / 16;
-        u2 = x2 / 16; v2 = z2 / 16;
+        u1 = x1; v1 = z1;
+        u2 = x2; v2 = z2;
         verts[i++] = new Vertex5(x1, y1, z2, u1, v2);
         verts[i++] = new Vertex5(x1, y1, z1, u1, v1);
         verts[i++] = new Vertex5(x2, y1, z1, u2, v1);
         verts[i++] = new Vertex5(x2, y1, z2, u2, v2);
     
         //top face
-        u1 = x1 / 16; v1 = z1 / 16;
-        u2 = x2 / 16; v2 = z2 / 16;
+        u1 = x1; v1 = z1;
+        u2 = x2; v2 = z2;
         verts[i++] = new Vertex5(x2, y2, z2, u2, v2);
         verts[i++] = new Vertex5(x2, y2, z1, u2, v1);
         verts[i++] = new Vertex5(x1, y2, z1, u1, v1);
         verts[i++] = new Vertex5(x1, y2, z2, u1, v2);
     
         //east face
-        u1 = x1 / 16; v1 = y1 / 16;
-        u2 = x2 / 16; v2 = y2 / 16;
+        u1 = x1; v1 = y1;
+        u2 = x2; v2 = y2;
         verts[i++] = new Vertex5(x1, y2, z1, u2, v1);
         verts[i++] = new Vertex5(x2, y2, z1, u1, v1);
         verts[i++] = new Vertex5(x2, y1, z1, u1, v2);
         verts[i++] = new Vertex5(x1, y1, z1, u2, v2);
     
         //west face
-        u1 = x1 / 16; v1 = y1 / 16;
-        u2 = x2 / 16; v2 = y2 / 16;
+        u1 = x1; v1 = y1;
+        u2 = x2; v2 = y2;
         verts[i++] = new Vertex5(x1, y2, z2, u1, v1);
         verts[i++] = new Vertex5(x1, y1, z2, u1, v2);
         verts[i++] = new Vertex5(x2, y1, z2, u2, v2);
         verts[i++] = new Vertex5(x2, y2, z2, u2, v1);
     
         //north face
-        u1 = z1 / 16; v1 = y1 / 16;
-        u2 = z2 / 16; v2 = y2 / 16;
+        u1 = z1; v1 = y1;
+        u2 = z2; v2 = y2;
         verts[i++] = new Vertex5(x1, y2, z2, u2, v1);
         verts[i++] = new Vertex5(x1, y2, z1, u1, v1);
         verts[i++] = new Vertex5(x1, y1, z1, u1, v2);
         verts[i++] = new Vertex5(x1, y1, z2, u2, v2);
     
         //south face
-        u1 = z1 / 16; v1 = y1 / 16;
-        u2 = z2 / 16; v2 = y2 / 16;
+        u1 = z1; v1 = y1;
+        u2 = z2; v2 = y2;
         verts[i++] = new Vertex5(x2, y1, z2, u1, v2);
         verts[i++] = new Vertex5(x2, y1, z1, u2, v2);
         verts[i++] = new Vertex5(x2, y2, z1, u2, v1);
@@ -399,26 +401,48 @@ public class CCModel
         render(0, verts.length, new Vector3(x, y, z).translation(), u, v);
     }
     
+    public void render(double x, double y, double z, Icon icon)
+    {
+        render(0, verts.length, new Vector3(x, y, z).translation(), new IconTransformation(icon));
+    }
+    
+    public void render(ITransformation t, Icon icon)
+    {
+        render(0, verts.length, t, new IconTransformation(icon));
+    }
+
     public void render(ITransformation t, double u, double v)
     {
         render(0, verts.length, t, u, v);
     }
+
+    /**
+     * Legacy helper function
+     */
+    public void render(int start, int length, ITransformation t, double u, double v)
+    {
+        if(u == 0 && v == 0)
+            render(start, length, t, null);
+        else
+            render(start, length, t, new UVTranslation(u, v));
+    }
     
     /**
-     * Renders vertices i through j-1 of the model
+     * Renders vertices start through start+length-1 of the model
      * @param start The first vertex to render
      * @param length The number of vertices to render
      * @param t The transformation to apply to the mat
      * @param u The u texture offset
      * @param v The v texture offset
      */
-    public void render(int start, int length, ITransformation t, double u, double v)
+    public void render(int start, int length, ITransformation t, IUVTransformation u)
     {
         boolean useNormal = CCRenderState.useNormals() && normals != null;
         boolean useColour = CCRenderState.useModelColours() && colours != null;
         Vector3 normal;
         Vertex5 vert;
-        Vector3 vec;
+        Vector3 vec = t == null ? null : new Vector3();
+        UV uv = new UV();
         Tessellator tess = Tessellator.instance;
         for(int k = 0; k < length; k++)
         {
@@ -431,13 +455,13 @@ public class CCModel
                 tess.setColorOpaque_I(colours[start+k]);
             vert = verts[start+k];
             if(t != null)
-            {
-                vec = vert.vec.copy();
-                t.transform(vec);
-            }
+                t.transform(vec.set(vert.vec));
             else
                 vec = vert.vec;
-            tess.addVertexWithUV(vec.x, vec.y, vec.z, vert.u + u, vert.v + v);
+            uv.set(vert.u, vert.v);
+            if(u != null)
+                u.transform(uv);
+            tess.addVertexWithUV(vec.x, vec.y, vec.z, uv.u, uv.v);
         }
     }
 
@@ -663,7 +687,6 @@ public class CCModel
         return this;
     }
     
-
     /**
      * @param side1 The side of this model
      * @param side2 The side of the new model
@@ -672,7 +695,7 @@ public class CCModel
      */
     public CCModel sidedCopy(int side1, int side2, Vector3 point)
     {
-        return rotatedCopy(side_quatsR[side1].copy().multiply(side_quats[side2]), point);
+        return rotatedCopy(Rotation.sideQuatsR[side1].copy().multiply(Rotation.sideQuats[side2]), point);
     }
 
     /**
@@ -717,21 +740,6 @@ public class CCModel
             System.arraycopy(src.colours, srcpos, dest.colours, destpos, length);
         }
     }
-
-    public static Quat[] side_quats = new Quat[]{
-        Quat.aroundAxis(1, 0, 0, 0),
-        Quat.aroundAxis(1, 0, 0, Math.PI),
-        Quat.aroundAxis(1, 0, 0, Math.PI/2),
-        Quat.aroundAxis(1, 0, 0,-Math.PI/2),
-        Quat.aroundAxis(0, 0, 1,-Math.PI/2),
-        Quat.aroundAxis(0, 0, 1, Math.PI/2)};
-    public static Quat[] side_quatsR = new Quat[]{
-        Quat.aroundAxis(-1, 0, 0, 0),
-        Quat.aroundAxis(-1, 0, 0, Math.PI),
-        Quat.aroundAxis(-1, 0, 0, Math.PI/2),
-        Quat.aroundAxis(-1, 0, 0,-Math.PI/2),
-        Quat.aroundAxis(0, 0, -1,-Math.PI/2),
-        Quat.aroundAxis(0, 0, -1, Math.PI/2)};
 
     /**
      * Generate models rotated to the other 5 sides of the block
@@ -839,7 +847,8 @@ public class CCModel
      */
     public CCModel generateSidedPart(int side1, int side2, Vector3 point, int srcpos, int destpos, int length)
     {
-        return generateRotatedPart(side_quatsR[side1].copy().multiply(side_quats[side2]), point, srcpos, destpos, length);
+
+        return generateRotatedPart(Rotation.sideQuatsR[side1].copy().multiply(Rotation.sideQuats[side2]), point, srcpos, destpos, length);
     }
 
     /**

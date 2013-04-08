@@ -520,6 +520,9 @@ public class NEIClientUtils extends NEIServerUtils
 
     public static void overlayScreen(GuiScreen gui)
     {
+        if(mc().currentScreen instanceof GuiContainer)
+            FastTransferManger.clickSlot(getGuiContainer(), -999);
+        
         mc().currentScreen = null;
         mc().displayGuiScreen(gui);
     }

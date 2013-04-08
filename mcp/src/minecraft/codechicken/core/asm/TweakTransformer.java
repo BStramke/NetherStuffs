@@ -5,9 +5,10 @@ import java.util.List;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -132,6 +133,41 @@ public class TweakTransformer implements IClassTransformer, Opcodes
                     replacement.add(new InsnNode(IRETURN));
                     
                     mv.instructions = replacement;
+                }
+            });
+        }
+        
+        if(tweaks.getTag("doFireTickOut")
+                .setComment("If set to true and doFireTick is disabed in the game rules, fire will still dissipate if it's not over a fire source")
+                .getBooleanValue(true))
+        {
+            alterMethod(new MethodAltercator(new DescriptorMapping("net/minecraft/block/BlockFire", "updateTick", "(Lnet/minecraft/world/World;IIILjava/util/Random;)V"))
+            {
+                @Override
+                public void alter(MethodNode mv)
+                {
+                    InsnList needle = new InsnList();
+                    needle.add(new LdcInsnNode("doFireTick"));
+                    needle.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/world/GameRules", "getGameRuleBooleanValue", "(Ljava/lang/String;)Z"));
+                    needle.add(new JumpInsnNode(IFEQ, new LabelNode()));
+                    
+                    List<InsnListSection> lists = InstructionComparator.insnListFindL(mv.instructions, needle);
+                    if(lists.size() != 1)
+                        throw new RuntimeException("Needle found "+lists.size()+" times in Haystack: " + mv.instructions+"\n" + ASMHelper.printInsnList(needle));
+                    
+                    InsnListSection subsection = lists.get(0);
+                    LabelNode jlabel = ((JumpInsnNode)subsection.last).label;
+                    LabelNode ret = new LabelNode();
+                    mv.instructions.insertBefore(jlabel, new JumpInsnNode(GOTO, ret));
+                    InsnList inject = new InsnList();
+                    inject.add(new VarInsnNode(ALOAD, 1));
+                    inject.add(new VarInsnNode(ILOAD, 2));
+                    inject.add(new VarInsnNode(ILOAD, 3));
+                    inject.add(new VarInsnNode(ILOAD, 4));
+                    inject.add(new VarInsnNode(ALOAD, 5));
+                    inject.add(new MethodInsnNode(INVOKESTATIC, "codechicken/core/featurehack/TweakTransformerHelper", "quenchFireTick", "(Lnet/minecraft/world/World;IIILjava/util/Random;)V"));
+                    inject.add(ret);
+                    mv.instructions.insert(jlabel, inject);
                 }
             });
         }

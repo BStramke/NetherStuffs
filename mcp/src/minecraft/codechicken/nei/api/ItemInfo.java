@@ -5,24 +5,17 @@ import java.util.Map.Entry;
 
 import codechicken.core.CommonUtils;
 import codechicken.core.featurehack.GameDataManipulator;
+import codechicken.core.inventory.ItemKey;
 import codechicken.nei.PopupInputHandler;
 import codechicken.nei.InfiniteStackSizeHandler;
 import codechicken.nei.InfiniteToolHandler;
-import codechicken.nei.ItemHash;
 import codechicken.nei.ItemMobSpawner;
 import codechicken.nei.MultiItemRange;
-import codechicken.nei.NEIClientUtils;
 import codechicken.nei.NEICompatibility;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.recipe.BrewingRecipeHandler;
-import codechicken.nei.recipe.DefaultOverlayHandler;
-import codechicken.nei.recipe.FuelRecipeHandler;
-import codechicken.nei.recipe.FurnaceRecipeHandler;
 import codechicken.nei.recipe.RecipeItemInputHandler;
-import codechicken.nei.recipe.ShapedRecipeHandler;
-import codechicken.nei.recipe.ShapelessRecipeHandler;
 import codechicken.nei.recipe.weakDependancy_Forge;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
@@ -47,7 +40,7 @@ import net.minecraftforge.common.IShearable;
  */
 public class ItemInfo
 {
-    public static final HashMap<ItemHash, String> fallbackNames = new HashMap<ItemHash, String>();
+    public static final HashMap<ItemKey, String> fallbackNames = new HashMap<ItemKey, String>();
     public static final HashSet<Integer> excludeIds = new HashSet<Integer>();
     public static final HashSet<Integer> nonUnlimitedIds = new HashSet<Integer>();
     public static final HashMap<Integer, ArrayList<int[]>> damageVariants = new HashMap<Integer, ArrayList<int[]>>();
@@ -70,7 +63,7 @@ public class ItemInfo
         
     public static String getOverrideName(int itemID, int itemDamage)
     {
-        ItemHash itemhash = new ItemHash(itemID, itemDamage);
+        ItemKey itemhash = new ItemKey(itemID, itemDamage);
         return fallbackNames.get(itemhash);
     }
        
@@ -391,7 +384,7 @@ public class ItemInfo
                 handlers.addAll(highlightIdentifiers.get(mouseoverBlock.blockID));
         for(IHighlightIdentifier ident : handlers)
         {
-            ItemStack item = ident.identifyHighlight(world, player, x, y, z, hit);
+            ItemStack item = ident.identifyHighlight(world, player, hit);
             if(item != null)
                 items.add(item);
         }

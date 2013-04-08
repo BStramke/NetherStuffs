@@ -9,7 +9,6 @@ public class CC_ClassWriter extends ClassWriter
         super(flags);
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     protected String getCommonSuperClass(String type1, String type2)
     {

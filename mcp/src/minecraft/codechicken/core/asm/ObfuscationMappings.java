@@ -167,18 +167,18 @@ public class ObfuscationMappings
             return "["+s_owner+"."+s_name+s_desc+"]";
         }
 
-		public void toRuntime()
-		{
-			if(!obfuscated || searge)
-				return;
-			
-			if(s_desc.contains("("))
-				s_name = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(s_owner, s_name, s_desc);
-			else
-				s_name = FMLDeobfuscatingRemapper.INSTANCE.mapFieldName(s_owner, s_name, s_desc);
-			s_owner = FMLDeobfuscatingRemapper.INSTANCE.mapType(s_owner);
-			s_desc = FMLDeobfuscatingRemapper.INSTANCE.mapDesc(s_desc);
-		}
+        public void toRuntime()
+        {
+            if(!obfuscated || searge)
+                return;
+            
+            if(s_desc.contains("("))
+                s_name = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(s_owner, s_name, s_desc);
+            else
+                s_name = FMLDeobfuscatingRemapper.INSTANCE.mapFieldName(s_owner, s_name, s_desc);
+            s_owner = FMLDeobfuscatingRemapper.INSTANCE.mapType(s_owner);
+            s_desc = FMLDeobfuscatingRemapper.INSTANCE.mapDesc(s_desc);
+        }
     }
     
     public static boolean obfuscated = false;

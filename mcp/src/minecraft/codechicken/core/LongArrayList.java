@@ -1,7 +1,5 @@
 package codechicken.core;
 
-import java.util.Iterator;
-
 public class LongArrayList
 {
     private long[] array = new long[256];

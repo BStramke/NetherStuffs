@@ -3,7 +3,6 @@ package codechicken.core.featurehack.mc;
 import codechicken.core.render.TextureFX;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 
 @SideOnly(Side.CLIENT)
 public class TextureWaterFX extends TextureFX
@@ -19,11 +18,9 @@ public class TextureWaterFX extends TextureFX
 
     /** alpha RGB value for water texture */
     protected float[] alpha = new float[256];
-    private int tickCounter = 0;
-
     public TextureWaterFX()
     {
-    	super(16, "water_still_fx");
+        super(16, "water_still_fx");
         setup();
     }
 
@@ -35,12 +32,10 @@ public class TextureWaterFX extends TextureFX
         green = new float[tileSizeSquare];
         blue = new float[tileSizeSquare];
         alpha = new float[tileSizeSquare];
-        tickCounter = 0;
     }
 
     public void onTick()
     {
-        ++this.tickCounter;
         int var1;
         int var2;
         float var3;

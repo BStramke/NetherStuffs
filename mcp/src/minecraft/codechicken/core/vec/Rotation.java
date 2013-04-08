@@ -7,9 +7,31 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class Rotation implements ITransformation
 {
-    private double angle;
-    private Vector3 axis;
-    private Vector3 point;
+    public static Rotation[] sideRotations = new Rotation[]{
+        new Rotation( 0, 1, 0, 0),
+        new Rotation( Math.PI, 1, 0, 0),
+        new Rotation( Math.PI/2, 1, 0, 0),
+        new Rotation(-Math.PI/2, 1, 0, 0),
+        new Rotation(-Math.PI/2, 0, 0, 1),
+        new Rotation( Math.PI/2, 0, 0, 1)};
+    public static Rotation[] sideRotationsR = new Rotation[6];
+    public static Quat[] sideQuats = new Quat[6];
+    public static Quat[] sideQuatsR = new Quat[6];
+    
+    static
+    {
+        for(int i = 0; i < 6; i++)
+        {
+            Rotation r = sideRotations[i];
+            sideRotationsR[i] = new Rotation(-r.angle, r.axis);
+            sideQuats[i] = r.toQuat();
+            sideQuatsR[i] = sideRotationsR[i].toQuat();
+        }
+    }
+    
+    public double angle;
+    public Vector3 axis;
+    public Vector3 point;
     
     private Vector3 negate;
     private Quat quat;
@@ -25,12 +47,17 @@ public class Rotation implements ITransformation
     {
         this(angle, axis, null);
     }
+    
+    public Rotation(double angle, double x, double y, double z)
+    {
+        this(angle, new Vector3(x, y, z));
+    }
 
     @Override
     public void transform(Vector3 vec)
     {
         if(quat == null)
-            quat = Quat.aroundAxis(vec, angle);
+            quat = Quat.aroundAxis(axis, angle);
         
         if(point == null)
             vec.rotate(quat);
@@ -52,6 +79,13 @@ public class Rotation implements ITransformation
             mat.rotate(angle, axis);
             mat.translate(negate);
         }
+    }
+    
+    public Quat toQuat()
+    {
+        if(quat == null)
+            quat = Quat.aroundAxis(axis, angle);
+        return quat;
     }
 
     @SideOnly(Side.CLIENT)

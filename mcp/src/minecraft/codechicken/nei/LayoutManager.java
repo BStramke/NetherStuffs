@@ -89,7 +89,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             gui.guiLeft = (gui.width - gui.xSize) / 2;
             gui.guiTop = (gui.height - gui.ySize) / 2;
             
-            if(gui instanceof GuiContainerCreative && gui.buttonList.size() > 0)
+            if(gui instanceof GuiContainerCreative && gui.buttonList.size() >= 2)
             {
                 GuiButton button1 = (GuiButton)gui.buttonList.get(0);
                 GuiButton button2 = (GuiButton)gui.buttonList.get(1);

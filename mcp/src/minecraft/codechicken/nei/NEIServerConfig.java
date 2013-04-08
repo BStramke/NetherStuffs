@@ -24,6 +24,7 @@ import codechicken.core.CommonUtils;
 import codechicken.core.ServerUtils;
 import codechicken.core.config.ConfigFile;
 import codechicken.core.config.ConfigTag;
+import codechicken.core.inventory.ItemKey;
 import codechicken.core.packet.PacketCustom;
 import codechicken.nei.api.ItemInfo;
 
@@ -31,7 +32,7 @@ public class NEIServerConfig
 {
     public static HashMap<String, PlayerSave> playerSaves = new HashMap<String, PlayerSave>();
     
-    public static HashMap<ItemHash, HashSet<String>> bannedblocks = new HashMap<ItemHash, HashSet<String>>();
+    public static HashMap<ItemKey, HashSet<String>> bannedblocks = new HashMap<ItemKey, HashSet<String>>();
     public static ConfigFile serverConfig = new ConfigFile(new File(CommonUtils.getMinecraftDir(), "config/NEIServer.cfg")).setComment("NEI Server Permissions : Names are Comma (,) separated : ALL, OP and NONE are special names");
     public static File worldSaveFile;
     public static File worldSaveDir;
@@ -221,7 +222,7 @@ public class NEIServerConfig
         {
             String ident = entry.getKey();
             String num[] = ident.split(":");
-            ItemHash hash = num.length == 1 ? new ItemHash(Integer.parseInt(num[0]), -1) : new ItemHash(Integer.parseInt(num[0]), Integer.parseInt(num[1]));
+            ItemKey hash = num.length == 1 ? new ItemKey(Integer.parseInt(num[0]), -1) : new ItemKey(Integer.parseInt(num[0]), Integer.parseInt(num[1]));
             
             bannedblocks.put(hash, getPlayerList(entry.getValue().qualifiedname));
         }

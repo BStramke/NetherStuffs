@@ -13,7 +13,6 @@ import com.google.common.eventbus.Subscribe;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModMetadata;
-import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -22,7 +21,7 @@ import cpw.mods.fml.common.versioning.VersionRange;
 import cpw.mods.fml.relauncher.Side;
 
 @SrcPackager()
-@Packager(getBaseDirectories = {"CodeChickenCore"}, getName = "CodeChickenCore", getVersion = "0.8.5.1")
+@Packager(getBaseDirectories = {"CodeChickenCore"}, getName = "CodeChickenCore", getVersion = "0.8.5.6")
 public class CodeChickenCoreModContainer extends DummyModContainer
 {
     public CodeChickenCoreModContainer()
@@ -41,13 +40,14 @@ public class CodeChickenCoreModContainer extends DummyModContainer
     public boolean registerBus(EventBus bus, LoadController controller)
     {
         bus.register(this);
-        return true;        
+        return true;
     }
 
     @Subscribe
     public void preInit(FMLPreInitializationEvent event)
     {
-        LiquidTextures.init();
+        if(event.getSide() == Side.CLIENT)
+            LiquidTextures.init();
     }
     
     @Subscribe

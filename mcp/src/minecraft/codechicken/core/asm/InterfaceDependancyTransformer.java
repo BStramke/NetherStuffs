@@ -12,7 +12,6 @@ import cpw.mods.fml.relauncher.IClassTransformer;
 
 public class InterfaceDependancyTransformer implements IClassTransformer
 {    
-    @SuppressWarnings("unchecked")
     @Override
     public byte[] transform(String name, String tname, byte[] bytes)
     {

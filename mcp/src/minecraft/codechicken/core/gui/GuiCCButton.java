@@ -2,9 +2,6 @@ package codechicken.core.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiScreen;
-
 public class GuiCCButton extends GuiWidget
 {    
     public String text;

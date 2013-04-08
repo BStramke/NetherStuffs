@@ -3,25 +3,19 @@ package codechicken.core.render;
 import static net.minecraftforge.client.IItemRenderer.ItemRenderType.ENTITY;
 import static net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D;
 
-import java.awt.Dimension;
-
 import org.lwjgl.opengl.GL11;
 
 import codechicken.core.liquid.LiquidUtils;
 import codechicken.core.vec.Cuboid6;
 import codechicken.core.vec.Vector3;
-import cpw.mods.fml.client.TextureFXManager;
-
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
-import net.minecraft.world.World;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -36,10 +30,10 @@ public class RenderUtils
     static Vector3[] vectors = new Vector3[8];
     static RenderItem uniformRenderItem = new RenderItem()
     {
-    	public boolean shouldBob()
-    	{
-    		return false;
-    	}
+        public boolean shouldBob()
+        {
+            return false;
+        }
     };
     static EntityItem entityItem;
     
@@ -272,9 +266,9 @@ public class RenderUtils
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
     }
-	
-	public static void renderItemUniform(ItemStack item)
-	{
+    
+    public static void renderItemUniform(ItemStack item)
+    {
         IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(item, ENTITY);
         boolean is3D = customRenderer != null && customRenderer.shouldUseRenderHelper(ENTITY, item, BLOCK_3D);
 
@@ -288,17 +282,17 @@ public class RenderUtils
         double d = 2;
         double d1 = 1/d;
         if(larger)
-        	GL11.glScaled(d, d, d);
+            GL11.glScaled(d, d, d);
 
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         
         entityItem.setEntityItemStack(item);
-		uniformRenderItem.doRenderItem(entityItem, 0, larger ? 0.09 : 0.06, 0, 0, 0);
-		
-		if(larger)
-			GL11.glScaled(d1, d1, d1);
-	}
+        uniformRenderItem.doRenderItem(entityItem, 0, larger ? 0.09 : 0.06, 0, 0, 0);
+        
+        if(larger)
+            GL11.glScaled(d1, d1, d1);
+    }
     
     /*public static void renderQuad3D(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, 
             int tx1, int ty1, int tx2, int ty2, int tw, int th, double depth)

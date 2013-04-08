@@ -1,26 +1,19 @@
 package codechicken.core;
 
 import java.net.Socket;
-import java.util.List;
-
 import codechicken.core.internal.ClientTickHandler;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.MemoryConnection;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.storage.SaveFormatComparator;
 import net.minecraft.network.TcpConnection;
 import net.minecraft.world.World;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -113,14 +106,5 @@ public class ClientUtils extends CommonUtils
         if(!isLocal())
             return null;
         return MinecraftServer.getServer().getFolderName();
-    }
-    
-    public static MovingObjectPosition retraceBlock(World world, EntityPlayer entityplayer, int x, int y, int z)
-    {
-        Vec3 headVec = Vec3.createVectorHelper(entityplayer.posX, (entityplayer.posY + 1.62) - (double)entityplayer.yOffset, entityplayer.posZ);
-        Vec3 lookVec = entityplayer.getLook(1.0F);
-        double reach = mc().playerController.getBlockReachDistance();
-        Vec3 endVec = headVec.addVector(lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
-        return Block.blocksList[world.getBlockId(x, y, z)].collisionRayTrace(world, x, y, z, headVec, endVec);
     }
 }

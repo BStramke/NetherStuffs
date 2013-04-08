@@ -6,8 +6,6 @@ import java.util.List;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
-import org.objectweb.asm.commons.Remapper;
-import org.objectweb.asm.commons.RemappingMethodAdapter;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
@@ -85,7 +83,6 @@ public class ASMHelper
         }
     }
     
-    @SuppressWarnings("unchecked")
     public static MethodNode findMethod(DescriptorMapping methodmap, ClassNode cnode)
     {
         for(MethodNode mnode : (List<MethodNode>) cnode.methods)
@@ -94,7 +91,6 @@ public class ASMHelper
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     public static FieldNode findField(DescriptorMapping fieldmap, ClassNode cnode)
     {
         for(FieldNode fnode : (List<FieldNode>) cnode.fields)

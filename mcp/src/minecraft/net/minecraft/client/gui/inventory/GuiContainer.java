@@ -440,13 +440,21 @@ public abstract class GuiContainer extends GuiScreen
             }
             manager.renderSlotUnderlay(par1Slot);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, itemstack, i, j);
-            itemRenderer.renderItemStack(this.fontRenderer, this.mc.renderEngine, itemstack, i, j, s);
+            drawSlotItem(par1Slot, itemstack, i, j, s);
             manager.renderSlotOverlay(par1Slot);
         }
 
         itemRenderer.zLevel = 0.0F;
         this.zLevel = 0.0F;
+    }
+
+    /**
+     * Delegate for changing item rendering for certain slots. Eg. Shrinking text for large itemstacks
+     */
+    public void drawSlotItem(Slot par1Slot, ItemStack itemstack, int i, int j, String s)
+    {
+        itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, itemstack, i, j);
+        itemRenderer.renderItemStack(this.fontRenderer, this.mc.renderEngine, itemstack, i, j, s);
     }
 
     private void func_94066_g()

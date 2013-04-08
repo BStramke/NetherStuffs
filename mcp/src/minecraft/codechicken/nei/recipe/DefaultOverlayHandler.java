@@ -61,8 +61,9 @@ public class DefaultOverlayHandler implements IOverlayHandler
     int offsety;
     
     @Override
-    public void overlayRecipe(GuiContainer gui, List<PositionedStack> ingredients, boolean shift)
+    public void overlayRecipe(GuiContainer gui, IRecipeHandler recipe, int recipeIndex, boolean shift)
     {
+        List<PositionedStack> ingredients = recipe.getIngredientStacks(recipeIndex);
         List<DistributedIngred> ingredStacks = getPermutationIngredients(ingredients);
         
         findInventoryQuantities(gui, ingredStacks);

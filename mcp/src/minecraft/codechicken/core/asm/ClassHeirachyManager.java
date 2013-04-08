@@ -3,7 +3,6 @@ package codechicken.core.asm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 
 import cpw.mods.fml.relauncher.IClassTransformer;

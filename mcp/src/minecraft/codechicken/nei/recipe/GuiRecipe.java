@@ -211,7 +211,7 @@ public abstract class GuiRecipe extends GuiContainer implements IContainerClient
         {
             firstGui.refresh();
             mc.displayGuiScreen(firstGui);
-            handler.overlayRecipe(firstGui, currenthandlers.get(recipetype).getIngredientStacks(recipe), shift);
+            handler.overlayRecipe(firstGui, currenthandlers.get(recipetype), recipe, shift);
         }
         else if(renderer != null && (handler == null || !shift))
         {            

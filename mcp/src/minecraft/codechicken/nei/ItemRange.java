@@ -3,6 +3,8 @@ package codechicken.nei;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import codechicken.core.inventory.ItemKey;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -115,7 +117,7 @@ public class ItemRange
     {
         boolean allhidden = false;
         boolean allshown = false;
-        for(ItemHash item : encompasseditems)
+        for(ItemKey item : encompasseditems)
         {
             if(vis.isItemHidden(item))
             {
@@ -157,7 +159,7 @@ public class ItemRange
     {
         if(isItemInRange(item, damage))
         {
-            ItemHash hash = new ItemHash(item, damage, compound);
+            ItemKey hash = new ItemKey(item, damage, compound);
             if(encompassedhash.add(hash))
             {
                 encompasseditems.add(hash);
@@ -170,10 +172,10 @@ public class ItemRange
     public void onClick(int itemno, int button, boolean doubleclick)
     {
         ItemVisibilityHash vis = NEIClientConfig.vishash;
-        ItemHash item = encompasseditems.get(itemno);
+        ItemKey item = encompasseditems.get(itemno);
         if(NEIClientUtils.controlKey())
         {
-            NEIClientUtils.cheatItem(item.toStack(), button, 0);
+            NEIClientUtils.cheatItem(item.item, button, 0);
             return;
         }
         
@@ -197,19 +199,15 @@ public class ItemRange
     public void hideAllItems()
     {
         ItemVisibilityHash vis = NEIClientConfig.vishash;
-        for(ItemHash item : encompasseditems)
-        {
+        for(ItemKey item : encompasseditems)
             vis.hideItem(item);
-        }
     }
     
     public void showAllItems()
     {
         ItemVisibilityHash vis = NEIClientConfig.vishash;
-        for(ItemHash item : encompasseditems)
-        {
+        for(ItemKey item : encompasseditems)
             vis.unhideItem(item);
-        }
     }
     
     public ArrayList<Integer> toIDList()
@@ -228,6 +226,6 @@ public class ItemRange
     public int lastDamage = -1;
     public byte state = 0;
 
-    public HashSet<ItemHash> encompassedhash = new HashSet<ItemHash>();
-    public ArrayList<ItemHash> encompasseditems = new ArrayList<ItemHash>();
+    public HashSet<ItemKey> encompassedhash = new HashSet<ItemKey>();
+    public ArrayList<ItemKey> encompasseditems = new ArrayList<ItemKey>();
 }

@@ -37,8 +37,12 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	EnergyStage energyStage = EnergyStage.Blue;
 	IPowerProvider provider;
 	private LiquidTank fuelTank; // the Fuel Tank
-	private SoulEngineFuel currentFuel = null; // the Currently used Fuel inside the Engine (its moved from the Tank to here to get burned i guess)
-	private ItemStack itemInInventory; // the Inventory. This might be used to Let buckets Fill the Tank
+	private SoulEngineFuel currentFuel = null; // the Currently used Fuel inside
+	// the Engine (its moved from
+	// the Tank to here to get
+	// burned i guess)
+	private ItemStack itemInInventory; // the Inventory. This might be used to
+	// Let buckets Fill the Tank
 	private int energyLossWhenUnpowered = 2;
 
 	/**
@@ -58,7 +62,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	/**
 	 * Maximum Heat "Storage"
 	 */
-	public static int MAX_HEAT = 1000;
+	public static int MAX_HEAT = 10000;
 	/**
 	 * Used for SMP synchronisation
 	 */
@@ -277,6 +281,20 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 
 		if (nbttagcompound.hasKey("isActive"))
 			isActive = nbttagcompound.getBoolean("isActive");
+
+		if (nbttagcompound.hasKey("energyStage")) {
+			int nStage = nbttagcompound.getInteger("energyStage");
+			if (nStage == EnergyStage.Blue.ordinal())
+				energyStage = EnergyStage.Blue;
+			else if (nStage == EnergyStage.Green.ordinal())
+				energyStage = EnergyStage.Green;
+			else if (nStage == EnergyStage.Yellow.ordinal())
+				energyStage = EnergyStage.Yellow;
+			else if (nStage == EnergyStage.Red.ordinal())
+				energyStage = EnergyStage.Red;
+			else
+				energyStage = EnergyStage.Blue;
+		}
 
 		heat = nbttagcompound.getInteger("heat");
 
@@ -571,7 +589,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		if (heat > 0 && (!isRedstonePowered))
 			heat -= 10;
 
-		if (heat <= 0)
+		if (heat < 1)
 			heat = 0;
 
 		fillFuelToTank();
@@ -590,20 +608,27 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		if (isRedstonePowered) {
 			// Check if the engine burns or atleast has fuel to be burned
 			if (burnTime > 0 || fuel.amount > 0) {
-				// the burnTime is set when a Fuel "Part" is being burned. this means it decreases the burntime counter (i.e a coal may burn for 100 Ticks (not accurate, just an
+				// the burnTime is set when a Fuel "Part" is being burned. this
+				// means it decreases the burntime counter (i.e a coal may burn
+				// for 100 Ticks (not accurate, just an
 				// example)
 				if (burnTime > 0) {
 					burnTime--;
 				}
 
 				if (burnTime <= 0) {
-					// burntime is NOW zero, we have to burn fuel if its available
+					// burntime is NOW zero, we have to burn fuel if its
+					// available
 					if (fuel != null) {
 						if (--fuel.amount <= 0) {
 							fuelTank.setLiquid(null);
 						}
-						// set the burnTime to the value it gets from the currentFuel. Lava has a Burntime of 20000, SoulEnergy 10000, whcih gets devided by Bucket_Volume (which is
-						// 1000). This means Lava gets a Value of 20, SoulEnergy a Value of 10 ==> Lava burns every 20 Ticks, Soul Energy every 10 Ticks
+						// set the burnTime to the value it gets from the
+						// currentFuel. Lava has a Burntime of 20000, SoulEnergy
+						// 10000, whcih gets devided by Bucket_Volume (which is
+						// 1000). This means Lava gets a Value of 20, SoulEnergy
+						// a Value of 10 ==> Lava burns every 20 Ticks, Soul
+						// Energy every 10 Ticks
 						burnTime = currentFuel.totalBurningTime / LiquidContainerRegistry.BUCKET_VOLUME;
 					} else {
 						currentFuel = null;
@@ -611,11 +636,28 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 					}
 				}
 
-				// we are currently burning, so receive our energy (all other cases, ie. no fuel available are already handled)
-				currentOutput = currentFuel.powerPerCycle; // set the Energy Output to the Capability of the Fuel (1MJ for SoulEnergy / Lava, Oil gets 3MJ etc)
-				addEnergy(currentFuel.powerPerCycle); // increase the overall available Energy (if there is space)
-				addHeat(currentFuel.powerPerCycle); // increase the Heat by the value of MJ. This MAY be used to determine how fast an engine goes, for example the Combustion Engine
-																// "heats up" to increase the Piston Speed and determine the Energy Stage
+				// we are currently burning, so receive our energy (all other
+				// cases, ie. no fuel available are already handled)
+				currentOutput = currentFuel.powerPerCycle; // set the Energy
+				// Output to the
+				// Capability of the
+				// Fuel (1MJ for
+				// SoulEnergy /
+				// Lava, Oil gets
+				// 3MJ etc)
+				addEnergy(currentFuel.powerPerCycle); // increase the overall
+				// available Energy (if
+				// there is space)
+				addHeat(currentFuel.powerPerCycle); // increase the Heat by the
+				// value of MJ. This MAY be
+				// used to determine how
+				// fast an engine goes, for
+				// example the Combustion
+				// Engine
+				// "heats up" to increase
+				// the Piston Speed and
+				// determine the Energy
+				// Stage
 			}
 		}
 	}
@@ -626,6 +668,8 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	 */
 	public void computeEnergyStage() {
 		double Percentage = ((double) heat / (double) MAX_HEAT) * 100.0;
+		EnergyStage tmp = energyStage;
+
 		if (Percentage <= 25.0)
 			energyStage = EnergyStage.Blue;
 		else if (Percentage <= 50.0)
@@ -634,6 +678,9 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 			energyStage = EnergyStage.Yellow;
 		else
 			energyStage = EnergyStage.Red;
+
+		if (tmp != energyStage)
+			sendNetworkUpdate();
 	}
 
 	public void getGUINetworkData(int i, int j) {
@@ -652,10 +699,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 			currentOutput = j / 10;
 			break;
 		case 3:
-			heat = (heat & 0xffff0000) | (j & 0xffff);
-			break;
-		case 4:
-			heat = (heat & 0xffff) | ((j & 0xffff) << 16);
+			heat = j;
 			break;
 		case 5:
 			if (fuelTank.getLiquid() == null) {
@@ -685,8 +729,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		iCrafting.sendProgressBarUpdate(containerEngine, 0, Math.round(energy * 10) & 0xffff);
 		iCrafting.sendProgressBarUpdate(containerEngine, 1, (Math.round(energy * 10) & 0xffff0000) >> 16);
 		iCrafting.sendProgressBarUpdate(containerEngine, 2, Math.round(currentOutput * 10));
-		iCrafting.sendProgressBarUpdate(containerEngine, 3, heat & 0xffff);
-		iCrafting.sendProgressBarUpdate(containerEngine, 4, (heat & 0xffff0000) >> 16);
+		iCrafting.sendProgressBarUpdate(containerEngine, 3, heat);
 		iCrafting.sendProgressBarUpdate(containerEngine, 5, fuelTank.getLiquid() != null ? fuelTank.getLiquid().amount : 0);
 		iCrafting.sendProgressBarUpdate(containerEngine, 6, fuelTank.getLiquid() != null ? fuelTank.getLiquid().itemID : 0);
 		iCrafting.sendProgressBarUpdate(containerEngine, 9, fuelTank.getLiquid() != null ? fuelTank.getLiquid().itemMeta : 0);
@@ -711,9 +754,13 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	 *           the amount of Heat to add
 	 */
 	private void addHeat(float addition) {
-		heat += addition;
-		if (heat > MAX_HEAT)
+		if (heat > MAX_HEAT) {
 			heat = MAX_HEAT;
+		} else {
+			heat += addition;
+			if (heat > MAX_HEAT)
+				heat = MAX_HEAT;
+		}
 	}
 
 	private void addEnergy(float addition) {
@@ -783,6 +830,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		if (!worldObj.isRemote) {
 			var1.setFloat("serverPistonSpeed", serverPistonSpeed);
 			var1.setBoolean("isActive", isActive);
+			var1.setInteger("energyStage", energyStage.ordinal());
 		}
 		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, var1);
 	}

@@ -6,11 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-import codechicken.core.asm.ObfuscationMappings;
 import codechicken.core.asm.ObfuscationMappings.DescriptorMapping;
-
-import net.minecraft.block.BlockFluid;
-import net.minecraft.util.Icon;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 
@@ -291,17 +287,18 @@ public class ReflectionManager
             throw new RuntimeException(e);
         }
     }
+    
     public static void set(Field field, Object value)
     {
-    	set(field, null, value);
+        set(field, null, value);
     }
     
     public static void set(Field field, Object instance, Object value)
     {
-    	try
-    	{
-    		field.set(instance, value);
-    	}
+        try
+        {
+            field.set(instance, value);
+        }
         catch(Exception e)
         {
             throw new RuntimeException(e);

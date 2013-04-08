@@ -2,7 +2,6 @@ package codechicken.core.alg;
 
 import net.minecraft.nbt.NBTTagCompound;
 import codechicken.core.vec.BlockCoord;
-import codechicken.core.vec.Vector3;
 
 public class SquareSpiral
 {

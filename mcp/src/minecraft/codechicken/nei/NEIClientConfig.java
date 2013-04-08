@@ -19,6 +19,7 @@ import codechicken.core.ClientUtils;
 import codechicken.core.IStringMatcher;
 import codechicken.core.config.ConfigFile;
 import codechicken.core.config.ConfigTag;
+import codechicken.core.inventory.ItemKey;
 import codechicken.nei.GuiNEISettings.NEIOption;
 import codechicken.nei.api.API;
 import codechicken.nei.api.GuiInfo;
@@ -53,7 +54,7 @@ public class NEIClientConfig
     
     private static boolean hasSMPCounterpart;
     private static HashSet<InterActionMap> permissableActions = new HashSet<InterActionMap>();
-    private static HashSet<ItemHash> bannedBlocks = new HashSet<ItemHash>();
+    private static HashSet<ItemKey> bannedBlocks = new HashSet<ItemKey>();
     private static HashSet<Integer> disabledProperties = new HashSet<Integer>();
     
     public static NBTTagCompound saveCompound = new NBTTagCompound();
@@ -663,9 +664,9 @@ public class NEIClientConfig
     {
         for(int state = 0; state < 7; state++)
         {
-            if(saveCompound.hasKey("save"+state) && saveCompound.tagMap.get("save"+state) instanceof NBTTagList)
-                saveCompound.tagMap.remove("save"+state);
-            statesSaved[state] = saveCompound.getCompoundTag("save"+state).tagMap.size() > 0;
+            if(saveCompound.hasKey("save"+state) && saveCompound.getTag("save"+state) instanceof NBTTagList)
+                saveCompound.removeTag("save"+state);
+        statesSaved[state] = !saveCompound.getCompoundTag("save"+state).hasNoTags();
         }
     }
 
@@ -851,13 +852,11 @@ public class NEIClientConfig
         return getStringSetting("options.utility actions").replace(" ", "").split(",");
     }
 
-    public static void setBannedBlocks(ArrayList<ItemHash> ahash)
+    public static void setBannedBlocks(ArrayList<ItemKey> ahash)
     {
         bannedBlocks.clear();
-        for(ItemHash hash : ahash)
-        {
+        for(ItemKey hash : ahash)
             bannedBlocks.add(hash);
-        }
     }
     
     public static void resetDisabledProperties()
@@ -865,7 +864,7 @@ public class NEIClientConfig
         disabledProperties.clear();
     }
     
-    public static boolean canGetItem(ItemHash item)
+    public static boolean canGetItem(ItemKey item)
     {
         return !bannedBlocks.contains(item);
     }

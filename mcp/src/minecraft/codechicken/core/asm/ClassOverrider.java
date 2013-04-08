@@ -2,7 +2,6 @@ package codechicken.core.asm;
 
 import java.io.DataInputStream;
 import java.io.File;
-import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import codechicken.core.asm.ObfuscationMappings.ClassMapping;

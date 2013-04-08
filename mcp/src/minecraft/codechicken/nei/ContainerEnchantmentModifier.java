@@ -207,7 +207,7 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
     
     public void removeEnchantment(int e)
     {
-    	ItemStack stack = ((Slot)inventorySlots.get(0)).getStack();
+        ItemStack stack = ((Slot)inventorySlots.get(0)).getStack();
         NBTTagList nbttaglist = stack.getEnchantmentTagList();
         if(nbttaglist != null)
         {
@@ -216,11 +216,11 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
                 int ID = ((NBTTagCompound)nbttaglist.tagAt(i)).getShort("id");
                 if(ID == e)
                 {
-                    nbttaglist.tagList.remove(i);
+                    nbttaglist.removeTag(i);
                     if(nbttaglist.tagCount() == 0)
-                    	stack.getTagCompound().removeTag("ench");
+                        stack.getTagCompound().removeTag("ench");
                     if(stack.getTagCompound().hasNoTags())
-                    	stack.setTagCompound(null);
+                        stack.setTagCompound(null);
                     return;
                 }
             }

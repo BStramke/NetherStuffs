@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import codechicken.core.inventory.ContainerExtended;
+import codechicken.core.inventory.ItemKey;
 import codechicken.core.inventory.SlotDummy;
 import codechicken.core.packet.PacketCustom;
 import codechicken.core.packet.PacketCustom.ICustomPacketHandler.IServerPacketHandler;
@@ -95,13 +96,16 @@ public class NEISPH implements IServerPacketHandler
                 openPotionGui(sender, packet);
             break;
             case 25:
-                handleDummySlotSet(sender, packet.readShort(), packet.readItemStack());
+                handleDummySlotSet(sender, packet);
             break;
         }
     }
     
-    private void handleDummySlotSet(EntityPlayerMP sender, int slotNumber, ItemStack stack)
+    private void handleDummySlotSet(EntityPlayerMP sender, PacketCustom packet)
     {
+        int slotNumber = packet.readShort();
+        ItemStack stack = packet.readItemStack(true);
+        
         Slot slot = sender.openContainer.getSlot(slotNumber);
         if(slot instanceof SlotDummy)
             slot.putStack(stack);
@@ -143,7 +147,7 @@ public class NEISPH implements IServerPacketHandler
                     PacketCustom packet = new PacketCustom(channel, 23);
                     packet.writeBoolean(true);
                     packet.writeByte(windowId);
-                    ServerUtils.sendPacketTo(player, packet.toPacket());
+                    packet.sendToPlayer(player);
                 }
             });
         }
@@ -152,7 +156,7 @@ public class NEISPH implements IServerPacketHandler
             sender.closeInventory();
             PacketCustom packet = new PacketCustom(channel, 23);
             packet.writeBoolean(false);
-            ServerUtils.sendPacketTo(sender, packet.toPacket());
+            packet.sendToPlayer(sender);
         }
     }
 
@@ -179,10 +183,10 @@ public class NEISPH implements IServerPacketHandler
         }
         
         if(player != null)
-            ServerUtils.sendPacketTo(player, packet.toPacket());
+            packet.sendToPlayer(player);
         else
             for(EntityPlayer sendplayer : ServerUtils.getPlayersInDimension(dim))
-                ServerUtils.sendPacketTo(sendplayer, packet.toPacket());
+                packet.sendToPlayer(sendplayer);
     }
 
     private void handleGiveItem(EntityPlayerMP player, PacketCustom packet)
@@ -240,7 +244,7 @@ public class NEISPH implements IServerPacketHandler
             {
                 PacketCustom packet = new PacketCustom(channel, 21);
                 packet.writeByte(windowId);
-                ServerUtils.sendPacketTo(player, packet.toPacket());
+                packet.sendToPlayer(player);
             }
         });
     }
@@ -257,7 +261,7 @@ public class NEISPH implements IServerPacketHandler
             {
                 PacketCustom packet = new PacketCustom(channel, 24);
                 packet.writeByte(windowId);
-                ServerUtils.sendPacketTo(player, packet.toPacket());
+                packet.sendToPlayer(player);
             }
         });
     }
@@ -266,14 +270,14 @@ public class NEISPH implements IServerPacketHandler
     {
         PacketCustom packet = new PacketCustom(channel, 6);
         packet.writeBoolean(enable);
-        ServerUtils.sendPacketTo(player, packet.toPacket());
+        packet.sendToPlayer(player);
     }
     
     public static void sendCreativeModeTo(EntityPlayerMP player, int mode)
     {
         PacketCustom packet = new PacketCustom(channel, 7);
         packet.writeByte(mode);
-        ServerUtils.sendPacketTo(player, packet.toPacket());
+        packet.sendToPlayer(player);
     }
 
     private void sendPermissableActionsTo(EntityPlayerMP player)
@@ -288,13 +292,13 @@ public class NEISPH implements IServerPacketHandler
         for(int i : actions)
             packet.writeByte(i);
 
-        ServerUtils.sendPacketTo(player, packet.toPacket());
+        packet.sendToPlayer(player);
     }
     
     private void sendBannedBlocksTo(EntityPlayerMP player)
     {
-        ArrayList<ItemHash> bannedblocks = new ArrayList<ItemHash>();
-        for(Entry<ItemHash, HashSet<String>> entry : NEIServerConfig.bannedblocks.entrySet())
+        ArrayList<ItemKey> bannedblocks = new ArrayList<ItemKey>();
+        for(Entry<ItemKey, HashSet<String>> entry : NEIServerConfig.bannedblocks.entrySet())
         {
             if(!NEIServerConfig.isPlayerInList(player.username, entry.getValue(), true))
             {
@@ -304,13 +308,13 @@ public class NEISPH implements IServerPacketHandler
 
         PacketCustom packet = new PacketCustom(channel, 11);
         packet.writeInt(bannedblocks.size());
-        for(ItemHash hash : bannedblocks)
+        for(ItemKey hash : bannedblocks)
         {
-            packet.writeShort(hash.item);
-            packet.writeShort(hash.damage);
+            packet.writeShort(hash.item.itemID);
+            packet.writeShort(hash.item.getItemDamage());
         }
 
-        ServerUtils.sendPacketTo(player, packet.toPacket());
+        packet.sendToPlayer(player);
     }
     
     public static void sendHasServerSideTo(EntityPlayerMP player)
@@ -320,7 +324,7 @@ public class NEISPH implements IServerPacketHandler
         packet.writeByte(InterActionMap.protocol);
         packet.writeString(CommonUtils.getWorldName(player.worldObj));
         
-        ServerUtils.sendPacketTo(player, packet.toPacket());
+        packet.sendToPlayer(player);
     }
     
     public static void sendAddMagneticItemTo(EntityPlayerMP player, EntityItem item)
@@ -328,7 +332,7 @@ public class NEISPH implements IServerPacketHandler
         PacketCustom packet = new PacketCustom(channel, 13);
         packet.writeInt(item.entityId);
 
-        ServerUtils.sendPacketTo(player, packet.toPacket());
+        packet.sendToPlayer(player);
     }
     
     public static final String channel = "NEI";

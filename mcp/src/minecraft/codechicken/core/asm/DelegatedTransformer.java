@@ -4,11 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Stack;
 import java.util.jar.JarFile;
@@ -130,10 +128,11 @@ public class DelegatedTransformer implements IClassTransformer
         depStack.pop();
     }
 
+    @SuppressWarnings("unchecked")
     private static Class<?> defineClass(String classname, byte[] bytes) throws Exception
     {
         Class<?> clazz = (Class<?>) m_defineClass.invoke(CodeChickenCorePlugin.cl, classname, bytes, 0, bytes.length);            
-        ((Map<String, Class>)f_cachedClasses.get(CodeChickenCorePlugin.cl)).put(classname, clazz);
+        ((Map<String, Class<?>>)f_cachedClasses.get(CodeChickenCorePlugin.cl)).put(classname, clazz);
         return clazz;
     }
 

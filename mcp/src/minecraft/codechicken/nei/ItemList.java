@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 
+import codechicken.core.inventory.ItemKey;
 import codechicken.nei.ItemPanel.ItemPanelObject;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.forge.GuiContainerManager;
@@ -101,7 +102,7 @@ public class ItemList
                     if(item.hasTagCompound() ? NEIClientConfig.vishash.isItemHidden(item.itemID, item.stackTagCompound) : NEIClientConfig.vishash.isItemHidden(item.itemID, item.getItemDamage()))
                         continue;
                     
-                    if(!NEIClientConfig.canGetItem(new ItemHash(item)))
+                    if(!NEIClientConfig.canGetItem(new ItemKey(item)))
                         continue;
                     
                     if(matcher.matches(item))

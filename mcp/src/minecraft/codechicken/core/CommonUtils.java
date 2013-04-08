@@ -2,9 +2,9 @@ package codechicken.core;
 
 import java.io.File;
 import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.storage.ISaveHandler;
-import net.minecraft.world.storage.MapData;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
@@ -251,7 +250,6 @@ public class CommonUtils
             return "";
         return "\247"+"0123456789abcdef".charAt(colour);
     }
-
     
     public static boolean isBlock(int ID)
     {

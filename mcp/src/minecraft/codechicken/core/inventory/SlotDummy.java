@@ -1,7 +1,6 @@
 package codechicken.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -30,7 +29,8 @@ public class SlotDummy extends SlotHandleClicks
     
     public void slotClick(ItemStack held, int button, boolean shift)
     {
-        if(held != null && !held.equals(getStack()))
+        ItemStack tstack = getStack();
+        if(held != null && (tstack == null || !InventoryUtils.canStack(held, tstack)))
         {
             int quantity = Math.min(held.stackSize, stackLimit);
             if(shift)
@@ -39,13 +39,22 @@ public class SlotDummy extends SlotHandleClicks
                 quantity = 1;
             putStack(InventoryUtils.copyStack(held, quantity));
         }
-        else if(getStack() != null)
+        else if(tstack != null)
         {
-            int inc = button == 1 ? -1 : 1;
-            if(shift)
-                inc *= 16;
-            ItemStack tstack = getStack();
-            int quantity = tstack.stackSize+InventoryUtils.incrStackSize(tstack, inc);
+            int inc;
+            if(held != null)
+            {
+                inc = button == 1 ? -held.stackSize : held.stackSize;
+                if(shift)
+                    inc *= 16;
+            }
+            else
+            {
+                inc = button == 1 ? -1 : 1;
+                if(shift)
+                    inc *= 16;
+            }
+            int quantity = tstack.stackSize+inc;
             if(quantity <= 0)
                 putStack(null);
             else

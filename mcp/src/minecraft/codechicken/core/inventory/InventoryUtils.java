@@ -6,17 +6,19 @@ import codechicken.core.vec.Vector3;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.ISpecialSlotInventory;
+//import net.minecraftforge.common.ISpecialSlotInventory;
 
 public class InventoryUtils
 {
@@ -94,6 +96,11 @@ public class InventoryUtils
 
     public static NBTTagList writeItemStacksToTag(ItemStack[] items)
     {
+        return writeItemStacksToTag(items, 64);
+    }
+    
+    public static NBTTagList writeItemStacksToTag(ItemStack[] items, int maxQuantity)
+    {
         NBTTagList tagList = new NBTTagList();
         for(int i = 0; i < items.length; i++)
         {
@@ -102,6 +109,12 @@ public class InventoryUtils
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setShort("Slot", (short) i);
                 items[i].writeToNBT(tag);
+                
+                if(maxQuantity > Short.MAX_VALUE)
+                    tag.setInteger("Quantity", items[i].stackSize);
+                else if(maxQuantity > Byte.MAX_VALUE)
+                    tag.setShort("Quantity", (short) items[i].stackSize);
+                
                 tagList.appendTag(tag);
             }
         }
@@ -113,7 +126,16 @@ public class InventoryUtils
         for(int i = 0; i < tagList.tagCount(); i++)
         {
             NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
-            items[tag.getShort("Slot")] = ItemStack.loadItemStackFromNBT(tag);
+            int b = tag.getShort("Slot");
+            items[b] = ItemStack.loadItemStackFromNBT(tag);
+            if(tag.hasKey("Quantity"))
+            {
+                NBTBase qtag = tag.getTag("Quantity");
+                if(qtag instanceof NBTTagInt)
+                    items[b].stackSize = ((NBTTagInt)qtag).data;
+                else if(qtag instanceof NBTTagShort)
+                    items[b].stackSize = ((NBTTagShort)qtag).data;
+            }
         }
     }
 
@@ -128,6 +150,9 @@ public class InventoryUtils
 
     public static ItemStack copyStack(ItemStack stack, int quantity)
     {
+        if(stack == null)
+            return null;
+        
         stack = stack.copy();
         stack.stackSize = quantity;
         return stack;
@@ -165,9 +190,9 @@ public class InventoryUtils
             return 0;
 
         int fit;
-        if(inv instanceof ISpecialSlotInventory)
+        /*if(inv instanceof ISpecialSlotInventory)
             fit = ((ISpecialSlotInventory)inv).getSlotAcceptedStackSize(slot, stack);
-        else
+        else*/
             fit = base != null ? incrStackSize(base, inv.getInventoryStackLimit()-base.stackSize) : inv.getInventoryStackLimit();
         
         return Math.min(fit, stack.stackSize);
@@ -297,9 +322,9 @@ public class InventoryUtils
         ItemStack stack = inv.getStackInSlot(slot);
         if(stack == null)
             return null;
-        if(inv instanceof ISpecialSlotInventory)
+        /*if(inv instanceof ISpecialSlotInventory)
             return copyStack(stack, ((ISpecialSlotInventory)inv).getSlotAvailableStackSize(slot));
-        else
+        else*/
             return stack;
     }
 

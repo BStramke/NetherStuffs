@@ -129,4 +129,14 @@ public class MathHelper
         int r = (int)Math.round(retreatExp(a, b, c, ratio, kick));
         return r == a ? b : r;
     }
+
+    public static double sin(double d)
+    {
+        return net.minecraft.util.MathHelper.sin((float) d);
+    }
+
+    public static double cos(double d)
+    {
+        return net.minecraft.util.MathHelper.cos((float) d);
+    }
 }

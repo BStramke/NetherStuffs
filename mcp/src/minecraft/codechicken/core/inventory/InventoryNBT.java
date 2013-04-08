@@ -19,7 +19,7 @@ public class InventoryNBT implements IInventory
     
     private void writeNBT()
     {
-        tag.setTag("items", InventoryUtils.writeItemStacksToTag(items));
+        tag.setTag("items", InventoryUtils.writeItemStacksToTag(items, getInventoryStackLimit()));
     }
     
     private void readNBT()

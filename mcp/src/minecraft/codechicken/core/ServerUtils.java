@@ -3,20 +3,15 @@ package codechicken.core;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import codechicken.core.packet.PacketCustom;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.block.Block;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.inventory.Container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.command.ICommand;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet3Chat;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 
 public class ServerUtils extends CommonUtils
 {
@@ -40,12 +35,9 @@ public class ServerUtils extends CommonUtils
     {
         ArrayList<EntityPlayer> allplayers = getAllPlayers();
         for(Iterator<EntityPlayer> iterator = allplayers.iterator(); iterator.hasNext();)
-        {
             if(iterator.next().dimension != dimension)
-            {
                 iterator.remove();
-            }
-        }
+        
         return allplayers;
     }
 
@@ -53,100 +45,26 @@ public class ServerUtils extends CommonUtils
     {
         return entityplayer.theItemInWorldManager.getBlockReachDistance();
     }
-
-    public static MovingObjectPosition retraceBlock(World world, EntityPlayer entityplayer, int x, int y, int z)
-    {
-        Vec3 headVec = Vec3.createVectorHelper(entityplayer.posX, (entityplayer.posY + 1.62) - (double)entityplayer.yOffset, entityplayer.posZ);
-        Vec3 lookVec = entityplayer.getLook(1.0F);
-        double reach = getBlockReachDistance((EntityPlayerMP) entityplayer);
-        Vec3 endVec = headVec.addVector(lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
-        return Block.blocksList[world.getBlockId(x, y, z)].collisionRayTrace(world, x, y, z, headVec, endVec);
-    }
     
-    @SuppressWarnings("unchecked")
-    public static void sendPacketTo(EntityPlayer player, Packet packet)
-    {
-        if(player == null)
-        {
-            for(EntityPlayerMP player2 : (List<EntityPlayerMP>)mc().getConfigurationManager().playerEntityList)
-            {
-                player2.playerNetServerHandler.sendPacketToPlayer(packet);
-            }
-        }
-        else
-        {
-            ((EntityPlayerMP)player).playerNetServerHandler.sendPacketToPlayer(packet);
-        }
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static void sendPacketToAllExcept(Packet packet, EntityPlayer player)
-    {
-        for(EntityPlayerMP player2 : (List<EntityPlayerMP>)mc().getConfigurationManager().playerEntityList)
-        {
-            if(player2 == player)
-                continue;
-            
-            sendPacketTo(player2, packet);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static void sendPacketToPostion(int i, int j, Packet packet)
-    {
-        ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(i >> 4, j >> 4);
-        List<EntityPlayerMP> list = mc().getConfigurationManager().playerEntityList;
-
-        for (EntityPlayerMP entityplayermp : list)
-        {
-            if (!entityplayermp.loadedChunks.contains(chunkcoordintpair))
-            {
-                entityplayermp.playerNetServerHandler.sendPacketToPlayer(packet);
-            }
-        }
-    }
-
-    public static void sendPacketToAll(Packet packet)
-    {
-        sendPacketTo(null, packet);
-    }
-
-    @SuppressWarnings("unchecked")
     public static void sendChatToOps(String message)
     {
         List<String> lines = formatMessage(message);
-        for(EntityPlayerMP player : (List<EntityPlayerMP>)mc().getConfigurationManager().playerEntityList)
-        {
-            if(!isPlayerOP(player.username))
-                continue;
-            
-            for(String s : lines)
-            {
-                sendPacketTo(player, new Packet3Chat(s));
-            }
-        }
+        for(String s : lines)
+            PacketCustom.sendToOps(new Packet3Chat(s));
     }
 
-    @SuppressWarnings("unchecked")
     public static void sendChatToAll(String message)
     {
         List<String> lines = formatMessage(message);
-        for(EntityPlayerMP player : (List<EntityPlayerMP>)mc().getConfigurationManager().playerEntityList)
-        {            
-            for(String s : lines)
-            {
-                sendPacketTo(player, new Packet3Chat(s));
-            }
-        }        
+        for(String s : lines)
+            PacketCustom.sendToClients(new Packet3Chat(s));
     }
 
     public static void sendChatTo(EntityPlayerMP player, String message)
     {
         List<String> lines = formatMessage(message);
         for(String s : lines)
-        {
-            sendPacketTo(player, new Packet3Chat(s));
-        }
+            PacketCustom.sendToPlayer(new Packet3Chat(s), player);
     }
     
     public static void openSMPContainer(EntityPlayerMP player, Container container, IGuiPacketSender packetSender)

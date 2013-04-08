@@ -5,6 +5,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import codechicken.core.inventory.ItemKey;
+
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -13,7 +15,7 @@ public class ItemVisibilityHash
 {
     public static class IDInfo
     {
-        public TreeSet<Short> damages = new TreeSet<Short>();
+        public TreeSet<Integer> damages = new TreeSet<Integer>();
         public ArrayList<NBTTagCompound> compounds = new ArrayList<NBTTagCompound>();
     }
     
@@ -47,7 +49,7 @@ public class ItemVisibilityHash
             info = new IDInfo();
             hiddenitems.put(item, info);
         }
-        info.damages.add((short) -1);
+        info.damages.add(-1);
     }
     
     public void hideItem(int item, int damage)
@@ -58,7 +60,7 @@ public class ItemVisibilityHash
             info = new IDInfo();
             hiddenitems.put(item, info);
         }
-        info.damages.add((short) damage);
+        info.damages.add(damage);
     }
     
     public void hideItem(int item, NBTTagCompound stackTagCompound)
@@ -75,16 +77,12 @@ public class ItemVisibilityHash
         }
     }
     
-    public void hideItem(ItemHash item)
+    public void hideItem(ItemKey item)
     {
-        if(item.moreinfo != null)
-        {
-            hideItem(item.item, item.moreinfo);
-        }
+        if(item.item.hasTagCompound())
+            hideItem(item.item.itemID, item.item.getTagCompound());
         else
-        {
-            hideItem(item.item, item.damage);
-        }
+            hideItem(item.item.itemID, item.item.getItemDamage());
     }
     
     public void unhideItem(int item)
@@ -112,7 +110,7 @@ public class ItemVisibilityHash
         }
         else
         {
-            info.damages.remove((short)damage);
+            info.damages.remove(damage);
         }
     }
     
@@ -126,26 +124,21 @@ public class ItemVisibilityHash
         info.compounds.remove(stackTagCompound);
     }
     
-    public void unhideItem(ItemHash item)
+    public void unhideItem(ItemKey item)
     {
-        if(item.moreinfo != null)
-        {
-            unhideItem(item.item, item.moreinfo);
-        }
+        if(item.item.hasTagCompound())
+            unhideItem(item.item.itemID, item.item.getTagCompound());
         else
-        {
-            unhideItem(item.item, item.damage);
-        }
+            unhideItem(item.item.itemID, item.item.getItemDamage());
     }
     
     public boolean isItemHidden(int itemID, int damage)
     {
         IDInfo info = hiddenitems.get(itemID);
         if(info == null)
-        {
             return false;
-        }
-        return info.damages.contains((short)damage) || info.damages.contains((short)-1);
+        
+        return info.damages.contains(damage) || info.damages.contains(-1);
     }
 
     public boolean isItemHidden(int item)
@@ -168,21 +161,16 @@ public class ItemVisibilityHash
         return info.compounds.contains(stackTagCompound);
     }
     
-    public boolean isItemHidden(ItemHash item)
+    public boolean isItemHidden(ItemKey item)
     {
-        IDInfo info = hiddenitems.get((int)item.item);
+        IDInfo info = hiddenitems.get(item.item.itemID);
         if(info == null)
-        {
             return false;
-        }
-        if(info.damages.contains(item.damage) || info.damages.contains((short)-1))
-        {
+        
+        if(info.damages.contains(item.item.getItemDamage()) || info.damages.contains(-1))
             return true;
-        }
-        else if(item.moreinfo != null)
-        {
-            return info.compounds.contains(item.moreinfo);
-        }
+        else if(item.item.hasTagCompound())
+            return info.compounds.contains(item.item.getTagCompound());
         return false;
     }
     
@@ -221,9 +209,7 @@ public class ItemVisibilityHash
                 }
                 
                 for(int i = 0; i < damagearray.byteArray.length / 2; i++)
-                {
-                    info.damages.add((short) ((damagearray.byteArray[i*2]<<8)+damagearray.byteArray[i*2+1]));
-                }
+                    info.damages.add((damagearray.byteArray[i*2]<<8)+damagearray.byteArray[i*2+1]);
             }
         }
     }
@@ -266,7 +252,7 @@ public class ItemVisibilityHash
             {
                 byte[] damagearray = new byte[info.damages.size()*2];
                 int i = 0;
-                for(short damage : info.damages)
+                for(int damage : info.damages)
                 {
                     damagearray[i*2]=(byte) (damage>>8);
                     damagearray[i*2+1]=(byte)damage;

@@ -3,7 +3,6 @@ package codechicken.core.featurehack.mc;
 import codechicken.core.render.TextureFX;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 
 @SideOnly(Side.CLIENT)
@@ -16,7 +15,7 @@ public class TextureLavaFX extends TextureFX
 
     public TextureLavaFX()
     {
-    	super(16, "lava_still_fx");
+        super(16, "lava_still_fx");
         setup();
     }
 

@@ -193,7 +193,6 @@ public class InsnListPrinter extends Textifier
         }
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public void visitLabel(Label label)
     {
