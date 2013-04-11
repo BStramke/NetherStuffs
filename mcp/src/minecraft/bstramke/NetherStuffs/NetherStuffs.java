@@ -1,5 +1,7 @@
 package bstramke.NetherStuffs;
 
+import mods.tinker.tconstruct.crafting.LiquidCasting;
+import mods.tinker.tconstruct.crafting.Smeltery;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
@@ -100,6 +102,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static boolean bBuildcraftAvailable = false;
 	public static boolean bHarkenScytheAvailable = false;
 	public static boolean bThaumcraftAvailable = false;
+	public static boolean bTConstructAvailable = false;
 
 	public static boolean ShowOreDistributions = false;
 	public static boolean DevSetCoreModAvailable = false;
@@ -145,6 +148,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherBowItemId;
 	public static int TorchArrowItemId;
 	public static int SoulEnergyLiquidItemId;
+	public static int DemonicIngotLiquidItemId;
 	public static int NetherGearItemId;
 
 	public static int NetherSoulDetectorBlockId;
@@ -161,6 +165,7 @@ public class NetherStuffs extends DummyModContainer {
 	private static boolean bUseHarkenScytheCondenserBlock;
 	private static boolean bUseThaumcraft;
 	public static boolean bUseForestry;
+	public static boolean bUseTConstruct;
 
 	public static boolean bUseNetherOreDemonic;
 	public static boolean bUseNetherOreCoal;
@@ -178,6 +183,7 @@ public class NetherStuffs extends DummyModContainer {
 	public static boolean bOverrideChunk;
 
 	public static LiquidStack SoulEnergyLiquid;
+	public static LiquidStack DemonicIngotLiquid;
 
 	public static CreativeTabs tabNetherStuffs = new CreativeTabs("tabNetherStuffs") {
 		public ItemStack getIconItemStack() {
@@ -215,6 +221,7 @@ public class NetherStuffs extends DummyModContainer {
 		bUseSoulEngineBlock = config.get("ModCompatibility", "UseBuildcraft", true).getBoolean(true);
 		bUseHarkenScytheCondenserBlock = config.get("ModCompatibility", "UseHarkenScythe", true).getBoolean(true);
 		bUseForestry = config.get("ModCompatibility", "UseForestry", true).getBoolean(true);
+		bUseTConstruct = config.get("ModCompatibility", "Use Tinkers Construct", true).getBoolean(true);
 
 		if (bUseSoulEngineBlock)
 			SoulEngineBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulEngine", 1247).getInt(1247);
@@ -243,20 +250,18 @@ public class NetherStuffs extends DummyModContainer {
 		NetherSoulglassSwordDeathItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulglassSwordDeath", 5212).getInt(5212);
 		NetherSoulglassSwordHellfireItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulglassSwordHellfire", 5213).getInt(5213);
 
+		NetherWoodCharcoalItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherWoodCharcoal", 5214).getInt(5214);
+		SoulEnergyBottleItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyPotion", 5215).getInt(5215);
+		NetherBowItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherBow", 5216).getInt(5216);
+		TorchArrowItemId = config.getItem(Configuration.CATEGORY_ITEM, "TorchArrow", 5217).getInt(5217);
+		SoulEnergyLiquidItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyLiquidItemID", 5218).getInt(5218);
+
 		NetherDiamondSwordItemId = config.getItem(Configuration.CATEGORY_ITEM, "DiamondSword", 5219).getInt(5219);
 		NetherDiamondSwordAcidItemId = config.getItem(Configuration.CATEGORY_ITEM, "DiamondSwordAcid", 5220).getInt(5220);
 		NetherDiamondSwordDeathItemId = config.getItem(Configuration.CATEGORY_ITEM, "DiamondSwordDeath", 5221).getInt(5221);
 
 		NetherGearItemId = config.getItem(Configuration.CATEGORY_ITEM, "Gears", 5222).getInt(5222);
-
-		NetherWoodCharcoalItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherWoodCharcoal", 5214).getInt(5214);
-		SoulEnergyBottleItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyPotion", 5215).getInt(5215);
-		NetherBowItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherBow", 5216).getInt(5216);
-		TorchArrowItemId = config.getItem(Configuration.CATEGORY_ITEM, "TorchArrow", 5217).getInt(5217);
-
-		// SoulEnergyLiquidId = config.getItem(Configuration.CATEGORY_ITEM,
-		// "SoulEnergyLiquidID", 5018).getInt();
-		SoulEnergyLiquidItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyLiquidItemID", 5218).getInt(5218);
+		DemonicIngotLiquidItemId = config.getItem(Configuration.CATEGORY_ITEM, "DemonicIngotLiquidItemId", 5223).getInt(5223);
 
 		SpawnSkeletonsAwayFromNetherFortresses = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsAwayFromNetherFortresses", true).getBoolean(true);
 		IncreaseNetherrackHardness = config.get(Configuration.CATEGORY_GENERAL, "IncreaseNetherrackHardness", true).getBoolean(true);
@@ -358,6 +363,41 @@ public class NetherStuffs extends DummyModContainer {
 
 		SoulWorkBenchRecipes.instance.addRecipe(new ItemStack(SoulCondenser, 1, 1), 250, new Object[] { "III", "F F", "GPG", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0),
 				'F', new ItemStack(Item.flintAndSteel), 'G', new ItemStack(nEssenceKeeper, 1, 0), 'P', new ItemStack(Block.pistonBase, 1, 0) });
+	}
+
+	private void initTConstruct() {
+		if (bUseTConstruct == false)
+			return;
+
+		FMLLog.info("[NetherStuffs] Trying to register Ores for TConstruct Smelter Recipes");
+
+		LiquidStack liquid = LiquidDictionary.getLiquid("Molten Iron", 216); // actually 1.5 ingots
+		if (liquid != null)
+			Smeltery.instance.addMelting(NetherBlocks.netherOre, NetherOre.netherOreIron, 800, liquid);
+
+		liquid = LiquidDictionary.getLiquid("Molten Gold", 216); // actually 1.5 ingots
+		if (liquid != null)
+			Smeltery.instance.addMelting(NetherBlocks.netherOre, NetherOre.netherOreIron, 800, liquid);
+
+		liquid = LiquidDictionary.getLiquid("Molten Obsidian", 216); // actually 1.5 ingots
+		if (liquid != null)
+			Smeltery.instance.addMelting(NetherBlocks.netherOre, NetherOre.netherOreObsidian, 800, liquid);
+
+		liquid = LiquidDictionary.getLiquid("Molten DemonicIngot", 216); // actually 1.5 ingots
+		if (liquid != null) {
+			int nIngotPatternItemId = 0;
+			for (int itemID = 255; itemID < Item.itemsList.length; itemID++) {
+				if (Item.itemsList[itemID] != null) {
+					if (Item.itemsList[itemID].getUnlocalizedName().equalsIgnoreCase("item.tconstruct.MetalPattern")) {
+						Smeltery.instance.addMelting(NetherBlocks.netherOre, NetherOre.demonicOre, 800, liquid);
+						nIngotPatternItemId = itemID;
+						liquid = LiquidDictionary.getLiquid("Molten DemonicIngot", 144);
+						LiquidCasting.addCastingRecipe(new ItemStack(NetherItems.NetherOreIngot, 1, 0), liquid, new ItemStack(nIngotPatternItemId, 1, 0), 100);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	private void initThaumcraftAPI() {
@@ -468,6 +508,7 @@ public class NetherStuffs extends DummyModContainer {
 		bBuildcraftAvailable = Loader.isModLoaded("BuildCraft|Core") && Loader.isModLoaded("BuildCraft|Energy");
 		bHarkenScytheAvailable = Loader.isModLoaded("HarkenScythe_Core");
 		bThaumcraftAvailable = Loader.isModLoaded("Thaumcraft");
+		bTConstructAvailable = Loader.isModLoaded("TConstruct");
 
 		NetherItems.init();
 
@@ -532,12 +573,13 @@ public class NetherStuffs extends DummyModContainer {
 
 		GameRegistry.registerFuelHandler(new NetherStuffsFuel());
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
-		EntityRegistry.registerModEntity(EntitySoulBombPrimed.class, "SoulBomb", 2, instance, 160, 10, true);	
-		
+		EntityRegistry.registerModEntity(EntitySoulBombPrimed.class, "SoulBomb", 2, instance, 160, 10, true);
+
 		OreDictionary.registerOre("oreDemonic", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.demonicOre));
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
 
 		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, 1));
+		DemonicIngotLiquid = LiquidDictionary.getOrCreateLiquid("Molten DemonicIngot", new LiquidStack(NetherItems.DemonicIngotLiquidItem, 1));
 
 		registerWorldGenerators();
 		initRecipes();
@@ -574,6 +616,9 @@ public class NetherStuffs extends DummyModContainer {
 
 		if (bThaumcraftAvailable)
 			initThaumcraftAPI();
+
+		if (bTConstructAvailable)
+			initTConstruct();
 	}
 
 	private void registerWorldGenerators() {
@@ -894,6 +939,7 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("item.NetherBow.name", "Torch Bow");
 		LanguageRegistry.instance().addStringLocalization("item.torchArrow.name", "Torch Arrow");
 		LanguageRegistry.instance().addStringLocalization("item.SoulEnergyLiquidItem.name", "Soul Energy Liquid");
+		LanguageRegistry.instance().addStringLocalization("item.DemonicIngotLiquidItem.name", "Demonic Ore Liquid");
 
 		LanguageRegistry.instance().addStringLocalization("itemGroup.tabNetherStuffs", "en_US", "NetherStuffs");
 

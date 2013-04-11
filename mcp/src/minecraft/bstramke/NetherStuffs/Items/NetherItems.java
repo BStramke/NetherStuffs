@@ -77,4 +77,5 @@ public class NetherItems {
 	public static final Item torchArrow = new NetherTorchArrow(NetherStuffs.TorchArrowItemId).setUnlocalizedName("torchArrow");
 
 	public static final Item SoulEnergyLiquidItem = new SoulEnergyLiquidItem(NetherStuffs.SoulEnergyLiquidItemId).setUnlocalizedName("SoulEnergyLiquidItem");
+	public static final Item DemonicIngotLiquidItem = new DemonicIngotLiquidItem(NetherStuffs.DemonicIngotLiquidItemId).setUnlocalizedName("DemonicIngotLiquidItem");
 }
