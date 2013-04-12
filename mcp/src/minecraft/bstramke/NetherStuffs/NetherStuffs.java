@@ -865,22 +865,6 @@ public class NetherStuffs extends DummyModContainer {
 
 	}
 
-	private void addSmeltingMeta(Block block, int blockMetadata, Item result, int itemMetadata) {
-		addSmeltingMeta(block, blockMetadata, result, itemMetadata, 1);
-	}
-
-	private void addSmeltingMeta(Block block, int blockMetadata, Item result, int itemMetadata, int itemCount) {
-		FurnaceRecipes.smelting().addSmelting(block.blockID, blockMetadata, new ItemStack(result, itemCount, itemMetadata), 0);
-	}
-
-	private void addSmeltingMeta(Block block, int blockMetadata, Block result, int itemMetadata) {
-		addSmeltingMeta(block, blockMetadata, result, itemMetadata, 1);
-	}
-
-	private void addSmeltingMeta(Block block, int blockMetadata, Block result, int itemMetadata, int itemCount) {
-		FurnaceRecipes.smelting().addSmelting(block.blockID, blockMetadata, new ItemStack(result, itemCount, itemMetadata), 0);
-	}
-
 	private void initLanguageRegistry() {
 
 		for (int i = 0; i < NetherOreItemBlock.getMetadataSize(); i++) {
@@ -955,6 +939,6 @@ public class NetherStuffs extends DummyModContainer {
 
 	@PostInit
 	public static void postInit(FMLPostInitializationEvent event) {
-		FMLLog.info("[NetherStuffs] postInit");
+		//FMLLog.info("[NetherStuffs] postInit");
 	}
 }
