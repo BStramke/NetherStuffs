@@ -41,17 +41,16 @@ public class NetherTriggerEngineHeat extends NetherBCTriggers {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getTextureIcon() {
+	public int getIconIndex() {
 		switch (stage) {
 		case Blue:
-			return getIconProvider().getIcon(ActionTriggerIconProvider.Trigger_EngineHeat_Blue);
+			return ActionTriggerIconProvider.Trigger_EngineHeat_Blue;
 		case Green:
-			return getIconProvider().getIcon(ActionTriggerIconProvider.Trigger_EngineHeat_Green);
+			return ActionTriggerIconProvider.Trigger_EngineHeat_Green;
 		case Yellow:
-			return getIconProvider().getIcon(ActionTriggerIconProvider.Trigger_EngineHeat_Yellow);
+			return ActionTriggerIconProvider.Trigger_EngineHeat_Yellow;
 		default:
-			return getIconProvider().getIcon(ActionTriggerIconProvider.Trigger_EngineHeat_Red);
+			return ActionTriggerIconProvider.Trigger_EngineHeat_Red;
 		}
 	}
 

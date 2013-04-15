@@ -616,19 +616,13 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 					burnTime--;
 				}
 
-				if (burnTime <= 0) {
-					// burntime is NOW zero, we have to burn fuel if its
-					// available
+				if (burnTime <= 0) { // burntime is NOW zero, we have to burn fuel if its available
 					if (fuel != null) {
 						if (--fuel.amount <= 0) {
 							fuelTank.setLiquid(null);
 						}
-						// set the burnTime to the value it gets from the
-						// currentFuel. Lava has a Burntime of 20000, SoulEnergy
-						// 10000, whcih gets devided by Bucket_Volume (which is
-						// 1000). This means Lava gets a Value of 20, SoulEnergy
-						// a Value of 10 ==> Lava burns every 20 Ticks, Soul
-						// Energy every 10 Ticks
+						// set the burnTime to the value it gets from the currentFuel. Lava has a Burntime of 20000, SoulEnergy 10000, whcih gets devided by Bucket_Volume (which is
+						// 1000). This means Lava gets a Value of 20, SoulEnergy a Value of 10 ==> Lava burns every 20 Ticks, Soul Energy every 10 Ticks
 						burnTime = currentFuel.totalBurningTime / LiquidContainerRegistry.BUCKET_VOLUME;
 					} else {
 						currentFuel = null;
@@ -636,28 +630,11 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 					}
 				}
 
-				// we are currently burning, so receive our energy (all other
-				// cases, ie. no fuel available are already handled)
-				currentOutput = currentFuel.powerPerCycle; // set the Energy
-				// Output to the
-				// Capability of the
-				// Fuel (1MJ for
-				// SoulEnergy /
-				// Lava, Oil gets
-				// 3MJ etc)
-				addEnergy(currentFuel.powerPerCycle); // increase the overall
-				// available Energy (if
-				// there is space)
-				addHeat(currentFuel.powerPerCycle); // increase the Heat by the
-				// value of MJ. This MAY be
-				// used to determine how
-				// fast an engine goes, for
-				// example the Combustion
-				// Engine
-				// "heats up" to increase
-				// the Piston Speed and
-				// determine the Energy
-				// Stage
+				// we are currently burning, so receive our energy (all other cases, ie. no fuel available are already handled)
+				currentOutput = currentFuel.powerPerCycle; // set the Energy Output to the Capability of the Fuel (1MJ for SoulEnergy / Lava, Oil gets 3MJ etc)
+				addEnergy(currentFuel.powerPerCycle); // increase the overall available Energy (if there is space)
+				addHeat(currentFuel.powerPerCycle); // increase the Heat by the value of MJ. This MAY be used to determine how fast an engine goes, for example the Combustion Engine
+																// "heats up" to increase the Piston Speed and determine the Energy Stage
 			}
 		}
 	}

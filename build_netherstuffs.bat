@@ -22,5 +22,5 @@ copy src\minecraft\bstramke\NetherStuffs\mcmod.info reobf\minecraft\bstramke\Net
 cd reobf\minecraft\bstramke\NetherStuffsBase
 "C:\Program Files\7-Zip\7z.exe" a -tzip mod_NetherStuffs.zip *
 cd D:\GitHub\NetherStuffs
-copy mcp\reobf\minecraft\bstramke\NetherStuffsBase\mod_NetherStuffs.zip mod_NetherStuffs.zip
+copy mcp\reobf\minecraft\bstramke\NetherStuffsBase\mod_NetherStuffs.zip mod_NetherStuffs.jar
 pause

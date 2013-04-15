@@ -14,8 +14,10 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.liquids.LiquidDictionary.LiquidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -377,7 +379,7 @@ public class NetherStuffs extends DummyModContainer {
 
 		liquid = LiquidDictionary.getLiquid("Molten Gold", 216); // actually 1.5 ingots
 		if (liquid != null)
-			Smeltery.instance.addMelting(NetherBlocks.netherOre, NetherOre.netherOreIron, 800, liquid);
+			Smeltery.instance.addMelting(NetherBlocks.netherOre, NetherOre.netherOreGold, 800, liquid);
 
 		liquid = LiquidDictionary.getLiquid("Molten Obsidian", 216); // actually 1.5 ingots
 		if (liquid != null)
@@ -578,8 +580,8 @@ public class NetherStuffs extends DummyModContainer {
 		OreDictionary.registerOre("oreDemonic", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.demonicOre));
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
 
-		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, 1));
-		DemonicIngotLiquid = LiquidDictionary.getOrCreateLiquid("Molten DemonicIngot", new LiquidStack(NetherItems.DemonicIngotLiquidItem, 1));
+		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, LiquidContainerRegistry.BUCKET_VOLUME));
+		DemonicIngotLiquid = LiquidDictionary.getOrCreateLiquid("Molten DemonicIngot", new LiquidStack(NetherItems.DemonicIngotLiquidItem, LiquidContainerRegistry.BUCKET_VOLUME));
 
 		registerWorldGenerators();
 		initRecipes();

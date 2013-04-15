@@ -17,14 +17,14 @@ public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 	public enum State {
 		Empty, Contains, Space, Full
 	};
-	
+
 	public State state;
 
 	public NetherTriggerLiquidContainer(int id, State state) {
 		super(id);
 		this.state = state;
 	}
-	
+
 	@Override
 	public boolean hasParameter() {
 		if (state == State.Contains || state == State.Space)
@@ -116,17 +116,16 @@ public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getTextureIcon() {
+	public int getIconIndex() {
 		switch (state) {
-		case Empty:			
-			return getIconProvider().getIcon(ActionTriggerIconProvider.Trigger_LiquidContainer_Empty);
+		case Empty:
+			return ActionTriggerIconProvider.Trigger_LiquidContainer_Empty;
 		case Contains:
-			return getIconProvider().getIcon(ActionTriggerIconProvider.Trigger_LiquidContainer_Contains);
+			return ActionTriggerIconProvider.Trigger_LiquidContainer_Contains;
 		case Space:
-			return getIconProvider().getIcon(ActionTriggerIconProvider.Trigger_LiquidContainer_Space);
+			return ActionTriggerIconProvider.Trigger_LiquidContainer_Space;
 		default:
-			return getIconProvider().getIcon(ActionTriggerIconProvider.Trigger_LiquidContainer_Full);
+			return ActionTriggerIconProvider.Trigger_LiquidContainer_Full;
 		}
 	}
 }
