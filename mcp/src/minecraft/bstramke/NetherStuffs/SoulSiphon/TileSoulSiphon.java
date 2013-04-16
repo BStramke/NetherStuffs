@@ -14,13 +14,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.liquids.ILiquidTank;
-import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
@@ -28,23 +26,20 @@ import bstramke.NetherStuffs.NetherStuffsEventHook;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.SoulSiphon;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
-import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
+import bstramke.NetherStuffs.Common.SoulEnergyTankTileEntity;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory, ISoulEnergyTank  {
+public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecialInventory, ISidedInventory  {
 	private static int nTickCounter = 0;
-	private LiquidTank tank;
 	public int nTankFillSlot = 1;
 	public int nTankDrainSlot = 0;
-	// public int currentTankLevel = 0;
-	public int maxTankLevel = 10000;
 
 	private ItemStack[] inventory = new ItemStack[2]; // 2 slots for bottles
 
 	public TileSoulSiphon() {
-		tank = new LiquidTank(maxTankLevel);
+		super(10000);
 	}
 
 	@Override
@@ -111,20 +106,8 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
-	}
-
-	@Override
-	public void openChest() {}
-
-	@Override
-	public void closeChest() {}
-
-	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		tagCompound.setShort("TankLevelNew", (short) this.getCurrentTankLevel());
 		NBTTagList itemList = new NBTTagList();
 
 		for (int i = 0; i < inventory.length; i++) {
@@ -154,13 +137,6 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 				inventory[slot] = ItemStack.loadItemStackFromNBT(tag);
 			}
 		}
-
-		if (tagCompound.getShort("TankLevel") > 0) {
-			tagCompound.setShort("TankLevelNew", tagCompound.getShort("TankLevel"));
-			tagCompound.removeTag("TankLevel");
-		}
-		setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));
-
 	}
 
 	public void updateEntity() {
@@ -241,24 +217,6 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 		fillFuelToBottle();
 	}
 
-	public int getCurrentTankLevel() {
-		if (this.tank.getLiquid() == null || this.tank.getLiquid().amount < 0)
-			return 0;
-		else
-			return this.tank.getLiquid().amount;
-	}
-
-	public void setCurrentTankLevel(int nAmount) {
-		if (this.tank.getLiquid() != null)
-			this.tank.getLiquid().amount = nAmount;
-		else {
-			LiquidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
-			liquid.amount = nAmount;
-			this.tank.setLiquid(liquid);
-		}
-
-	}
-
 	private void fillFuelToBottle() {
 		if (this.getCurrentTankLevel() > 0 && this.inventory[this.nTankDrainSlot] != null && this.inventory[this.nTankDrainSlot].itemID == NetherItems.SoulEnergyBottle.itemID) {
 			int nRest = SoulEnergyBottle.addSoulEnergy(this.getCurrentTankLevel(), this.inventory[this.nTankDrainSlot]);
@@ -266,30 +224,18 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 		}
 	}
 
-	private void fillFuelToTank() {
-		if (this.getCurrentTankLevel() < this.maxTankLevel && this.inventory[this.nTankFillSlot] != null
+	@Override
+	public void fillFuelToTank() {
+		if (this.getCurrentTankLevel() < this.getMaxTankLevel() && this.inventory[this.nTankFillSlot] != null
 				&& this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.itemID) {
-			if (this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
-				SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.maxTankLevel - this.getCurrentTankLevel());
-				this.setCurrentTankLevel(this.maxTankLevel);
+			if (this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.getMaxTankLevel()) {
+				SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.getMaxTankLevel() - this.getCurrentTankLevel());
+				this.setCurrentTankLevel(this.getMaxTankLevel());
 			} else {
 				this.setCurrentTankLevel(this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]));
 				SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot], 0);
 			}
 		}
-	}
-
-	public int addFuelToTank(int nAmount) {
-		int nRest = 0;
-		LiquidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
-		liquid.amount = nAmount;
-
-		if (tank.getLiquid() == null || tank.getLiquid().amount <= 0)
-			nRest = tank.fill(liquid, true);
-		else
-			nRest = tank.fill(liquid, true);
-
-		return nRest;
 	}
 
 	@Override
@@ -343,45 +289,6 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 		return null;
 	}
 
-	public int getFillingScaled(int nPixelMax) {
-		return (int) (((float) this.getCurrentTankLevel() / (float) this.maxTankLevel) * nPixelMax);
-	}
-
-	@Override
-	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
-		return 0;
-	}
-
-	@Override
-	public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
-		return 0;
-	}
-
-	@Override
-	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return drain(0, maxDrain, doDrain);
-	}
-
-	@Override
-	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
-		if (tankIndex == 0)
-			return tank.drain(maxDrain, doDrain);
-		return null;
-	}
-
-	@Override
-	public ILiquidTank[] getTanks(ForgeDirection direction) {
-		return new ILiquidTank[] { tank };
-	}
-
-	@Override
-	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
-		if (type.isLiquidEqual(NetherStuffs.SoulEnergyLiquid))
-			return tank;
-		else
-			return null;
-	}
-
 	@Override
 	public boolean isInvNameLocalized() {
 		return false;
@@ -429,10 +336,5 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 			return true;
 		
 		return false;
-	}
-
-	@Override
-	public int getMaxTankLevel() {
-		return maxTankLevel;
 	}
 }

@@ -9,8 +9,8 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import bstramke.NetherStuffs.Blocks.SoulCondenser;
+import bstramke.NetherStuffs.Common.SoulEnergyTankBottleTileEntity;
 import bstramke.NetherStuffs.Items.NetherItems;
-import bstramke.NetherStuffs.SoulSiphon.TileSoulSiphon;
 import bstramke.NetherStuffs.SoulWorkBench.SlotSoulEnergyContainer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -83,7 +83,7 @@ public class ContainerSoulCondenser extends Container {
 
 		if (slot_object != null && slot_object.getHasStack()) {
 			ItemStack stack_in_slot = slot_object.getStack();
-			if (slot_object.inventory instanceof TileSoulCondenser) {
+			if (slot_object.inventory instanceof SoulEnergyTankBottleTileEntity) {
 
 				stack = stack_in_slot.copy();
 

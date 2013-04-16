@@ -16,6 +16,7 @@ import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.NetherSoulFurnace;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
+import bstramke.NetherStuffs.Common.SoulEnergyTankTileEntity;
 import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
 import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import bstramke.NetherStuffs.Items.NetherItems;
@@ -24,16 +25,13 @@ import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileSoulFurnace extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory, ISoulEnergyTank {
-	private LiquidTank tank;
+public class TileSoulFurnace extends SoulEnergyTankTileEntity implements ISpecialInventory, ISidedInventory {
 	public static final int nSmeltedSlot = 0;
 	public static final int nTankFillSlot = 1;
 	public static final int nOutputSlot = 2;
 	private ItemStack[] inventory = new ItemStack[3];
 
 	private int nTicksToComplete = 195;
-	// public int currentTankLevel = 0;
-	public int maxTankLevel = 19200; // 19200 equals 2 stacks of Smelting Ores
 
 	/** The number of ticks that the current item has been cooking for */
 	public int furnaceCookTime = 0;
@@ -44,7 +42,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	}
 
 	public TileSoulFurnace() {
-		tank = new LiquidTank(maxTankLevel);
+		super(19200); // 19200 equals 2 stacks of Smelting Ores
 	}
 
 	@Override
@@ -61,35 +59,13 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
-	public int getFillingScaled(int nPixelMax) {
-		return (int) (((float) this.getCurrentTankLevel() / (float) this.maxTankLevel) * nPixelMax);
-	}
-
-	public int getCurrentTankLevel() {
-		if (this.tank.getLiquid() == null || this.tank.getLiquid().amount < 0)
-			return 0;
-		else
-			return this.tank.getLiquid().amount;
-	}
-
-	public void setCurrentTankLevel(int nAmount) {
-		if (this.tank.getLiquid() != null)
-			this.tank.getLiquid().amount = nAmount;
-		else {
-			LiquidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
-			liquid.amount = nAmount;
-			this.tank.setLiquid(liquid);
-		}
-
-	}
-
-	private void fillFuelToTank() {
-		if (this.getCurrentTankLevel() < this.maxTankLevel && this.inventory[this.nTankFillSlot] != null
+	@Override
+	public void fillFuelToTank() {
+		if (this.getCurrentTankLevel() < this.getMaxTankLevel() && this.inventory[this.nTankFillSlot] != null
 				&& this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.itemID) {
-			if (this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
-				SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.maxTankLevel - this.getCurrentTankLevel());
-				this.setCurrentTankLevel(this.maxTankLevel);
+			if (this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.getMaxTankLevel()) {
+				SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.getMaxTankLevel() - this.getCurrentTankLevel());
+				this.setCurrentTankLevel(this.getMaxTankLevel());
 			} else {
 				this.setCurrentTankLevel(this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]));
 				SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot], 0);
@@ -152,17 +128,6 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	public int getInventoryStackLimit() {
 		return 64;
 	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
-	}
-
-	@Override
-	public void openChest() {}
-
-	@Override
-	public void closeChest() {}
 
 	@Override
 	public void updateEntity() {
@@ -234,11 +199,6 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 		}
 
 		this.furnaceCookTime = tagCompound.getShort("CookTime");
-		if (tagCompound.getShort("TankLevel") > 0) {
-			tagCompound.setShort("TankLevelNew", (short) (tagCompound.getShort("TankLevel") * 10));
-			tagCompound.removeTag("TankLevel");
-		}
-		this.setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));
 	}
 
 	/**
@@ -288,7 +248,6 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		tagCompound.setShort("TankLevelNew", (short) this.getCurrentTankLevel());
 		tagCompound.setShort("CookTime", (short) this.furnaceCookTime);
 		NBTTagList itemList = new NBTTagList();
 
@@ -373,41 +332,6 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	}
 
 	@Override
-	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
-		return fill(0, resource, doFill);
-	}
-
-	@Override
-	public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
-		if (tankIndex == 0)
-			return tank.fill(resource, doFill);
-		return 0;
-	}
-
-	@Override
-	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return null;
-	}
-
-	@Override
-	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
-		return null;
-	}
-
-	@Override
-	public ILiquidTank[] getTanks(ForgeDirection direction) {
-		return new ILiquidTank[] { tank };
-	}
-
-	@Override
-	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
-		if (type.isLiquidEqual(NetherStuffs.SoulEnergyLiquid))
-			return tank;
-		else
-			return null;
-	}
-
-	@Override
 	public boolean isInvNameLocalized() {
 		return false;
 	}
@@ -418,15 +342,14 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 		case nSmeltedSlot:
 			return (DemonicFurnaceRecipes.smelting().getSmeltingResult(itemstack) != null || FurnaceRecipes.smelting().getSmeltingResult(itemstack) != null);
 		case nTankFillSlot:
-			if( itemstack.itemID == NetherItems.SoulEnergyBottle.itemID)
-			{
-				if(SoulEnergyBottle.getSoulEnergyAmount(itemstack) > 0) //only accept bottles that have an amount of energy in them
-					return true; 
+			if (itemstack.itemID == NetherItems.SoulEnergyBottle.itemID) {
+				if (SoulEnergyBottle.getSoulEnergyAmount(itemstack) > 0) // only accept bottles that have an amount of energy in them
+					return true;
 				else
 					return false;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -440,7 +363,7 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 		else if (par1 == NetherBlocks.sideBottom)
 			return new int[] { nOutputSlot };
 		else
-			return new int[] { nTankFillSlot }; //sides
+			return new int[] { nTankFillSlot }; // sides
 	}
 
 	/**
@@ -456,28 +379,22 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 	 */
 	@Override
 	public boolean func_102008_b(int slot, ItemStack par2ItemStack, int side) {
-		if(par2ItemStack.itemID == NetherItems.SoulEnergyBottle.itemID)
-		{
-			if(SoulEnergyBottle.getSoulEnergyAmount(par2ItemStack) == 0)
-				return true; //empty bottle is extractable always
+		if (par2ItemStack.itemID == NetherItems.SoulEnergyBottle.itemID) {
+			if (SoulEnergyBottle.getSoulEnergyAmount(par2ItemStack) == 0)
+				return true; // empty bottle is extractable always
 			else
-				return false; //partially filled bottle is not extractable
+				return false; // partially filled bottle is not extractable
 		}
-		
-		if(side == NetherBlocks.sideTop && slot == nSmeltedSlot)
-			return true;
-		
-		if(side == NetherBlocks.sideBottom && slot == nOutputSlot) //bottom gets the output slot
-			return true;
-		
-		if(side != NetherBlocks.sideTop && slot != NetherBlocks.sideBottom && slot == nTankFillSlot) //enables output from sides of the tankfillslot
-			return true;
-		
-		return false;
-	}
 
-	@Override
-	public int getMaxTankLevel() {
-		return maxTankLevel;
+		if (side == NetherBlocks.sideTop && slot == nSmeltedSlot)
+			return true;
+
+		if (side == NetherBlocks.sideBottom && slot == nOutputSlot) // bottom gets the output slot
+			return true;
+
+		if (side != NetherBlocks.sideTop && slot != NetherBlocks.sideBottom && slot == nTankFillSlot) // enables output from sides of the tankfillslot
+			return true;
+
+		return false;
 	}
 }

@@ -1,31 +1,19 @@
 package bstramke.NetherStuffs.SoulCondenser;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.ILiquidTank;
-import net.minecraftforge.liquids.ITankContainer;
-import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidTank;
-import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.SoulCondenser;
-import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
+import bstramke.NetherStuffs.Common.SoulEnergyTankBottleTileEntity;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulCondenser extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory, ISoulEnergyTank {
+public class TileSoulCondenser extends SoulEnergyTankBottleTileEntity implements ISpecialInventory, ISidedInventory {
 	private static int nTickCounter = 0;
-	private LiquidTank tank;
-	// public int currentTankLevel = 0;
-	public int maxTankLevel = 10000;
-	public static final int nTankFillSlot = 1;
-	public static final int nTankDrainSlot = 0;
 
 	public static int nToHarkenScytheRate = 250;
 	public static int nFromHarkenScytheRate = 150;
@@ -33,7 +21,7 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 	private ItemStack inventory[] = new ItemStack[2]; // 2 slots for bottles, one is SoulEnergyBottle, one is HarkenScythe Soul Vessel/Keeper
 
 	public TileSoulCondenser() {
-		tank = new LiquidTank(maxTankLevel);
+		super(1, 0, 10000);
 	}
 
 	@Override
@@ -103,20 +91,8 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
-	}
-
-	@Override
-	public void openChest() {}
-
-	@Override
-	public void closeChest() {}
-
-	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		tagCompound.setShort("TankLevelNew", (short) this.getCurrentTankLevel());
 		NBTTagList itemList = new NBTTagList();
 
 		for (int i = 0; i < inventory.length; i++) {
@@ -146,13 +122,6 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 				inventory[slot] = ItemStack.loadItemStackFromNBT(tag);
 			}
 		}
-
-		if (tagCompound.getShort("TankLevel") > 0) {
-			tagCompound.setShort("TankLevelNew", tagCompound.getShort("TankLevel"));
-			tagCompound.removeTag("TankLevel");
-		}
-		setCurrentTankLevel(tagCompound.getShort("TankLevelNew"));
-
 	}
 
 	public void updateEntity() {
@@ -162,30 +131,13 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 		}
 	}
 
-	public int getCurrentTankLevel() {
-		if (this.tank.getLiquid() == null || this.tank.getLiquid().amount < 0)
-			return 0;
-		else
-			return this.tank.getLiquid().amount;
-	}
-
-	public void setCurrentTankLevel(int nAmount) {
-		if (this.tank.getLiquid() != null)
-			this.tank.getLiquid().amount = nAmount;
-		else {
-			LiquidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
-			liquid.amount = nAmount;
-			this.tank.setLiquid(liquid);
-		}
-
-	}
-
 	@Override
 	public int getBlockMetadata() {
 		return this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 	}
 
-	private void fillFuelToBottle() {
+	@Override
+	public void fillFuelToBottle() {
 		if (this.inventory[this.nTankDrainSlot] != null) {
 			if (getBlockMetadata() == 0) {
 				if (inventory[nTankDrainSlot].itemID != SoulCondenser.HSEssenceKeeperItemId && inventory[nTankDrainSlot].itemID != SoulCondenser.HSEssenceVesselItemId
@@ -230,15 +182,16 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 		}
 	}
 
-	private void fillFuelToTank() {
-		if (this.getCurrentTankLevel() >= this.maxTankLevel || this.inventory[this.nTankFillSlot] == null)
+	@Override
+	public void fillFuelToTank() {
+		if (this.getCurrentTankLevel() >= this.getMaxTankLevel() || this.inventory[this.nTankFillSlot] == null)
 			return;
 
 		if (getBlockMetadata() == 0) {
 			if (this.inventory[this.nTankFillSlot].itemID == NetherItems.SoulEnergyBottle.itemID) {
-				if (this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.maxTankLevel) {
-					SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.maxTankLevel - this.getCurrentTankLevel());
-					this.setCurrentTankLevel(this.maxTankLevel);
+				if (this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.getMaxTankLevel()) {
+					SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.getMaxTankLevel() - this.getCurrentTankLevel());
+					this.setCurrentTankLevel(this.getMaxTankLevel());
 				} else {
 					this.setCurrentTankLevel(this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]));
 					SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot], 0);
@@ -248,14 +201,14 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 			if (this.inventory[this.nTankFillSlot].itemID == SoulCondenser.HSSoulKeeperItemId || this.inventory[this.nTankFillSlot].itemID == SoulCondenser.HSSoulVesselItemId) {
 				int nSouls = this.inventory[this.nTankFillSlot].getMaxDamage() - this.inventory[this.nTankFillSlot].getItemDamage();
 				for (int i = 1; i < nSouls; i++) {
-					if (getCurrentTankLevel() + nFromHarkenScytheRate > maxTankLevel)
+					if (getCurrentTankLevel() + nFromHarkenScytheRate > getMaxTankLevel())
 						break;
 
 					setCurrentTankLevel(getCurrentTankLevel() + nFromHarkenScytheRate);
 					this.inventory[this.nTankFillSlot].setItemDamage(this.inventory[this.nTankFillSlot].getItemDamage() + 1);
 				}
 
-				if (getCurrentTankLevel() + nFromHarkenScytheRate <= maxTankLevel) {
+				if (getCurrentTankLevel() + nFromHarkenScytheRate <= getMaxTankLevel()) {
 					setCurrentTankLevel(getCurrentTankLevel() + nFromHarkenScytheRate);
 					if (this.inventory[this.nTankFillSlot].itemID == SoulCondenser.HSSoulKeeperItemId)
 						setInventorySlotContents(this.nTankFillSlot, new ItemStack(SoulCondenser.HSEssenceKeeperItemId, 1, 0));
@@ -264,19 +217,6 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 				}
 			}
 		}
-	}
-
-	public int addFuelToTank(int nAmount) {
-		int nRest = 0;
-		LiquidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
-		liquid.amount = nAmount;
-
-		if (tank.getLiquid() == null || tank.getLiquid().amount <= 0)
-			nRest = tank.fill(liquid, true);
-		else
-			nRest = tank.fill(liquid, true);
-
-		return nRest;
 	}
 
 	@Override
@@ -357,47 +297,6 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 		return null;
 	}
 
-	public int getFillingScaled(int nPixelMax) {
-		return (int) (((float) this.getCurrentTankLevel() / (float) this.maxTankLevel) * nPixelMax);
-	}
-
-	@Override
-	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
-		return fill(0, resource, doFill);
-	}
-
-	@Override
-	public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
-		if (tankIndex == 0)
-			return tank.fill(resource, doFill);
-		return 0;
-	}
-
-	@Override
-	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return drain(0, maxDrain, doDrain);
-	}
-
-	@Override
-	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
-		if (tankIndex == 0)
-			return tank.drain(maxDrain, doDrain);
-		return null;
-	}
-
-	@Override
-	public ILiquidTank[] getTanks(ForgeDirection direction) {
-		return new ILiquidTank[] { tank };
-	}
-
-	@Override
-	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
-		if (type.isLiquidEqual(NetherStuffs.SoulEnergyLiquid))
-			return tank;
-		else
-			return null;
-	}
-
 	@Override
 	public boolean isInvNameLocalized() {
 		return false;
@@ -406,19 +305,17 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		if (getBlockMetadata() == 0) {
-			switch (i) {
-			case nTankFillSlot:
+			if (i == nTankFillSlot) {
 				return itemstack.itemID == NetherItems.SoulEnergyBottle.itemID;
-			case nTankDrainSlot:
+			} else if (i == nTankDrainSlot) {
 				if (itemstack.itemID == SoulCondenser.HSSoulKeeperItemId || itemstack.itemID == SoulCondenser.HSSoulVesselItemId
 						|| itemstack.itemID == SoulCondenser.HSEssenceKeeperItemId || itemstack.itemID == SoulCondenser.HSEssenceVesselItemId)
 					return true;
 			}
 		} else if (getBlockMetadata() == 1) {
-			switch (i) {
-			case nTankDrainSlot:
+			if (i == nTankDrainSlot) {
 				return itemstack.itemID == NetherItems.SoulEnergyBottle.itemID;
-			case nTankFillSlot:
+			} else if (i == nTankFillSlot) {
 				if (itemstack.itemID == SoulCondenser.HSSoulKeeperItemId || itemstack.itemID == SoulCondenser.HSSoulVesselItemId
 						|| itemstack.itemID == SoulCondenser.HSEssenceKeeperItemId || itemstack.itemID == SoulCondenser.HSEssenceVesselItemId)
 					return true;
@@ -464,10 +361,5 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 			return true;
 
 		return false;
-	}
-
-	@Override
-	public int getMaxTankLevel() {
-		return maxTankLevel;
 	}
 }
