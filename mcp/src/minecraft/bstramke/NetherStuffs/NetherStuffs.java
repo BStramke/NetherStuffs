@@ -1,5 +1,9 @@
 package bstramke.NetherStuffs;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import mods.tinker.tconstruct.crafting.LiquidCasting;
 import mods.tinker.tconstruct.crafting.Smeltery;
 import net.minecraft.block.Block;
@@ -11,13 +15,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidDictionary.LiquidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -25,6 +31,8 @@ import thaumcraft.api.EnumTag;
 import thaumcraft.api.ObjectTags;
 import thaumcraft.api.ThaumcraftApi;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
+import bstramke.NetherStuffs.Blocks.NetherDoubleSlabItemBlock;
+import bstramke.NetherStuffs.Blocks.NetherHalfSlabItemBlock;
 import bstramke.NetherStuffs.Blocks.NetherLeavesItemBlock;
 import bstramke.NetherStuffs.Blocks.NetherOre;
 import bstramke.NetherStuffs.Blocks.NetherOreItemBlock;
@@ -32,6 +40,8 @@ import bstramke.NetherStuffs.Blocks.NetherPlank;
 import bstramke.NetherStuffs.Blocks.NetherPlankItemBlock;
 import bstramke.NetherStuffs.Blocks.NetherSapling;
 import bstramke.NetherStuffs.Blocks.NetherSaplingItemBlock;
+import bstramke.NetherStuffs.Blocks.NetherSlab;
+import bstramke.NetherStuffs.Blocks.NetherStairs;
 import bstramke.NetherStuffs.Blocks.NetherWood;
 import bstramke.NetherStuffs.Blocks.NetherWoodItemBlock;
 import bstramke.NetherStuffs.Blocks.NetherWoodPuddleItemBlock;
@@ -157,6 +167,11 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherSoulBlockerBlockId;
 	public static int NetherSoulFurnaceBlockId;
 	public static int NetherSoulSiphonBlockId;
+	public static int NetherStairHellfireBlockId;
+	public static int NetherStairAcidBlockId;
+	public static int NetherStairDeathBlockId;
+	public static int NetherHalfSlabBlockId;
+	public static int NetherDoubleSlabBlockId;
 	public static int SoulCondenserBlockId = 0;
 
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
@@ -168,6 +183,8 @@ public class NetherStuffs extends DummyModContainer {
 	private static boolean bUseThaumcraft;
 	public static boolean bUseForestry;
 	public static boolean bUseTConstruct;
+	public static boolean bUseStairBlocks;
+	public static boolean bUseSlabBlocks;
 
 	public static boolean bUseNetherOreDemonic;
 	public static boolean bUseNetherOreCoal;
@@ -179,10 +196,6 @@ public class NetherStuffs extends DummyModContainer {
 	public static boolean bUseNetherOreObsidian;
 	public static boolean bUseNetherOreLapis;
 	public static boolean bUseNetherOreCobblestone;
-
-	public static boolean bOverrideBlockBreakable;
-	public static boolean bOverrideBlockPane;
-	public static boolean bOverrideChunk;
 
 	public static LiquidStack SoulEnergyLiquid;
 	public static LiquidStack DemonicIngotLiquid;
@@ -232,6 +245,20 @@ public class NetherStuffs extends DummyModContainer {
 			SoulCondenserBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulenergyCondenser", 1248).getInt(1248);
 			TileSoulCondenser.nToHarkenScytheRate = config.get("ModCompatibility", "NetherStuffs SoulEnergy to Harken Scythe Souls", 250).getInt(250);
 			TileSoulCondenser.nFromHarkenScytheRate = config.get("ModCompatibility", "HarkenScythe Souls to SoulEnergy Rate", 150).getInt(150);
+		}
+
+		bUseStairBlocks = config.get(Configuration.CATEGORY_GENERAL, "Use Stair Blocks", true).getBoolean(true);
+		bUseSlabBlocks = config.get(Configuration.CATEGORY_GENERAL, "Use Slab Blocks", true).getBoolean(true);
+
+		if (bUseStairBlocks) {
+			NetherStairHellfireBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "HellfireStair", 1249).getInt(1249);
+			NetherStairAcidBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "AcidStair", 1250).getInt(1250);
+			NetherStairDeathBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "DeathStair", 1251).getInt(1251);
+		}
+
+		if (bUseSlabBlocks) {
+			NetherHalfSlabBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "HalfSlab BlockId", 1252).getInt(1252);
+			NetherDoubleSlabBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "DoubleSlab BlockId", 1253).getInt(1253);
 		}
 
 		NetherOreIngotItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherIngots", 5200).getInt(5200);
@@ -400,6 +427,62 @@ public class NetherStuffs extends DummyModContainer {
 				}
 			}
 		}
+	}
+
+	private void initDecorativeBlocks() {
+		if (bUseStairBlocks) {
+			NetherBlocks.StairAcid = new NetherStairs(NetherStairAcidBlockId, NetherBlocks.netherPlank, NetherPlank.acid).setUnlocalizedName("StairAcid");
+			NetherBlocks.StairHellfire = new NetherStairs(NetherStairHellfireBlockId, NetherBlocks.netherPlank, NetherPlank.hellfire).setUnlocalizedName("StairHellfire");
+			NetherBlocks.StairDeath = new NetherStairs(NetherStairDeathBlockId, NetherBlocks.netherPlank, NetherPlank.death).setUnlocalizedName("StairDeath");
+
+			GameRegistry.registerBlock(NetherBlocks.StairAcid, "NetherStairAcidItemBlock");
+			GameRegistry.registerBlock(NetherBlocks.StairHellfire, "NetherStairHellfireItemBlock");
+			GameRegistry.registerBlock(NetherBlocks.StairDeath, "NetherStairDeathItemBlock");
+
+			MinecraftForge.setBlockHarvestLevel(NetherBlocks.StairAcid, "axe", 1);
+			MinecraftForge.setBlockHarvestLevel(NetherBlocks.StairHellfire, "axe", 1);
+			MinecraftForge.setBlockHarvestLevel(NetherBlocks.StairDeath, "axe", 1);
+
+			GameRegistry.addRecipe(new ItemStack(NetherBlocks.StairAcid, 4), new Object[] { "#  ", "## ", "###", '#', new ItemStack(NetherBlocks.netherPlank, 1, NetherPlank.acid) });
+			GameRegistry.addRecipe(new ItemStack(NetherBlocks.StairHellfire, 4), new Object[] { "#  ", "## ", "###", '#',
+					new ItemStack(NetherBlocks.netherPlank, 1, NetherPlank.hellfire) });
+			GameRegistry
+					.addRecipe(new ItemStack(NetherBlocks.StairDeath, 4), new Object[] { "#  ", "## ", "###", '#', new ItemStack(NetherBlocks.netherPlank, 1, NetherPlank.death) });
+
+			LanguageRegistry.instance().addStringLocalization("tile.StairAcid.name", "Acid Wood Stairs");
+			LanguageRegistry.instance().addStringLocalization("tile.StairHellfire.name", "Hellfire Wood Stairs");
+			LanguageRegistry.instance().addStringLocalization("tile.StairDeath.name", "Death Wood Stairs");
+
+			OreDictionary.registerOre("stairWood", NetherBlocks.StairAcid);
+			OreDictionary.registerOre("stairWood", NetherBlocks.StairHellfire);
+			OreDictionary.registerOre("stairWood", NetherBlocks.StairDeath);
+		}
+
+		if (bUseSlabBlocks) {
+
+			NetherBlocks.HalfSlab = (NetherSlab) new NetherSlab(NetherHalfSlabBlockId, false).setUnlocalizedName("HalfSlab");
+			NetherBlocks.DoubleSlab = (NetherSlab) new NetherSlab(NetherDoubleSlabBlockId, true).setUnlocalizedName("DoubleSlab");
+
+			GameRegistry.registerBlock(NetherBlocks.HalfSlab, NetherHalfSlabItemBlock.class, "NetherSlabHalfItemBlock");
+			GameRegistry.registerBlock(NetherBlocks.DoubleSlab, NetherDoubleSlabItemBlock.class, "NetherSlabDoubleItemBlock");
+
+			MinecraftForge.setBlockHarvestLevel(NetherBlocks.HalfSlab, "axe", 1);
+			MinecraftForge.setBlockHarvestLevel(NetherBlocks.DoubleSlab, "axe", 1);
+
+			OreDictionary.registerOre("slabWood", new ItemStack(NetherBlocks.HalfSlab, 1, OreDictionary.WILDCARD_VALUE));
+
+			for (int i = 0; i < NetherPlankItemBlock.blockNames.length; i++) {
+				GameRegistry.addRecipe(new ItemStack(NetherBlocks.HalfSlab, 6, i), new Object[] { "###", '#', new ItemStack(NetherBlocks.netherPlank, 1, i) });
+
+				MinecraftForge.setBlockHarvestLevel(NetherBlocks.HalfSlab, i, "axe", 1);
+				MinecraftForge.setBlockHarvestLevel(NetherBlocks.DoubleSlab, i, "axe", 1);
+
+				LanguageRegistry.instance().addStringLocalization("tile.HalfSlab." + NetherPlankItemBlock.blockNames[i] + ".name", NetherPlankItemBlock.blockNames[i] + " Slab");
+				LanguageRegistry.instance()
+						.addStringLocalization("tile.DoubleSlab." + NetherPlankItemBlock.blockNames[i] + ".name", NetherPlankItemBlock.blockNames[i] + " Doubleslab");
+			}
+		}
+
 	}
 
 	private void initThaumcraftAPI() {
@@ -579,12 +662,15 @@ public class NetherStuffs extends DummyModContainer {
 
 		OreDictionary.registerOre("oreDemonic", new ItemStack(NetherBlocks.netherOre, 1, NetherOre.demonicOre));
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(NetherItems.NetherOreIngot));
+		OreDictionary.registerOre("logWood", new ItemStack(NetherBlocks.netherWood, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("plankWood", new ItemStack(NetherBlocks.netherPlank, 1, OreDictionary.WILDCARD_VALUE));
 
 		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(NetherItems.SoulEnergyLiquidItem, LiquidContainerRegistry.BUCKET_VOLUME));
 		DemonicIngotLiquid = LiquidDictionary.getOrCreateLiquid("Molten DemonicIngot", new LiquidStack(NetherItems.DemonicIngotLiquidItem, LiquidContainerRegistry.BUCKET_VOLUME));
 
 		registerWorldGenerators();
 		initRecipes();
+		initDecorativeBlocks();
 
 		initLanguageRegistry();
 		proxy.registerRenderThings();
@@ -691,8 +777,6 @@ public class NetherStuffs extends DummyModContainer {
 		CraftingManager.getInstance().getRecipeList()
 				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), new Object[] { "NNN", "N N", "NNN", 'N', netherBrick }));
 
-		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherWoodStick, 4), new Object[] { "#", "#", '#', NetherBlocks.netherPlank });
-
 		CraftingManager
 				.getInstance()
 				.getRecipeList()
@@ -763,18 +847,14 @@ public class NetherStuffs extends DummyModContainer {
 						NetherItems.NetherWoodStick }));
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3), new Object[] { "N N", " N ", 'N', netherBrick }));
 
-		/*
-		 * GameRegistry.addRecipe(new ItemStack(NetherItems.NetherDemonicBarHandle, 1), new Object[] { "NIN", " S ", 'N', CompatItem.netherBrick, 'I', new
-		 * ItemStack(NetherItems.NetherOreIngot, 1, 0), 'S', NetherItems.NetherWoodStick });
-		 */
-
-		// GameRegistry.addRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3),
-		// new Object[] { "N N", " N ", 'N', CompatItem.netherBrick });
-
 		GameRegistry.addRecipe(new ItemStack(NetherBlocks.NetherSoulGlassPane, 16), new Object[] { "###", "###", '#', NetherBlocks.NetherSoulGlass });
 		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulGlassBottleItem, 3), new Object[] { "# #", " # ", '#', NetherBlocks.NetherSoulGlass });
 		GameRegistry.addRecipe(new ItemStack(Item.flintAndSteel, 1), new Object[] { "BB", "QQ", 'B', netherBrick, 'Q', netherQuartz });
 
+		List recipes = CraftingManager.getInstance().getRecipeList();
+		addShapedRecipeFirst(recipes, new ItemStack(NetherItems.NetherWoodStick, 4), new Object[] { "#", "#", '#', NetherBlocks.netherPlank });
+		
+		
 		FurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal, new ItemStack(Item.coal, 1), 0.2F);
 
 		/**
@@ -784,6 +864,82 @@ public class NetherStuffs extends DummyModContainer {
 
 	}
 
+	/**
+	 * @author mDiyo
+	 */
+	public void addShapedRecipeFirst (List recipeList, ItemStack itemstack, Object... objArray)
+   {
+       String var3 = "";
+       int var4 = 0;
+       int var5 = 0;
+       int var6 = 0;
+
+       if (objArray[var4] instanceof String[])
+       {
+           String[] var7 = (String[]) ((String[]) objArray[var4++]);
+
+           for (int var8 = 0; var8 < var7.length; ++var8)
+           {
+               String var9 = var7[var8];
+               ++var6;
+               var5 = var9.length();
+               var3 = var3 + var9;
+           }
+       }
+       else
+       {
+           while (objArray[var4] instanceof String)
+           {
+               String var11 = (String) objArray[var4++];
+               ++var6;
+               var5 = var11.length();
+               var3 = var3 + var11;
+           }
+       }
+
+       HashMap var12;
+
+       for (var12 = new HashMap(); var4 < objArray.length; var4 += 2)
+       {
+           Character var13 = (Character) objArray[var4];
+           ItemStack var14 = null;
+
+           if (objArray[var4 + 1] instanceof Item)
+           {
+               var14 = new ItemStack((Item) objArray[var4 + 1]);
+           }
+           else if (objArray[var4 + 1] instanceof Block)
+           {
+               var14 = new ItemStack((Block) objArray[var4 + 1], 1, -1);
+           }
+           else if (objArray[var4 + 1] instanceof ItemStack)
+           {
+               var14 = (ItemStack) objArray[var4 + 1];
+           }
+
+           var12.put(var13, var14);
+       }
+
+       ItemStack[] var15 = new ItemStack[var5 * var6];
+
+       for (int var16 = 0; var16 < var5 * var6; ++var16)
+       {
+           char var10 = var3.charAt(var16);
+
+           if (var12.containsKey(Character.valueOf(var10)))
+           {
+               var15[var16] = ((ItemStack) var12.get(Character.valueOf(var10))).copy();
+           }
+           else
+           {
+               var15[var16] = null;
+           }
+       }
+
+       ShapedRecipes var17 = new ShapedRecipes(var5, var6, var15, itemstack);
+       recipeList.add(0, var17);
+   }
+	
 	private void initSwordRecipes() {
 		/**
 		 * Obsidian Sword & Obsidian Acid/Death Sword
@@ -847,24 +1003,26 @@ public class NetherStuffs extends DummyModContainer {
 	 * Returns Default Minecraft Items from Mod Items
 	 */
 	private void initDefaultMinecraftRecipes() {
-		GameRegistry.addRecipe(new ItemStack(Item.bed, 1), new Object[] { "###", "XXX", '#', Block.cloth, 'X', NetherBlocks.netherPlank });
-		GameRegistry.addRecipe(new ItemStack(Block.chest), new Object[] { "###", "# #", "###", '#', NetherBlocks.netherPlank });
-		GameRegistry.addRecipe(new ItemStack(Block.workbench), new Object[] { "##", "##", '#', NetherBlocks.netherPlank });
+		/*
+		 * GameRegistry.addRecipe(new ItemStack(Item.bed, 1), new Object[] { "###", "XXX", '#', Block.cloth, 'X', NetherBlocks.netherPlank }); GameRegistry.addRecipe(new
+		 * ItemStack(Block.chest), new Object[] { "###", "# #", "###", '#', NetherBlocks.netherPlank }); GameRegistry.addRecipe(new ItemStack(Block.workbench), new Object[] { "##",
+		 * "##", '#', NetherBlocks.netherPlank });
+		 */
 
 		Item netherBrick = Item.field_94584_bZ;
 
 		GameRegistry.addShapelessRecipe(new ItemStack(netherBrick), new Object[] { new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone) });
 		GameRegistry.addShapelessRecipe(new ItemStack(NetherBlocks.netherOre, 1, NetherOre.netherStone), new Object[] { netherBrick });
-
 		GameRegistry.addShapelessRecipe(new ItemStack(Item.stick), new Object[] { new ItemStack(NetherItems.NetherWoodStick) });
 
 		// Default Wooden Tools
-		GameRegistry.addRecipe(new ItemStack(Item.axeWood, 1), new Object[] { "##.", "#S.", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick) });
-		GameRegistry.addRecipe(new ItemStack(Item.axeWood, 1), new Object[] { ".##", ".S#", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick) });
-		GameRegistry
-				.addRecipe(new ItemStack(Item.pickaxeWood, 1), new Object[] { "###", ".S.", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick) });
-		GameRegistry.addRecipe(new ItemStack(Item.shovelWood, 1), new Object[] { ".#.", ".S.", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick) });
-
+		/*
+		 * GameRegistry.addRecipe(new ItemStack(Item.axeWood, 1), new Object[] { "##.", "#S.", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick) });
+		 * GameRegistry.addRecipe(new ItemStack(Item.axeWood, 1), new Object[] { ".##", ".S#", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new ItemStack(Item.stick) });
+		 * GameRegistry .addRecipe(new ItemStack(Item.pickaxeWood, 1), new Object[] { "###", ".S.", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S', new
+		 * ItemStack(Item.stick) }); GameRegistry.addRecipe(new ItemStack(Item.shovelWood, 1), new Object[] { ".#.", ".S.", ".S.", '#', new ItemStack(NetherBlocks.netherPlank), 'S',
+		 * new ItemStack(Item.stick) });
+		 */
 	}
 
 	private void initLanguageRegistry() {
@@ -941,6 +1099,6 @@ public class NetherStuffs extends DummyModContainer {
 
 	@PostInit
 	public static void postInit(FMLPostInitializationEvent event) {
-		//FMLLog.info("[NetherStuffs] postInit");
+		// FMLLog.info("[NetherStuffs] postInit");
 	}
 }

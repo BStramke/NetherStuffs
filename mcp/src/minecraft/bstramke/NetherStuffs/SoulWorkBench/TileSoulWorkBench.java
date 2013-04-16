@@ -15,13 +15,14 @@ import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
+import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory  {
+public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory, ISoulEnergyTank  {
 	private LiquidTank tank;
 	public static final int nTankFillSlot = 9;
 	public static final int nOutputSlot = 10;
@@ -458,5 +459,10 @@ public class TileSoulWorkBench extends TileEntity implements ISpecialInventory, 
 			return true;
 		
 		return false;
+	}
+
+	@Override
+	public int getMaxTankLevel() {
+		return maxTankLevel;
 	}
 }

@@ -12,12 +12,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
+import bstramke.NetherStuffs.Blocks.NetherPlank;
 import bstramke.NetherStuffs.Blocks.NetherWood;
 import bstramke.NetherStuffs.Blocks.SoulDetector;
 import bstramke.NetherStuffs.Blocks.SoulDetectorItemBlock;
 import bstramke.NetherStuffs.Blocks.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Items.NetherItems;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class SoulWorkBenchRecipes {
 	public static final SoulWorkBenchRecipes instance = new SoulWorkBenchRecipes();
@@ -47,8 +49,17 @@ public class SoulWorkBenchRecipes {
 
 		this.addRecipe(new ItemStack(NetherBlocks.NetherSoulFurnace, 1), 300, new Object[] { "IBI", "IFI", "IBI", 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0), 'F',
 				new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), 'B', new ItemStack(NetherItems.SoulEnergyBottle, 1) });
-		
-		//field_94583_ca = netherquartz item
+
+		for (int i = 0; i < 3; i++) {
+			this.addRecipe(new ItemStack(NetherItems.NetherWoodStick, 4), 0, new Object[] { "#..", "#..", "...", '#', new ItemStack(NetherBlocks.netherPlank, 1, i) });
+			this.addRecipe(new ItemStack(NetherItems.NetherWoodStick, 4), 0, new Object[] { ".#.", ".#.", "...", '#', new ItemStack(NetherBlocks.netherPlank, 1, i) });
+			this.addRecipe(new ItemStack(NetherItems.NetherWoodStick, 4), 0, new Object[] { "..#", "..#", "...", '#', new ItemStack(NetherBlocks.netherPlank, 1, i) });
+			this.addRecipe(new ItemStack(NetherItems.NetherWoodStick, 4), 0, new Object[] { "...", "#..", "#..", '#', new ItemStack(NetherBlocks.netherPlank, 1, i) });
+			this.addRecipe(new ItemStack(NetherItems.NetherWoodStick, 4), 0, new Object[] { "...", ".#.", ".#.", '#', new ItemStack(NetherBlocks.netherPlank, 1, i) });
+			this.addRecipe(new ItemStack(NetherItems.NetherWoodStick, 4), 0, new Object[] { "...", "..#", "..#", '#', new ItemStack(NetherBlocks.netherPlank, 1, i) });			
+		}
+
+		// field_94583_ca = netherquartz item
 		this.addRecipe(new ItemStack(Item.field_94583_ca), 100, new Object[] { "BB", "BB", 'B', new ItemStack(Block.sandStone) });
 
 		// Add 4 Soul Siphons with the same Metadatas as Soul Detectors

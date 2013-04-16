@@ -1,9 +1,7 @@
 package bstramke.NetherStuffs.SoulFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,6 +16,7 @@ import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.NetherSoulFurnace;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
+import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
 import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
@@ -25,7 +24,7 @@ import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileSoulFurnace extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory {
+public class TileSoulFurnace extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory, ISoulEnergyTank {
 	private LiquidTank tank;
 	public static final int nSmeltedSlot = 0;
 	public static final int nTankFillSlot = 1;
@@ -475,5 +474,10 @@ public class TileSoulFurnace extends TileEntity implements ISpecialInventory, IT
 			return true;
 		
 		return false;
+	}
+
+	@Override
+	public int getMaxTankLevel() {
+		return maxTankLevel;
 	}
 }

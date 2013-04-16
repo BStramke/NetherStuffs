@@ -13,6 +13,12 @@ public class NetherBlocks {
 	public static final int sideWest = 4;
 	public static final int sideEast = 5;
 
+	public static Block StairAcid;
+	public static Block StairHellfire;
+	public static Block StairDeath;
+	public static NetherSlab HalfSlab;
+	public static NetherSlab DoubleSlab;
+	
 	public static final Block netherOre = new NetherOre(NetherStuffs.NetherOreBlockId).setUnlocalizedName("NetherOre").setHardness(10.0F).setResistance(5.0F);
 	public static final Block netherWood = new NetherWood(NetherStuffs.NetherWoodBlockId).setUnlocalizedName("NetherWood").setHardness(4.0F).setResistance(5.0F);
 	public static final Block netherLeaves = new NetherLeaves(NetherStuffs.NetherLeavesBlockId).setUnlocalizedName("NetherLeaves").setHardness(0.2F).setLightOpacity(1);

@@ -28,11 +28,12 @@ import bstramke.NetherStuffs.NetherStuffsEventHook;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.SoulSiphon;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
+import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory  {
+public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory, ISoulEnergyTank  {
 	private static int nTickCounter = 0;
 	private LiquidTank tank;
 	public int nTankFillSlot = 1;
@@ -428,5 +429,10 @@ public class TileSoulSiphon extends TileEntity implements ISpecialInventory, ITa
 			return true;
 		
 		return false;
+	}
+
+	@Override
+	public int getMaxTankLevel() {
+		return maxTankLevel;
 	}
 }

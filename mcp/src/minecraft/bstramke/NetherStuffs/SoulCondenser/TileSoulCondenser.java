@@ -14,11 +14,12 @@ import net.minecraftforge.liquids.LiquidTank;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.SoulCondenser;
+import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
 import bstramke.NetherStuffs.Items.NetherItems;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulCondenser extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory {
+public class TileSoulCondenser extends TileEntity implements ISpecialInventory, ITankContainer, ISidedInventory, ISoulEnergyTank {
 	private static int nTickCounter = 0;
 	private LiquidTank tank;
 	// public int currentTankLevel = 0;
@@ -463,5 +464,10 @@ public class TileSoulCondenser extends TileEntity implements ISpecialInventory, 
 			return true;
 
 		return false;
+	}
+
+	@Override
+	public int getMaxTankLevel() {
+		return maxTankLevel;
 	}
 }
