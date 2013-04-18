@@ -1,12 +1,13 @@
 package bstramke.NetherStuffs;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import mods.tinker.tconstruct.crafting.LiquidCasting;
 import mods.tinker.tconstruct.crafting.Smeltery;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFence;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -15,9 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,6 +31,8 @@ import thaumcraft.api.ObjectTags;
 import thaumcraft.api.ThaumcraftApi;
 import bstramke.NetherStuffs.Blocks.NetherBlocks;
 import bstramke.NetherStuffs.Blocks.NetherDoubleSlabItemBlock;
+import bstramke.NetherStuffs.Blocks.NetherFence;
+import bstramke.NetherStuffs.Blocks.NetherFenceGate;
 import bstramke.NetherStuffs.Blocks.NetherHalfSlabItemBlock;
 import bstramke.NetherStuffs.Blocks.NetherLeavesItemBlock;
 import bstramke.NetherStuffs.Blocks.NetherOre;
@@ -59,6 +60,7 @@ import bstramke.NetherStuffs.Client.ClientPacketHandler;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.GuiHandler;
 import bstramke.NetherStuffs.Common.NetherStuffsFuel;
+import bstramke.NetherStuffs.Common.NetherWoodMaterial;
 import bstramke.NetherStuffs.Common.ServerPacketHandler;
 import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
 import bstramke.NetherStuffs.DemonicFurnace.TileDemonicFurnace;
@@ -173,6 +175,13 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherHalfSlabBlockId;
 	public static int NetherDoubleSlabBlockId;
 	public static int SoulCondenserBlockId = 0;
+	public static int NetherFenceGateNetherBricksBlockId;
+	public static int NetherFenceGateHellfireBlockId;
+	public static int NetherFenceGateAcidBlockId;
+	public static int NetherFenceGateDeathBlockId;
+	public static int NetherFenceHellfireBlockId;
+	public static int NetherFenceAcidBlockId;
+	public static int NetherFenceDeathBlockId;
 
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 	private static boolean IncreaseNetherrackHardness;
@@ -185,6 +194,8 @@ public class NetherStuffs extends DummyModContainer {
 	public static boolean bUseTConstruct;
 	public static boolean bUseStairBlocks;
 	public static boolean bUseSlabBlocks;
+	public static boolean bUseFenceGates;
+	public static boolean bUseFences;
 
 	public static boolean bUseNetherOreDemonic;
 	public static boolean bUseNetherOreCoal;
@@ -249,6 +260,8 @@ public class NetherStuffs extends DummyModContainer {
 
 		bUseStairBlocks = config.get(Configuration.CATEGORY_GENERAL, "Use Stair Blocks", true).getBoolean(true);
 		bUseSlabBlocks = config.get(Configuration.CATEGORY_GENERAL, "Use Slab Blocks", true).getBoolean(true);
+		bUseFenceGates = config.get(Configuration.CATEGORY_GENERAL, "Use new Fence Gate Blocks", true).getBoolean(true);
+		bUseFences = config.get(Configuration.CATEGORY_GENERAL, "Use new Fence Blocks", true).getBoolean(true);
 
 		if (bUseStairBlocks) {
 			NetherStairHellfireBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "HellfireStair", 1249).getInt(1249);
@@ -259,6 +272,19 @@ public class NetherStuffs extends DummyModContainer {
 		if (bUseSlabBlocks) {
 			NetherHalfSlabBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "HalfSlab BlockId", 1252).getInt(1252);
 			NetherDoubleSlabBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "DoubleSlab BlockId", 1253).getInt(1253);
+		}
+		
+		if (bUseFenceGates) {
+			NetherFenceGateNetherBricksBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "NetherBrick Fence Gate", 1254).getInt(1254);
+			NetherFenceGateHellfireBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Hellfire Fence Gate", 1255).getInt(1255);
+			NetherFenceGateAcidBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Acid Fence Gate", 1256).getInt(1256);
+			NetherFenceGateDeathBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Death Fence Gate", 1257).getInt(1257);
+		}
+		
+		if(bUseFences) {
+			NetherFenceHellfireBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Hellfire Fence", 1258).getInt(1258);
+			NetherFenceAcidBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Acid Fence", 1259).getInt(1259);
+			NetherFenceDeathBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Death Fence", 1260).getInt(1260);
 		}
 
 		NetherOreIngotItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherIngots", 5200).getInt(5200);
@@ -430,11 +456,43 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	private void initDecorativeBlocks() {
+		
+		if(bUseFences) {
+			int nNetherFenceId = Block.netherFence.blockID;
+			Block.blocksList[nNetherFenceId] = null;
+			(new NetherFence(nNetherFenceId, "netherBrick", Material.rock)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("netherFence");
+			NetherBlocks.FenceHellfire =  (new NetherFence(NetherFenceHellfireBlockId, "netherBrick", NetherWoodMaterial.netherWood)).setUnlocalizedName("NetherFenceHellfire");
+			NetherBlocks.FenceAcid =  (new NetherFence(NetherFenceAcidBlockId, "netherBrick", NetherWoodMaterial.netherWood)).setUnlocalizedName("NetherFenceAcid");
+			NetherBlocks.FenceDeath =  (new NetherFence(NetherFenceDeathBlockId, "netherBrick", NetherWoodMaterial.netherWood)).setUnlocalizedName("NetherFenceDeath");
+			GameRegistry.registerBlock(NetherBlocks.FenceHellfire, "NetherFenceHellfireItemBlock");
+			GameRegistry.registerBlock(NetherBlocks.FenceAcid, "NetherFenceAcidItemBlock");
+			GameRegistry.registerBlock(NetherBlocks.FenceDeath, "NetherFenceDeathItemBlock");
+			
+			LanguageRegistry.instance().addStringLocalization("tile.NetherFenceHellfire.name", "Hellfirewood Fence");
+			LanguageRegistry.instance().addStringLocalization("tile.NetherFenceAcid.name", "Acidwood Fence");
+			LanguageRegistry.instance().addStringLocalization("tile.NetherFenceDeath.name", "Deathwood Fence");
+		}
+		
+		if(bUseFenceGates) {		
+			NetherBlocks.FenceGateNetherBricks = new NetherFenceGate(NetherFenceGateNetherBricksBlockId).setUnlocalizedName("NetherBrickFenceGate");
+			NetherBlocks.FenceGateHellfire = new NetherFenceGate(NetherFenceGateHellfireBlockId).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("HellfireFenceGate");
+			NetherBlocks.FenceGateAcid = new NetherFenceGate(NetherFenceGateAcidBlockId).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("AcidFenceGate");
+			NetherBlocks.FenceGateDeath = new NetherFenceGate(NetherFenceGateDeathBlockId).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("DeathFenceGate");
+			
+			GameRegistry.registerBlock(NetherBlocks.FenceGateNetherBricks, "NetherFenceGateBrickItemBlock");
+			GameRegistry.registerBlock(NetherBlocks.FenceGateHellfire, "NetherFenceGateHellfireItemBlock");
+			GameRegistry.registerBlock(NetherBlocks.FenceGateAcid, "NetherFenceGateAcidItemBlock");
+			GameRegistry.registerBlock(NetherBlocks.FenceGateDeath, "NetherFenceGateDeathItemBlock");
+			LanguageRegistry.instance().addStringLocalization("tile.NetherBrickFenceGate.name", "Netherbrick Fence Gate");
+			LanguageRegistry.instance().addStringLocalization("tile.HellfireFenceGate.name", "Hellfirewood Fence Gate");
+			LanguageRegistry.instance().addStringLocalization("tile.AcidFenceGate.name", "Acidwood Fence Gate");
+			LanguageRegistry.instance().addStringLocalization("tile.DeathFenceGate.name", "Deathwood Fence Gate");
+		}
+		
 		if (bUseStairBlocks) {
 			NetherBlocks.StairAcid = new NetherStairs(NetherStairAcidBlockId, NetherBlocks.netherPlank, NetherPlank.acid).setUnlocalizedName("StairAcid");
 			NetherBlocks.StairHellfire = new NetherStairs(NetherStairHellfireBlockId, NetherBlocks.netherPlank, NetherPlank.hellfire).setUnlocalizedName("StairHellfire");
 			NetherBlocks.StairDeath = new NetherStairs(NetherStairDeathBlockId, NetherBlocks.netherPlank, NetherPlank.death).setUnlocalizedName("StairDeath");
-
 			GameRegistry.registerBlock(NetherBlocks.StairAcid, "NetherStairAcidItemBlock");
 			GameRegistry.registerBlock(NetherBlocks.StairHellfire, "NetherStairHellfireItemBlock");
 			GameRegistry.registerBlock(NetherBlocks.StairDeath, "NetherStairDeathItemBlock");
@@ -753,8 +811,8 @@ public class NetherStuffs extends DummyModContainer {
 		CraftingManager
 				.getInstance()
 				.getRecipeList()
-				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), true, new Object[] { "I#I", "#W#", "I#I", '#', new ItemStack(Item.netherrackBrick, 1), 'W',
-						new ItemStack(Block.workbench), 'I', "ingotDemonic" }));
+				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), true, new Object[] { "I#I", "#W#", "I#I", '#', new ItemStack(Item.netherrackBrick, 1),
+						'W', new ItemStack(Block.workbench), 'I', "ingotDemonic" }));
 
 		GameRegistry.addRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[] { "I#I", "#W#", "I#I", '#', new ItemStack(Item.netherrackBrick, 1), 'W',
 				new ItemStack(Block.workbench), 'I', new ItemStack(NetherItems.NetherOreIngot, 1, 0) });
@@ -768,8 +826,8 @@ public class NetherStuffs extends DummyModContainer {
 		CraftingManager
 				.getInstance()
 				.getRecipeList()
-				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[] { "#I#", "IWI", "#I#", '#', Item.netherrackBrick, 'W', new ItemStack(Block.workbench),
-						'I', "ingotDemonic" }));
+				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.netherSoulWorkBench, 1), new Object[] { "#I#", "IWI", "#I#", '#', Item.netherrackBrick, 'W',
+						new ItemStack(Block.workbench), 'I', "ingotDemonic" }));
 
 		CraftingManager.getInstance().getRecipeList()
 				.add(new ShapedOreRecipe(new ItemStack(NetherBlocks.NetherDemonicFurnace, 1), new Object[] { "NNN", "N N", "NNN", 'N', Item.netherrackBrick }));
@@ -842,7 +900,8 @@ public class NetherStuffs extends DummyModContainer {
 				.getRecipeList()
 				.add(new ShapedOreRecipe(new ItemStack(NetherItems.NetherDemonicBarHandle, 1), new Object[] { "NIN", " S ", 'N', Item.netherrackBrick, 'I', "ingotDemonic", 'S',
 						NetherItems.NetherWoodStick }));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3), new Object[] { "N N", " N ", 'N', Item.netherrackBrick }));
+		CraftingManager.getInstance().getRecipeList()
+				.add(new ShapedOreRecipe(new ItemStack(NetherItems.NetherStoneBowl, 3), new Object[] { "N N", " N ", 'N', Item.netherrackBrick }));
 
 		GameRegistry.addRecipe(new ItemStack(NetherBlocks.NetherSoulGlassPane, 16), new Object[] { "###", "###", '#', NetherBlocks.NetherSoulGlass });
 		GameRegistry.addRecipe(new ItemStack(NetherItems.NetherSoulGlassBottleItem, 3), new Object[] { "# #", " # ", '#', NetherBlocks.NetherSoulGlass });
@@ -850,8 +909,7 @@ public class NetherStuffs extends DummyModContainer {
 
 		List recipes = CraftingManager.getInstance().getRecipeList();
 		addShapedRecipeFirst(recipes, new ItemStack(NetherItems.NetherWoodStick, 4), new Object[] { "#", "#", '#', NetherBlocks.netherPlank });
-		
-		
+
 		FurnaceRecipes.smelting().addSmelting(NetherBlocks.netherOre.blockID, NetherOre.netherOreCoal, new ItemStack(Item.coal, 1), 0.2F);
 
 		/**
@@ -864,79 +922,63 @@ public class NetherStuffs extends DummyModContainer {
 	/**
 	 * @author mDiyo
 	 */
-	public void addShapedRecipeFirst (List recipeList, ItemStack itemstack, Object... objArray)
-   {
-       String var3 = "";
-       int var4 = 0;
-       int var5 = 0;
-       int var6 = 0;
+	public void addShapedRecipeFirst(List recipeList, ItemStack itemstack, Object... objArray) {
+		String var3 = "";
+		int var4 = 0;
+		int var5 = 0;
+		int var6 = 0;
 
-       if (objArray[var4] instanceof String[])
-       {
-           String[] var7 = (String[]) ((String[]) objArray[var4++]);
+		if (objArray[var4] instanceof String[]) {
+			String[] var7 = (String[]) ((String[]) objArray[var4++]);
 
-           for (int var8 = 0; var8 < var7.length; ++var8)
-           {
-               String var9 = var7[var8];
-               ++var6;
-               var5 = var9.length();
-               var3 = var3 + var9;
-           }
-       }
-       else
-       {
-           while (objArray[var4] instanceof String)
-           {
-               String var11 = (String) objArray[var4++];
-               ++var6;
-               var5 = var11.length();
-               var3 = var3 + var11;
-           }
-       }
+			for (int var8 = 0; var8 < var7.length; ++var8) {
+				String var9 = var7[var8];
+				++var6;
+				var5 = var9.length();
+				var3 = var3 + var9;
+			}
+		} else {
+			while (objArray[var4] instanceof String) {
+				String var11 = (String) objArray[var4++];
+				++var6;
+				var5 = var11.length();
+				var3 = var3 + var11;
+			}
+		}
 
-       HashMap var12;
+		HashMap var12;
 
-       for (var12 = new HashMap(); var4 < objArray.length; var4 += 2)
-       {
-           Character var13 = (Character) objArray[var4];
-           ItemStack var14 = null;
+		for (var12 = new HashMap(); var4 < objArray.length; var4 += 2) {
+			Character var13 = (Character) objArray[var4];
+			ItemStack var14 = null;
 
-           if (objArray[var4 + 1] instanceof Item)
-           {
-               var14 = new ItemStack((Item) objArray[var4 + 1]);
-           }
-           else if (objArray[var4 + 1] instanceof Block)
-           {
-               var14 = new ItemStack((Block) objArray[var4 + 1], 1, -1);
-           }
-           else if (objArray[var4 + 1] instanceof ItemStack)
-           {
-               var14 = (ItemStack) objArray[var4 + 1];
-           }
+			if (objArray[var4 + 1] instanceof Item) {
+				var14 = new ItemStack((Item) objArray[var4 + 1]);
+			} else if (objArray[var4 + 1] instanceof Block) {
+				var14 = new ItemStack((Block) objArray[var4 + 1], 1, -1);
+			} else if (objArray[var4 + 1] instanceof ItemStack) {
+				var14 = (ItemStack) objArray[var4 + 1];
+			}
 
-           var12.put(var13, var14);
-       }
+			var12.put(var13, var14);
+		}
 
-       ItemStack[] var15 = new ItemStack[var5 * var6];
+		ItemStack[] var15 = new ItemStack[var5 * var6];
 
-       for (int var16 = 0; var16 < var5 * var6; ++var16)
-       {
-           char var10 = var3.charAt(var16);
+		for (int var16 = 0; var16 < var5 * var6; ++var16) {
+			char var10 = var3.charAt(var16);
 
-           if (var12.containsKey(Character.valueOf(var10)))
-           {
-               var15[var16] = ((ItemStack) var12.get(Character.valueOf(var10))).copy();
-           }
-           else
-           {
-               var15[var16] = null;
-           }
-       }
+			if (var12.containsKey(Character.valueOf(var10))) {
+				var15[var16] = ((ItemStack) var12.get(Character.valueOf(var10))).copy();
+			} else {
+				var15[var16] = null;
+			}
+		}
 
-       ShapedRecipes var17 = new ShapedRecipes(var5, var6, var15, itemstack);
-       recipeList.add(0, var17);
-   }
-	
+		ShapedRecipes var17 = new ShapedRecipes(var5, var6, var15, itemstack);
+		recipeList.add(0, var17);
+	}
+
 	private void initSwordRecipes() {
 		/**
 		 * Obsidian Sword & Obsidian Acid/Death Sword

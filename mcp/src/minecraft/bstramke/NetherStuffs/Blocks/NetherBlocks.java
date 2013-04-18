@@ -18,6 +18,14 @@ public class NetherBlocks {
 	public static Block StairDeath;
 	public static NetherSlab HalfSlab;
 	public static NetherSlab DoubleSlab;
+	public static Block FenceGateNetherBricks;
+	public static Block FenceGateHellfire;
+	public static Block FenceGateAcid;
+	public static Block FenceGateDeath;
+	
+	public static Block FenceHellfire;
+	public static Block FenceAcid;
+	public static Block FenceDeath;
 	
 	public static final Block netherOre = new NetherOre(NetherStuffs.NetherOreBlockId).setUnlocalizedName("NetherOre").setHardness(10.0F).setResistance(5.0F);
 	public static final Block netherWood = new NetherWood(NetherStuffs.NetherWoodBlockId).setUnlocalizedName("NetherWood").setHardness(4.0F).setResistance(5.0F);
@@ -38,4 +46,6 @@ public class NetherBlocks {
 	
 	public static final Block NetherSoulBlocker = new SoulBlocker(NetherStuffs.NetherSoulBlockerBlockId).setUnlocalizedName("NetherSoulBlocker").setHardness(3.5F).setResistance(10.0F);
 	public static final Block NetherSoulSiphon = new SoulSiphon(NetherStuffs.NetherSoulSiphonBlockId).setUnlocalizedName("NetherSoulSiphon").setHardness(3.5F).setResistance(10.0F);
+	
+	
 }
