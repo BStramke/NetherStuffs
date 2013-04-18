@@ -128,7 +128,7 @@ public class SoulDetector extends BlockContainer {
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getIcon(int side, int meta) {
 		if ((meta & 8) > 0)
 			return icoActive[side];
 		else

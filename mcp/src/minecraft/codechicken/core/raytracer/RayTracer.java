@@ -19,7 +19,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class RayTracer
-{    
+{
     public static class IndexedCuboid6 extends Cuboid6
     {
         public int index;
@@ -38,6 +38,8 @@ public class RayTracer
     private double s_dist;
     private int s_side;
     private IndexedCuboid6 c_cuboid;
+    
+    public static RayTracer instance = new RayTracer();
     
     private void traceSide(int side, Vector3 start, Vector3 end, Cuboid6 cuboid)
     {

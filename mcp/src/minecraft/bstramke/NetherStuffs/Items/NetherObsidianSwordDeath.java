@@ -12,8 +12,8 @@ public class NetherObsidianSwordDeath extends NetherSword {
 	}
 	
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("SwordObsidianDeath"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("SwordObsidianDeath"));
 	}
 }

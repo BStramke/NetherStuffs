@@ -1,5 +1,7 @@
 package bstramke.NetherStuffs.Items;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.EnumToolMaterial;
@@ -11,8 +13,8 @@ public class NetherSoulglassSwordHellfire extends NetherSword {
 	}
 	
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("SwordSoulglassHellfire"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("SwordSoulglassHellfire"));
 	}
 }

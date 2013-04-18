@@ -155,7 +155,7 @@ public class FancyItemRender extends Render {
 						GL11.glScalef(0.5F, 0.5F, 0.5F);
 					}
 
-					Icon icon1 = itemstack.getIconIndex();
+					Icon icon1 = itemstack.getitemIcon();
 
 					if (itemstack.getItemSpriteNumber() == 0) {
 						this.loadTexture("/terrain.png");
@@ -293,7 +293,7 @@ public class FancyItemRender extends Render {
 			int par5) {
 		int k = par3ItemStack.itemID;
 		int l = par3ItemStack.getItemDamage();
-		Icon icon = par3ItemStack.getIconIndex();
+		Icon icon = par3ItemStack.getitemIcon();
 		float f;
 		float f1;
 		float f2;

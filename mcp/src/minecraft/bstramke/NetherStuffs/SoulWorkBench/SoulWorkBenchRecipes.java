@@ -60,7 +60,7 @@ public class SoulWorkBenchRecipes {
 		}
 
 		// field_94583_ca = netherquartz item
-		this.addRecipe(new ItemStack(Item.field_94583_ca), 100, new Object[] { "BB", "BB", 'B', new ItemStack(Block.sandStone) });
+		this.addRecipe(new ItemStack(Item.netherQuartz), 100, new Object[] { "BB", "BB", 'B', new ItemStack(Block.sandStone) });
 
 		// Add 4 Soul Siphons with the same Metadatas as Soul Detectors
 		for (int i = 0; i < SoulSiphonItemBlock.getMetadataSize() && i < SoulDetectorItemBlock.getMetadataSize(); i++) {

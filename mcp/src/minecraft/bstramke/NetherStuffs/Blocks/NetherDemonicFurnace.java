@@ -162,7 +162,7 @@ public class NetherDemonicFurnace extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getIcon(int side, int meta) {
 		switch (side) {
 		case NetherBlocks.sideBottom:
 			return icoFurnaceBottom; // bottom

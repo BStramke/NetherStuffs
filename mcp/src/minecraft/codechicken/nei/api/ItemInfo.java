@@ -168,7 +168,7 @@ public class ItemInfo
         API.hideItem(Block.signPost.blockID);
         API.hideItem(Block.doorWood.blockID);
         API.hideItem(Block.signWall.blockID);
-        API.hideItem(Block.doorSteel.blockID);
+        API.hideItem(Block.doorIron.blockID);
         API.hideItem(Block.oreRedstoneGlowing.blockID);
         API.hideItem(Block.torchRedstoneIdle.blockID);
         API.hideItem(Block.reed.blockID);

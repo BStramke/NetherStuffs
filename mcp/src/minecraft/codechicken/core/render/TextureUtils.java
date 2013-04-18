@@ -36,7 +36,7 @@ public class TextureUtils
         }
         
         @Override
-        public void updateIcons(IconRegister par1IconRegister)
+        public void registerIcons(IconRegister par1IconRegister)
         {
             for(IIconRegister r : iconRegistrars)
                 r.registerIcons(par1IconRegister);
@@ -125,10 +125,10 @@ public class TextureUtils
     public static void copySubImg(Texture fromTex, int fromX, int fromY, int width, int height, Texture toTex, int toX, int toY)
     {        
         int fromWidth = fromTex.getWidth();        
-        int toWidth = toTex.getWidth();
         
         ByteBuffer from = fromTex.getTextureData();
-        ByteBuffer to = toTex.getTextureData();
+        Texture tmp = createTextureObject("tmp", width, height);
+        ByteBuffer to = tmp.getTextureData();
         from.position(0);
         to.position(0);
         
@@ -136,36 +136,33 @@ public class TextureUtils
             for(int x = 0; x < width; x++)
             {
                 int fp = ((y+fromY)*fromWidth+x+fromX)*4;
-                int tp = ((y+toY)*toWidth+x+toX)*4;
+                int tp = (y*width+x)*4;
 
                 to.put(tp, from.get(fp));
                 to.put(tp+1, from.get(fp+1));
                 to.put(tp+2, from.get(fp+2));
                 to.put(tp+3, from.get(fp+3));
             }
-        toTex.fillRect(new Rect2i(0, 0, 0, 0), 0);//set not generated
+        toTex.copyFrom(toX, toY, tmp, false);
     }
 
     public static void write(byte[] data, int width, int height, Texture toTex, int toX, int toY)
-    {    
-        int toWidth = toTex.getWidth();
-        
-        ByteBuffer to = toTex.getTextureData();
+    {
+        Texture tmp = createTextureObject("tmp", width, height);
+        ByteBuffer to = tmp.getTextureData();
         to.position(0);
         
         for(int y = 0; y < height; y++)
             for(int x = 0; x < width; x++)
             {
-                int fp = (y*width+x)*4;
-                int tp = ((y+toY)*toWidth+x+toX)*4;
+                int p = (y*width+x)*4;
 
-                to.put(tp, data[fp]);
-                to.put(tp+1, data[fp+1]);
-                to.put(tp+2, data[fp+2]);
-                to.put(tp+3, data[fp+3]);
+                to.put(p, data[p]);
+                to.put(p+1, data[p+1]);
+                to.put(p+2, data[p+2]);
+                to.put(p+3, data[p+3]);
             }
-        toTex.fillRect(new Rect2i(0, 0, 0, 0), 0);//set not generated
-        to.position(toWidth * toTex.getHeight() * 4);
+        toTex.copyFrom(toX, toY, tmp, false);
     }
     
     public static boolean refreshTexture(TextureMap map, String name)

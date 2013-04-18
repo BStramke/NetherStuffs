@@ -73,7 +73,7 @@ public class SoulBomb extends BlockTNT {
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getIcon(int side, int meta) {
 		switch (side) {
 		case NetherBlocks.sideTop:
 			return icoSoulBombTop;

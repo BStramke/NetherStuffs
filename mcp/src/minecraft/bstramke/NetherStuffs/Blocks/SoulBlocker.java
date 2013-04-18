@@ -52,13 +52,13 @@ public class SoulBlocker extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getIcon(int side, int meta) {
 		if(side == NetherBlocks.sideBottom)
 			return icoSoulBlockerBottom;
 		else if(side == NetherBlocks.sideTop)
 			return icoSoulBlockerTop;
 		else
-			return super.getBlockTextureFromSideAndMetadata(side, meta);
+			return super.getIcon(side, meta);
 	}
 	
 	@SideOnly(Side.CLIENT)

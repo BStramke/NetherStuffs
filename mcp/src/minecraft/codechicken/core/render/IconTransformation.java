@@ -14,7 +14,7 @@ public class IconTransformation implements IUVTransformation
     @Override
     public void transform(UV texcoord)
     {
-        texcoord.u = icon.getInterpolatedU(texcoord.u*16);
-        texcoord.v = icon.getInterpolatedV(texcoord.v*16);
+        texcoord.u = icon.getInterpolatedU(texcoord.u%1*16);
+        texcoord.v = icon.getInterpolatedV(texcoord.v%1*16);
     }
 }

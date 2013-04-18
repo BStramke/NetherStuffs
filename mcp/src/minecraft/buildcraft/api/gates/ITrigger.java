@@ -10,7 +10,7 @@ public interface ITrigger {
 
 	public abstract int getId();
 
-	public int getIconIndex();
+	public int getitemIcon();
     
     @SideOnly(Side.CLIENT)
     public IIconProvider getIconProvider();

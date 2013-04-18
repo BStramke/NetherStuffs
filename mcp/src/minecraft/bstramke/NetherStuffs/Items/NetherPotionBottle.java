@@ -32,9 +32,9 @@ public class NetherPotionBottle extends Item {
 	}
 
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherSoulglassBottle"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherSoulglassBottle"));
 		icoBottleHellfire = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherSoulglassPotionBottleHellfire"));
 		icoBottleAcid = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherSoulglassPotionBottleAcid"));
 		icoBottleDeath = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherSoulglassPotionBottleDeath"));
@@ -50,7 +50,7 @@ public class NetherPotionBottle extends Item {
 		case death:
 			return icoBottleDeath;
 		default:
-			return iconIndex;
+			return itemIcon;
 		}
 	}
 

@@ -53,4 +53,19 @@ public class Cuboid6
     {
         block.setBlockBounds((float)min.x, (float)min.y, (float)min.z, (float)max.x, (float)max.y, (float)max.z);
     }
+
+    private boolean intersects(Cuboid6 b)
+    {
+        return max.x > b.min.x &&
+                b.max.x > min.x &&
+                max.y > b.min.y &&
+                b.max.y > min.y &&
+                max.z > b.max.z &&
+                b.max.z > min.z;
+    }
+    
+    public static boolean intersects(Cuboid6 a, Cuboid6 b)
+    {
+        return a != null && b != null && a.intersects(b);
+    }
 }

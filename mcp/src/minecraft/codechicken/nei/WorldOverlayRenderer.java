@@ -67,8 +67,8 @@ public class WorldOverlayRenderer
                     aabb.maxY = y+1.8;
                     aabb.minZ = z+0.2;
                     aabb.maxZ = z+0.8;
-                    if(!world.checkIfAABBIsClear(aabb) ||
-                            !world.getAllCollidingBoundingBoxes(aabb).isEmpty() ||
+                    if(!world.checkNoEntityCollision(aabb) ||
+                            !world.getCollidingBlockBounds(aabb).isEmpty() ||
                             world.isAnyLiquid(aabb))
                         continue;
 

@@ -20,9 +20,9 @@ public class SoulEnergyLiquidItem extends Item {
 	}
 
 	@Override
-	public void updateIcons(IconRegister iconRegister) {
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("SoulEnergyLiquidItem"));
-		NetherStuffs.SoulEnergyLiquid.setRenderingIcon(iconIndex);
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("SoulEnergyLiquidItem"));
+		NetherStuffs.SoulEnergyLiquid.setRenderingIcon(itemIcon);
 	}
 	
 	@Override

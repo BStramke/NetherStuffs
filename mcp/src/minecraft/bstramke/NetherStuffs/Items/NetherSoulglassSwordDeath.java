@@ -11,8 +11,8 @@ public class NetherSoulglassSwordDeath extends NetherSword {
 	}
 	
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("SwordSoulglassDeath"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("SwordSoulglassDeath"));
 	}
 }

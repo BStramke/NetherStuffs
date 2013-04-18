@@ -12,8 +12,8 @@ public class NetherObsidianSwordAcid extends NetherSword {
 	}
 	
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("SwordObsidianAcid"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("SwordObsidianAcid"));
 	}
 }

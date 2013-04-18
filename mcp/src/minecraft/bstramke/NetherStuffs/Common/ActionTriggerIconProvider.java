@@ -24,8 +24,8 @@ public class ActionTriggerIconProvider implements IIconProvider {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int iconIndex) {
-		return icons[iconIndex];
+	public Icon getIcon(int itemIcon) {
+		return icons[itemIcon];
 	}
 
 	@Override

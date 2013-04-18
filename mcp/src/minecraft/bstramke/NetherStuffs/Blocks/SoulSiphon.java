@@ -76,7 +76,7 @@ public class SoulSiphon extends BlockContainer {
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getIcon(int side, int meta) {
 		if (this.isActiveSet(meta))
 			return icoSoulSiphonActive;
 		else

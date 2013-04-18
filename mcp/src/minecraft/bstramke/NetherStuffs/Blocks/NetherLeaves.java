@@ -256,7 +256,7 @@ public class NetherLeaves extends Block implements IShearable {
 	
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getIcon(int side, int meta) {
 		switch (unmarkedMetadata(meta)) {
 		case hellfire:
 			return icoLeafHellfire;

@@ -71,7 +71,7 @@ public class NetherWoodPuddle extends BlockContainer {
 	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) {
 		int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
 		int type = meta & 3;
-		Icon textureIndex = getBlockTextureFromSideAndMetadata(side, meta);
+		Icon textureIndex = getIcon(side, meta);
 
 		TileEntity tile = par1IBlockAccess.getBlockTileEntity(x, y, z);
 		if (tile instanceof TileNetherWoodPuddle) {
@@ -116,12 +116,12 @@ public class NetherWoodPuddle extends BlockContainer {
 	}
 
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getIcon(int side, int meta) {
 		meta = meta & 3; // remove any puddle orientation info
 		if (side == NetherBlocks.sideBottom || side == NetherBlocks.sideTop)
-			return blocksList[NetherStuffs.NetherWoodBlockId].getBlockTextureFromSideAndMetadata(side, meta);
+			return blocksList[NetherStuffs.NetherWoodBlockId].getIcon(side, meta);
 		else
-			return blocksList[NetherStuffs.NetherWoodBlockId].getBlockTextureFromSideAndMetadata(NetherBlocks.sideEast, meta);
+			return blocksList[NetherStuffs.NetherWoodBlockId].getIcon(NetherBlocks.sideEast, meta);
 	};
 
 	@Override

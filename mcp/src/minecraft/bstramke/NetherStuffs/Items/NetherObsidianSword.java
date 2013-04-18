@@ -13,8 +13,8 @@ public class NetherObsidianSword extends NetherSword {
 	}
 	
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("SwordObsidian"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("SwordObsidian"));
 	}
 }

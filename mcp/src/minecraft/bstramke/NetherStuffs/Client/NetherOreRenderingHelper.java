@@ -32,32 +32,32 @@ public class NetherOreRenderingHelper implements ISimpleBlockRenderingHandler {
 
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, -1.0F, 0.0F);
-		renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(0, metadata));
+		renderer.renderBottomFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(0, metadata));
 		var4.draw();
 
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, 1.0F, 0.0F);
-		renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(1, metadata));
+		renderer.renderTopFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(1, metadata));
 		var4.draw();
 
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, 0.0F, -1.0F);
-		renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(2, metadata));
+		renderer.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(2, metadata));
 		var4.draw();
 
 		var4.startDrawingQuads();
 		var4.setNormal(0.0F, 0.0F, 1.0F);
-		renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(3, metadata));
+		renderer.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(3, metadata));
 		var4.draw();
 
 		var4.startDrawingQuads();
 		var4.setNormal(-1.0F, 0.0F, 0.0F);
-		renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(4, metadata));
+		renderer.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(4, metadata));
 		var4.draw();
 
 		var4.startDrawingQuads();
 		var4.setNormal(1.0F, 0.0F, 0.0F);
-		renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSideAndMetadata(5, metadata));
+		renderer.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(5, metadata));
 		var4.draw();
 		
 		

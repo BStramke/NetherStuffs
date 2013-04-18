@@ -377,4 +377,24 @@ public class Vector3
         set(b).multiply(m);
         return this;
     }
+    
+    @Override
+    public boolean equals(Object o)
+    {
+        if(!(o instanceof Vector3))
+            return false;
+        Vector3 v = (Vector3)o;
+        return x == v.x && y == v.y && z == v.z;
+    }
+    
+    /**
+     * Equals method with tolerance
+     * @return true if this is equal to v within +-1E-5
+     */
+    public boolean equalsT(Vector3 v)
+    {
+        return MathHelper.between(x-1E-5, v.x, x+1E-5) &&
+                MathHelper.between(y-1E-5, v.y, y+1E-5) &&
+                MathHelper.between(z-1E-5, v.z, z+1E-5);
+    }
 }

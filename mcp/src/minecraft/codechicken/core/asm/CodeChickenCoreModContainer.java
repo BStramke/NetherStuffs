@@ -21,7 +21,7 @@ import cpw.mods.fml.common.versioning.VersionRange;
 import cpw.mods.fml.relauncher.Side;
 
 @SrcPackager()
-@Packager(getBaseDirectories = {"CodeChickenCore"}, getName = "CodeChickenCore", getVersion = "0.8.5.6")
+@Packager(getBaseDirectories = {"CodeChickenCore"}, getName = "CodeChickenCore", getVersion = "0.8.6")
 public class CodeChickenCoreModContainer extends DummyModContainer
 {
     public CodeChickenCoreModContainer()

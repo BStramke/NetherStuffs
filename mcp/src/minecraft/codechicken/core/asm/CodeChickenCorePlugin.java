@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import codechicken.core.config.ConfigFile;
+
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.relauncher.FMLInjectionData;
@@ -31,6 +33,8 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
     
     public static RelaunchClassLoader cl;
     public static File minecraftDir;
+    
+    public static ConfigFile config;
     
     @Override
     public String[] getLibraryRequestClass()
@@ -110,8 +114,14 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
     @Override
     public Void call() throws Exception
     {
+        File cfgDir = new File(CodeChickenCorePlugin.minecraftDir+"/config");
+        if(!cfgDir.exists())
+            cfgDir.mkdirs();
+        config = new ConfigFile(new File(cfgDir, "CodeChickenCore.cfg")).setComment("CodeChickenCore configuration file.");
+        
+        MCPDeobfuscationTransformer.load(minecraftDir, config, cl);
         CodeChickenAccessTransformer.addTransformerMap("codechickencore_at.cfg");
-        TweakTransformer.load();
+        TweakTransformer.load(config);
         scanCodeChickenMods();
         if(!ObfuscationMappings.obfuscated)
             ASMDev.print();

@@ -22,10 +22,10 @@ public class ItemCustomTexture extends Item
     }
 
     @Override
-    public void updateIcons(IconRegister register)
+    public void registerIcons(IconRegister register)
     {
         spriteSheet.requestIndicies(sprite);
         spriteSheet.registerIcons(register);
-        iconIndex = spriteSheet.getSprite(sprite);
+        itemIcon = spriteSheet.getSprite(sprite);
     }
 }

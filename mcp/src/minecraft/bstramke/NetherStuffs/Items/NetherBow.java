@@ -34,8 +34,8 @@ public class NetherBow extends ItemBow {
 	}
 
 	@Override
-	public void updateIcons(IconRegister iconRegister) {
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("TorchBow"));
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("TorchBow"));
 		icoTorchBowStrain1 = iconRegister.registerIcon(CommonProxy.getIconLocation("TorchBowStrain1"));
 		icoTorchBowStrain2 = iconRegister.registerIcon(CommonProxy.getIconLocation("TorchBowStrain2"));
 		icoTorchBowStrain3 = iconRegister.registerIcon(CommonProxy.getIconLocation("TorchBowStrain3"));
@@ -150,7 +150,7 @@ public class NetherBow extends ItemBow {
 	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
 
 		if(usingItem == null)
-			return iconIndex;
+			return itemIcon;
 		
 		int j = usingItem.getMaxItemUseDuration() - useRemaining;
 
@@ -166,7 +166,7 @@ public class NetherBow extends ItemBow {
 			return func_94599_c(0);
 		}
 
-		return iconIndex;
+		return itemIcon;
 	};
 
 	// handles the strength of the pulling
@@ -180,7 +180,7 @@ public class NetherBow extends ItemBow {
 		case 2:
 			return icoTorchBowStrain3;
 		default:
-			return iconIndex;
+			return itemIcon;
 		}
 	};
 }

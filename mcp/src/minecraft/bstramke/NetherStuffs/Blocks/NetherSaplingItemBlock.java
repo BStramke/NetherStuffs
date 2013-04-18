@@ -26,7 +26,7 @@ public class NetherSaplingItemBlock extends ItemBlock {
 	 */
 	@Override
 	public Icon getIconFromDamage(int par1) {
-		return NetherBlocks.netherSapling.getBlockTextureFromSideAndMetadata(2, par1);
+		return NetherBlocks.netherSapling.getIcon(2, par1);
 	}
 
 	@Override

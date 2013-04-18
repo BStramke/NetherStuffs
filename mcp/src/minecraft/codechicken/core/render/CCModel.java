@@ -14,12 +14,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
 import codechicken.core.vec.CoordinateSystem;
 import codechicken.core.vec.ITransformation;
 import codechicken.core.vec.RightHanded;
 import codechicken.core.vec.Quat;
 import codechicken.core.vec.Rotation;
+import codechicken.core.vec.Translation;
 import codechicken.core.vec.Vector3;
 
 public class CCModel
@@ -52,7 +52,7 @@ public class CCModel
     public Vector3[] normals;
     public int[] colours;
     
-    private CCModel(int vertexMode)
+    protected CCModel(int vertexMode)
     {
         if(vertexMode != 7 && vertexMode != 4)
             throw new IllegalArgumentException("Models must be GL_QUADS or GL_TRIANGLES");
@@ -160,44 +160,46 @@ public class CCModel
         verts[i++] = new Vertex5(x2, y1, z2, u2, v2);
     
         //top face
-        u1 = x1; v1 = z1;
-        u2 = x2; v2 = z2;
+        u1 = x1+1; v1 = z1;
+        u2 = x2+1; v2 = z2;
         verts[i++] = new Vertex5(x2, y2, z2, u2, v2);
         verts[i++] = new Vertex5(x2, y2, z1, u2, v1);
         verts[i++] = new Vertex5(x1, y2, z1, u1, v1);
         verts[i++] = new Vertex5(x1, y2, z2, u1, v2);
     
         //east face
-        u1 = x1; v1 = y1;
-        u2 = x2; v2 = y2;
+        u1 = x1+2; v1 = y1;
+        u2 = x2+2; v2 = y2;
         verts[i++] = new Vertex5(x1, y2, z1, u2, v1);
         verts[i++] = new Vertex5(x2, y2, z1, u1, v1);
         verts[i++] = new Vertex5(x2, y1, z1, u1, v2);
         verts[i++] = new Vertex5(x1, y1, z1, u2, v2);
     
         //west face
-        u1 = x1; v1 = y1;
-        u2 = x2; v2 = y2;
+        u1 = x1+3; v1 = y1;
+        u2 = x2+3; v2 = y2;
         verts[i++] = new Vertex5(x1, y2, z2, u1, v1);
         verts[i++] = new Vertex5(x1, y1, z2, u1, v2);
         verts[i++] = new Vertex5(x2, y1, z2, u2, v2);
         verts[i++] = new Vertex5(x2, y2, z2, u2, v1);
     
         //north face
-        u1 = z1; v1 = y1;
-        u2 = z2; v2 = y2;
+        u1 = z1+4; v1 = y1;
+        u2 = z2+4; v2 = y2;
         verts[i++] = new Vertex5(x1, y2, z2, u2, v1);
         verts[i++] = new Vertex5(x1, y2, z1, u1, v1);
         verts[i++] = new Vertex5(x1, y1, z1, u1, v2);
         verts[i++] = new Vertex5(x1, y1, z2, u2, v2);
     
         //south face
-        u1 = z1; v1 = y1;
-        u2 = z2; v2 = y2;
+        u1 = z1+5; v1 = y1;
+        u2 = z2+5; v2 = y2;
         verts[i++] = new Vertex5(x2, y1, z2, u1, v2);
         verts[i++] = new Vertex5(x2, y1, z1, u2, v2);
         verts[i++] = new Vertex5(x2, y2, z1, u2, v1);
         verts[i++] = new Vertex5(x2, y2, z2, u1, v1);
+        
+        shrinkUVs(0.0001);
         
         return this;
     }
@@ -245,10 +247,28 @@ public class CCModel
      */
     public CCModel computeLighting(LightModel light)
     {
-        colours = new int[verts.length];
+        if(colours == null)
+            setColour(-1);
         for(int k = 0; k < verts.length; k++)
-            colours[k] = light.apply(0xFFFFFF, normals[k]);
+            colours[k] = light.apply(colours[k], normals[k]);
         return this;
+    }
+    
+    public CCModel setColour(int c)
+    {
+        if(colours == null)
+            colours = new int[verts.length];
+        for(int k = 0; k < verts.length; k++)
+            colours[k] = c;
+        return this;
+    }
+
+    /**
+     * Warning, only use this if you NEED to be identical to MC's light model, it's hideous.
+     */
+    public CCRBModel withMCLighting()
+    {
+        return new CCRBModel(this);
     }
     
     /**
@@ -387,46 +407,32 @@ public class CCModel
         
         return this;
     }
-
-    /**
-     * Renders the entire model
-     * @param x The x offset to render at
-     * @param y The y offset to render at
-     * @param z The z offset to render at
-     * @param u The u texture offset
-     * @param v The v texture offset
-     */
+    
+    public void render()
+    {
+        render(0, verts.length, null, null);
+    }
+    
     public void render(double x, double y, double z, double u, double v)
     {
-        render(0, verts.length, new Vector3(x, y, z).translation(), u, v);
+        render(new Translation(new Vector3(x, y, z)), new UVTranslation(u, v));
     }
-    
-    public void render(double x, double y, double z, Icon icon)
+
+    public void render(double x, double y, double z, IUVTransformation u)
     {
-        render(0, verts.length, new Vector3(x, y, z).translation(), new IconTransformation(icon));
-    }
-    
-    public void render(ITransformation t, Icon icon)
-    {
-        render(0, verts.length, t, new IconTransformation(icon));
+        render(0, verts.length, new Translation(new Vector3(x, y, z)), u);
     }
 
     public void render(ITransformation t, double u, double v)
     {
-        render(0, verts.length, t, u, v);
-    }
-
-    /**
-     * Legacy helper function
-     */
-    public void render(int start, int length, ITransformation t, double u, double v)
-    {
-        if(u == 0 && v == 0)
-            render(start, length, t, null);
-        else
-            render(start, length, t, new UVTranslation(u, v));
+        render(t, new UVTranslation(u, v));
     }
     
+    public void render(ITransformation t, IUVTransformation u)
+    {
+        render(0, verts.length, t, u);
+    }
+
     /**
      * Renders vertices start through start+length-1 of the model
      * @param start The first vertex to render
@@ -446,14 +452,19 @@ public class CCModel
         Tessellator tess = Tessellator.instance;
         for(int k = 0; k < length; k++)
         {
+            int i = start+k;
             if(useNormal)
             {
-                normal = normals[start+k];
+                normal = normals[i];
                 tess.setNormal((float)normal.x, (float)normal.y, (float)normal.z);
             }
             if(useColour)
-                tess.setColorOpaque_I(colours[start+k]);
-            vert = verts[start+k];
+            {
+                int c = getColour(i);
+                tess.setColorRGBA(c>>>24, c>>16&0xFF, c>>8&0xFF, c&0xFF);
+            }
+            applyVertexModifiers(tess, i);
+            vert = verts[i];
             if(t != null)
                 t.transform(vec.set(vert.vec));
             else
@@ -463,6 +474,24 @@ public class CCModel
                 u.transform(uv);
             tess.addVertexWithUV(vec.x, vec.y, vec.z, uv.u, uv.v);
         }
+    }
+
+    /**
+     * Override to modify vertex colours per frame
+     * @return The colour for vertex i
+     */
+    public int getColour(int i)
+    {
+        return colours[i];
+    }
+
+    /**
+     * Override to apply vertex modifiers, eg brightness
+     * @param tess 
+     * @param i The vertex index
+     */
+    public void applyVertexModifiers(Tessellator tess, int i)
+    {
     }
 
     public static CCModel quadModel(int numVerts)
@@ -519,17 +548,20 @@ public class CCModel
     /**
      * Parses vertices, texture coords, normals and polygons from a WaveFront Obj file
      * @param input An input stream to a obj file
+     * @param vertexMode The vertex mode to create the model for (GL_TRIANGLES or GL_QUADS)
      * @param importSystem The cooridnate system transformation to apply
      * @return A map of group names to models
      * @throws IOException
      */
-    public static Map<String, CCModel> parseObjModels(InputStream input, CoordinateSystem importSystem) throws IOException
-    {        
+    public static Map<String, CCModel> parseObjModels(InputStream input, int vertexMode, CoordinateSystem importSystem) throws IOException
+    {
+        int vp = vertexMode == 7 ? 4 : 3;
+        
         HashMap<String, CCModel> modelMap = new HashMap<String, CCModel>();
         ArrayList<Vector3> verts = new ArrayList<Vector3>();
         ArrayList<Vector3> uvs = new ArrayList<Vector3>();
         ArrayList<Vector3> normals = new ArrayList<Vector3>();
-        ArrayList<int[]> triangles = new ArrayList<int[]>();
+        ArrayList<int[]> polys = new ArrayList<int[]>();
         String modelName = "unnamed";
         
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -582,30 +614,59 @@ public class CCModel
                         if(as[p].length() > 0)
                             polyVerts[i][p] = Integer.parseInt(as[p]);
                 }
-                for(int i = 2; i < av.length; i++)
-                {
-                    triangles.add(polyVerts[0]);
-                    triangles.add(polyVerts[i]);
-                    triangles.add(polyVerts[i-1]);
-                }
+                if(vp == 3)
+                    triangulate(polys, polyVerts);
+                else
+                    quadulate(polys, polyVerts);
             }
             if(line.startsWith("g "))
             {
-                if(!triangles.isEmpty())
+                if(!polys.isEmpty())
                 {
-                    modelMap.put(modelName, createModel(verts, uvs, normals, triangles));
-                    triangles.clear();
+                    modelMap.put(modelName, createModel(verts, uvs, normals, vertexMode, polys));
+                    polys.clear();
                 }
                 modelName = line.substring(2);
             }
         }
         
-        if(!triangles.isEmpty())
-            modelMap.put(modelName, createModel(verts, uvs, normals, triangles));
+        if(!polys.isEmpty())
+            modelMap.put(modelName, createModel(verts, uvs, normals, vertexMode, polys));
         
         return modelMap;
     }
     
+    public static void triangulate(List<int[]> polys, int[][] polyVerts)
+    {
+        for(int i = 2; i < polyVerts.length; i++)
+        {
+            polys.add(polyVerts[0]);
+            polys.add(polyVerts[i]);
+            polys.add(polyVerts[i-1]);
+        }
+    }
+    
+    public static void quadulate(List<int[]> polys, int[][] polyVerts)
+    {
+        if(polyVerts.length == 4)
+        {
+            polys.add(polyVerts[0]);
+            polys.add(polyVerts[3]);
+            polys.add(polyVerts[2]);
+            polys.add(polyVerts[1]);
+        }
+        else
+        {
+            for(int i = 2; i < polyVerts.length; i++)
+            {
+                polys.add(polyVerts[0]);
+                polys.add(polyVerts[i]);
+                polys.add(polyVerts[i-1]);
+                polys.add(polyVerts[i-1]);
+            }
+        }
+    }
+
     /**
      * Parses vertices, texture coords, normals and polygons from a WaveFront Obj file
      * @param s The name of the obj resource
@@ -613,9 +674,8 @@ public class CCModel
      */
     public static Map<String, CCModel> parseObjModels(String s)
     {
-        return parseObjModels(s, new RightHanded());
+        return parseObjModels(s, 4, new RightHanded());
     }
-    
     /**
      * Parses vertices, texture coords, normals and polygons from a WaveFront Obj file
      * @param s The name of the obj resource
@@ -624,9 +684,21 @@ public class CCModel
      */
     public static Map<String, CCModel> parseObjModels(String s, CoordinateSystem importSystem)
     {
+        return parseObjModels(s, 4, importSystem);
+    }
+    
+    /**
+     * Parses vertices, texture coords, normals and polygons from a WaveFront Obj file
+     * @param s The name of the obj resource
+     * @param vertexMode The vertex mode to create the model for (GL_TRIANGLES or GL_QUADS)
+     * @param importSystem The cooridnate system transformation to apply
+     * @return A map of group names to models
+     */
+    public static Map<String, CCModel> parseObjModels(String s, int vertexMode, CoordinateSystem importSystem)
+    {
         try
         {
-            return parseObjModels(CCModel.class.getResourceAsStream(s), importSystem);
+            return parseObjModels(CCModel.class.getResourceAsStream(s), vertexMode, importSystem);
         }
         catch(Exception e)
         {
@@ -634,19 +706,20 @@ public class CCModel
         }
     }
 
-    public static CCModel createModel(List<Vector3> verts, List<Vector3> uvs, List<Vector3> normals, List<int[]> triangles)
-    {        
-        if(triangles.size() < 3 || triangles.size()%3 != 0)
-            throw new IllegalArgumentException("Invalid number of vertices for model: "+triangles.size());
+    public static CCModel createModel(List<Vector3> verts, List<Vector3> uvs, List<Vector3> normals, int vertexMode, List<int[]> polys)
+    {
+        int vp = vertexMode == 7 ? 4 : 3;
+        if(polys.size() < vp || polys.size()%vp != 0)
+            throw new IllegalArgumentException("Invalid number of vertices for model: "+polys.size());
         
-        boolean hasNormals = triangles.get(0)[1] > 0;
-        CCModel model = CCModel.newModel(4, triangles.size());
+        boolean hasNormals = polys.get(0)[1] > 0;
+        CCModel model = CCModel.newModel(vertexMode, polys.size());
         if(hasNormals)
-            model.normals = new Vector3[triangles.size()];
+            model.normals = new Vector3[polys.size()];
         
-        for(int i = 0; i < triangles.size(); i++)
+        for(int i = 0; i < polys.size(); i++)
         {
-            int[] ai = triangles.get(i);
+            int[] ai = polys.get(i);
             Vector3 vert = verts.get(ai[0]-1).copy();
             Vector3 uv = ai[1] <= 0 ? new Vector3() : uvs.get(ai[1]-1).copy();
             if(ai[2] > 0 != hasNormals)

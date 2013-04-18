@@ -71,7 +71,7 @@ public class ResearchItem
     /**
      * the index within the research.png file used for this research if it does not use an item icon 
      */
-    public final int iconIndex;
+    public final int itemIcon;
 
     /**
      * Special research has a spiky border. Used for important research milestones.
@@ -148,7 +148,7 @@ public class ResearchItem
         }
     	
 		this.itemStack = par5ItemStack;
-        this.iconIndex = icon;
+        this.itemIcon = icon;
         this.displayColumn = par3;
         this.displayRow = par4;
         

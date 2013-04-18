@@ -29,15 +29,15 @@ public class NetherSoulGlassBottle extends Item {
 	}
 
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherSoulglassBottle"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherSoulglassBottle"));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1) {
-		return iconIndex;
+		return itemIcon;
 	}
 
 	@Override

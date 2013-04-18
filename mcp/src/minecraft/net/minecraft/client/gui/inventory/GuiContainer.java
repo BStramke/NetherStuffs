@@ -230,7 +230,7 @@ public abstract class GuiContainer extends GuiScreen
         this.zLevel = 500.0F;
         itemRenderer.zLevel = 500.0F;
         itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3);
-        itemRenderer.renderItemStack(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3 - (this.draggedStack == null ? 0 : 8), par4Str);
+        itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3 - (this.draggedStack == null ? 0 : 8), par4Str);
         this.zLevel = 0.0F;
         itemRenderer.zLevel = 0.0F;
     }
@@ -420,7 +420,7 @@ public abstract class GuiContainer extends GuiScreen
 
         if (itemstack == null)
         {
-            Icon icon = par1Slot.getBackgroundIconIndex();
+            Icon icon = par1Slot.getBackgrounditemIcon();
 
             if (icon != null)
             {
@@ -454,7 +454,7 @@ public abstract class GuiContainer extends GuiScreen
     public void drawSlotItem(Slot par1Slot, ItemStack itemstack, int i, int j, String s)
     {
         itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, itemstack, i, j);
-        itemRenderer.renderItemStack(this.fontRenderer, this.mc.renderEngine, itemstack, i, j, s);
+        itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, itemstack, i, j, s);
     }
 
     private void func_94066_g()

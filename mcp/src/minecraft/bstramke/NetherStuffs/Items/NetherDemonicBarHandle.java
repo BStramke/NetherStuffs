@@ -14,8 +14,8 @@ public class NetherDemonicBarHandle extends Item {
 	}
 
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("DemonicBarHandle"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("DemonicBarHandle"));
 	}
 }

@@ -116,7 +116,7 @@ public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 	}
 
 	@Override
-	public int getIconIndex() {
+	public int getitemIcon() {
 		switch (state) {
 		case Empty:
 			return ActionTriggerIconProvider.Trigger_LiquidContainer_Empty;

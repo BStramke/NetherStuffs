@@ -41,7 +41,7 @@ public class NetherTriggerEngineHeat extends NetherBCTriggers {
 	}
 
 	@Override
-	public int getIconIndex() {
+	public int getitemIcon() {
 		switch (stage) {
 		case Blue:
 			return ActionTriggerIconProvider.Trigger_EngineHeat_Blue;

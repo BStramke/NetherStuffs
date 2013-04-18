@@ -58,7 +58,7 @@ public class RenderUtils
         if(liquidID < Block.blocksList.length && Block.blocksList[liquidID] != null)
         {
             Block liquidBlock = Block.blocksList[liquidID];
-            return liquidBlock.getBlockTextureFromSideAndMetadata(0, liquidMeta);
+            return liquidBlock.getIcon(0, liquidMeta);
         }
         else
         {

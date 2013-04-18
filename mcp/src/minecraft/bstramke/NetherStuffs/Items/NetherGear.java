@@ -17,9 +17,9 @@ public class NetherGear extends Item {
 	}
 
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("demonic_gear"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("demonic_gear"));
 	}
 	
 	@Override

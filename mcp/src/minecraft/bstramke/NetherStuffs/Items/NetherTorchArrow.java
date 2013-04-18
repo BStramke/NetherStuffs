@@ -16,8 +16,8 @@ public class NetherTorchArrow extends Item {
 	}
 
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("TorchArrow"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("TorchArrow"));
 	}
 }

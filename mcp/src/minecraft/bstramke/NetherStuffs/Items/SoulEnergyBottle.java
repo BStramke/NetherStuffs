@@ -41,7 +41,7 @@ public class SoulEnergyBottle extends Item {
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int damage) {
 		if(damage <= large)
-			return iconIndex;
+			return itemIcon;
 		if(damage == largeFilled)
 			return icoFillings[7];
 		
@@ -52,14 +52,14 @@ public class SoulEnergyBottle extends Item {
 		if(damage>=20 && damage<=27)
 			return icoFillings[damage-20];
 		
-		return iconIndex;
+		return itemIcon;
 	}
 	
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		icoFillings = new Icon[8];
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("SoulEnergyBottle"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("SoulEnergyBottle"));
 		for(int i = 1; i <= icoFillings.length; i++)
 			icoFillings[i-1] = iconRegister.registerIcon(CommonProxy.getIconLocation("SoulEnergyBottle_"+i));
 	}

@@ -29,12 +29,8 @@ public class TweakTransformer implements IClassTransformer, Opcodes
     private static HashMultimap<String, MethodAltercator> altercators = HashMultimap.create();    
     public static ConfigTag tweaks;
 
-    public static void load()
+    public static void load(ConfigFile config)
     {
-        File cfgDir = new File(CodeChickenCorePlugin.minecraftDir+"/config");
-        if(!cfgDir.exists())
-            cfgDir.mkdirs();
-        ConfigFile config = new ConfigFile(new File(cfgDir, "CodeChickenCore.cfg")).setComment("CodeChickenCore configuration file.");
         tweaks = config.getTag("tweaks").setComment("Various tweaks that can be applied to game mechanics.").useBraces();
         
         if(!tweaks.getTag("persistantLava")

@@ -18,6 +18,14 @@ public class Rotation implements ITransformation
     public static Quat[] sideQuats = new Quat[6];
     public static Quat[] sideQuatsR = new Quat[6];
     
+    public static Vector3[] axes = new Vector3[]{
+        new Vector3( 0,-1, 0),
+        new Vector3( 0, 1, 0),
+        new Vector3( 0, 0,-1),
+        new Vector3( 0, 0, 1),
+        new Vector3(-1, 0, 0),
+        new Vector3( 1, 0, 0)};
+    
     static
     {
         for(int i = 0; i < 6; i++)

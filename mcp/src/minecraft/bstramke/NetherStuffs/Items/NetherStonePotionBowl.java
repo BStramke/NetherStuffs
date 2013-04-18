@@ -32,9 +32,9 @@ public class NetherStonePotionBowl extends Item {
 	}
 
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherStoneBowl"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherStoneBowl"));
 		icoBowlHellfire = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherStonePotionBowlHellfire"));
 		icoBowlAcid = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherStonePotionBowlAcid"));
 		icoBowlDeath = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherStonePotionBowlDeath"));
@@ -50,7 +50,7 @@ public class NetherStonePotionBowl extends Item {
 		case death:
 			return icoBowlDeath;
 		default:
-			return iconIndex;
+			return itemIcon;
 		}
 	}
 

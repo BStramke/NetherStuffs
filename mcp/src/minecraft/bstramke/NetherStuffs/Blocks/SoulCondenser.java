@@ -57,7 +57,7 @@ public class SoulCondenser extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getIcon(int side, int meta) {
 		if(meta == 0)
 		{
 			if (side == NetherBlocks.sideBottom)
@@ -65,7 +65,7 @@ public class SoulCondenser extends BlockContainer {
 			else if (side == NetherBlocks.sideTop)
 				return icoTop;
 			else
-				return super.getBlockTextureFromSideAndMetadata(side, meta);
+				return super.getIcon(side, meta);
 		}
 		else
 		{

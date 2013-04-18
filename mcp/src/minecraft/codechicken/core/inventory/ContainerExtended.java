@@ -17,11 +17,13 @@ public abstract class ContainerExtended extends Container implements ICrafting
 {
     public LinkedList<EntityPlayerMP> playerCrafters = new LinkedList<EntityPlayerMP>();
     
+    @SuppressWarnings("unchecked")
     public ContainerExtended()
     {
         crafters.add(this);
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public void addCraftingToCrafters(ICrafting icrafting)
     {

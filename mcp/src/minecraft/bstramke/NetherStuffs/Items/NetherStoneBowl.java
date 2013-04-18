@@ -27,9 +27,9 @@ public class NetherStoneBowl extends Item {
 	}
 
 	@Override
-	public void updateIcons(IconRegister iconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		iconIndex = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherStoneBowl"));
+		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("NetherStoneBowl"));
 	}
 	
 	@Override

@@ -31,19 +31,19 @@ public enum EnumTemperature {
 	public static ArrayList<Integer> hellishBiomeIds = new ArrayList<Integer>();
 
 	public final String name;
-	public final int iconIndex;
+	public final int itemIcon;
 
-	private EnumTemperature(String name, int iconIndex) {
+	private EnumTemperature(String name, int itemIcon) {
 		this.name = name;
-		this.iconIndex = iconIndex;
+		this.itemIcon = itemIcon;
 	}
 
 	public String getName() {
 		return this.name;
 	}
 
-	public int getIconIndex() {
-		return this.iconIndex;
+	public int getitemIcon() {
+		return this.itemIcon;
 	}
 
 	public static ArrayList<Integer> getBiomeIds(EnumTemperature temperature) {

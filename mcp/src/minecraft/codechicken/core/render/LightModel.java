@@ -58,9 +58,14 @@ public class LightModel
         return this;
     }
 
+    /**
+     * @param colour The pre-lighting vertex colour. RGBA format
+     * @param normal The normal at the vertex
+     * @return The lighting applied colour
+     */
     public int apply(int colour, Vector3 normal)
     {
-        Vector3 v_colour = new Vector3(((colour >> 16) & 0xFF)/255D, ((colour >> 8) & 0xFF)/255D, (colour & 0xFF)/255D);
+        Vector3 v_colour = new Vector3((colour >>> 24)/255D, (colour >> 16 & 0xFF)/255D, (colour >> 8 & 0xFF)/255D);
         Vector3 n_colour = new Vector3(
                 ambient.x*v_colour.x, 
                 ambient.y*v_colour.y, 

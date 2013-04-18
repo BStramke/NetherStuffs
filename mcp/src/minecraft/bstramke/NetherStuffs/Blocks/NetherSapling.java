@@ -74,7 +74,7 @@ public class NetherSapling extends BlockSapling /* implements IPlantable */{
 	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int meta) {
+	public Icon getIcon(int side, int meta) {
 		switch (unmarkedMetadata(meta)) {
 		case hellfire:
 			return icoSaplingHellfire;
