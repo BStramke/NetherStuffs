@@ -94,7 +94,7 @@ public class GuiPotionCreator extends GuiContainerWidget
             if(potion.hasStatusIcon())
             {
                 mc.renderEngine.bindTexture("/gui/inventory.png");
-                int icon = potion.getStatusitemIcon();
+                int icon = potion.getStatusIconIndex();
                 drawTexturedModalRect(x + 1, y + 1, 0 + icon % 8 * 18, 198 + icon / 8 * 18, 18, 18);
             }
 

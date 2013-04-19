@@ -30,8 +30,8 @@ public class NetherBlocks {
 	public static final Block netherOre = new NetherOre(NetherStuffs.NetherOreBlockId).setUnlocalizedName("NetherOre").setHardness(10.0F).setResistance(5.0F);
 	public static final Block netherWood = new NetherWood(NetherStuffs.NetherWoodBlockId).setUnlocalizedName("NetherWood").setHardness(4.0F).setResistance(5.0F);
 	public static final Block netherLeaves = new NetherLeaves(NetherStuffs.NetherLeavesBlockId).setUnlocalizedName("NetherLeaves").setHardness(0.2F).setLightOpacity(1);
-	public static final Block netherPlank = new NetherPlank(NetherStuffs.NetherPlankBlockId).setUnlocalizedName("NetherPlank").setHardness(2.0F).setResistance(5.0F);
-	public static final Block netherWoodPuddle = new NetherWoodPuddle(NetherStuffs.NetherWoodPuddleBlockId).setUnlocalizedName("NetherWoodPuddle").setHardness(4.0F).setResistance(5.0F);
+	public static final Block netherPlank = new NetherPlank(NetherStuffs.NetherPlankBlockId).setUnlocalizedName("NetherPlank").setHardness(10.0F).setResistance(5.0F);
+	public static final Block netherWoodPuddle = new NetherWoodPuddle(NetherStuffs.NetherWoodPuddleBlockId).setUnlocalizedName("NetherWoodPuddle").setHardness(10.0F).setResistance(5.0F);
 	
 	public static final BlockSapling netherSapling = (BlockSapling) new NetherSapling(NetherStuffs.NetherSaplingBlockId).setUnlocalizedName("NetherSapling").setHardness(0.0F);
 	public static final Block netherSoulWorkBench = new SoulWorkBench(NetherStuffs.SoulWorkBenchBlockId).setUnlocalizedName("NetherSoulWorkBench").setHardness(5.0F);

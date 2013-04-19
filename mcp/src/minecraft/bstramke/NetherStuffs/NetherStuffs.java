@@ -273,15 +273,15 @@ public class NetherStuffs extends DummyModContainer {
 			NetherHalfSlabBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "HalfSlab BlockId", 1252).getInt(1252);
 			NetherDoubleSlabBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "DoubleSlab BlockId", 1253).getInt(1253);
 		}
-		
+
 		if (bUseFenceGates) {
 			NetherFenceGateNetherBricksBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "NetherBrick Fence Gate", 1254).getInt(1254);
 			NetherFenceGateHellfireBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Hellfire Fence Gate", 1255).getInt(1255);
 			NetherFenceGateAcidBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Acid Fence Gate", 1256).getInt(1256);
 			NetherFenceGateDeathBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Death Fence Gate", 1257).getInt(1257);
 		}
-		
-		if(bUseFences) {
+
+		if (bUseFences) {
 			NetherFenceHellfireBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Hellfire Fence", 1258).getInt(1258);
 			NetherFenceAcidBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Acid Fence", 1259).getInt(1259);
 			NetherFenceDeathBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "Death Fence", 1260).getInt(1260);
@@ -408,7 +408,7 @@ public class NetherStuffs extends DummyModContainer {
 			return;
 		}
 
-		Block SoulCondenser = new SoulCondenser(SoulCondenserBlockId, nSoulKeeper, nSoulVessel, nEssenceKeeper, nEssenceVessel).setUnlocalizedName("SoulCondenser").setHardness(0.5F)
+		Block SoulCondenser = new SoulCondenser(SoulCondenserBlockId, nSoulKeeper, nSoulVessel, nEssenceKeeper, nEssenceVessel).setUnlocalizedName("SoulCondenser").setHardness(3.5F)
 				.setResistance(5.0F);
 		GameRegistry.registerBlock(SoulCondenser, SoulCondenserItemBlock.class, "SoulCondenser");
 		GameRegistry.registerTileEntity(TileSoulCondenser.class, "tileEntitySoulCondenser");
@@ -456,29 +456,33 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	private void initDecorativeBlocks() {
-		
-		if(bUseFences) {
+
+		if (bUseFences) {
 			int nNetherFenceId = Block.netherFence.blockID;
 			Block.blocksList[nNetherFenceId] = null;
-			(new NetherFence(nNetherFenceId, "netherBrick", Material.rock)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("netherFence");
-			NetherBlocks.FenceHellfire =  (new NetherFence(NetherFenceHellfireBlockId, "netherBrick", NetherWoodMaterial.netherWood)).setUnlocalizedName("NetherFenceHellfire");
-			NetherBlocks.FenceAcid =  (new NetherFence(NetherFenceAcidBlockId, "netherBrick", NetherWoodMaterial.netherWood)).setUnlocalizedName("NetherFenceAcid");
-			NetherBlocks.FenceDeath =  (new NetherFence(NetherFenceDeathBlockId, "netherBrick", NetherWoodMaterial.netherWood)).setUnlocalizedName("NetherFenceDeath");
+			(new NetherFence(nNetherFenceId, "netherBrick", Material.rock)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep)
+					.setUnlocalizedName("netherFence");
+			NetherBlocks.FenceHellfire = (new NetherFence(NetherFenceHellfireBlockId, "netherBrick", NetherWoodMaterial.netherWood)).setUnlocalizedName("NetherFenceHellfire");
+			NetherBlocks.FenceAcid = (new NetherFence(NetherFenceAcidBlockId, "netherBrick", NetherWoodMaterial.netherWood)).setUnlocalizedName("NetherFenceAcid");
+			NetherBlocks.FenceDeath = (new NetherFence(NetherFenceDeathBlockId, "netherBrick", NetherWoodMaterial.netherWood)).setUnlocalizedName("NetherFenceDeath");
 			GameRegistry.registerBlock(NetherBlocks.FenceHellfire, "NetherFenceHellfireItemBlock");
 			GameRegistry.registerBlock(NetherBlocks.FenceAcid, "NetherFenceAcidItemBlock");
 			GameRegistry.registerBlock(NetherBlocks.FenceDeath, "NetherFenceDeathItemBlock");
-			
+
 			LanguageRegistry.instance().addStringLocalization("tile.NetherFenceHellfire.name", "Hellfirewood Fence");
 			LanguageRegistry.instance().addStringLocalization("tile.NetherFenceAcid.name", "Acidwood Fence");
 			LanguageRegistry.instance().addStringLocalization("tile.NetherFenceDeath.name", "Deathwood Fence");
 		}
-		
-		if(bUseFenceGates) {		
+
+		if (bUseFenceGates) {
 			NetherBlocks.FenceGateNetherBricks = new NetherFenceGate(NetherFenceGateNetherBricksBlockId).setUnlocalizedName("NetherBrickFenceGate");
-			NetherBlocks.FenceGateHellfire = new NetherFenceGate(NetherFenceGateHellfireBlockId).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("HellfireFenceGate");
-			NetherBlocks.FenceGateAcid = new NetherFenceGate(NetherFenceGateAcidBlockId).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("AcidFenceGate");
-			NetherBlocks.FenceGateDeath = new NetherFenceGate(NetherFenceGateDeathBlockId).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("DeathFenceGate");
-			
+			NetherBlocks.FenceGateHellfire = new NetherFenceGate(NetherFenceGateHellfireBlockId).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep)
+					.setUnlocalizedName("HellfireFenceGate");
+			NetherBlocks.FenceGateAcid = new NetherFenceGate(NetherFenceGateAcidBlockId).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep)
+					.setUnlocalizedName("AcidFenceGate");
+			NetherBlocks.FenceGateDeath = new NetherFenceGate(NetherFenceGateDeathBlockId).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep)
+					.setUnlocalizedName("DeathFenceGate");
+
 			GameRegistry.registerBlock(NetherBlocks.FenceGateNetherBricks, "NetherFenceGateBrickItemBlock");
 			GameRegistry.registerBlock(NetherBlocks.FenceGateHellfire, "NetherFenceGateHellfireItemBlock");
 			GameRegistry.registerBlock(NetherBlocks.FenceGateAcid, "NetherFenceGateAcidItemBlock");
@@ -488,7 +492,7 @@ public class NetherStuffs extends DummyModContainer {
 			LanguageRegistry.instance().addStringLocalization("tile.AcidFenceGate.name", "Acidwood Fence Gate");
 			LanguageRegistry.instance().addStringLocalization("tile.DeathFenceGate.name", "Deathwood Fence Gate");
 		}
-		
+
 		if (bUseStairBlocks) {
 			NetherBlocks.StairAcid = new NetherStairs(NetherStairAcidBlockId, NetherBlocks.netherPlank, NetherPlank.acid).setUnlocalizedName("StairAcid");
 			NetherBlocks.StairHellfire = new NetherStairs(NetherStairHellfireBlockId, NetherBlocks.netherPlank, NetherPlank.hellfire).setUnlocalizedName("StairHellfire");
@@ -632,7 +636,7 @@ public class NetherStuffs extends DummyModContainer {
 			return;
 
 		FMLLog.info("[NetherStuffs] adding Stuff for Buildcraft use");
-		Block SoulEngine = new SoulEngine(NetherStuffs.SoulEngineBlockId).setUnlocalizedName("NetherSoulEngine").setHardness(0.5F).setResistance(5.0F);
+		Block SoulEngine = new SoulEngine(NetherStuffs.SoulEngineBlockId).setUnlocalizedName("NetherSoulEngine").setHardness(3.5F).setResistance(5.0F);
 		Item NetherGear = new NetherGear(NetherGearItemId).setUnlocalizedName("NetherGear");
 
 		GameRegistry.registerBlock(SoulEngine, "SoulEngine");
