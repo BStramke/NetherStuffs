@@ -157,7 +157,7 @@ public class NetherLeaves extends Block implements IShearable {
 				var12 = this.adjacentTreeBlocks[var11 * var10 + var11 * var9 + var11];
 
 				if (var12 >= 0) {
-					par1World.setBlockMetadataWithNotify(par2, par3, par4, clearDecayOnMetadata(var6), BlockNotifyType.ALL);
+					par1World.setBlockMetadataWithNotify(par2, par3, par4, clearDecayOnMetadata(var6), 4);
 				} else {
 					this.removeLeaves(par1World, par2, par3, par4);
 				}
@@ -289,25 +289,16 @@ public class NetherLeaves extends Block implements IShearable {
 		return ret;
 	}
 
-	/*
-	 * @Override public void beginLeavesDecay(World world, int x, int y, int z) { world.setBlockMetadata(x, y, z, world.getBlockMetadata(x, y, z)); }
-	 */
-
 	@Override
 	public boolean isLeaves(World world, int x, int y, int z) {
 		return true;
 	}
-
-	@SideOnly(Side.CLIENT)
+	
 	@Override
-	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-		/*
-		 * int var6 = par1IBlockAccess.getBlockId(par2, par3, par4); if (var6 == NetherStuffs.NetherStuffs.NetherLeavesBlockId) { return false; } else { return
-		 * super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5); }
-		 */
-
-		return super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
-	}
+   protected ItemStack createStackedBlock(int par1)
+   {
+       return new ItemStack(this.blockID, 1, par1 & 3);
+   }
 
 	private static final int METADATA_BITMASK = 0x3;
 	private static final int METADATA_USERPLACEDBIT = 0x4;
@@ -328,7 +319,7 @@ public class NetherLeaves extends Block implements IShearable {
 
 	@Override
 	public void beginLeavesDecay(World world, int x, int y, int z) {
-		world.setBlockMetadataWithNotify(x, y, z, setDecayOnMetadata(world.getBlockMetadata(x, y, z)), BlockNotifyType.ALL);
+		world.setBlockMetadataWithNotify(x, y, z, setDecayOnMetadata(world.getBlockMetadata(x, y, z)), 4);
 	}
 
 	private static int setDecayOnMetadata(int metadata) {
