@@ -2,9 +2,8 @@ package thaumcraft.api;
 
 import java.lang.reflect.Method;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.FMLLog;
 
 public class ThaumcraftApiHelper {
 	public static ObjectTags cullTags(ObjectTags temp) {
@@ -52,11 +51,11 @@ public class ThaumcraftApiHelper {
 	public static ItemStack getStackInRowAndColumn(Object instance, int row, int column) {
 		ItemStack ot = null;
 	    try {
-	        Class fake = Class.forName("thaumcraft.common.blocks.TileMagicWorkbench");
+	        Class fake = Class.forName("thaumcraft.common.tiles.TileMagicWorkbench");
 	        Method getStackInRowAndColumn = fake.getMethod("getStackInRowAndColumn", int.class, int.class);
 	        ot = (ItemStack) getStackInRowAndColumn.invoke(instance, row, column);
 	    } catch(Exception ex) { 
-	    	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.blocks.TileMagicWorkbench method getStackInRowAndColumn");
+	    	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.tiles.TileMagicWorkbench method getStackInRowAndColumn");
 	    }
 		return ot;
 	}
@@ -65,12 +64,12 @@ public class ThaumcraftApiHelper {
 		ObjectTags ot = null;
 	    try {
 	        if(getObjectTags == null) {
-	            Class fake = Class.forName("thaumcraft.common.ThaumcraftCraftingManager");
+	            Class fake = Class.forName("thaumcraft.common.lib.ThaumcraftCraftingManager");
 	            getObjectTags = fake.getMethod("getObjectTags", ItemStack.class);
 	        }
 	        ot = (ObjectTags) getObjectTags.invoke(null, is);
 	    } catch(Exception ex) { 
-	    	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.ThaumcraftCraftingManager method getObjectTags");
+	    	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.lib.ThaumcraftCraftingManager method getObjectTags");
 	    }
 		return ot;
 	}
@@ -79,12 +78,12 @@ public class ThaumcraftApiHelper {
 		
 	    try {
 	        if(getBonusTags == null) {
-	            Class fake = Class.forName("thaumcraft.common.ThaumcraftCraftingManager");
+	            Class fake = Class.forName("thaumcraft.common.lib.ThaumcraftCraftingManager");
 	            getBonusTags = fake.getMethod("getBonusTags", ItemStack.class, ObjectTags.class);
 	        }
 	        ot = (ObjectTags) getBonusTags.invoke(null, is, ot);
 	    } catch(Exception ex) { 
-	    	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.ThaumcraftCraftingManager method getBonusTags");
+	    	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.lib.ThaumcraftCraftingManager method getBonusTags");
 	    }
 		return ot;
 	}
@@ -92,12 +91,12 @@ public class ThaumcraftApiHelper {
 	public static ObjectTags generateTags(int id, int meta) {
 	    try {
 	        if(generateTags == null) {
-	            Class fake = Class.forName("thaumcraft.common.ThaumcraftCraftingManager");
+	            Class fake = Class.forName("thaumcraft.common.lib.ThaumcraftCraftingManager");
 	            generateTags = fake.getMethod("generateTags", int.class, int.class);
 	        }
 	        return (ObjectTags) generateTags.invoke(null, id, meta);
 	    } catch(Exception ex) { 
-	    	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.ThaumcraftCraftingManager method generateTags");
+	    	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.lib.ThaumcraftCraftingManager method generateTags");
 	    }
 		return null;
 	}

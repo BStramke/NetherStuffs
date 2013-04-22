@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import thaumcraft.api.ObjectTags;
-import thaumcraft.api.ThaumcraftApiHelper;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagInt;
+import thaumcraft.api.ObjectTags;
+import thaumcraft.api.ThaumcraftApiHelper;
 
 public class ShapelessInfusionCraftingWithNBTRecipes implements IInfusionRecipe
 {

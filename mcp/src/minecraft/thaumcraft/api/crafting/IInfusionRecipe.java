@@ -1,9 +1,9 @@
 package thaumcraft.api.crafting;
 
-import thaumcraft.api.ObjectTags;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import thaumcraft.api.ObjectTags;
 
 public interface IInfusionRecipe
 {

@@ -17,6 +17,7 @@ import net.minecraftforge.common.EnumHelper;
 
 import org.w3c.dom.Document;
 
+import thaumcraft.api.aura.AuraNode;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.IInfusionRecipe;
 import thaumcraft.api.crafting.RecipeCrucible;
@@ -24,12 +25,16 @@ import thaumcraft.api.crafting.ShapedArcaneCraftingRecipes;
 import thaumcraft.api.crafting.ShapedInfusionCraftingRecipes;
 import thaumcraft.api.crafting.ShapelessArcaneCraftingRecipes;
 import thaumcraft.api.crafting.ShapelessInfusionCraftingRecipes;
+import thaumcraft.api.research.IScanEventHandler;
 import thaumcraft.api.research.ResearchList;
 import cpw.mods.fml.common.FMLLog;
 
 
 /**
  * @author Azanor
+ *
+ *
+ * IMPORTANT: If you are adding your own aspects to items it is a good idea to do it AFTER Thaumcraft adds its aspects, otherwise odd things may happen.
  *
  */
 public class ThaumcraftApi {
@@ -39,6 +44,7 @@ public class ThaumcraftApi {
 	public static EnumToolMaterial toolMatElemental = EnumHelper.addToolMaterial("THAUMIUM_ELEMENTAL", 3, 1500, 10F, 3, 18);
 	public static EnumArmorMaterial armorMatThaumium = EnumHelper.addArmorMaterial("THAUMIUM", 25, new int[] { 2, 6, 5, 2 }, 25);
 	public static EnumArmorMaterial armorMatSpecial = EnumHelper.addArmorMaterial("SPECIAL", 25, new int[] { 1, 3, 2, 1 }, 25);
+	
 	
 	
 	//Miscellaneous
@@ -52,6 +58,7 @@ public class ThaumcraftApi {
 	//RESEARCH/////////////////////////////////////////
 	public static Document researchDoc = null;
 	public static ArrayList<String> apiResearchFiles = new ArrayList<String>(); 
+	public static ArrayList<IScanEventHandler> scanEventhandlers = new ArrayList<IScanEventHandler>();
 	
 	/**
 	 * Used to add your own xml files that the research system will check of recipes and descriptions of custom research
@@ -60,6 +67,10 @@ public class ThaumcraftApi {
 	 */
 	public static void registerResearchXML(String resourceLoc) {
 		if (!apiResearchFiles.contains(resourceLoc)) apiResearchFiles.add(resourceLoc);
+	}
+	
+	public static void registerScanEventhandler(IScanEventHandler scanEventHandler) {
+		scanEventhandlers.add(scanEventHandler);
 	}
 	
 	//RECIPES/////////////////////////////////////////
@@ -576,12 +587,12 @@ public class ThaumcraftApi {
 	public static void addFluxToClosest(World world, float x, float y, float z, ObjectTags tags) {
 		try {
             if(addFluxToClosest == null) {
-                Class fake = Class.forName("thaumcraft.common.AuraManager");
+                Class fake = Class.forName("thaumcraft.common.aura.AuraManager");
                 addFluxToClosest = fake.getMethod("addFluxToClosest", World.class, float.class, float.class, float.class, ObjectTags.class);
             }
             addFluxToClosest.invoke(null, world,x,y,z,tags);
         } catch(Exception ex) { 
-        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.AuraManager method addFluxToClosest");
+        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.aura.AuraManager method addFluxToClosest");
         }
     }
 	
@@ -601,12 +612,12 @@ public class ThaumcraftApi {
 		boolean ret=false;
 		try {
             if(decreaseClosestAura == null) {
-                Class fake = Class.forName("thaumcraft.common.AuraManager");
+                Class fake = Class.forName("thaumcraft.common.aura.AuraManager");
                 decreaseClosestAura = fake.getMethod("decreaseClosestAura", World.class, double.class, double.class, double.class, int.class, boolean.class);
             }
             ret = (Boolean) decreaseClosestAura.invoke(null, world,x,y,z,amount,doit);
         } catch(Exception ex) { 
-        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.AuraManager method decreaseClosestAura");
+        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.aura.AuraManager method decreaseClosestAura");
         }
 		return ret;
     }
@@ -625,12 +636,12 @@ public class ThaumcraftApi {
 		boolean ret=false;
 		try {
             if(increaseLowestAura == null) {
-                Class fake = Class.forName("thaumcraft.common.AuraManager");
+                Class fake = Class.forName("thaumcraft.common.aura.AuraManager");
                 increaseLowestAura = fake.getMethod("increaseLowestAura", World.class, double.class, double.class, double.class, int.class);
             }
             ret = (Boolean) increaseLowestAura.invoke(null, world,x,y,z,amount);
         } catch(Exception ex) { 
-        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.AuraManager method increaseLowestAura");
+        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.aura.AuraManager method increaseLowestAura");
         }
 		return ret;
     }
@@ -649,12 +660,12 @@ public class ThaumcraftApi {
 		int ret=-1;
 		try {
             if(getClosestAuraWithinRange == null) {
-                Class fake = Class.forName("thaumcraft.common.AuraManager");
+                Class fake = Class.forName("thaumcraft.common.aura.AuraManager");
                 getClosestAuraWithinRange = fake.getMethod("getClosestAuraWithinRange", World.class, double.class, double.class, double.class, double.class);
             }
             ret = (Integer) getClosestAuraWithinRange.invoke(null, world,x,y,z,range);
         } catch(Exception ex) { 
-        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.AuraManager method getClosestAuraWithinRange");
+        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.aura.AuraManager method getClosestAuraWithinRange");
         }
 		return ret;
     }
@@ -670,12 +681,12 @@ public class ThaumcraftApi {
 		AuraNode node = null;
 		try {
             if(getNodeCopy == null) {
-                Class fake = Class.forName("thaumcraft.common.AuraManager");
+                Class fake = Class.forName("thaumcraft.common.aura.AuraManager");
                 getNodeCopy = fake.getMethod("getNodeCopy", int.class);
             }
             node = (AuraNode) getNodeCopy.invoke(null, nodeId);
         } catch(Exception ex) { 
-        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.AuraManager method getNodeCopy");
+        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.aura.AuraManager method getNodeCopy");
         }
 		return node;
     }
@@ -703,32 +714,35 @@ public class ThaumcraftApi {
 			  						  float x,float y,float z) {
 		try {
             if(queueNodeChanges == null) {
-                Class fake = Class.forName("thaumcraft.common.AuraManager");
+                Class fake = Class.forName("thaumcraft.common.aura.AuraManager");
                 queueNodeChanges = fake.getMethod("queueNodeChanges", 
                 		int.class, int.class, int.class, boolean.class, ObjectTags.class, float.class, float.class, float.class);
             }
             queueNodeChanges.invoke(null, nodeId, levelMod, baseMod, toggleLock, flux, x, y, z);
         } catch(Exception ex) { 
-        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.AuraManager method queueNodeChanges");
+        	FMLLog.warning("[Thaumcraft API] Could not invoke thaumcraft.common.aura.AuraManager method queueNodeChanges");
         }
     }
 	
 	//BIOMES//////////////////////////////////////////////////
-	
+	@Deprecated 
 	public static HashMap<Integer,List> biomeInfo = new HashMap<Integer,List>();
 	
 	/**
 	 * Registers custom biomes with thaumcraft
+	 * @Deprecated I will be switching over the the forge BiomeDictionary system in the future so any mods that add biomes should just make sure they are tagged correctly
 	 * @param biomeID The id of the biome
 	 * @param visLevel The average vis level of nodes generated in this biome
 	 * @param tag The EnumTag associated with this biome (used to determine infused ore spawns among other things)
 	 * @param greatwood Does this biome support greatwood trees
 	 * @param silverwood Does this biome support silverwood trees
 	 */
+	@Deprecated
 	public static void registerBiomeInfo(int biomeID, int visLevel, EnumTag tag, boolean greatwood, boolean silverwood) {
 		biomeInfo.put(biomeID, Arrays.asList(visLevel, tag, greatwood, silverwood));
 	}
 	
+	@Deprecated
 	public static int getBiomeAura(int biomeId) {
 		try { 
 			return (Integer) biomeInfo.get(biomeId).get(0);
@@ -736,6 +750,7 @@ public class ThaumcraftApi {
 		return 200;
 	}
 	
+	@Deprecated
 	public static EnumTag getBiomeTag(int biomeId) {
 		try {
 			return (EnumTag) biomeInfo.get(biomeId).get(1);
@@ -743,6 +758,7 @@ public class ThaumcraftApi {
 		return EnumTag.UNKNOWN;
 	}
 	
+	@Deprecated
 	public static boolean getBiomeSupportsGreatwood(int biomeId) {
 		try {
 			return (Boolean) biomeInfo.get(biomeId).get(2);
@@ -750,6 +766,7 @@ public class ThaumcraftApi {
 		return false;
 	}
 	
+	@Deprecated
 	public static boolean getBiomeSupportsSilverwood(int biomeId) {
 		try {
 			return (Boolean) biomeInfo.get(biomeId).get(3);

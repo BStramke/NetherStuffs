@@ -18,6 +18,7 @@ public class ObjectTags implements Serializable {
 	 */
 	public ObjectTags(int id, int meta) {
 		ObjectTags temp = ThaumcraftApiHelper.getObjectTags(new ItemStack(id,1,meta));
+		if (temp!=null)
 		for (EnumTag tag:temp.getAspects()) {
 			add(tag,temp.getAmount(tag));
 		}
@@ -55,6 +56,30 @@ public class ObjectTags implements Serializable {
 				if (e1!=null && e2!=null && e1.name.compareTo(e2.name)>0) {
 					out[a] = e2;
 					out[a+1] = e1;
+					change = true;
+					break;
+				}
+			}
+		} while (change==true);
+		return out;
+	}
+	
+	/**
+	 * @return an array of all the aspects in this collection sorted by name
+	 */
+	public EnumTag[] getAspectsSortedAmount() {
+		EnumTag[] out = tags.keySet().toArray(new EnumTag[1]);
+		boolean change=false;
+		do {
+			change=false;
+			for(int a=0;a<out.length-1;a++) {
+				int e1 = getAmount(out[a]);
+				int e2 = getAmount(out[a+1]);
+				if (e1>0 && e2>0 && e2>e1) {
+					EnumTag ea = out[a];
+					EnumTag eb = out[a+1];
+					out[a] = eb;
+					out[a+1] = ea;
 					change = true;
 					break;
 				}

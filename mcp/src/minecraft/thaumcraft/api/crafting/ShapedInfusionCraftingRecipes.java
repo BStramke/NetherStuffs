@@ -1,12 +1,12 @@
 package thaumcraft.api.crafting;
 
-import thaumcraft.api.ObjectTags;
-import thaumcraft.api.ThaumcraftApiHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import thaumcraft.api.ObjectTags;
+import thaumcraft.api.ThaumcraftApiHelper;
 
 public class ShapedInfusionCraftingRecipes implements IInfusionRecipe
 {

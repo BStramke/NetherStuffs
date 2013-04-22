@@ -1,8 +1,8 @@
 package thaumcraft.api.crafting;
 
+import net.minecraft.item.ItemStack;
 import thaumcraft.api.EnumTag;
 import thaumcraft.api.ObjectTags;
-import net.minecraft.item.ItemStack;
 
 public class RecipeCrucible {
 
