@@ -12,18 +12,19 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.NetherStuffs;
-import bstramke.NetherStuffs.Blocks.NetherWood;
+import bstramke.NetherStuffs.Blocks.Wood;
+import bstramke.NetherStuffs.Blocks.puddles.TileNetherWoodPuddle;
 import bstramke.NetherStuffs.Common.CommonProxy;
-import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class NetherStoneBowl extends Item {
+public class NetherstoneBowl extends Item {
 	public static String[] itemDisplayNames = new String[] { "Netherstone Bowl" };
 
-	public NetherStoneBowl(int par1) {
+	public NetherstoneBowl(int par1) {
 		super(par1);
 		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
+		setUnlocalizedName("NetherStoneBowl");
 	}
 
 	@Override
@@ -51,14 +52,14 @@ public class NetherStoneBowl extends Item {
 						int meta = par2World.getBlockMetadata(var5, var6, var7) & 3;
 						int bowlMetaData = 0;
 						switch (meta) {
-						case NetherWood.hellfire:
-							bowlMetaData = NetherPotionBottle.hellfire;
+						case Wood.hellfire:
+							bowlMetaData = PotionBottle.hellfire;
 							break;
-						case NetherWood.acid:
-							bowlMetaData = NetherPotionBottle.acid;
+						case Wood.acid:
+							bowlMetaData = PotionBottle.acid;
 							break;
-						case NetherWood.death:
-							bowlMetaData = NetherPotionBottle.death;
+						case Wood.death:
+							bowlMetaData = PotionBottle.death;
 							break;
 						default:
 							return par1ItemStack; // --> as this means its a unknown type, exit
@@ -66,11 +67,11 @@ public class NetherStoneBowl extends Item {
 						
 						--par1ItemStack.stackSize;
 						if (par1ItemStack.stackSize <= 0) {
-							return new ItemStack(NetherItems.NetherStonePotionBowl.itemID, 1, bowlMetaData);
+							return new ItemStack(ItemRegistry.NetherStonePotionBowl.itemID, 1, bowlMetaData);
 						}
 
-						if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(NetherItems.NetherStonePotionBowl.itemID, 1, bowlMetaData))) {
-							par3EntityPlayer.dropPlayerItem(new ItemStack(NetherItems.NetherStonePotionBowl.itemID, 1, bowlMetaData));
+						if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(ItemRegistry.NetherStonePotionBowl.itemID, 1, bowlMetaData))) {
+							par3EntityPlayer.dropPlayerItem(new ItemStack(ItemRegistry.NetherStonePotionBowl.itemID, 1, bowlMetaData));
 						}
 					}
 				}

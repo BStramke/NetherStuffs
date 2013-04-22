@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import bstramke.NetherStuffs.NetherStuffs;
-import bstramke.NetherStuffs.Blocks.NetherWood;
+import bstramke.NetherStuffs.Blocks.Wood;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import cpw.mods.fml.common.IWorldGenerator;
 
@@ -109,7 +109,7 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 								if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0)
 										&& (block == null || block.canBeReplacedByLeaves(par1World, var14, var11, var16))) {
 									this.setBlockAndMetadata(par1World, var14, var11, var16, NetherStuffs.NetherLeavesBlockId, this.metaLeaves);
-									if (this.metaWood == NetherWood.hellfire)
+									if (this.metaWood == Wood.hellfire)
 										leavePositions.add(Arrays.asList(var14, var11, var16));
 								}
 							}

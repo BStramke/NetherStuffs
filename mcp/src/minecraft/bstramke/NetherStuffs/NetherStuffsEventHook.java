@@ -17,8 +17,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import bstramke.NetherStuffs.Blocks.soulBlocker.TileSoulBlocker;
 import bstramke.NetherStuffs.Common.PlayerDummy;
-import bstramke.NetherStuffs.SoulBlocker.TileSoulBlocker;
 
 public class NetherStuffsEventHook {
 	public static int nDetectRadius; // will be set from config

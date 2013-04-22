@@ -30,6 +30,7 @@ public class SoulEnergyBottle extends Item {
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
+		setUnlocalizedName("SoulEnergyBottle");
 	}
 
 	@Override

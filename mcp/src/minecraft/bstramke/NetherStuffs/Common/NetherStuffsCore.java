@@ -3,10 +3,10 @@ package bstramke.NetherStuffs.Common;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import bstramke.NetherStuffs.NetherStuffs;
-import bstramke.NetherStuffs.SoulEngine.NetherBCTriggers;
-import bstramke.NetherStuffs.SoulEngine.NetherTriggerEngineHeat;
-import bstramke.NetherStuffs.SoulEngine.NetherTriggerLiquidContainer;
-import bstramke.NetherStuffs.SoulEngine.TileSoulEngine;
+import bstramke.NetherStuffs.Blocks.soulEngine.NetherBCTriggers;
+import bstramke.NetherStuffs.Blocks.soulEngine.NetherTriggerEngineHeat;
+import bstramke.NetherStuffs.Blocks.soulEngine.NetherTriggerLiquidContainer;
+import bstramke.NetherStuffs.Blocks.soulEngine.TileSoulEngine;
 import buildcraft.api.core.IIconProvider;
 
 public class NetherStuffsCore {

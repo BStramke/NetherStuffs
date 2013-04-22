@@ -25,6 +25,7 @@ public class NetherOreIngot extends Item {
 		this.setMaxDamage(0);
 		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
 		this.setHasSubtypes(true);
+		setUnlocalizedName("NetherOreIngot");
 	}
 
 	@Override

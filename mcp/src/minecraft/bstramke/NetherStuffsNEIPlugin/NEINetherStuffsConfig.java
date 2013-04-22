@@ -1,7 +1,7 @@
 package bstramke.NetherStuffsNEIPlugin;
 
-import bstramke.NetherStuffs.DemonicFurnace.GuiDemonicFurnace;
-import bstramke.NetherStuffs.SoulWorkBench.GuiSoulWorkBench;
+import bstramke.NetherStuffs.Blocks.demonicFurnace.GuiDemonicFurnace;
+import bstramke.NetherStuffs.Blocks.soulWorkBench.GuiSoulWorkBench;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 

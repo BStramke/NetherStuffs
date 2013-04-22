@@ -6,10 +6,11 @@ import java.awt.Rectangle;
 import org.lwjgl.opengl.GL11;
 
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Blocks.BlockRegistry;
+import bstramke.NetherStuffs.Blocks.soulWorkBench.ContainerSoulWorkBench;
+import bstramke.NetherStuffs.Blocks.soulWorkBench.TileSoulWorkBench;
 import bstramke.NetherStuffs.Common.CommonProxy;
-import bstramke.NetherStuffs.Items.NetherItems;
-import bstramke.NetherStuffs.SoulWorkBench.ContainerSoulWorkBench;
-import bstramke.NetherStuffs.SoulWorkBench.TileSoulWorkBench;
+import bstramke.NetherStuffs.Items.ItemRegistry;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -29,20 +30,21 @@ public abstract class GuiContainerSoulTank extends GuiContainer {
 		super(par1Container);
 		TankTopXpos = TankTopLeft.x;
 		TankTopYpos = TankTopLeft.y;
-		TankWidth = Math.abs(TankBottomRight.x - TankTopXpos) + 1;
-		TankHeight = Math.abs(TankBottomRight.y - TankTopYpos) + 1;
+		TankWidth = Math.abs(TankBottomRight.x - TankTopXpos);
+		TankHeight = Math.abs(TankBottomRight.y - TankTopYpos);
 		tile = Tile;
 	}
 
 	public void drawTankScale() {
 		int TopX = (this.width - this.xSize) / 2 + TankTopXpos;
-		int TopY = (this.height - this.ySize) / 2 - 7 + TankTopYpos;
+		int TopY = (this.height - this.ySize) / 2 + TankTopYpos;
 
 		int nBottomLeftY = TopY + TankHeight;
 
-		int nFillState = tile.getFillingScaled(TankHeight - 1);
-		this.mc.renderEngine.bindTexture("/gui/items.png");
-		Icon LiquidIcon = NetherItems.SoulEnergyLiquidItem.getIconFromDamage(0);
+		int nFillState = tile.getFillingScaled(TankHeight);
+		this.mc.renderEngine.bindTexture("/terrain.png");
+		
+		Icon LiquidIcon = BlockRegistry.LiquidStill.getIcon(BlockRegistry.sideTop, 0);
 		int y = 0;
 		for (int x = 16; x <= 32 && x <= nFillState; x += 16) {
 			drawTexturedModelRectFromIcon(TopX, nBottomLeftY - x, LiquidIcon, 16, 16);
@@ -58,9 +60,8 @@ public abstract class GuiContainerSoulTank extends GuiContainer {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float par3) {
 		super.drawScreen(mouseX, mouseY, par3);
-
 		int x = (this.width - this.xSize) / 2 + TankTopXpos;
-		int y = (this.height - this.ySize) / 2 - 7 + TankTopYpos;
+		int y = (this.height - this.ySize) / 2 + TankTopYpos;
 
 		if (new Rectangle(x, y, TankWidth, TankHeight).contains(mouseX, mouseY)) {
 			ItemStack par1ItemStack = NetherStuffs.SoulEnergyLiquid.asItemStack().copy();

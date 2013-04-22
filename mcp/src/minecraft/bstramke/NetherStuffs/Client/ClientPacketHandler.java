@@ -8,8 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
-import bstramke.NetherStuffs.NetherWoodPuddle.TileNetherWoodPuddle;
-import bstramke.NetherStuffs.SoulDetector.TileSoulDetector;
+import bstramke.NetherStuffs.Blocks.puddles.TileNetherWoodPuddle;
+import bstramke.NetherStuffs.Blocks.soulDetector.TileSoulDetector;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 

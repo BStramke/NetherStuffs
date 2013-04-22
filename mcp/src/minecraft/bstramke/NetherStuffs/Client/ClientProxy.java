@@ -1,14 +1,15 @@
 package bstramke.NetherStuffs.Client;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
-import bstramke.NetherStuffs.EntityTorchArrow;
 import bstramke.NetherStuffs.NetherStuffs;
-import bstramke.NetherStuffs.Blocks.NetherBlocks;
+import bstramke.NetherStuffs.Blocks.soulBomb.EntitySoulBombPrimed;
+import bstramke.NetherStuffs.Blocks.soulEngine.TileSoulEngine;
+import bstramke.NetherStuffs.Client.Renderers.FluidRender;
+import bstramke.NetherStuffs.Client.Renderers.NetherOreRenderingHelper;
+import bstramke.NetherStuffs.Client.Renderers.RenderSoulBombPrimed;
+import bstramke.NetherStuffs.Client.Renderers.RenderSoulEngine;
+import bstramke.NetherStuffs.Client.Renderers.RenderTorchArrow;
 import bstramke.NetherStuffs.Common.CommonProxy;
-import bstramke.NetherStuffs.SoulBomb.EntitySoulBombPrimed;
-import bstramke.NetherStuffs.SoulEngine.TileSoulEngine;
+import bstramke.NetherStuffs.Items.EntityTorchArrow;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -18,6 +19,7 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerBlockHandler(new NetherOreRenderingHelper());		
 		RenderingRegistry.registerEntityRenderingHandler(EntityTorchArrow.class, new RenderTorchArrow());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySoulBombPrimed.class, new RenderSoulBombPrimed());
+		RenderingRegistry.registerBlockHandler(new FluidRender());
 		
 		if(NetherStuffs.bBuildcraftAvailable)
 		{

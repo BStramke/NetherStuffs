@@ -11,12 +11,12 @@ import java.util.TreeSet;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
-import bstramke.NetherStuffs.Blocks.NetherBlocks;
+import bstramke.NetherStuffs.Blocks.BlockRegistry;
+import bstramke.NetherStuffs.Blocks.demonicFurnace.DemonicFurnaceRecipes;
+import bstramke.NetherStuffs.Blocks.demonicFurnace.GuiDemonicFurnace;
+import bstramke.NetherStuffs.Blocks.demonicFurnace.TileDemonicFurnace;
 import bstramke.NetherStuffs.Common.CommonProxy;
-import bstramke.NetherStuffs.DemonicFurnace.DemonicFurnaceRecipes;
-import bstramke.NetherStuffs.DemonicFurnace.GuiDemonicFurnace;
-import bstramke.NetherStuffs.DemonicFurnace.TileDemonicFurnace;
-import bstramke.NetherStuffs.Items.NetherItems;
+import bstramke.NetherStuffs.Items.ItemRegistry;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.forge.GuiContainerManager;
@@ -173,10 +173,10 @@ public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
 		afuels = new ArrayList<FuelPair>();
 
 		try {
-			afuels.add(new FuelPair(new ItemStack(NetherItems.NetherWoodCharcoal), (Integer) getBurnTime.invoke(afurnace, new ItemStack(NetherItems.NetherWoodCharcoal))));
-			afuels.add(new FuelPair(new ItemStack(NetherBlocks.netherWood, 1, 0), (Integer) getBurnTime.invoke(afurnace, new ItemStack(NetherBlocks.netherWood, 1, 0))));
-			afuels.add(new FuelPair(new ItemStack(NetherBlocks.netherWood, 1, 1), (Integer) getBurnTime.invoke(afurnace, new ItemStack(NetherBlocks.netherWood, 1, 1))));
-			afuels.add(new FuelPair(new ItemStack(NetherBlocks.netherWood, 1, 2), (Integer) getBurnTime.invoke(afurnace, new ItemStack(NetherBlocks.netherWood, 1, 2))));
+			afuels.add(new FuelPair(new ItemStack(ItemRegistry.NetherWoodCharcoal), (Integer) getBurnTime.invoke(afurnace, new ItemStack(ItemRegistry.NetherWoodCharcoal))));
+			afuels.add(new FuelPair(new ItemStack(BlockRegistry.netherWood, 1, 0), (Integer) getBurnTime.invoke(afurnace, new ItemStack(BlockRegistry.netherWood, 1, 0))));
+			afuels.add(new FuelPair(new ItemStack(BlockRegistry.netherWood, 1, 1), (Integer) getBurnTime.invoke(afurnace, new ItemStack(BlockRegistry.netherWood, 1, 1))));
+			afuels.add(new FuelPair(new ItemStack(BlockRegistry.netherWood, 1, 2), (Integer) getBurnTime.invoke(afurnace, new ItemStack(BlockRegistry.netherWood, 1, 2))));
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {

@@ -10,10 +10,10 @@ import net.minecraft.item.crafting.IRecipe;
 
 import org.lwjgl.opengl.GL11;
 
+import bstramke.NetherStuffs.Blocks.soulWorkBench.GuiSoulWorkBench;
+import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBenchRecipes;
+import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBenchShapedRecipes;
 import bstramke.NetherStuffs.Common.CommonProxy;
-import bstramke.NetherStuffs.SoulWorkBench.GuiSoulWorkBench;
-import bstramke.NetherStuffs.SoulWorkBench.SoulWorkBenchRecipes;
-import bstramke.NetherStuffs.SoulWorkBench.SoulWorkBenchShapedRecipes;
 import codechicken.core.ReflectionManager;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;

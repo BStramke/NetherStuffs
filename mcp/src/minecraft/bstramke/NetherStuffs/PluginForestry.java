@@ -7,18 +7,18 @@ import net.minecraft.command.ICommand;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.liquids.LiquidStack;
-import bstramke.NetherStuffs.Blocks.NetherBlocks;
-import bstramke.NetherStuffs.Blocks.NetherLeavesItemBlock;
-import bstramke.NetherStuffs.Blocks.NetherOre;
-import bstramke.NetherStuffs.Blocks.NetherOreItemBlock;
-import bstramke.NetherStuffs.Blocks.NetherPlankItemBlock;
-import bstramke.NetherStuffs.Blocks.NetherSapling;
-import bstramke.NetherStuffs.Blocks.NetherSaplingItemBlock;
-import bstramke.NetherStuffs.Blocks.NetherWoodItemBlock;
-import bstramke.NetherStuffs.Blocks.SoulBlockerItemBlock;
-import bstramke.NetherStuffs.Blocks.SoulDetectorItemBlock;
-import bstramke.NetherStuffs.Blocks.SoulSiphonItemBlock;
-import bstramke.NetherStuffs.Items.NetherItems;
+import bstramke.NetherStuffs.Blocks.BlockRegistry;
+import bstramke.NetherStuffs.Blocks.LeafItemBlock;
+import bstramke.NetherStuffs.Blocks.Ore;
+import bstramke.NetherStuffs.Blocks.OreItemBlock;
+import bstramke.NetherStuffs.Blocks.PlankItemBlock;
+import bstramke.NetherStuffs.Blocks.Sapling;
+import bstramke.NetherStuffs.Blocks.SaplingItemBlock;
+import bstramke.NetherStuffs.Blocks.WoodItemBlock;
+import bstramke.NetherStuffs.Blocks.soulBlocker.SoulBlockerItemBlock;
+import bstramke.NetherStuffs.Blocks.soulDetector.SoulDetectorItemBlock;
+import bstramke.NetherStuffs.Blocks.soulSiphon.SoulSiphonItemBlock;
+import bstramke.NetherStuffs.Items.ItemRegistry;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IGuiHandler;
 import forestry.api.core.IOreDictionaryHandler;
@@ -65,9 +65,9 @@ public class PluginForestry implements IPlugin {
 		liquidBiomass = ItemInterface.getItem("liquidBiomass");
 
 		if (RecipeManagers.fermenterManager != null) {
-			addFermenterRecipeSapling(new ItemStack(NetherBlocks.netherSapling, 1, NetherSapling.hellfire));
-			addFermenterRecipeSapling(new ItemStack(NetherBlocks.netherSapling, 1, 1));
-			addFermenterRecipeSapling(new ItemStack(NetherBlocks.netherSapling, 1, 2));
+			addFermenterRecipeSapling(new ItemStack(BlockRegistry.Sapling, 1, Sapling.hellfire));
+			addFermenterRecipeSapling(new ItemStack(BlockRegistry.Sapling, 1, 1));
+			addFermenterRecipeSapling(new ItemStack(BlockRegistry.Sapling, 1, 2));
 		}
 
 		/*
@@ -138,45 +138,45 @@ public class PluginForestry implements IPlugin {
 	}
 
 	private static void addBackpackItems() {
-		for (int i = 0; i < NetherOreItemBlock.getMetadataSize(); i++) {
-			if (i == NetherOre.netherOreCobblestone || i == NetherOre.netherStone)
+		for (int i = 0; i < OreItemBlock.getMetadataSize(); i++) {
+			if (i == Ore.netherOreCobblestone || i == Ore.netherStone)
 				continue;
-			BackpackManager.backpackItems[MINER].add(new ItemStack(NetherBlocks.netherOre, 1, i));
+			BackpackManager.backpackItems[MINER].add(new ItemStack(BlockRegistry.netherOre, 1, i));
 		}
-		BackpackManager.backpackItems[MINER].add(new ItemStack(NetherItems.NetherOreIngot, 1, 0));
+		BackpackManager.backpackItems[MINER].add(new ItemStack(ItemRegistry.NetherOreIngot, 1, 0));
 		
-		for (int i = 0; i < NetherSaplingItemBlock.getMetadataSize(); i++) {
-			BackpackManager.backpackItems[FORESTER].add(new ItemStack(NetherBlocks.netherSapling, 1, i));
+		for (int i = 0; i < SaplingItemBlock.getMetadataSize(); i++) {
+			BackpackManager.backpackItems[FORESTER].add(new ItemStack(BlockRegistry.Sapling, 1, i));
 		}
-		for (int i = 0; i < NetherLeavesItemBlock.getMetadataSize(); i++) {
-			BackpackManager.backpackItems[FORESTER].add(new ItemStack(NetherBlocks.netherLeaves, 1, i));
+		for (int i = 0; i < LeafItemBlock.getMetadataSize(); i++) {
+			BackpackManager.backpackItems[FORESTER].add(new ItemStack(BlockRegistry.netherLeaves, 1, i));
 		}
-		for (int i = 0; i < NetherWoodItemBlock.getMetadataSize(); i++){
-			BackpackManager.backpackItems[FORESTER].add(new ItemStack(NetherBlocks.netherWood, 1, i));
+		for (int i = 0; i < WoodItemBlock.getMetadataSize(); i++){
+			BackpackManager.backpackItems[FORESTER].add(new ItemStack(BlockRegistry.netherWood, 1, i));
 		}
 
-		for (int i = 0; i < NetherPlankItemBlock.getMetadataSize(); i++) {
-			BackpackManager.backpackItems[BUILDER].add(new ItemStack(NetherBlocks.netherPlank, 1, i));
+		for (int i = 0; i < PlankItemBlock.getMetadataSize(); i++) {
+			BackpackManager.backpackItems[BUILDER].add(new ItemStack(BlockRegistry.netherPlank, 1, i));
 		}
 		
 		for (int i = 0; i < SoulBlockerItemBlock.getMetadataSize(); i++) {
-			BackpackManager.backpackItems[BUILDER].add(new ItemStack(NetherBlocks.NetherSoulBlocker, 1, i));
+			BackpackManager.backpackItems[BUILDER].add(new ItemStack(BlockRegistry.SoulBlocker, 1, i));
 		}
 		
 		for (int i = 0; i< SoulDetectorItemBlock.getMetadataSize(); i++){
-			BackpackManager.backpackItems[BUILDER].add(new ItemStack(NetherBlocks.NetherSoulDetector, 1, i));
+			BackpackManager.backpackItems[BUILDER].add(new ItemStack(BlockRegistry.SoulDetector, 1, i));
 		}
 		
 		for (int i = 0; i< SoulSiphonItemBlock.getMetadataSize(); i++){
-			BackpackManager.backpackItems[BUILDER].add(new ItemStack(NetherBlocks.NetherSoulSiphon, 1, i));
+			BackpackManager.backpackItems[BUILDER].add(new ItemStack(BlockRegistry.SoulSiphon, 1, i));
 		}
 		
-		BackpackManager.backpackItems[BUILDER].add(new ItemStack(NetherBlocks.NetherDemonicFurnace));
-		BackpackManager.backpackItems[BUILDER].add(new ItemStack(NetherBlocks.netherSoulBomb));
-		BackpackManager.backpackItems[BUILDER].add(new ItemStack(NetherBlocks.NetherSoulGlassPane));
-		BackpackManager.backpackItems[BUILDER].add(new ItemStack(NetherBlocks.NetherSoulGlass));
-		BackpackManager.backpackItems[BUILDER].add(new ItemStack(NetherBlocks.netherSoulWorkBench));
-		BackpackManager.backpackItems[BUILDER].add(new ItemStack(NetherBlocks.NetherSoulFurnace));
+		BackpackManager.backpackItems[BUILDER].add(new ItemStack(BlockRegistry.DemonicFurnace));
+		BackpackManager.backpackItems[BUILDER].add(new ItemStack(BlockRegistry.SoulBomb));
+		BackpackManager.backpackItems[BUILDER].add(new ItemStack(BlockRegistry.SoulGlassPane));
+		BackpackManager.backpackItems[BUILDER].add(new ItemStack(BlockRegistry.SoulGlass));
+		BackpackManager.backpackItems[BUILDER].add(new ItemStack(BlockRegistry.SoulWorkBench));
+		BackpackManager.backpackItems[BUILDER].add(new ItemStack(BlockRegistry.SoulFurnace));
 		//BackpackManager.backpackItems[ADVENTURER].add(new ItemStack(NetherItems.torchArrow));
 	}
 

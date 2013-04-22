@@ -420,7 +420,7 @@ public abstract class GuiContainer extends GuiScreen
 
         if (itemstack == null)
         {
-            Icon icon = par1Slot.getBackgroundIconIndex();
+            Icon icon = par1Slot.getBackgrounditemIcon();
 
             if (icon != null)
             {
