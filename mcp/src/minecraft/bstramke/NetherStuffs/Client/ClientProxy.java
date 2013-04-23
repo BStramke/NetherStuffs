@@ -1,6 +1,10 @@
 package bstramke.NetherStuffs.Client;
 
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.liquids.LiquidDictionary;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.soulBomb.EntitySoulBombPrimed;
 import bstramke.NetherStuffs.Blocks.soulEngine.TileSoulEngine;
 import bstramke.NetherStuffs.Client.Renderers.FluidRender;
@@ -10,21 +14,25 @@ import bstramke.NetherStuffs.Client.Renderers.RenderSoulEngine;
 import bstramke.NetherStuffs.Client.Renderers.RenderTorchArrow;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Items.EntityTorchArrow;
+import bstramke.NetherStuffs.Liquids.LiquidStill;
+import bstramke.NetherStuffs.Liquids.LiquidTextureLogic;
+import codechicken.core.render.RenderUtils;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerRenderThings() {
-		RenderingRegistry.registerBlockHandler(new NetherOreRenderingHelper());		
+		RenderingRegistry.registerBlockHandler(new NetherOreRenderingHelper());
 		RenderingRegistry.registerEntityRenderingHandler(EntityTorchArrow.class, new RenderTorchArrow());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySoulBombPrimed.class, new RenderSoulBombPrimed());
 		RenderingRegistry.registerBlockHandler(new FluidRender());
-		
-		if(NetherStuffs.bBuildcraftAvailable)
-		{
+
+		if (NetherStuffs.bBuildcraftAvailable) {
 			ClientRegistry.bindTileEntitySpecialRenderer(TileSoulEngine.class, new RenderSoulEngine());
-			RenderingRegistry.registerBlockHandler(new RenderSoulEngine(CommonProxy.GFXFOLDERPREFIX+"base_soulengine.png"));
+			RenderingRegistry.registerBlockHandler(new RenderSoulEngine(CommonProxy.GFXFOLDERPREFIX + "base_soulengine.png"));
 		}
 	}
 }

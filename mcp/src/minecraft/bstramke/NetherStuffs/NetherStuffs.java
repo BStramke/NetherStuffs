@@ -69,6 +69,7 @@ import bstramke.NetherStuffs.Blocks.soulSiphon.TileSoulSiphon;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBenchRecipes;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.TileSoulWorkBench;
 import bstramke.NetherStuffs.Client.ClientPacketHandler;
+import bstramke.NetherStuffs.Client.ClientProxy;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.GuiHandler;
 import bstramke.NetherStuffs.Common.NetherStuffsFuel;
@@ -731,7 +732,7 @@ public class NetherStuffs extends DummyModContainer {
 
 		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(BlockRegistry.LiquidStill.blockID, LiquidContainerRegistry.BUCKET_VOLUME, 0));
 		DemonicIngotLiquid = LiquidDictionary.getOrCreateLiquid("Molten DemonicIngot", new LiquidStack(BlockRegistry.LiquidStill.blockID, LiquidContainerRegistry.BUCKET_VOLUME, 1));
-
+		
 		registerWorldGenerators();
 		initRecipes();
 		initDecorativeBlocks();

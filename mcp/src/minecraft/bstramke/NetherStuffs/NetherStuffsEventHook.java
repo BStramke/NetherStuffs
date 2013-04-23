@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityGhast;
@@ -14,9 +17,12 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.liquids.LiquidDictionary;
+import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.soulBlocker.TileSoulBlocker;
 import bstramke.NetherStuffs.Common.PlayerDummy;
 
@@ -75,6 +81,14 @@ public class NetherStuffsEventHook {
 			}
 		}
 	}
+	
+	@ForgeSubscribe
+	@SideOnly(Side.CLIENT)
+	public void textureHook(TextureStitchEvent.Post event) {
+		LiquidDictionary.getCanonicalLiquid(NetherStuffs.SoulEnergyLiquid).setTextureSheet("/terrain.png").setRenderingIcon(BlockRegistry.LiquidStill.getIcon(0,0));
+		LiquidDictionary.getCanonicalLiquid(NetherStuffs.DemonicIngotLiquid).setTextureSheet("/terrain.png").setRenderingIcon(BlockRegistry.LiquidStill.getIcon(0,1));
+	}
+	
 /*
 	@ForgeSubscribe
 	public void entitySpawnInWorldEvent(EntityJoinWorldEvent event) {
