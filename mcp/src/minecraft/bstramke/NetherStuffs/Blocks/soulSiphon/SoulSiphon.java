@@ -84,13 +84,13 @@ public class SoulSiphon extends BlockContainerBase {
 
 	@Override
 	public int damageDropped(int meta) {
-		return meta;
+		return unmarkedMetadata(meta);
 	}
 
-	@Override
+	/*@Override
 	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
 		return super.canConnectRedstone(world, x, y, z, side);
-	}
+	}*/
 
 	@SideOnly(Side.CLIENT)
 	@Override
