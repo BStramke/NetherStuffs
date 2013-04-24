@@ -77,7 +77,7 @@ public class ItemRegistry {
 
 	public static final Item NetherDemonicBarHandle = new DemonicBarHandle(NetherStuffs.NetherDemonicBarHandleItemId);
 	public static final Item NetherWoodStick = new NetherWoodStick(NetherStuffs.NetherWoodStickItemId);
-	public static final Item NetherStoneBowl = new NetherstoneBowl(NetherStuffs.NetherStoneBowlItemId);
+	public static final Item NetherStoneBowl = new StoneBowl(NetherStuffs.NetherStoneBowlItemId);
 	public static final Item NetherSoulGlassBottleItem = new SoulGlassBottle(NetherStuffs.NetherSoulGlassBottleItemId);
 
 	public static final Item NetherBow = new TorchBow(NetherStuffs.NetherBowItemId);

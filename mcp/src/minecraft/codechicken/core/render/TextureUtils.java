@@ -36,7 +36,7 @@ public class TextureUtils
         }
         
         @Override
-        public void registerIcons(IconRegister par1IconRegister)
+        public void updateIcons(IconRegister par1IconRegister)
         {
             for(IIconRegister r : iconRegistrars)
                 r.registerIcons(par1IconRegister);
