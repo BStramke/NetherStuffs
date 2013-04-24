@@ -19,13 +19,14 @@ public class GuiSoulSiphon extends GuiContainerSoulTank {
 	private TileSoulSiphon tile_entity;
 
 	public GuiSoulSiphon(InventoryPlayer player_inventory, TileSoulSiphon tile_entity) {
-		super(tile_entity, new ContainerSoulSiphon(tile_entity, player_inventory), new Point(12,37), new Point(28,69));
+		super(tile_entity, new ContainerSoulSiphon(tile_entity, player_inventory), new Point(12, 37), new Point(28, 69));
 		this.tile_entity = tile_entity;
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		switch (tile_entity.blockMetadata) {
+		
+		switch (tile_entity.getBlockMetadata()) {
 		case SoulSiphon.mk1:
 			this.fontRenderer.drawString("Soul Siphon MK 1", 38, 6, 4210752);
 			break;
@@ -38,6 +39,8 @@ public class GuiSoulSiphon extends GuiContainerSoulTank {
 		case SoulSiphon.mk4:
 			this.fontRenderer.drawString("Soul Siphon MK 4", 38, 6, 4210752);
 			break;
+		default:
+			this.fontRenderer.drawString("Soul Siphon", 38, 6, 4210752);
 		}
 
 		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
@@ -50,7 +53,7 @@ public class GuiSoulSiphon extends GuiContainerSoulTank {
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
-		
+
 		drawTankScale();
 	}
 }

@@ -30,7 +30,7 @@ import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecialInventory, ISidedInventory  {
+public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecialInventory, ISidedInventory {
 	private static int nTickCounter = 0;
 	public int nTankFillSlot = 1;
 	public int nTankDrainSlot = 0;
@@ -142,78 +142,85 @@ public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecial
 		if (!this.worldObj.isRemote) {
 			fillFuelToTank();
 
-			nTickCounter++;
-			if (nTickCounter % 40 == 0) {
-				nTickCounter = 0;
-				int nMeta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-				if (this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
-					if (!SoulSiphon.isActiveSet(nMeta))
-						this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, SoulSiphon.setActiveOnMetadata(nMeta), BlockNotifyType.ALL);
-					int nRange;
-					switch (SoulSiphon.unmarkedMetadata(nMeta)) {
-					case SoulSiphon.mk1:
-						nRange = 4;
-						break;
-					case SoulSiphon.mk2:
-						nRange = 8;
-						break;
-					case SoulSiphon.mk3:
-					case SoulSiphon.mk4:
-						nRange = 12;
-						break;
-					default:
-						nRange = 4;
-					}
-					int nRangeUp = nRange;
-					int nRangeDown = nRange;
-					int nRangeNorth = nRange;
-					int nRangeSouth = nRange;
-					int nRangeEast = nRange;
-					int nRangeWest = nRange;
+			int nMeta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+			if (this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
+				if (!SoulSiphon.isActiveSet(nMeta))
+					this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, SoulSiphon.setActiveOnMetadata(nMeta), BlockNotifyType.ALL);
 
-					Integer nLowerX = xCoord - nRangeWest;
-					Integer nLowerY = yCoord - nRangeDown;
-					Integer nLowerZ = zCoord - nRangeNorth;
-					Integer nUpperX = xCoord + nRangeEast + 1;
-					Integer nUpperY = yCoord + nRangeUp + 1;// height has to be 1 more for upwards detection (detects Head Position)
-					Integer nUpperZ = zCoord + nRangeSouth + 1;
+				doSiphoning(SoulSiphon.unmarkedMetadata(nMeta));
 
-					AxisAlignedBB axis = AxisAlignedBB.getAABBPool().getAABB(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ);
-					List tmp = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity) null, axis);
-
-					List results = new ArrayList(); // this could be a boolean, but maybe we want a count based detection, like, if 5 Pigs...
-					Iterator it = tmp.iterator();
-
-					while (it.hasNext()) {
-						Object data = it.next();
-						if (data instanceof EntityLiving && !(data instanceof EntityPlayerMP) && !(data instanceof EntityPlayer) && !(data instanceof EntityVillager)) {
-							((EntityLiving) data).experienceValue = 0;
-							if (data instanceof EntityAnimal) {
-								((EntityLiving) data).attackEntityFrom(DamageSource.generic, 1);
-							} else {
-								((EntityLiving) data).attackEntityFrom(
-										new EntityDamageSource("generic", NetherStuffsEventHook.getPlayerDummyForDimension(this.worldObj.provider.dimensionId)), 2);
-							}
-						} else {
-							it.remove();
-						}
-					}
-
-					if (!tmp.isEmpty()) {
-						int nSiphonAmount = tmp.size();
-						if (nMeta == SoulSiphon.mk4)
-							nSiphonAmount = (int) (nSiphonAmount * 1.25F); // MK4 gets a Bonus on Siphoned amount
-
-						nSiphonAmount *= 10;
-						this.addFuelToTank(nSiphonAmount);
-					}
-				} else {
-					if (SoulSiphon.isActiveSet(nMeta))
-						this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, SoulSiphon.clearActiveOnMetadata(nMeta), BlockNotifyType.ALL);
-				}
+			} else {
+				if (SoulSiphon.isActiveSet(nMeta))
+					this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, SoulSiphon.clearActiveOnMetadata(nMeta), BlockNotifyType.ALL);
 			}
+
 		}
 		fillFuelToBottle();
+	}
+
+	private void doSiphoning(int nUnmarkedMeta) {
+		nTickCounter++;
+		if (nTickCounter >= 40) {
+			nTickCounter = 0;
+			int nRange;
+			switch (nUnmarkedMeta) {
+			case SoulSiphon.mk1:
+				nRange = 4;
+				break;
+			case SoulSiphon.mk2:
+				nRange = 8;
+				break;
+			case SoulSiphon.mk3:
+			case SoulSiphon.mk4:
+				nRange = 12;
+				break;
+			default:
+				nRange = 4;
+			}
+			int nRangeUp = nRange;
+			int nRangeDown = nRange;
+			int nRangeNorth = nRange;
+			int nRangeSouth = nRange;
+			int nRangeEast = nRange;
+			int nRangeWest = nRange;
+
+			Integer nLowerX = xCoord - nRangeWest;
+			Integer nLowerY = yCoord - nRangeDown;
+			Integer nLowerZ = zCoord - nRangeNorth;
+			Integer nUpperX = xCoord + nRangeEast + 1;
+			Integer nUpperY = yCoord + nRangeUp + 1;// height has to be 1 more for upwards detection (detects Head Position)
+			Integer nUpperZ = zCoord + nRangeSouth + 1;
+
+			AxisAlignedBB axis = AxisAlignedBB.getAABBPool().getAABB(nLowerX, nLowerY, nLowerZ, nUpperX, nUpperY, nUpperZ);
+			List tmp = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity) null, axis);
+
+			List results = new ArrayList(); // this could be a boolean, but maybe we want a count based detection, like, if 5 Pigs...
+			Iterator it = tmp.iterator();
+
+			while (it.hasNext()) {
+				Object data = it.next();
+				if (data instanceof EntityLiving && !(data instanceof EntityPlayerMP) && !(data instanceof EntityPlayer) && !(data instanceof EntityVillager)) {
+					((EntityLiving) data).experienceValue = 0;
+					if (data instanceof EntityAnimal) {
+						((EntityLiving) data).attackEntityFrom(DamageSource.generic, 1);
+					} else {
+						((EntityLiving) data)
+								.attackEntityFrom(new EntityDamageSource("generic", NetherStuffsEventHook.getPlayerDummyForDimension(this.worldObj.provider.dimensionId)), 2);
+					}
+				} else {
+					it.remove();
+				}
+			}
+
+			if (!tmp.isEmpty()) {
+				int nSiphonAmount = tmp.size();
+				if (nUnmarkedMeta == SoulSiphon.mk4)
+					nSiphonAmount = (int) (nSiphonAmount * 1.25F); // MK4 gets a Bonus on Siphoned amount
+
+				nSiphonAmount *= 10;
+				this.addFuelToTank(nSiphonAmount);
+			}
+		}
 	}
 
 	private void fillFuelToBottle() {
@@ -308,7 +315,7 @@ public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecial
 		else if (par1 == BlockRegistry.sideBottom)
 			return new int[] { nTankDrainSlot };
 		else
-			return new int[] { nTankFillSlot }; //sides
+			return new int[] { nTankFillSlot }; // sides
 	}
 
 	/**
@@ -324,16 +331,16 @@ public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecial
 	 */
 	@Override
 	public boolean func_102008_b(int slot, ItemStack par2ItemStack, int side) {
-		
-		if(side == BlockRegistry.sideTop && slot == nTankFillSlot)
+
+		if (side == BlockRegistry.sideTop && slot == nTankFillSlot)
 			return true;
-		
-		if(side == BlockRegistry.sideBottom && slot == nTankDrainSlot) //bottom gets the output slot
+
+		if (side == BlockRegistry.sideBottom && slot == nTankDrainSlot) // bottom gets the output slot
 			return true;
-		
-		if(side != BlockRegistry.sideTop && slot != BlockRegistry.sideBottom && slot == nTankFillSlot) //enables output from sides of the tankfillslot
+
+		if (side != BlockRegistry.sideTop && slot != BlockRegistry.sideBottom && slot == nTankFillSlot) // enables output from sides of the tankfillslot
 			return true;
-		
+
 		return false;
 	}
 }

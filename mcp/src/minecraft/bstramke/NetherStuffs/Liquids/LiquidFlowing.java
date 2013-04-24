@@ -22,7 +22,7 @@ public class LiquidFlowing extends LiquidBase implements ILiquid {
 
 	public LiquidFlowing(int par1, Material par2Material) {
 		super(par1, par2Material);
-		this.setCreativeTab(CreativeTabs.tabMaterials);
+		//this.setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
 	@Override
@@ -36,13 +36,13 @@ public class LiquidFlowing extends LiquidBase implements ILiquid {
 		((LiquidTextureLogic) world.getBlockTileEntity(x, y, z)).setLiquidType(par9);
 		return 0;
 	}
-	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List list) {
 		for(int i = 0; i < LiquidItemBlock.blockNames.length; i ++)
 			list.add(new ItemStack(par1, 1, i));
-	}
+	}*/
 
 	private void updateFlow(World world, int x, int y, int z) {
 		// System.out.println("x: "+x+", y: "+y+", z: "+z);
