@@ -38,7 +38,7 @@ public abstract class GuiContainerSoulTank extends GuiContainer {
 	public void drawTankScale() {
 		int TopX = (this.width - this.xSize) / 2 + TankTopXpos;
 		int TopY = (this.height - this.ySize) / 2 + TankTopYpos;
-
+		
 		int nBottomLeftY = TopY + TankHeight;
 
 		int nFillState = tile.getFillingScaled(TankHeight);

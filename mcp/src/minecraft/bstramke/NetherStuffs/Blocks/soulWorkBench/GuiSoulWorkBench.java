@@ -17,18 +17,18 @@ import bstramke.NetherStuffs.Items.ItemRegistry;
 
 public class GuiSoulWorkBench extends GuiContainerSoulTank {
 
-	private int ySize = 178;
 	private TileSoulWorkBench benchInventory;
 
 	public GuiSoulWorkBench(InventoryPlayer player_inventory, TileSoulWorkBench tile_entity) {
 		super(tile_entity, new ContainerSoulWorkBench(tile_entity, player_inventory), new Point(12,37), new Point(28,69));
 		this.benchInventory = tile_entity;
+		ySize = 178;
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		this.fontRenderer.drawString("Soul Workbench", 38, 0, 4210752);
-		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2 - 4, 4210752);
+		this.fontRenderer.drawString("Soul Workbench", 38, 6, 4210752);
+		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
@@ -38,15 +38,14 @@ public class GuiSoulWorkBench extends GuiContainerSoulTank {
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
-		int var7;
 
-		var7 = this.benchInventory.getProgressScaled(24);
+		drawTankScale();
+		
+		int var7 = this.benchInventory.getProgressScaled(24);
 		this.drawTexturedModalRect(var5 + 106, var6 + 34, this.ySize, 0, var7, 16);
 		
 		int nRequired = this.benchInventory.getSoulEnergyRequired();
 		if (nRequired > 0)
-			fontRenderer.drawString("+ " + nRequired + " Energy", var5 + 39, var6 + 72, 0x000000);
-		
-		drawTankScale();
+			fontRenderer.drawString("+ " + nRequired + " Energy", var5 + 39, var6 + 72, 0x000000);		
 	}
 }

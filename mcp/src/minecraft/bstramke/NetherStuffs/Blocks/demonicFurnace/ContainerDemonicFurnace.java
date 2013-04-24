@@ -4,16 +4,15 @@ import java.util.Iterator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Common.ContainerWithPlayerInventory;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ContainerDemonicFurnace extends Container {
+public class ContainerDemonicFurnace extends ContainerWithPlayerInventory {
 	protected TileDemonicFurnace furnace;
 	private int lastCookTime = 0;
 	private int lastBurnTime = 0;
@@ -32,21 +31,6 @@ public class ContainerDemonicFurnace extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return furnace.isUseableByPlayer(player);
-	}
-
-	protected void bindPlayerInventory(InventoryPlayer player_inventory) {
-		int var3;
-
-		for (var3 = 0; var3 < 3; ++var3) {
-			for (int var4 = 0; var4 < 9; ++var4) {
-				this.addSlotToContainer(new Slot(player_inventory, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
-			}
-		}
-
-		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player_inventory, var3, 8 + var3 * 18, 142));
-		}
-
 	}
 
 	/**
