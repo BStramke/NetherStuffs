@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.BlockContainerBase;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
+import bstramke.NetherStuffs.Common.BlockActiveHelper;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -34,26 +35,6 @@ public class NetherSoulFurnace extends BlockContainerBase {
 	private Icon icoFurnaceSide;
 	private Icon icoFurnaceFrontInactive;
 	private Icon icoFurnaceFrontActive;
-
-	private static final int METADATA_BITMASK = 0x7;
-	private static final int METADATA_ACTIVEBIT = 0x8;
-	private static final int METADATA_CLEARACTIVEBIT = -METADATA_ACTIVEBIT - 1;
-
-	public static int clearActiveOnMetadata(int metadata) {
-		return metadata & METADATA_CLEARACTIVEBIT;
-	}
-
-	public static boolean isActiveSet(int metadata) {
-		return (metadata & METADATA_ACTIVEBIT) != 0;
-	}
-
-	public static int setActiveOnMetadata(int metadata) {
-		return metadata | METADATA_ACTIVEBIT;
-	}
-
-	public static int unmarkedMetadata(int metadata) {
-		return metadata & METADATA_BITMASK;
-	}
 
 	public NetherSoulFurnace(int par1) {
 		super(par1, Material.rock);
@@ -94,9 +75,9 @@ public class NetherSoulFurnace extends BlockContainerBase {
 		case BlockRegistry.sideTop:
 			return icoFurnaceTop; // top
 		default: {
-				if(side == unmarkedMetadata(meta))
+				if(side == BlockActiveHelper.unmarkedMetadata(meta))
 				{
-					if (this.isActiveSet(meta))
+					if (BlockActiveHelper.isActiveSet(meta))
 						return icoFurnaceFrontActive;
 					else
 						return icoFurnaceFrontInactive;
@@ -185,7 +166,7 @@ public class NetherSoulFurnace extends BlockContainerBase {
 	@Override
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		if (this.isActive(par1World, par2, par3, par4)) {
-			int var6 = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
+			int var6 = BlockActiveHelper.unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
 			float var7 = (float) par2 + 0.5F;
 			float var8 = (float) par3 + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
 			float var9 = (float) par4 + 0.5F;
@@ -210,7 +191,7 @@ public class NetherSoulFurnace extends BlockContainerBase {
 
 	private boolean isActive(World par1World, int par2, int par3, int par4) {
 		int meta = par1World.getBlockMetadata(par2, par3, par4);
-		if (isActiveSet(meta))
+		if (BlockActiveHelper.isActiveSet(meta))
 			return true;
 		else
 			return false;
@@ -218,7 +199,7 @@ public class NetherSoulFurnace extends BlockContainerBase {
 
 	private boolean isActive(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
 		int meta = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-		if (isActiveSet(meta))
+		if (BlockActiveHelper.isActiveSet(meta))
 			return true;
 		else
 			return false;

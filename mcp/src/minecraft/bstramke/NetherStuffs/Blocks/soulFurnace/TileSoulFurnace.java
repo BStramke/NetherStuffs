@@ -1,23 +1,16 @@
 package bstramke.NetherStuffs.Blocks.soulFurnace;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.ILiquidTank;
-import net.minecraftforge.liquids.ITankContainer;
-import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidTank;
-import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.demonicFurnace.DemonicFurnaceRecipes;
+import bstramke.NetherStuffs.Common.BlockActiveHelper;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.SoulEnergyTankTileEntity;
-import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
@@ -146,9 +139,7 @@ public class TileSoulFurnace extends SoulEnergyTankTileEntity implements ISpecia
 			if (this.canSmelt() && this.getCurrentTankLevel() > 10) {
 				++this.furnaceCookTime;
 
-				if (this.furnaceCookTime % 13 == 0) // every 13 Ticks needs 10
-					// energy, 15 energy for
-					// each smelting
+				if (this.furnaceCookTime % 13 == 0) // every 13 Ticks needs 10 energy, 15 energy for each smelting
 					this.setCurrentTankLevel(this.getCurrentTankLevel() - 10);
 
 				if (this.furnaceCookTime == nTicksToComplete) {
@@ -161,18 +152,16 @@ public class TileSoulFurnace extends SoulEnergyTankTileEntity implements ISpecia
 					var2 = true;
 				}
 			} else {
-				this.furnaceCookTime = 0; // basically its ran out of fuel or
-				// something in the inventory
-				// changed
+				this.furnaceCookTime = 0; // basically its ran out of fuel or something in the inventory changed
 			}
 
 			if (bActive != this.furnaceCookTime > 0) {
 				var2 = true;
-				int metadata = NetherSoulFurnace.unmarkedMetadata(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
+				int metadata = BlockActiveHelper.unmarkedMetadata(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
 				if (this.furnaceCookTime > 0)
-					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherSoulFurnace.setActiveOnMetadata(metadata), BlockNotifyType.ALL);
+					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, BlockActiveHelper.setActiveOnMetadata(metadata), BlockNotifyType.ALL);
 				else
-					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, NetherSoulFurnace.clearActiveOnMetadata(metadata), BlockNotifyType.ALL);
+					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, BlockActiveHelper.clearActiveOnMetadata(metadata), BlockNotifyType.ALL);
 			}
 		}
 

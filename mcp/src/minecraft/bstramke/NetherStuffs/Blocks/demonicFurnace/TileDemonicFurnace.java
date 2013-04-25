@@ -1,7 +1,6 @@
 package bstramke.NetherStuffs.Blocks.demonicFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,10 +10,9 @@ import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.Wood;
 import bstramke.NetherStuffs.Blocks.WoodItemBlock;
+import bstramke.NetherStuffs.Common.BlockActiveHelper;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
-import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.NetherCharcoal;
-import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -178,11 +176,11 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory,
 
 			if (var1 != this.furnaceBurnTime > 0) {
 				var2 = true;
-				int metadata = DemonicFurnace.unmarkedMetadata(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
+				int metadata = BlockActiveHelper.unmarkedMetadata(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
 				if (this.furnaceBurnTime > 0)
-					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, DemonicFurnace.setActiveOnMetadata(metadata), BlockNotifyType.ALL);
+					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, BlockActiveHelper.setActiveOnMetadata(metadata), BlockNotifyType.ALL);
 				else
-					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, DemonicFurnace.clearActiveOnMetadata(metadata), BlockNotifyType.ALL);
+					this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, BlockActiveHelper.clearActiveOnMetadata(metadata), BlockNotifyType.ALL);
 			}
 		}
 
