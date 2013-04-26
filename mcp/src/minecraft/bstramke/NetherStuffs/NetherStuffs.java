@@ -69,18 +69,17 @@ import bstramke.NetherStuffs.Blocks.soulSiphon.TileSoulSiphon;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBenchRecipes;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.TileSoulWorkBench;
 import bstramke.NetherStuffs.Client.ClientPacketHandler;
-import bstramke.NetherStuffs.Client.ClientProxy;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.GuiHandler;
 import bstramke.NetherStuffs.Common.NetherStuffsFuel;
 import bstramke.NetherStuffs.Common.ServerPacketHandler;
 import bstramke.NetherStuffs.Common.Materials.NetherMaterials;
-import bstramke.NetherStuffs.Items.EntityTorchArrow;
 import bstramke.NetherStuffs.Items.DemonicGear;
+import bstramke.NetherStuffs.Items.EntityTorchArrow;
 import bstramke.NetherStuffs.Items.ItemRegistry;
+import bstramke.NetherStuffs.Items.NetherCharcoal;
 import bstramke.NetherStuffs.Items.PotionBottle;
 import bstramke.NetherStuffs.Items.PotionBowl;
-import bstramke.NetherStuffs.Items.NetherCharcoal;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import bstramke.NetherStuffs.Liquids.LiquidItemBlock;
 import bstramke.NetherStuffs.Liquids.LiquidTextureLogic;
@@ -186,6 +185,8 @@ public class NetherStuffs extends DummyModContainer {
 
 	public static int LiquidBlockFlowingId;
 	public static int LiquidBlockStillId;
+	
+	public static int NetherLampBlockId;
 
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 	private static boolean IncreaseNetherrackHardness;
@@ -293,6 +294,8 @@ public class NetherStuffs extends DummyModContainer {
 
 		LiquidBlockFlowingId = config.getBlock(Configuration.CATEGORY_BLOCK, "LiquidFlowing", 1261).getInt(1261);
 		LiquidBlockStillId = config.getBlock(Configuration.CATEGORY_BLOCK, "LiquidStill", 1262).getInt(1262);
+		
+		NetherLampBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "NetherLamp", 1263).getInt(1263);
 
 		NetherOreIngotItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherIngots", 5200).getInt(5200);
 		NetherDemonicBarHandleItemId = config.getItem(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5201).getInt(5201);
@@ -664,6 +667,8 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(BlockRegistry.SoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(BlockRegistry.SoulWorkBench, "NetherSoulWorkBench");
 
+		GameRegistry.registerBlock(BlockRegistry.Lamp, "NetherLamp");
+		
 		GameRegistry.registerBlock(BlockRegistry.netherOre, OreItemBlock.class, "NetherOreItemBlock");
 		GameRegistry.registerBlock(BlockRegistry.netherWood, WoodItemBlock.class, "NetherWoodItemBlock");
 		GameRegistry.registerBlock(BlockRegistry.netherPlank, PlankItemBlock.class, "NetherPlankItemBlock");
