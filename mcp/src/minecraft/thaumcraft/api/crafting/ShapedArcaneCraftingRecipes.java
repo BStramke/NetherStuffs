@@ -5,6 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApiHelper;
 
 public class ShapedArcaneCraftingRecipes implements IArcaneRecipe
@@ -113,7 +114,7 @@ public class ShapedArcaneCraftingRecipes implements IArcaneRecipe
                         return false;
                     }
 
-                    if (var9.getItemDamage() != -1 && var9.getItemDamage() != var10.getItemDamage())
+                    if (var9.getItemDamage() != OreDictionary.WILDCARD_VALUE && var9.getItemDamage() != var10.getItemDamage())
                     {
                         return false;
                     }

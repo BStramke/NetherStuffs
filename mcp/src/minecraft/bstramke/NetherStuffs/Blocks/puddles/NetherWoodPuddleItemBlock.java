@@ -1,6 +1,11 @@
 package bstramke.NetherStuffs.Blocks.puddles;
 
+import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
