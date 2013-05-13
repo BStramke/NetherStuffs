@@ -17,19 +17,17 @@ import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
 
 public abstract class SoulEnergyTankTileEntity extends TileEntity implements ISoulEnergyTank, ISidedInventory, ITankContainer {
-	private int maxTankLevel = 0;
 	private LiquidTank tank;
 
 	public SoulEnergyTankTileEntity(int MaxTankLevel) {
-		maxTankLevel = MaxTankLevel;
-		tank = new LiquidTank(maxTankLevel);
+		tank = new LiquidTank(MaxTankLevel);
 	}
 
 	public abstract void fillFuelToTank();
 
 	@Override
 	public final int getMaxTankLevel() {
-		return maxTankLevel;
+		return tank.getCapacity();
 	}
 
 	@Override
@@ -138,8 +136,8 @@ public abstract class SoulEnergyTankTileEntity extends TileEntity implements ISo
 	}
 
 	@Override
-	public final void openChest() {}
+	public void openChest() {}
 
 	@Override
-	public final void closeChest() {}
+	public void closeChest() {}
 }

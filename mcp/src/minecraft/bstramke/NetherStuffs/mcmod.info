@@ -2,7 +2,7 @@
   "modid": "NetherStuffs",
   "name": "NetherStuffs",
   "description": "Extending the Nether and adding Hellish stuff",
-  "version": "0.17.1",
+  "version": "0.17.4",
   "credits": "Created by BStramke",
   "logoFile": "",
   "mcversion": "",
@@ -11,5 +11,5 @@
   "authors": [ "BStramke" ],
   "parent":"",
   "screenshots": [],
-  "dependencies": ["mod_MinecraftForge"]
+  "dependencies": ["Thaumcraft","Forestry","BuildCraft|Core","TConstruct","HarkenScythe_Core"]
 }]

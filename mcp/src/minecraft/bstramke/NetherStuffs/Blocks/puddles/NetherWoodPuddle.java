@@ -1,8 +1,12 @@
 package bstramke.NetherStuffs.Blocks.puddles;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
@@ -14,6 +18,8 @@ import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.Wood;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.Materials.NetherMaterials;
+import bstramke.NetherStuffs.Items.ItemRegistry;
+import bstramke.NetherStuffs.Items.PotionBottle;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -63,6 +69,17 @@ public class NetherWoodPuddle extends BlockContainerBase {
 		}
 	}
 
+	@Override
+	public void onBlockAdded(World world, int x, int y, int z) {
+		TileEntity tile_entity = world.getBlockTileEntity(x, y, z);
+
+		if(tile_entity instanceof TileNetherWoodPuddle)
+		{
+			((TileNetherWoodPuddle)tile_entity).setPuddleDirection(world.rand);
+		}
+		
+	}
+	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public Icon getBlockTexture(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) {
@@ -134,5 +151,60 @@ public class NetherWoodPuddle extends BlockContainerBase {
 	@Override
 	public TileEntity createNewTileEntity(World var1) {
 		return new TileNetherWoodPuddle();
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int i, float f, float g, float t) {
+		TileEntity tile_entity = world.getBlockTileEntity(x, y, z);
+
+		if (tile_entity == null || player.isSneaking()) {
+			return false;
+		}
+
+		if(tile_entity instanceof TileNetherWoodPuddle)
+		{
+			ItemStack heldItemStack = player.getHeldItem();
+			if(heldItemStack == null)
+				return false;
+			
+			if(heldItemStack.isItemEqual(new ItemStack(ItemRegistry.NetherSoulGlassBottleItem, 1, 0)) == false)
+				return false;
+						
+			if (((TileNetherWoodPuddle)tile_entity).harvestPuddle()) {
+				int meta = world.getBlockMetadata(x, y, z) & 3;
+				int bottleMetaData = 0;
+				switch (meta) {
+				case Wood.hellfire:
+					bottleMetaData = PotionBottle.hellfire;
+					break;
+				case Wood.acid:
+					bottleMetaData = PotionBottle.acid;
+					break;
+				case Wood.death:
+					bottleMetaData = PotionBottle.death;
+					break;
+				default:
+					return false; // --> as this means its a unknown type, exit
+				}
+				
+				--heldItemStack.stackSize;
+				
+				if (!player.inventory.addItemStackToInventory(new ItemStack(ItemRegistry.NetherPotionBottle.itemID, 1, bottleMetaData))) {
+					player.dropPlayerItem(new ItemStack(ItemRegistry.NetherPotionBottle.itemID, 1, bottleMetaData));
+				}
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void getSubBlocks(int par1, CreativeTabs tab, List list) {
+		for (int metaNumber = 0; metaNumber < NetherWoodPuddleItemBlock.getMetadataSize(); metaNumber++) {
+			list.add(new ItemStack(par1, 1, metaNumber));
+		}
 	}
 }

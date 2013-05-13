@@ -3,8 +3,9 @@ package bstramke.NetherStuffs;
 import java.util.HashMap;
 import java.util.List;
 
-import mods.tinker.tconstruct.crafting.LiquidCasting;
-import mods.tinker.tconstruct.crafting.Smeltery;
+import mods.tinker.tconstruct.library.TConstructRegistry;
+import mods.tinker.tconstruct.library.crafting.LiquidCasting;
+import mods.tinker.tconstruct.library.crafting.Smeltery;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -69,18 +70,17 @@ import bstramke.NetherStuffs.Blocks.soulSiphon.TileSoulSiphon;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBenchRecipes;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.TileSoulWorkBench;
 import bstramke.NetherStuffs.Client.ClientPacketHandler;
-import bstramke.NetherStuffs.Client.ClientProxy;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.GuiHandler;
 import bstramke.NetherStuffs.Common.NetherStuffsFuel;
 import bstramke.NetherStuffs.Common.ServerPacketHandler;
 import bstramke.NetherStuffs.Common.Materials.NetherMaterials;
-import bstramke.NetherStuffs.Items.EntityTorchArrow;
 import bstramke.NetherStuffs.Items.DemonicGear;
+import bstramke.NetherStuffs.Items.EntityTorchArrow;
 import bstramke.NetherStuffs.Items.ItemRegistry;
+import bstramke.NetherStuffs.Items.NetherCharcoal;
 import bstramke.NetherStuffs.Items.PotionBottle;
 import bstramke.NetherStuffs.Items.PotionBowl;
-import bstramke.NetherStuffs.Items.NetherCharcoal;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import bstramke.NetherStuffs.Liquids.LiquidItemBlock;
 import bstramke.NetherStuffs.Liquids.LiquidTextureLogic;
@@ -105,7 +105,9 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "0.17.1", modid = "NetherStuffs")
+@Mod(name = "NetherStuffs", version = "0.17.4", modid = "NetherStuffs",
+		dependencies = "after:Thaumcraft;after:Forestry;after:BuildCraft|Core;after:TConstruct;after:HarkenScythe_Core;"
+)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
 public class NetherStuffs extends DummyModContainer {
 	@Instance
@@ -186,6 +188,8 @@ public class NetherStuffs extends DummyModContainer {
 
 	public static int LiquidBlockFlowingId;
 	public static int LiquidBlockStillId;
+	
+	//public static int NetherLampBlockId;
 
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 	private static boolean IncreaseNetherrackHardness;
@@ -223,7 +227,7 @@ public class NetherStuffs extends DummyModContainer {
 	
 	@PreInit
 	public void PreLoad(FMLPreInitializationEvent event) {
-		FMLLog.info("[NetherStuffs] PreLoad");
+		FMLLog.info("[NetherStuffs] PreLoad");		
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 
@@ -293,6 +297,8 @@ public class NetherStuffs extends DummyModContainer {
 
 		LiquidBlockFlowingId = config.getBlock(Configuration.CATEGORY_BLOCK, "LiquidFlowing", 1261).getInt(1261);
 		LiquidBlockStillId = config.getBlock(Configuration.CATEGORY_BLOCK, "LiquidStill", 1262).getInt(1262);
+		
+		//NetherLampBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "NetherLamp", 1263).getInt(1263);
 
 		NetherOreIngotItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherIngots", 5200).getInt(5200);
 		NetherDemonicBarHandleItemId = config.getItem(Configuration.CATEGORY_ITEM, "DemonicSwordHandle", 5201).getInt(5201);
@@ -452,7 +458,7 @@ public class NetherStuffs extends DummyModContainer {
 						Smeltery.instance.addMelting(BlockRegistry.netherOre, Ore.demonicOre, 800, liquid);
 						nIngotPatternItemId = itemID;
 						liquid = LiquidDictionary.getLiquid("Molten DemonicIngot", 144);
-						LiquidCasting.addCastingRecipe(new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), liquid, new ItemStack(nIngotPatternItemId, 1, 0), 100);
+						TConstructRegistry.getTableCasting().addCastingRecipe(new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), liquid, new ItemStack(nIngotPatternItemId, 1, 0), 100);
 						break;
 					}
 				}
@@ -664,6 +670,8 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(BlockRegistry.SoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(BlockRegistry.SoulWorkBench, "NetherSoulWorkBench");
 
+		//GameRegistry.registerBlock(BlockRegistry.Lamp, "NetherLamp");
+		
 		GameRegistry.registerBlock(BlockRegistry.netherOre, OreItemBlock.class, "NetherOreItemBlock");
 		GameRegistry.registerBlock(BlockRegistry.netherWood, WoodItemBlock.class, "NetherWoodItemBlock");
 		GameRegistry.registerBlock(BlockRegistry.netherPlank, PlankItemBlock.class, "NetherPlankItemBlock");
@@ -756,22 +764,6 @@ public class NetherStuffs extends DummyModContainer {
 			EntityRegistry.addSpawn(EntitySkeleton.class, 40, 4, 4, EnumCreatureType.monster, BiomeGenBase.hell);
 		if (SpawnBlazesNaturally)
 			EntityRegistry.addSpawn(EntityBlaze.class, 5, 1, 1, EnumCreatureType.monster, BiomeGenBase.hell);
-
-		/**
-		 * Init Mod Compatibility
-		 */
-
-		if (bBuildcraftAvailable)
-			initBuildcraftStuff();
-
-		if (bHarkenScytheAvailable)
-			initHarkenScytheCompatibility();
-
-		if (bThaumcraftAvailable)
-			initThaumcraftAPI();
-
-		if (bTConstructAvailable)
-			initTConstruct();
 	}
 
 	private void registerWorldGenerators() {
@@ -1064,7 +1056,21 @@ public class NetherStuffs extends DummyModContainer {
 	}
 
 	@PostInit
-	public static void postInit(FMLPostInitializationEvent event) {
-		// FMLLog.info("[NetherStuffs] postInit");
+	public void postInit(FMLPostInitializationEvent event) {
+		/**
+		 * Init Mod Compatibility
+		 */
+
+		if (bBuildcraftAvailable)
+			initBuildcraftStuff();
+
+		if (bHarkenScytheAvailable)
+			initHarkenScytheCompatibility();
+
+		if (bThaumcraftAvailable)
+			initThaumcraftAPI();
+
+		if (bTConstructAvailable)
+			initTConstruct();
 	}
 }

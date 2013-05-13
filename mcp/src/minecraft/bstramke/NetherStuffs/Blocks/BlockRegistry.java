@@ -61,4 +61,6 @@ public class BlockRegistry {
 	public static Block LiquidFlowing = new LiquidFlowing(NetherStuffs.LiquidBlockFlowingId, Material.water);
 	public static Block LiquidStill = new LiquidStill(NetherStuffs.LiquidBlockStillId, Material.water);
 	
+	//public static final Block Lamp = new BlockLamp(NetherStuffs.NetherLampBlockId, Material.air);
+	
 }

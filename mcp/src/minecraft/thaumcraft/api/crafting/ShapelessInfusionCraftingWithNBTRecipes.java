@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
+import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ObjectTags;
 import thaumcraft.api.ThaumcraftApiHelper;
 
@@ -77,7 +78,7 @@ public class ShapelessInfusionCraftingWithNBTRecipes implements IInfusionRecipe
                     {
                         ItemStack var8 = (ItemStack)var7.next();
 
-                        if (var5.itemID == var8.itemID && (var8.getItemDamage() == -1 || var5.getItemDamage() == var8.getItemDamage()))
+                        if (var5.itemID == var8.itemID && (var8.getItemDamage() == OreDictionary.WILDCARD_VALUE || var5.getItemDamage() == var8.getItemDamage()))
                         {
                         	for (NBTBase nbt:nbtList) {
                         		try {

@@ -18,12 +18,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.ILiquidTank;
-import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidTank;
-import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.NetherStuffsEventHook;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
+import bstramke.NetherStuffs.Common.BlockActiveHelper;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.SoulEnergyTankTileEntity;
 import bstramke.NetherStuffs.Items.ItemRegistry;
@@ -108,7 +105,7 @@ public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecial
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
 		NBTTagList itemList = new NBTTagList();
-
+		
 		for (int i = 0; i < inventory.length; i++) {
 			if (this.inventory[i] != null) {
 				NBTTagCompound tag = new NBTTagCompound();
@@ -138,26 +135,32 @@ public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecial
 		}
 	}
 
+	@Override
 	public void updateEntity() {
 		if (!this.worldObj.isRemote) {
 			fillFuelToTank();
 
 			int nMeta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-			if (this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
-				if (!SoulSiphon.isActiveSet(nMeta))
-					this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, SoulSiphon.setActiveOnMetadata(nMeta), BlockNotifyType.ALL);
+			if (isReceivingRedstoneSignal()) {
+				if (!BlockActiveHelper.isActiveSet(nMeta))
+					this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, BlockActiveHelper.setActiveOnMetadata(nMeta), BlockNotifyType.CLIENT_SERVER);
 
-				doSiphoning(SoulSiphon.unmarkedMetadata(nMeta));
+				doSiphoning(BlockActiveHelper.unmarkedMetadata(nMeta));
 
 			} else {
-				if (SoulSiphon.isActiveSet(nMeta))
-					this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, SoulSiphon.clearActiveOnMetadata(nMeta), BlockNotifyType.ALL);
+				if (BlockActiveHelper.isActiveSet(nMeta))
+					this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, BlockActiveHelper.clearActiveOnMetadata(nMeta), BlockNotifyType.CLIENT_SERVER);
 			}
 
 		}
 		fillFuelToBottle();
 	}
 
+	private boolean isReceivingRedstoneSignal()
+	{
+		return this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+	}
+	
 	private void doSiphoning(int nUnmarkedMeta) {
 		nTickCounter++;
 		if (nTickCounter >= 40) {

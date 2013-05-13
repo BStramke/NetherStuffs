@@ -25,7 +25,7 @@ public class TileNetherWoodPuddle extends TileEntity {
 	public short puddleSize = 0;
 
 	private static short maxPuddleSize = 4;
-
+	
 	private boolean canGrowPuddle() {
 		if (puddleSize >= maxPuddleSize)
 			return false;
@@ -46,7 +46,7 @@ public class TileNetherWoodPuddle extends TileEntity {
 		return true;
 	}
 
-	private void setPuddleDirection(Random rand) {
+	public void setPuddleDirection(Random rand) {
 		if (this.worldObj.isRemote)
 			return;
 

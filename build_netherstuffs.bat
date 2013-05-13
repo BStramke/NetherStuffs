@@ -13,6 +13,7 @@ move reobf\minecraft\bstramke\NetherStuffsNEIPlugin reobf\minecraft\bstramke\Net
 xcopy reobf\minecraft\buildcraft reobf\minecraft\bstramke\NetherStuffsBase\buildcraft\ /S
 xcopy reobf\minecraft\forestry reobf\minecraft\bstramke\NetherStuffsBase\forestry\ /S
 xcopy reobf\minecraft\thaumcraft reobf\minecraft\bstramke\NetherStuffsBase\thaumcraft\ /S
+xcopy reobf\minecraft\ic2 reobf\minecraft\bstramke\NetherStuffsBase\ic2\ /S
 xcopy src\minecraft\mods reobf\minecraft\bstramke\NetherStuffsBase\mods\ /S
 
 
