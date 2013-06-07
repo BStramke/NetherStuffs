@@ -79,6 +79,7 @@ public class DefaultOverlayHandler implements IOverlayHandler
             moveIngredients(gui, assignedIngredients, quantity);             
     }
     
+    @SuppressWarnings("unchecked")
     private void moveIngredients(GuiContainer gui, List<IngredientDistribution> assignedIngredients, int quantity)
     {        
         for(IngredientDistribution distrib : assignedIngredients)
@@ -235,6 +236,7 @@ public class DefaultOverlayHandler implements IOverlayHandler
         return assignedIngredients;
     }
 
+    @SuppressWarnings("unchecked")
     private void findInventoryQuantities(GuiContainer gui, List<DistributedIngred> ingredStacks)
     {
         for(Slot slot : (List<Slot>)gui.inventorySlots.inventorySlots)//work out how much we have to go round
@@ -265,6 +267,7 @@ public class DefaultOverlayHandler implements IOverlayHandler
         return ingredStacks;
     }
 
+    @SuppressWarnings("unchecked")
     public Slot[][] mapIngredSlots(GuiContainer gui, List<PositionedStack> ingredients)
     {
         Slot[][] recipeSlotList = new Slot[ingredients.size()][];

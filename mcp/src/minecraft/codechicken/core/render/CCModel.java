@@ -15,9 +15,10 @@ import java.util.regex.Pattern;
 
 import net.minecraft.client.renderer.Tessellator;
 import codechicken.core.vec.CoordinateSystem;
+import codechicken.core.vec.Cuboid6;
 import codechicken.core.vec.ITransformation;
-import codechicken.core.vec.RightHanded;
 import codechicken.core.vec.Quat;
+import codechicken.core.vec.RightHanded;
 import codechicken.core.vec.Rotation;
 import codechicken.core.vec.Translation;
 import codechicken.core.vec.Vector3;
@@ -139,6 +140,17 @@ public class CCModel
     /**
      * Generates a box, uv mapped to be the same as a minecraft block with the same bounds
      * @param i The vertex index to start generating at
+     * @param bounds The bounds of the block, 0 to 1
+     * @return The generated model. When rendering an icon will need to be supplied for the UV transformation.
+     */
+    public CCModel generateBlock(int i, Cuboid6 bounds)
+    {
+        return generateBlock(i, bounds.min.x, bounds.min.y, bounds.min.z, bounds.max.x, bounds.max.y, bounds.max.z);
+    }
+
+    /**
+     * Generates a box, uv mapped to be the same as a minecraft block with the same bounds
+     * @param i The vertex index to start generating at
      * @param x1 minX
      * @param y1 minY
      * @param z1 minZ
@@ -168,36 +180,36 @@ public class CCModel
         verts[i++] = new Vertex5(x1, y2, z2, u1, v2);
     
         //east face
-        u1 = x1+2; v1 = y1;
-        u2 = x2+2; v2 = y2;
-        verts[i++] = new Vertex5(x1, y2, z1, u2, v1);
-        verts[i++] = new Vertex5(x2, y2, z1, u1, v1);
-        verts[i++] = new Vertex5(x2, y1, z1, u1, v2);
-        verts[i++] = new Vertex5(x1, y1, z1, u2, v2);
+        u1 = x1+2; v1 = 1-y2;
+        u2 = x2+2; v2 = 1-y1;
+        verts[i++] = new Vertex5(x1, y1, z1, u1, v2);
+        verts[i++] = new Vertex5(x1, y2, z1, u1, v1);
+        verts[i++] = new Vertex5(x2, y2, z1, u2, v1);
+        verts[i++] = new Vertex5(x2, y1, z1, u2, v2);
     
         //west face
-        u1 = x1+3; v1 = y1;
-        u2 = x2+3; v2 = y2;
-        verts[i++] = new Vertex5(x1, y2, z2, u1, v1);
-        verts[i++] = new Vertex5(x1, y1, z2, u1, v2);
+        u1 = x1+3; v1 = 1-y2;
+        u2 = x2+3; v2 = 1-y1;
         verts[i++] = new Vertex5(x2, y1, z2, u2, v2);
         verts[i++] = new Vertex5(x2, y2, z2, u2, v1);
+        verts[i++] = new Vertex5(x1, y2, z2, u1, v1);
+        verts[i++] = new Vertex5(x1, y1, z2, u1, v2);
     
         //north face
-        u1 = z1+4; v1 = y1;
-        u2 = z2+4; v2 = y2;
+        u1 = z1+4; v1 = 1-y2;
+        u2 = z2+4; v2 = 1-y1;
+        verts[i++] = new Vertex5(x1, y1, z2, u2, v2);
         verts[i++] = new Vertex5(x1, y2, z2, u2, v1);
         verts[i++] = new Vertex5(x1, y2, z1, u1, v1);
         verts[i++] = new Vertex5(x1, y1, z1, u1, v2);
-        verts[i++] = new Vertex5(x1, y1, z2, u2, v2);
     
         //south face
-        u1 = z1+5; v1 = y1;
-        u2 = z2+5; v2 = y2;
-        verts[i++] = new Vertex5(x2, y1, z2, u1, v2);
-        verts[i++] = new Vertex5(x2, y1, z1, u2, v2);
-        verts[i++] = new Vertex5(x2, y2, z1, u2, v1);
-        verts[i++] = new Vertex5(x2, y2, z2, u1, v1);
+        u1 = z1+5; v1 = 1-y2;
+        u2 = z2+5; v2 = 1-y1;
+        verts[i++] = new Vertex5(x2, y1, z1, u1, v2);
+        verts[i++] = new Vertex5(x2, y2, z1, u1, v1);
+        verts[i++] = new Vertex5(x2, y2, z2, u2, v1);
+        verts[i++] = new Vertex5(x2, y1, z2, u2, v2);
         
         shrinkUVs(0.0001);
         
@@ -459,10 +471,7 @@ public class CCModel
                 tess.setNormal((float)normal.x, (float)normal.y, (float)normal.z);
             }
             if(useColour)
-            {
-                int c = getColour(i);
-                tess.setColorRGBA(c>>>24, c>>16&0xFF, c>>8&0xFF, c&0xFF);
-            }
+                applyColour(tess, i);
             applyVertexModifiers(tess, i);
             vert = verts[i];
             if(t != null)
@@ -480,9 +489,10 @@ public class CCModel
      * Override to modify vertex colours per frame
      * @return The colour for vertex i
      */
-    public int getColour(int i)
+    public void applyColour(Tessellator tess, int i)
     {
-        return colours[i];
+        int c = colours[i];
+        tess.setColorRGBA(c>>>24, c>>16&0xFF, c>>8&0xFF, c&0xFF);
     }
 
     /**
@@ -748,8 +758,8 @@ public class CCModel
                 au+=verts[k+i].u;
                 av+=verts[k+i].v;
             }
-            au/=(double)vp;
-            av/=(double)vp;
+            au/=vp;
+            av/=vp;
             for(int i = 0; i < vp; i++)
             {
                 Vertex5 vert = verts[k+i];
@@ -998,5 +1008,47 @@ public class CCModel
             v.add(vert.vec);
         v.multiply(1/(double)verts.length);
         return v;
+    }
+    
+    public CCModel zOffset(Cuboid6 offsets)
+    {
+        for(int k = 0; k < verts.length; k++)
+        {
+            Vertex5 vert = verts[k];
+            Vector3 normal = normals[k];
+            switch(findSide(normal))
+            {
+                case 0:
+                    vert.vec.y += offsets.min.y;
+                    break;
+                case 1:
+                    vert.vec.y += offsets.max.y;
+                    break;
+                case 2:
+                    vert.vec.z += offsets.min.z;
+                    break;
+                case 3:
+                    vert.vec.z += offsets.max.z;
+                    break;
+                case 4:
+                    vert.vec.x += offsets.min.x;
+                    break;
+                case 5:
+                    vert.vec.x += offsets.max.x;
+                    break;
+            }
+        }
+        return this;
+    }
+    
+    public static int findSide(Vector3 normal)
+    {
+        if(normal.y <=-0.99) return 0;
+        if(normal.y >= 0.99) return 1;
+        if(normal.z <=-0.99) return 2;
+        if(normal.z >= 0.99) return 3;
+        if(normal.x <=-0.99) return 4;
+        if(normal.x >= 0.99) return 5;
+        return -1;
     }
 }

@@ -26,12 +26,13 @@ public class NEIController implements IContainerSlotClickHandler
     public static void load(GuiContainer gui)
     {
         manager = gui.manager;
+        deleteMode = false;
+        GuiInfo.clearGuiHandlers();
+        fastTransferManager = null;
         if(!NEIClientConfig.isEnabled())
             return;
         
         fastTransferManager = new FastTransferManger();
-        deleteMode = false;
-        GuiInfo.clearGuiHandlers();
         if(gui instanceof INEIGuiHandler)
             API.registerNEIGuiHandler((INEIGuiHandler) gui);
     }
@@ -46,7 +47,7 @@ public class NEIController implements IContainerSlotClickHandler
     @Override
     public boolean handleSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, int modifier, boolean eventconsumed)
     {
-        if(eventconsumed)
+        if(eventconsumed || !NEIClientConfig.isEnabled())
             return eventconsumed;
         
         if(deleteMode && slotIndex >= 0 && slot != null)

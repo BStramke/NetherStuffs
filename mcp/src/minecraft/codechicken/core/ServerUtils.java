@@ -25,7 +25,6 @@ public class ServerUtils extends CommonUtils
         return mc().getConfigurationManager().getPlayerForUsername(playername);
     }
     
-    @SuppressWarnings("unchecked")
     public static ArrayList<EntityPlayer> getAllPlayers()
     {
         return new ArrayList<EntityPlayer>(mc().getConfigurationManager().playerEntityList);

@@ -68,7 +68,7 @@ public class ClientUtils extends CommonUtils
         return ClientTickHandler.renderTime + getRenderFrame();
     }    
 
-    public static String getServerIP() throws NetworkClosedException
+    public static String getServerIP()
     {
         try
         {
@@ -90,14 +90,7 @@ public class ClientUtils extends CommonUtils
 
     public static boolean isLocal() 
     {
-        try
-        {
-            return getServerIP().equals("memory");
-        }
-        catch(NetworkClosedException e)
-        {
-            return true;
-        }
+        return getServerIP().equals("memory");
     }
 
     @SideOnly(Side.CLIENT)

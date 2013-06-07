@@ -128,10 +128,7 @@ public class SimpleProperties
             setProperty(property, defaultvalue);
             return defaultvalue;
         }
-        else
-        {
-            return value;
-        }
+        return value;
     }
     
     public String getProperty(String property)

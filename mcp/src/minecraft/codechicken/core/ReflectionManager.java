@@ -177,7 +177,6 @@ public class ReflectionManager
         return callMethod(class1, returntype, instance, new String[]{name}, params);
     }
     
-    @SuppressWarnings("unchecked")
     public static <R> R callMethod(Class<?> class1, Class<R> returntype, Object instance, String[] names, Object... params) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
     {
         nextMethod: for(Method method : class1.getDeclaredMethods())
@@ -212,7 +211,6 @@ public class ReflectionManager
         return null;
     }
     
-    @SuppressWarnings("unchecked")
     public static <T> T getField(Class<?> class1, Class<T> fieldType, Object instance, int fieldIndex) throws IllegalArgumentException, IllegalAccessException
     {
         Field field = class1.getDeclaredFields()[fieldIndex];
@@ -220,7 +218,6 @@ public class ReflectionManager
         return (T) field.get(instance);
     }
     
-    @SuppressWarnings("unchecked")
     public static <T> T getField(Class<?> class1, Class<T> fieldType, Object instance, String fieldName)
     {
         try
@@ -236,7 +233,6 @@ public class ReflectionManager
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> T newInstance(Class<T> class1, Object... params) throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
         nextMethod: for(Constructor<?> constructor : class1.getDeclaredConstructors())
@@ -275,7 +271,6 @@ public class ReflectionManager
         return get(field, class1, null);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> T get(Field field, Class<T> class1, Object instance)
     {
         try

@@ -11,6 +11,9 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
+
+import codechicken.core.asm.ASMHelper;
+import codechicken.core.asm.CC_ClassWriter;
 import codechicken.core.asm.ClassHeirachyManager;
 import codechicken.core.asm.ClassOverrider;
 import codechicken.core.asm.ObfuscationMappings.ClassMapping;
@@ -32,18 +35,17 @@ public class NEITransformer implements IClassTransformer
         ClassMapping classmap = new ClassMapping("net/minecraft/client/gui/inventory/GuiContainer");
         if(ClassHeirachyManager.classExtends(name, classmap.javaClass(), bytes))
         {
-            ClassNode node = new ClassNode();
-            ClassReader reader = new ClassReader(bytes);
-            reader.accept(node, 0);
+            ClassNode cnode = ASMHelper.createClassNode(bytes);
 
             DescriptorMapping methodmap = new DescriptorMapping("net/minecraft/client/gui/GuiScreen", "updateScreen", "()V");
-            DescriptorMapping supermap = new DescriptorMapping(node.superName, methodmap);
+            DescriptorMapping supermap = new DescriptorMapping(methodmap, cnode.superName);
 
             InsnList supercall = new InsnList();
             supercall.add(new VarInsnNode(ALOAD, 0));
             supercall.add(supermap.toInsn(INVOKESPECIAL));
 
-            for(MethodNode methodnode : (List<MethodNode>) node.methods)
+            boolean changed = false;
+            for(MethodNode methodnode : (List<MethodNode>) cnode.methods)
             {
                 if(methodmap.matches(methodnode))
                 {
@@ -52,13 +54,13 @@ public class NEITransformer implements IClassTransformer
                     {
                         methodnode.instructions.insertBefore(methodnode.instructions.getFirst(), supercall);
                         System.out.println("Inserted super call into " + name + "." + supermap.s_name);
+                        changed = true;
                     }
                 }
             }
-
-            ClassWriter writer = new ClassWriter(COMPUTE_FRAMES | COMPUTE_MAXS);
-            node.accept(writer);
-            bytes = writer.toByteArray();
+            
+            if(changed)
+                bytes = ASMHelper.createBytes(cnode, COMPUTE_MAXS | COMPUTE_FRAMES);
         }
         return bytes;
     }
@@ -71,12 +73,10 @@ public class NEITransformer implements IClassTransformer
         ClassMapping classmap = new ClassMapping("net/minecraft/block/BlockMobSpawner");
         if(classmap.isClass(name))
         {
-            ClassNode node = new ClassNode();
-            ClassReader reader = new ClassReader(bytes);
-            reader.accept(node, 0);
+            ClassNode cnode = ASMHelper.createClassNode(bytes);
 
             DescriptorMapping methodmap = new DescriptorMapping("net/minecraft/block/Block", "onBlockPlacedBy", "(Lnet/minecraft/world/World;IIILnet/minecraft/entity/EntityLiving;Lnet/minecraft/item/ItemStack;)V");
-            MethodNode methodnode = (MethodNode) node.visitMethod(ACC_PUBLIC, methodmap.s_name, methodmap.s_desc, null, null);
+            MethodNode methodnode = (MethodNode) cnode.visitMethod(ACC_PUBLIC, methodmap.s_name, methodmap.s_desc, null, null);
 
             methodnode.instructions.add(new VarInsnNode(ILOAD, 2));//param2
             methodnode.instructions.add(new FieldInsnNode(PUTSTATIC, "codechicken/nei/ItemMobSpawner", "placedX", "I"));
@@ -85,11 +85,8 @@ public class NEITransformer implements IClassTransformer
             methodnode.instructions.add(new VarInsnNode(ILOAD, 4));//param4
             methodnode.instructions.add(new FieldInsnNode(PUTSTATIC, "codechicken/nei/ItemMobSpawner", "placedZ", "I"));
             methodnode.instructions.add(new InsnNode(RETURN));
-
-            ClassWriter writer = new ClassWriter(COMPUTE_FRAMES | COMPUTE_MAXS);
-            node.accept(writer);
-            bytes = writer.toByteArray();
-
+            
+            bytes = ASMHelper.createBytes(cnode, COMPUTE_MAXS | COMPUTE_FRAMES);
             System.out.println("Generated BlockMobSpawner helper method.");
         }
         return bytes;
@@ -98,18 +95,15 @@ public class NEITransformer implements IClassTransformer
     /**
      * Generates Slot.getBackgroundIconTexture for when forge is not installed.
      */
-    @SuppressWarnings("unchecked")
     public byte[] transformer003(String name, byte[] bytes)
     {
         DescriptorMapping methodmap = new DescriptorMapping("net/minecraft/inventory/Slot", "getBackgroundIconTexture", "()Ljava/lang/String;");
         if(methodmap.isClass(name))
         {
-            ClassNode node = new ClassNode();
-            ClassReader reader = new ClassReader(bytes);
-            reader.accept(node, 0);
+            ClassNode cnode = ASMHelper.createClassNode(bytes);
 
             boolean declared = false;
-            for(MethodNode method : (List<MethodNode>) node.methods)
+            for(MethodNode method : cnode.methods)
             {
                 if(methodmap.matches(method))
                 {
@@ -120,8 +114,8 @@ public class NEITransformer implements IClassTransformer
 
             if(!declared)
             {
-                ClassWriter cw = new ClassWriter(COMPUTE_FRAMES);
-                node.accept(cw);
+                ClassWriter cw = new CC_ClassWriter(COMPUTE_FRAMES);
+                cnode.accept(cw);
 
                 MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "getBackgroundIconTexture", "()Ljava/lang/String;", null, null);
                 mv.visitCode();

@@ -15,7 +15,7 @@ public class InventoryRange
         {
             ISidedInventory sidedInv = (ISidedInventory)inv;
             fslot = sidedInv.getStartInventorySide(side);
-            lslot = fslot+sidedInv.getSizeInventorySide(side);
+            lslot = fslot+sidedInv.getAccessibleSlotsFromSide(side);
         }
     }
     

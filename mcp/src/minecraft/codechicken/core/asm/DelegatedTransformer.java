@@ -94,7 +94,7 @@ public class DelegatedTransformer implements IClassTransformer
     }
 
     private static void defineDependancies(byte[] bytes, JarFile jar, File jarFile, Stack<String> depStack) throws Exception
-    {        
+    {
         ClassReader reader = new ClassReader(bytes);
         DependancyLister lister = new DependancyLister(Opcodes.ASM4);
         reader.accept(lister, 0);
@@ -128,7 +128,6 @@ public class DelegatedTransformer implements IClassTransformer
         depStack.pop();
     }
 
-    @SuppressWarnings("unchecked")
     private static Class<?> defineClass(String classname, byte[] bytes) throws Exception
     {
         Class<?> clazz = (Class<?>) m_defineClass.invoke(CodeChickenCorePlugin.cl, classname, bytes, 0, bytes.length);            

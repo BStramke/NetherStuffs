@@ -227,14 +227,7 @@ public class ClientHandler implements ITickHandler
         if(ClientUtils.isLocal())//wait for server to initiate
             return;
         
-        try
-        {
-            NEIClientConfig.loadWorld("remote/"+ClientUtils.getServerIP().replace(':', '~'));
-        }
-        catch(NetworkClosedException e)
-        {
-            return;
-        }
+        NEIClientConfig.loadWorld("remote/"+ClientUtils.getServerIP().replace(':', '~'));
     }
 
     private void onMainMenuInit()

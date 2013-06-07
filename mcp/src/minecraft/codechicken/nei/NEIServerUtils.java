@@ -10,6 +10,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.EnumGameType;
+import net.minecraft.world.WorldServer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,20 +34,14 @@ public class NEIServerUtils
     
     public static void toggleRaining(World world, boolean notify)
     {
-        WorldInfo worldInfo = world.getWorldInfo();
-        boolean raining = !worldInfo.isRaining();
+        boolean raining = !world.isRaining();
         if(raining == false)//turn off
-        {
-            worldInfo.setRainTime(0);
-            worldInfo.setRaining(false);
-            worldInfo.setThunderTime(0);
-            worldInfo.setThundering(false);
-        }
+            ((WorldServer)world).provider.resetRainAndThunder();
         else
-        {
-            worldInfo.setRainTime(1);
-        }
-        if(notify)ServerUtils.sendChatToAll("Rain turned "+(raining ? "on" : "off"));
+            world.toggleRain();
+        
+        if(notify)
+            ServerUtils.sendChatToAll("Rain turned "+(raining ? "on" : "off"));
     }
     
     public static void healPlayer(EntityPlayer player)

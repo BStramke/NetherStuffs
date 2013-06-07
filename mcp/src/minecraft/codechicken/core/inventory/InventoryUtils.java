@@ -42,11 +42,8 @@ public class InventoryUtils
             }
             inv.onInventoryChanged();
             return itemstack1;
-        } 
-        else
-        {
-            return null;
         }
+        return null;
     }
 
     public static ItemStack getStackInSlotOnClosing(IInventory inv, int slot)

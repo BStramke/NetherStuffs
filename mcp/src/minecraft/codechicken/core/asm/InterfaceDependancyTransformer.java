@@ -1,13 +1,14 @@
 package codechicken.core.asm;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
+
+import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import cpw.mods.fml.relauncher.IClassTransformer;
 
 public class InterfaceDependancyTransformer implements IClassTransformer
@@ -15,14 +16,12 @@ public class InterfaceDependancyTransformer implements IClassTransformer
     @Override
     public byte[] transform(String name, String tname, byte[] bytes)
     {
-        ClassReader cr = new ClassReader(bytes);
-        ClassNode classNode = new ClassNode();
-        cr.accept(classNode, 0);
+        ClassNode cnode = ASMHelper.createClassNode(bytes);
         
         boolean hasDependancyInterfaces = false;
-        if(classNode.visibleAnnotations != null)
+        if(cnode.visibleAnnotations != null)
         {
-            for(AnnotationNode ann : (List<AnnotationNode>)classNode.visibleAnnotations)
+            for(AnnotationNode ann : cnode.visibleAnnotations)
             {
                 if(ann.desc.equals(Type.getDescriptor(InterfaceDependancies.class)))
                 {
@@ -36,11 +35,13 @@ public class InterfaceDependancyTransformer implements IClassTransformer
             return bytes;
         
         hasDependancyInterfaces = false;
-        for(Iterator<String> iterator = classNode.interfaces.iterator(); iterator.hasNext();)
+        for(Iterator<String> iterator = cnode.interfaces.iterator(); iterator.hasNext();)
         {
             try
             {
-                CodeChickenCorePlugin.cl.findClass(iterator.next().replace('/', '.'));
+                String s = iterator.next();
+                s = FMLDeobfuscatingRemapper.INSTANCE.map(s);
+                CodeChickenCorePlugin.cl.findClass(s.replace('/', '.'));
             }
             catch(ClassNotFoundException cnfe)
             {
@@ -52,8 +53,6 @@ public class InterfaceDependancyTransformer implements IClassTransformer
         if(!hasDependancyInterfaces)
             return bytes;
         
-        ClassWriter writer = new ClassWriter(0);
-        classNode.accept(writer);
-        return writer.toByteArray();
+        return ASMHelper.createBytes(cnode, 0);
     }
 }

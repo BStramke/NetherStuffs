@@ -54,14 +54,26 @@ public class Cuboid6
         block.setBlockBounds((float)min.x, (float)min.y, (float)min.z, (float)max.x, (float)max.y, (float)max.z);
     }
 
-    private boolean intersects(Cuboid6 b)
+    public boolean intersects(Cuboid6 b)
     {
-        return max.x > b.min.x &&
-                b.max.x > min.x &&
-                max.y > b.min.y &&
-                b.max.y > min.y &&
-                max.z > b.max.z &&
-                b.max.z > min.z;
+        return max.x-1E-5 > b.min.x &&
+                b.max.x-1E-5 > min.x &&
+                max.y-1E-5 > b.min.y &&
+                b.max.y-1E-5 > min.y &&
+                max.z-1E-5 > b.min.z &&
+                b.max.z-1E-5 > min.z;
+    }
+    
+    public Cuboid6 offset(Cuboid6 o)
+    {
+        min.add(o.min);
+        max.add(o.max);
+        return this;
+    }
+    
+    public Vector3 center()
+    {
+        return min.copy().add(max).multiply(0.5);
     }
     
     public static boolean intersects(Cuboid6 a, Cuboid6 b)

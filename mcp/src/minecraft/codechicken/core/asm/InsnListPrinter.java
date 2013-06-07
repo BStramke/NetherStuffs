@@ -148,17 +148,17 @@ public class InsnListPrinter extends Textifier
                 TableSwitchInsnNode tsinsn = (TableSwitchInsnNode)insn;
                 Label[] tslables = new Label[tsinsn.labels.size()];
                 for(int i = 0; i < tslables.length; i++)
-                    tslables[i] = ((LabelNode)tsinsn.labels.get(i)).getLabel();              
+                    tslables[i] = tsinsn.labels.get(i).getLabel();              
                 visitTableSwitchInsn(tsinsn.min, tsinsn.max, tsinsn.dflt.getLabel(), tslables);
                 break;
             case 12:
                 LookupSwitchInsnNode lsinsn = (LookupSwitchInsnNode)insn;
                 Label[] lslables = new Label[lsinsn.labels.size()];
                 for(int i = 0; i < lslables.length; i++)
-                    lslables[i] = ((LabelNode)lsinsn.labels.get(i)).getLabel();
+                    lslables[i] = lsinsn.labels.get(i).getLabel();
                 int[] lskeys = new int[lsinsn.keys.size()];
                 for(int i = 0; i < lskeys.length; i++)
-                    lskeys[i] = (Integer) lsinsn.keys.get(i);
+                    lskeys[i] = lsinsn.keys.get(i);
                 visitLookupSwitchInsn(lsinsn.dflt.getLabel(), lskeys, lslables);
                 break;
             case 13:

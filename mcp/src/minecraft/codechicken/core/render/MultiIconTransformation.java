@@ -7,7 +7,7 @@ import net.minecraft.util.Icon;
  */
 public class MultiIconTransformation implements IUVTransformation
 {
-    Icon[] icons;
+    public Icon[] icons;
     
     public MultiIconTransformation(Icon[] icons)
     {

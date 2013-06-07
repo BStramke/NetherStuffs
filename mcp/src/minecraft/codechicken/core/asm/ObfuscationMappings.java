@@ -79,11 +79,14 @@ public class ObfuscationMappings
                 throw new IllegalArgumentException(s_owner);
         }
         
-        public DescriptorMapping(String owner, DescriptorMapping descmap)
+        public DescriptorMapping(DescriptorMapping descmap, String subclass)
         {
-            this.s_owner = owner;
-            this.s_name = descmap.s_name;
-            this.s_desc = descmap.s_desc;
+            this(subclass, descmap.s_name, descmap.s_desc);
+        }
+                
+        public DescriptorMapping subclass(String subclass)
+        {
+            return new DescriptorMapping(this, subclass);
         }
 
         public boolean matches(MethodNode node)
@@ -178,6 +181,8 @@ public class ObfuscationMappings
                 s_name = FMLDeobfuscatingRemapper.INSTANCE.mapFieldName(s_owner, s_name, s_desc);
             s_owner = FMLDeobfuscatingRemapper.INSTANCE.mapType(s_owner);
             s_desc = FMLDeobfuscatingRemapper.INSTANCE.mapDesc(s_desc);
+            
+            s_name = MCPDeobfuscationTransformer.map(s_name);
         }
     }
     

@@ -47,13 +47,9 @@ public class CommonUtils
     {
         File basesave = getWorldBaseSaveLocation(world); 
         if(dimension != 0)
-        {            
             return new File(basesave, world.provider.getSaveFolder());
-        }
-        else
-        {
-            return basesave;
-        }
+        
+        return basesave;
     }
     
     private static File getWorldSaveLocation(World world)
@@ -130,7 +126,6 @@ public class CommonUtils
         return -1;
     }
     
-    @SuppressWarnings("unchecked")
     public static <T> T[] subArray(T[] args, int i)
     {
         if(i > args.length)            
@@ -147,61 +142,56 @@ public class CommonUtils
     {
         if (c == 167)
             return -1;
-        else
-        {
-            int charIndex = ChatAllowedCharacters.allowedCharacters.indexOf(c);
-            if(charIndex + 32 > charWidth.length || charIndex < 0)
-                return 0;
-            return charWidth[charIndex + 32];
-        }
+        
+        int charIndex = ChatAllowedCharacters.allowedCharacters.indexOf(c);
+        if(charIndex + 32 > charWidth.length || charIndex < 0)
+            return 0;
+        
+        return charWidth[charIndex + 32];
     }
     
     public static int getStringWidth(String s)
     {
         if (s == null)
-        {
             return 0;
-        }
-        else
+        
+        int width = 0;
+        boolean var3 = false;
+
+        for (int charIndex = 0; charIndex < s.length(); ++charIndex)
         {
-            int width = 0;
-            boolean var3 = false;
+            char c = s.charAt(charIndex);
+            int charWidth = getCharWidth(c);
 
-            for (int charIndex = 0; charIndex < s.length(); ++charIndex)
+            if (charWidth < 0 && charIndex < s.length() - 1)
             {
-                char c = s.charAt(charIndex);
-                int charWidth = getCharWidth(c);
+                ++charIndex;
+                c = s.charAt(charIndex);
 
-                if (charWidth < 0 && charIndex < s.length() - 1)
+                if (c != 108 && c != 76)
                 {
-                    ++charIndex;
-                    c = s.charAt(charIndex);
-
-                    if (c != 108 && c != 76)
+                    if (c == 114 || c == 82)
                     {
-                        if (c == 114 || c == 82)
-                        {
-                            var3 = false;
-                        }
+                        var3 = false;
                     }
-                    else
-                    {
-                        var3 = true;
-                    }
-
-                    charWidth = getCharWidth(c);
+                }
+                else
+                {
+                    var3 = true;
                 }
 
-                width += charWidth;
-
-                if (var3)
-                {
-                    ++width;
-                }
+                charWidth = getCharWidth(c);
             }
 
-            return width;
+            width += charWidth;
+
+            if (var3)
+            {
+                ++width;
+            }
         }
+
+        return width;
     }
     
     public static List<String> formatMessage(String message)

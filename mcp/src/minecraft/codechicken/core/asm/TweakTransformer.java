@@ -1,6 +1,5 @@
 package codechicken.core.asm;
 
-import java.io.File;
 import java.util.List;
 
 import org.objectweb.asm.Opcodes;
@@ -18,7 +17,6 @@ import com.google.common.collect.HashMultimap;
 
 import codechicken.core.asm.ASMHelper.MethodAltercator;
 import codechicken.core.asm.InstructionComparator.InsnListSection;
-import codechicken.core.asm.ObfuscationMappings.ClassMapping;
 import codechicken.core.asm.ObfuscationMappings.DescriptorMapping;
 import codechicken.core.config.ConfigFile;
 import codechicken.core.config.ConfigTag;
@@ -37,9 +35,7 @@ public class TweakTransformer implements IClassTransformer, Opcodes
                 .setComment("Set to false to make lava fade away like water if all the source blocks are destroyed")
                 .getBooleanValue(true))
         {
-            ClassMapping blockFlowing = new ClassMapping("net/minecraft/block/BlockFlowing");
-            alterMethod(new MethodAltercator(new DescriptorMapping(blockFlowing.s_class, 
-                    new DescriptorMapping("net/minecraft/block/Block", "updateTick", "(Lnet/minecraft/world/World;IIILjava/util/Random;)V")))
+            alterMethod(new MethodAltercator(new DescriptorMapping("net/minecraft/block/Block", "updateTick", "(Lnet/minecraft/world/World;IIILjava/util/Random;)V").subclass("net/minecraft/block/BlockFlowing"))
             {
                 @Override
                 public void alter(MethodNode mv)
@@ -73,18 +69,15 @@ public class TweakTransformer implements IClassTransformer, Opcodes
                 .setComment("If set to true, creepers will not destroy landscape. (A version of mobGreifing setting just for creepers)")
                 .getBooleanValue(false))
         {
-            final ClassMapping entityCreeper = new ClassMapping("net/minecraft/entity/monster/EntityCreeper");
-            alterMethod(new MethodAltercator(new DescriptorMapping(entityCreeper.s_class, 
-                    new DescriptorMapping("net/minecraft/entity/Entity", "onUpdate", "()V")))
+            alterMethod(new MethodAltercator(new DescriptorMapping("net/minecraft/entity/Entity", "onUpdate", "()V").subclass("net/minecraft/entity/monster/EntityCreeper"))
             {
                 @Override
                 public void alter(MethodNode mv)
                 {
                     InsnList needle = new InsnList();
                     needle.add(new VarInsnNode(ALOAD, 0));
-                    needle.add(new DescriptorMapping(entityCreeper.s_class, 
-                            new DescriptorMapping("net/minecraft/entity/Entity", "worldObj", "Lnet/minecraft/world/World;"))
-                            .toFieldInsn(GETFIELD));                            
+                    needle.add(new DescriptorMapping("net/minecraft/entity/Entity", "worldObj", "Lnet/minecraft/world/World;").subclass("net/minecraft/entity/monster/EntityCreeper")
+                            .toFieldInsn(GETFIELD));
                     needle.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/world/World", "getGameRules", "()Lnet/minecraft/world/GameRules;"));
                     needle.add(new LdcInsnNode("mobGriefing"));
                     needle.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/world/GameRules", "getGameRuleBooleanValue", "(Ljava/lang/String;)Z"));

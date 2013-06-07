@@ -85,7 +85,7 @@ public class ASMHelper
     
     public static MethodNode findMethod(DescriptorMapping methodmap, ClassNode cnode)
     {
-        for(MethodNode mnode : (List<MethodNode>) cnode.methods)
+        for(MethodNode mnode : cnode.methods)
             if(methodmap.matches(mnode))
                 return mnode;
         return null;
@@ -93,7 +93,7 @@ public class ASMHelper
 
     public static FieldNode findField(DescriptorMapping fieldmap, ClassNode cnode)
     {
-        for(FieldNode fnode : (List<FieldNode>) cnode.fields)
+        for(FieldNode fnode : cnode.fields)
             if(fieldmap.matches(fnode))
                 return fnode;
         return null;

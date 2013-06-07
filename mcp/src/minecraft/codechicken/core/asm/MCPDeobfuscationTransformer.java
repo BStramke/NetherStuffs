@@ -19,13 +19,23 @@ import codechicken.core.config.ConfigFile;
 
 import com.google.common.base.Function;
 
-import cpw.mods.fml.common.asm.transformers.deobf.FMLRemappingAdapter;
 import cpw.mods.fml.relauncher.IClassTransformer;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 public class MCPDeobfuscationTransformer implements IClassTransformer, Opcodes
 {
     public static MCPDeobfuscationRemapper instance;
+    
+    public static String map(String name)
+    {
+        if(instance!=null)
+        {
+            String remapped = instance.mappings.get(name);
+            if(remapped != null)
+                return remapped;
+        }
+        return name;
+    }
     
     public static class MCPDeobfuscationRemapper extends Remapper
     {

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+
 import codechicken.core.packet.PacketCustom;
 
 public abstract class ContainerSynchronised extends ContainerExtended
@@ -28,6 +32,21 @@ public abstract class ContainerSynchronised extends ContainerExtended
                 sendContainerPacket(packet);
                 var.reset();
             }
+        }
+    }
+    
+    @Override
+    public void sendContainerAndContentsToPlayer(Container container, List<ItemStack> list, List<EntityPlayerMP> playerCrafters)
+    {
+        super.sendContainerAndContentsToPlayer(container, list, playerCrafters);
+        for(int i = 0; i < syncVars.size(); i++)
+        {
+            IContainerSyncVar var = syncVars.get(i);
+            PacketCustom packet = createSyncPacket();
+            packet.writeByte(i);
+            var.writeChange(packet);
+            for(EntityPlayerMP player : playerCrafters)
+                packet.sendToPlayer(player);
         }
     }
     

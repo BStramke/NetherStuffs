@@ -53,7 +53,6 @@ public class TextureSpecial extends TextureStitched implements IIconRegister
         return this;
     }
     
-    @SuppressWarnings("rawtypes")
     @Override
     public void init(Texture par1Texture, List par2List, int originX, int originY, int width, int height, boolean par7)
     {
@@ -84,7 +83,6 @@ public class TextureSpecial extends TextureStitched implements IIconRegister
         }
     }
     
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean loadTexture(TextureManager manager, ITexturePack texturepack, String name, String fileName, BufferedImage image, ArrayList textures)
     {

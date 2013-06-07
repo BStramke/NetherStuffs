@@ -5,8 +5,6 @@ import org.lwjgl.opengl.GL11;
 import codechicken.core.alg.MathHelper;
 import codechicken.core.render.RenderUtils;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.AxisAlignedBB;

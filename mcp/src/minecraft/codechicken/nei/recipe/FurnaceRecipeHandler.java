@@ -1,7 +1,6 @@
 package codechicken.nei.recipe;
 
 import java.awt.Rectangle;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -256,7 +255,6 @@ public class FurnaceRecipeHandler extends TemplateRecipeHandler
     
     private static void findFuels()
     {        
-        TileEntityFurnace afurnace = new TileEntityFurnace();        
         afuels = new ArrayList<FuelPair>();
         for(Item item : Item.itemsList)
         {

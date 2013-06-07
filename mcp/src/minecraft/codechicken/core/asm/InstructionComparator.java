@@ -198,12 +198,12 @@ public class InstructionComparator
                     break;
                 case 11:
                     TableSwitchInsnNode tsinsn = (TableSwitchInsnNode)insn;
-                    for(LabelNode label : (List<LabelNode>)tsinsn.labels)
+                    for(LabelNode label : tsinsn.labels)
                         controlFlowLabels.add(label);
                     break;
                 case 12:
                     LookupSwitchInsnNode lsinsn = (LookupSwitchInsnNode)insn;
-                    for(LabelNode label : (List<LabelNode>)lsinsn.labels)
+                    for(LabelNode label : lsinsn.labels)
                         controlFlowLabels.add(label);
                     break;
             }

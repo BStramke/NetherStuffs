@@ -29,7 +29,7 @@ import cpw.mods.fml.relauncher.RelaunchClassLoader;
 @TransformerExclusions(value={"codechicken.core.asm"})
 public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 {    
-    public static final String mcVersion = "[1.5.1]";
+    public static final String mcVersion = "[1.5.2]";
     
     public static RelaunchClassLoader cl;
     public static File minecraftDir;
@@ -112,7 +112,7 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
     }
 
     @Override
-    public Void call() throws Exception
+    public Void call()
     {
         File cfgDir = new File(CodeChickenCorePlugin.minecraftDir+"/config");
         if(!cfgDir.exists())
