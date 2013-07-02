@@ -33,7 +33,7 @@ public abstract class PlayerCommand extends CoreCommand
     
     public ChunkPosition getPlayerLookingAtBlock(EntityPlayerMP player, float reach)
     {
-        Vec3 vec3d = Vec3.createVectorHelper(player.posX, (player.posY + 1.6200000000000001D) - (double)player.yOffset, player.posZ);
+        Vec3 vec3d = Vec3.createVectorHelper(player.posX, (player.posY + 1.6200000000000001D) - player.yOffset, player.posZ);
         Vec3 vec3d1 = player.getLook(1.0F);
         Vec3 vec3d2 = vec3d.addVector(vec3d1.xCoord * reach, vec3d1.yCoord * reach, vec3d1.zCoord * reach);
         MovingObjectPosition hit = player.worldObj.rayTraceBlocks(vec3d, vec3d2);
@@ -47,7 +47,7 @@ public abstract class PlayerCommand extends CoreCommand
     
     public Entity getPlayerLookingAtEntity(EntityPlayerMP player, float reach)
     {
-        Vec3 vec3d = Vec3.createVectorHelper(player.posX, (player.posY + 1.6200000000000001D) - (double)player.yOffset, player.posZ);
+        Vec3 vec3d = Vec3.createVectorHelper(player.posX, (player.posY + 1.6200000000000001D) - player.yOffset, player.posZ);
         Vec3 vec3d1 = player.getLook(1.0F);
         Vec3 vec3d2 = vec3d.addVector(vec3d1.xCoord * reach, vec3d1.yCoord * reach, vec3d1.zCoord * reach);
         MovingObjectPosition hit = player.worldObj.rayTraceBlocks(vec3d, vec3d2);

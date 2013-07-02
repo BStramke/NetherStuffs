@@ -400,7 +400,7 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory,
 	 * Get the size of the side inventory.
 	 */
 	@Override
-	public int[] getSizeInventorySide(int par1) {
+	public int[] getAccessibleSlotsFromSide(int par1) {
 		if (par1 == BlockRegistry.sideTop)
 			return new int[] { nSmeltedSlot };
 		else if (par1 == BlockRegistry.sideBottom)
@@ -413,7 +413,7 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory,
 	 * Description : Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item, side
 	 */
 	@Override
-	public boolean func_102007_a(int slot, ItemStack par2ItemStack, int side) {
+	public boolean canInsertItem(int slot, ItemStack par2ItemStack, int side) {
 		return this.isStackValidForSlot(slot, par2ItemStack);
 	}
 
@@ -421,7 +421,7 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory,
 	 * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item, side
 	 */
 	@Override
-	public boolean func_102008_b(int slot, ItemStack par2ItemStack, int side) {
+	public boolean canExtractItem(int slot, ItemStack par2ItemStack, int side) {
 		if(side == BlockRegistry.sideTop && slot == nSmeltedSlot)
 			return true;
 		
@@ -433,4 +433,6 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory,
 		
 		return false;
 	}
+
+	
 }

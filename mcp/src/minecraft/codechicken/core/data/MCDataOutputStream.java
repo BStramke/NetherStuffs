@@ -1,6 +1,5 @@
 package codechicken.core.data;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
 public class MCDataOutputStream extends OutputStream
@@ -13,7 +12,7 @@ public class MCDataOutputStream extends OutputStream
     }
     
     @Override
-    public void write(int b) throws IOException
+    public void write(int b)
     {
         out.writeByte(b);
     }

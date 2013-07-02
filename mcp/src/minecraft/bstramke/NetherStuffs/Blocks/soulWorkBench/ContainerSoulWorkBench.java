@@ -43,7 +43,7 @@ public class ContainerSoulWorkBench extends ContainerWithPlayerInventory {
 	public boolean canInteractWith(EntityPlayer player) {
 		return soulworkbench.isUseableByPlayer(player);
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void updateProgressBar(int par1, int par2) {
@@ -67,7 +67,6 @@ public class ContainerSoulWorkBench extends ContainerWithPlayerInventory {
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot_index) {
 		ItemStack stack = null;
 		Slot slot_object = (Slot) inventorySlots.get(slot_index);
-
 		if (slot_object != null && slot_object.getHasStack()) {
 			ItemStack stack_in_slot = slot_object.getStack();
 			stack = stack_in_slot.copy();
@@ -82,18 +81,10 @@ public class ContainerSoulWorkBench extends ContainerWithPlayerInventory {
 					if (!this.mergeItemStack(stack_in_slot, this.soulworkbench.nTankFillSlot, this.soulworkbench.nTankFillSlot + 1, false)) {
 						return null;
 					}
-				} else if (!this.mergeItemStack(stack_in_slot, 37, 46, false)) {
+				} else if (!this.mergeItemStack(stack_in_slot, 38, 46, false)) {
 					return null;
 				}
-			} else if (slot_index > 37 && slot_index < 47) { // player inventory slot bar
-				if (stack_in_slot.itemID == ItemRegistry.SoulEnergyBottle.itemID) {
-					if (!this.mergeItemStack(stack_in_slot, this.soulworkbench.nTankFillSlot, this.soulworkbench.nTankFillSlot + 1, false)) {
-						return null;
-					}
-				} else if (!this.mergeItemStack(stack_in_slot, 11, 37, false)) {
-					return null;
-				}
-			} else if (!this.mergeItemStack(stack_in_slot, 11, 46, false)) {
+			} else if (!this.mergeItemStack(stack_in_slot, 11, 37, false)) {
 				return null;
 			}
 

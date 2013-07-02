@@ -17,13 +17,11 @@ public abstract class ContainerExtended extends Container implements ICrafting
 {
     public LinkedList<EntityPlayerMP> playerCrafters = new LinkedList<EntityPlayerMP>();
     
-    @SuppressWarnings("unchecked")
     public ContainerExtended()
     {
         crafters.add(this);
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public void addCraftingToCrafters(ICrafting icrafting)
     {
@@ -46,7 +44,6 @@ public abstract class ContainerExtended extends Container implements ICrafting
             super.removeCraftingFromCrafters(icrafting);
     }
     
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void sendContainerAndContentsToPlayer(Container container, List list)
     {
@@ -58,7 +55,7 @@ public abstract class ContainerExtended extends Container implements ICrafting
         LinkedList<ItemStack> largeStacks = new LinkedList<ItemStack>();
         for(int i = 0; i < list.size(); i++)
         {
-            ItemStack stack = (ItemStack) list.get(i);
+            ItemStack stack = list.get(i);
             if(stack != null && stack.stackSize > Byte.MAX_VALUE)
             {
                 list.set(i, null);
@@ -235,12 +232,10 @@ public abstract class ContainerExtended extends Container implements ICrafting
         return true;
     }
     
-    @SuppressWarnings("unchecked")
     public void sendContainerPacket(PacketCustom packet)
     {
-        for(ICrafting crafting : (List<ICrafting>)crafters)
-            if(crafting instanceof EntityPlayerMP)
-                ((EntityPlayerMP)crafting).playerNetServerHandler.sendPacketToPlayer(packet.toPacket());
+        for(EntityPlayerMP player : playerCrafters)
+            packet.sendToPlayer(player);
     }
     
     /**
@@ -264,7 +259,6 @@ public abstract class ContainerExtended extends Container implements ICrafting
     {
     }
     
-    @SuppressWarnings("unchecked")
     public void sendProgressBarUpdate(int barID, int value)
     {
         for(ICrafting crafting : (List<ICrafting>)crafters)

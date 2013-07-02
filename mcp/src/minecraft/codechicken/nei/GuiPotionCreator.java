@@ -1,17 +1,7 @@
 package codechicken.nei;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.plaf.FontUIResource;
-
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,10 +14,8 @@ import org.lwjgl.opengl.GL11;
 import codechicken.core.gui.GuiCCButton;
 import codechicken.core.gui.GuiCCTextField;
 import codechicken.core.gui.GuiScrollSlot;
-import codechicken.core.gui.IGuiActionListener;
 import codechicken.core.inventory.GuiContainerWidget;
 import codechicken.core.render.FontUtils;
-import codechicken.core.render.RenderUtils;
 
 public class GuiPotionCreator extends GuiContainerWidget
 {

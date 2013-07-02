@@ -5,8 +5,9 @@ import static net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3
 
 import org.lwjgl.opengl.GL11;
 
-import codechicken.core.liquid.LiquidUtils;
+import codechicken.core.vec.BlockCoord;
 import codechicken.core.vec.Cuboid6;
+import codechicken.core.vec.Translation;
 import codechicken.core.vec.Vector3;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
@@ -60,13 +61,11 @@ public class RenderUtils
             Block liquidBlock = Block.blocksList[liquidID];
             return liquidBlock.getIcon(0, liquidMeta);
         }
-        else
-        {
-            Item liquidItem = Item.itemsList[liquidID];
-            if(liquidItem == null) 
-                return null;
-            return liquidItem.getIconFromDamage(liquidMeta);
-        }
+        
+        Item liquidItem = Item.itemsList[liquidID];
+        if(liquidItem == null) 
+            return null;
+        return liquidItem.getIconFromDamage(liquidMeta);
     }
     
     public static void renderLiquidQuad(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, Icon icon, double res)
@@ -116,9 +115,9 @@ public class RenderUtils
     
     public static void translateToWorldCoords(Entity entity, float frame)
     {       
-        double interpPosX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)frame;
-        double interpPosY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)frame;
-        double interpPosZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double)frame;
+        double interpPosX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * frame;
+        double interpPosY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * frame;
+        double interpPosZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * frame;
         
         GL11.glTranslated(-interpPosX, -interpPosY, -interpPosZ);
     }
@@ -249,11 +248,8 @@ public class RenderUtils
             return;
 
         GL11.glDisable(GL11.GL_LIGHTING);
-        if(LiquidUtils.isLiquidTranslucent(liquid))
-        {
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        }
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         
         CCRenderState.setColourOpaque(liquid.asItemStack().getItem().getColorFromItemStack(liquid.asItemStack(), 0));        
         TextureUtils.bindItemTexture(liquid.asItemStack());
@@ -273,7 +269,7 @@ public class RenderUtils
         boolean is3D = customRenderer != null && customRenderer.shouldUseRenderHelper(ENTITY, item, BLOCK_3D);
 
         boolean larger = false;
-        if (item.getItem() instanceof ItemBlock && (is3D || RenderBlocks.renderItemIn3d(Block.blocksList[item.itemID].getRenderType())))
+        if (is3D || item.getItem() instanceof ItemBlock && RenderBlocks.renderItemIn3d(Block.blocksList[item.itemID].getRenderType()))
         {
             int renderType = Block.blocksList[item.itemID].getRenderType();
             larger = !(renderType == 1 || renderType == 19 || renderType == 12 || renderType == 2);
@@ -292,6 +288,15 @@ public class RenderUtils
         
         if(larger)
             GL11.glScaled(d1, d1, d1);
+    }
+    
+    /**
+     * Don't use frequently, no guarantees about performance
+     */
+    public static void renderBlock(Cuboid6 bounds, BlockCoord pos, IUVTransformation u)
+    {
+        CCRenderState.reset();
+        CCModel.quadModel(24).generateBlock(0, bounds).render(new Translation(new Vector3(pos.x, pos.y, pos.z)), u);
     }
     
     /*public static void renderQuad3D(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, 

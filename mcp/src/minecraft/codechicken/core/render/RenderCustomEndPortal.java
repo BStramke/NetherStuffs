@@ -79,10 +79,10 @@ public class RenderCustomEndPortal
             GL11.glMatrixMode(GL11.GL_TEXTURE);
             GL11.glPushMatrix();
             GL11.glLoadIdentity();
-            GL11.glTranslatef(0.0F, (float)(System.currentTimeMillis() % 0xaae60L) / 700000F, 0.0F);
+            GL11.glTranslatef(0.0F, System.currentTimeMillis() % 0xaae60L / 700000F, 0.0F);
             GL11.glScalef(f6, f6, f6);
             GL11.glTranslatef(0.5F, 0.5F, 0.0F);
-            GL11.glRotatef((float)(i * i * 4321 + i * 9) * 2.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef((i * i * 4321 + i * 9) * 2.0F, 0.0F, 0.0F, 1.0F);
             GL11.glTranslatef(-0.5F, -0.5F, 0.0F);
             GL11.glTranslated(-playerX, -playerZ, -playerY);
             f9 = f8 + ActiveRenderInfo.objectY;

@@ -25,7 +25,7 @@ import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.common.versioning.VersionRange;
 
 @SrcPackager(getName="NotEnoughItems", getClasses = {""}, getMappedDirectories = {"NotEnoughItems"})
-@Packager(getName = "NotEnoughItems", getClasses = {""}, getBaseDirectories = {"NotEnoughItems"}, getVersion = "1.5.2.9")
+@Packager(getName = "NotEnoughItems", getClasses = {""}, getBaseDirectories = {"NotEnoughItems"}, getVersion = "1.5.2.12")
 public class NEIModContainer extends DummyModContainer
 {    
     public static LinkedList<IConfigureNEI> plugins = new LinkedList<IConfigureNEI>();

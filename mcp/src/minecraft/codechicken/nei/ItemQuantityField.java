@@ -28,7 +28,7 @@ public class ItemQuantityField extends TextField
     {
         try
         {
-            return Integer.parseInt(text);
+            return Integer.parseInt(text());
         }
         catch(NumberFormatException nfe)
         {

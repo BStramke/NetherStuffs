@@ -44,15 +44,9 @@ public class ConfigFile
                             return o1.name.compareTo(o2.name);
                     }
                 }
-                else
-                {
-                    return o1.brace ? 1 : -1;//braced one goes after
-                }
+                return o1.brace ? 1 : -1;//braced one goes after
             }
-            else
-            {
-                return Integer.valueOf(o1.position).compareTo(o2.position);
-            }
+            return Integer.valueOf(o1.position).compareTo(o2.position);
         }
         
     }
@@ -216,13 +210,9 @@ public class ConfigFile
             saveConfig();
         }
         if(dotpos == -1)
-        {
             return basetag;
-        }
-        else
-        {
-            return basetag.getTag(tagname.substring(dotpos+1), createnew);
-        }
+        
+        return basetag.getTag(tagname.substring(dotpos+1), createnew);
     }
     
     public ConfigTag getTag(String tagname)

@@ -1,6 +1,7 @@
 package codechicken.core.vec;
 
 import net.minecraft.tileentity.TileEntity;
+import codechicken.core.alg.MathHelper;
 
 public class BlockCoord implements Comparable<BlockCoord>
 {
@@ -13,6 +14,11 @@ public class BlockCoord implements Comparable<BlockCoord>
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+    
+    public BlockCoord(Vector3 v)
+    {
+        this(MathHelper.floor_double(v.x), MathHelper.floor_double(v.y), MathHelper.floor_double(v.z));
     }
     
     public BlockCoord(TileEntity tile)

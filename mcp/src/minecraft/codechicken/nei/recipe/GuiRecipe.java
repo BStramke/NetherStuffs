@@ -2,12 +2,9 @@ package codechicken.nei.recipe;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
-
-import com.google.common.base.Objects;
 
 import codechicken.nei.GuiNEIButton;
 import codechicken.nei.LayoutManager;

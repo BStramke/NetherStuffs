@@ -1,8 +1,6 @@
 package codechicken.nei;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;

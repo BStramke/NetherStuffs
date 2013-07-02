@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.client.renderer.texture.Rect2i;
 import net.minecraft.client.renderer.texture.Texture;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
@@ -45,7 +44,7 @@ public class TextureUtils
     
     static
     {
-        RenderManager.instance.entityRenderMap.put(null, new RegisterTextureCallback());
+        RenderManager.instance.entityRenderMap.put(TextureUtils.class, new RegisterTextureCallback());
     }
     
     public static interface IIconRegister
@@ -201,6 +200,7 @@ public class TextureUtils
     public static void prepareTexture(int target, int texture, int min_mag_filter, int wrap)
     {
         GL11.glBindTexture(target, texture);
+        engine().resetBoundTexture();
         GL11.glTexParameteri(target, GL11.GL_TEXTURE_MIN_FILTER, min_mag_filter);
         GL11.glTexParameteri(target, GL11.GL_TEXTURE_MAG_FILTER, min_mag_filter);
         switch(target)

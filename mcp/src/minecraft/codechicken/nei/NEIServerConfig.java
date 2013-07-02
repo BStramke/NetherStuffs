@@ -26,7 +26,6 @@ import codechicken.core.config.ConfigFile;
 import codechicken.core.config.ConfigTag;
 import codechicken.core.inventory.ItemKey;
 import codechicken.core.packet.PacketCustom;
-import codechicken.nei.api.ItemInfo;
 
 public class NEIServerConfig
 {

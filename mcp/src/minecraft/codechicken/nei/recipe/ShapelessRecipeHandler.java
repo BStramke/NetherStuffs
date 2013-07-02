@@ -9,8 +9,6 @@ import codechicken.core.ReflectionManager;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.NEICompatibility;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.api.DefaultOverlayRenderer;
-
 import net.minecraft.inventory.Container;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.client.gui.inventory.GuiContainer;

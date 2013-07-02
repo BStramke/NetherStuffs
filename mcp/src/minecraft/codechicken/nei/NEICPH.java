@@ -10,7 +10,6 @@ import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.world.World;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.core.ClientUtils;
-import codechicken.core.NetworkClosedException;
 import codechicken.core.inventory.InventoryUtils;
 import codechicken.core.inventory.ItemKey;
 import codechicken.core.packet.PacketCustom;
@@ -115,14 +114,7 @@ public class NEICPH implements IClientPacketHandler
                 }
                 else
                 {
-                    try
-                    {
-                        prefx = "remote/"+ClientUtils.getServerIP().replace(':', '~');
-                    }
-                    catch(NetworkClosedException e)
-                    {
-                        return;
-                    }
+                    prefx = "remote/"+ClientUtils.getServerIP().replace(':', '~');
                 }
                 NEIClientConfig.loadWorld(prefx+'/'+worldName);
                 NEIClientConfig.setHasSMPCounterPart(true);

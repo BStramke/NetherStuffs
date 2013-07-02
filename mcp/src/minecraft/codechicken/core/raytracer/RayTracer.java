@@ -23,11 +23,21 @@ public class RayTracer
     public static class IndexedCuboid6 extends Cuboid6
     {
         public int index;
+        public Object data;
         
         public IndexedCuboid6(int index, Cuboid6 cuboid)
         {
             super(cuboid);
             this.index = index;
+            data = index;
+        }
+        
+        public IndexedCuboid6(Object data, Cuboid6 cuboid)
+        {
+            super(cuboid);
+            if(data instanceof Integer)
+                index = (Integer)data;
+            this.data = data;
         }
     }
 
@@ -145,6 +155,7 @@ public class RayTracer
             if(mop != null && s_dist < c_dist)
             {
                 mop.subHit = cuboid.index;
+                //mop.hitInfo = cuboid.data;
                 c_dist = s_dist;
                 c_hit = mop;
                 c_cuboid = cuboid;
@@ -171,7 +182,7 @@ public class RayTracer
 
     public static MovingObjectPosition retraceBlock(World world, EntityPlayer player, int x, int y, int z)
     {
-        Vec3 headVec = Vec3.createVectorHelper(player.posX, (player.posY + 1.62) - (double)player.yOffset, player.posZ);
+        Vec3 headVec = Vec3.createVectorHelper(player.posX, (player.posY + 1.62) - player.yOffset, player.posZ);
         Vec3 lookVec = player.getLook(1.0F);
         double reach = world.isRemote ? getBlockReachDistance_client() : getBlockReachDistance_server((EntityPlayerMP) player);
         Vec3 endVec = headVec.addVector(lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
@@ -187,5 +198,13 @@ public class RayTracer
     private static double getBlockReachDistance_client()
     {
         return Minecraft.getMinecraft().playerController.getBlockReachDistance();
+    }
+
+    public static MovingObjectPosition reTrace(World world, EntityPlayer player, double reach)
+    {
+        Vec3 headVec = Vec3.createVectorHelper(player.posX, (player.posY + 1.62) - player.yOffset, player.posZ);
+        Vec3 lookVec = player.getLook(1.0F);
+        Vec3 endVec = headVec.addVector(lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
+        return world.rayTraceBlocks_do_do(headVec, endVec, true, false);
     }
 }

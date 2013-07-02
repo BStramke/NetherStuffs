@@ -1,5 +1,6 @@
 package codechicken.nei;
 
+import codechicken.core.CommonUtils;
 import codechicken.nei.forge.GuiContainerManager;
 
 public class SearchField extends TextField
@@ -36,8 +37,14 @@ public class SearchField extends TextField
     @Override
     public void onTextChange(String oldText)
     {
-        NEIClientConfig.setSearchExpression(text);
+        NEIClientConfig.setSearchExpression(text());
         ItemList.updateSearch();
+    }
+    
+    @Override
+    public String filterText(String s)
+    {
+        return s.replaceAll("\247.", "");
     }
     
     long lastclicktime;

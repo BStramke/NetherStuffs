@@ -74,6 +74,7 @@ public class SpawnerRenderer implements IItemRenderer
         BossStatus.statusBarLength = bossTimeout;
     }
     
+    @SuppressWarnings("incomplete-switch")
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data)
     {

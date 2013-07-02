@@ -3,6 +3,7 @@ package bstramke.NetherStuffs.Blocks.soulSiphon;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,10 +13,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.BlockContainerBase;
-import bstramke.NetherStuffs.Common.BlockActiveHelper;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -27,6 +28,26 @@ public class SoulSiphon extends BlockContainerBase {
 	public static final int mk2 = 1;
 	public static final int mk3 = 2;
 	public static final int mk4 = 3;
+
+	private static final int METADATA_BITMASK = 0x7;
+	private static final int METADATA_ACTIVEBIT = 0x8;
+	private static final int METADATA_CLEARACTIVEBIT = -METADATA_ACTIVEBIT - 1;
+
+	public static int clearActiveOnMetadata(int metadata) {
+		return metadata & METADATA_CLEARACTIVEBIT;
+	}
+
+	public static boolean isActiveSet(int metadata) {
+		return (metadata & METADATA_ACTIVEBIT) != 0;
+	}
+
+	public static int setActiveOnMetadata(int metadata) {
+		return metadata | METADATA_ACTIVEBIT;
+	}
+
+	public static int unmarkedMetadata(int metadata) {
+		return metadata & METADATA_BITMASK;
+	}
 
 	private Icon icoSoulSiphonInactive;
 	private Icon icoSoulSiphonActive;
@@ -51,7 +72,7 @@ public class SoulSiphon extends BlockContainerBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public Icon getIcon(int side, int meta) {
-		if (BlockActiveHelper.isActiveSet(meta))
+		if (this.isActiveSet(meta))
 			return icoSoulSiphonActive;
 		else
 			return icoSoulSiphonInactive;
@@ -63,8 +84,13 @@ public class SoulSiphon extends BlockContainerBase {
 
 	@Override
 	public int damageDropped(int meta) {
-		return meta;
+		return unmarkedMetadata(meta);
 	}
+
+	/*@Override
+	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
+		return super.canConnectRedstone(world, x, y, z, side);
+	}*/
 
 	@SideOnly(Side.CLIENT)
 	@Override

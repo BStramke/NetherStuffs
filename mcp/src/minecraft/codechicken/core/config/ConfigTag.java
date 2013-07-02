@@ -46,13 +46,9 @@ public class ConfigTag
             parentfile.saveConfig();
         }
         if(dotpos == -1)
-        {
             return basetag;
-        }
-        else
-        {
-            return basetag.getTag(tagname.substring(dotpos+1));
-        }
+        
+        return basetag.getTag(tagname.substring(dotpos+1));
     }
     
     public ConfigTag getTag(String tagname)
@@ -231,10 +227,8 @@ public class ConfigTag
                     Integer.parseInt(matcherRGB.group(3)), 
                     0xFF);
         }
-        else
-        {
-            return new ColourRGBA(getHexValue()<<8|0xFF);
-        }
+        
+        return new ColourRGBA(getHexValue()<<8|0xFF);
     }
     
     public Colour getColourRGB(Colour defaultvalue)

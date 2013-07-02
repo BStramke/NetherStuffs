@@ -157,15 +157,15 @@ public class TorchBow extends ItemBow {
 		int j = usingItem.getMaxItemUseDuration() - useRemaining;
 
 		if (j >= 18) {
-			return func_94599_c(2);
+			return getItemIconForUseDuration(2);
 		}
 
 		if (j > 10) {
-			return func_94599_c(1);
+			return getItemIconForUseDuration(1);
 		}
 
 		if (j > 0) {
-			return func_94599_c(0);
+			return getItemIconForUseDuration(0);
 		}
 
 		return itemIcon;
@@ -173,7 +173,7 @@ public class TorchBow extends ItemBow {
 
 	// handles the strength of the pulling
 	@Override
-	public Icon func_94599_c(int par1) {
+	public Icon getItemIconForUseDuration(int par1) {
 		switch (par1) {
 		case 0:
 			return icoTorchBowStrain1;

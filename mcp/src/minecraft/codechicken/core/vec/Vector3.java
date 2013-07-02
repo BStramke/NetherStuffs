@@ -136,6 +136,11 @@ public class Vector3
         z += vec.z;
         return this;
     }
+    
+    public Vector3 add(double d)
+    {
+        return add(d, d, d);
+    }
 
     public Vector3 subtract(Vector3 vec)
     {
@@ -198,13 +203,8 @@ public class Vector3
     public Vector3 perpendicular()
     {
         if(z == 0)
-        {
             return zCrossProduct();
-        }
-        else
-        {
-            return xCrossProduct();
-        }
+        return xCrossProduct();
     }
     
     public Vector3 xCrossProduct()

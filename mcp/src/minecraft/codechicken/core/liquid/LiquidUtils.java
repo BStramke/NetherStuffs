@@ -70,16 +70,4 @@ public class LiquidUtils
         liquid.amount = quantity;
         return liquid;
     }
-
-    public static int getRenderPass(LiquidStack liquid)
-    {
-        if(liquid == null)
-            return 0;
-        return isLiquidTranslucent(liquid) ? 1 : 0;
-    }
-
-    public static boolean isLiquidTranslucent(LiquidStack liquid)
-    {
-        return liquid.isLiquidEqual(water);
-    }
 }

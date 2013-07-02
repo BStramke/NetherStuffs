@@ -40,12 +40,10 @@ public class FeatureHackTransformer implements Opcodes, IClassTransformer
      * Allow GameData to hide some items.
      */
     DescriptorMapping m_newItemAdded = new DescriptorMapping("cpw/mods/fml/common/registry/GameData", "newItemAdded", "(Lnet/minecraft/item/Item;)V");
-    DescriptorMapping f_lastBrightness = new DescriptorMapping("net/minecraft/client/renderer/OpenGlHelper", "lastBrightness", "I");
     DescriptorMapping m_startGame = new DescriptorMapping("net/minecraft/client/Minecraft", "startGame", "()V");
     DescriptorMapping m_findClass = new DescriptorMapping("cpw/mods/fml/relauncher/RelaunchClassLoader", "findClass", "(Ljava/lang/String;)Ljava/lang/Class;");
-	DescriptorMapping m_canPlaceBlockAt = new DescriptorMapping("net/minecraft/block/Block", "canPlaceBlockAt", "(Lnet/minecraft/world/World;III)Z");
-	DescriptorMapping m_isBlockReplaceable = new DescriptorMapping("net/minecraft/block/Block", "isBlockReplaceable", "(Lnet/minecraft/world/World;III)Z");
-	
+    DescriptorMapping f_hitInfo = new DescriptorMapping("net/minecraft/util/MovingObjectPosition", "hitInfo", "Ljava/lang/Object;");
+    
     private byte[] transformer001(String name, byte[] bytes)
     {
         ClassNode cnode = ASMHelper.createClassNode(bytes);
@@ -68,78 +66,27 @@ public class FeatureHackTransformer implements Opcodes, IClassTransformer
     {
         if(m_newItemAdded.isClass(name))
             bytes = transformer001(name, bytes);
-        if(f_lastBrightness.isClass(name))
-            bytes = transformer002(name, bytes);
         if(m_startGame.isClass(name))
             bytes = transformer003(name, bytes);
+        if(f_hitInfo.isClass(name))
+            bytes = transformer004(name, bytes);
         if(name.startsWith("net.minecraftforge"))
             usp(name);
-        if(m_canPlaceBlockAt.isClass(name))
-            bytes = transformer004(name, bytes);
-		return bytes;
-	}
+        return bytes;
+    }
 
     private byte[] transformer004(String name, byte[] bytes)
     {
         ClassNode cnode = ASMHelper.createClassNode(bytes);
-        MethodNode method1 = ASMHelper.findMethod(m_isBlockReplaceable, cnode);
-        InsnList replacement1 = new InsnList();
-        replacement1.add(new VarInsnNode(ALOAD, 0));
-        replacement1.add(new FieldInsnNode(GETFIELD, "net/minecraft/block/Block", "blockMaterial", "Lnet/minecraft/block/material/Material;"));
-        replacement1.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/block/material/Material", "isReplaceable", "()Z"));
-        replacement1.add(new InsnNode(IRETURN));
-        method1.instructions = replacement1;
-        
-        MethodNode method2 = ASMHelper.findMethod(m_canPlaceBlockAt, cnode);
-        InsnList replacement2 = new InsnList();
-        replacement2.add(new VarInsnNode(ALOAD, 1));
-        replacement2.add(new VarInsnNode(ILOAD, 2));
-        replacement2.add(new VarInsnNode(ILOAD, 3));
-        replacement2.add(new VarInsnNode(ILOAD, 4));
-        replacement2.add(new MethodInsnNode(INVOKESTATIC, "codechicken/core/featurehack/TweakTransformerHelper", "canPlaceBlockAt", "(Lnet/minecraft/world/World;III)Z"));
-        replacement2.add(new InsnNode(IRETURN));
-        method2.instructions = replacement2;
-        
-        return ASMHelper.createBytes(cnode, 3);
-    }
-
-    private byte[] transformer002(String name, byte[] bytes)
-    {
-        ClassNode cnode = ASMHelper.createClassNode(bytes);
-        FieldNode fnode = ASMHelper.findField(f_lastBrightness, cnode);
+        FieldNode fnode = ASMHelper.findField(f_hitInfo, cnode);
         if(fnode == null)
         {
-            cnode.fields.add(new FieldNode(ACC_PUBLIC|ACC_STATIC, f_lastBrightness.s_name, f_lastBrightness.s_desc, null, null));
-            MethodNode mlightmap = ASMHelper.findMethod(new DescriptorMapping("net/minecraft/client/renderer/OpenGlHelper", "setLightmapTextureCoords", "(IFF)V"), cnode);
-            
-            InsnList hook = new InsnList();
-            LabelNode lend = new LabelNode();
-            hook.add(new VarInsnNode(ILOAD, 0));
-            hook.add(new FieldInsnNode(GETSTATIC, "net/minecraft/client/renderer/OpenGlHelper", "lightmapTexUnit", "I"));
-            hook.add(new JumpInsnNode(IF_ICMPNE, lend));
-            hook.add(new VarInsnNode(FLOAD, 2));
-            hook.add(new InsnNode(F2I));
-            hook.add(new IntInsnNode(BIPUSH, 16));
-            hook.add(new InsnNode(ISHL));
-            hook.add(new VarInsnNode(FLOAD, 1));
-            hook.add(new InsnNode(F2I));
-            hook.add(new InsnNode(IOR));
-            hook.add(f_lastBrightness.toFieldInsn(PUTSTATIC));
-            hook.add(lend);
-            
-            InsnList needle = new InsnList();
-            needle.add(new InsnNode(RETURN));
-            List<AbstractInsnNode> ret = InstructionComparator.insnListFindEnd(mlightmap.instructions, needle);
-            if(ret.size() != 1)
-                throw new RuntimeException("Needle not found in Haystack: " + ASMHelper.printInsnList(mlightmap.instructions)+"\n" + ASMHelper.printInsnList(needle));
-            
-            mlightmap.instructions.insertBefore(ret.get(0), hook);
+            cnode.fields.add(new FieldNode(ACC_PUBLIC, f_hitInfo.s_name, f_hitInfo.s_desc, null, null));
             bytes = ASMHelper.createBytes(cnode, 3);
-            System.out.println("Brightness hook injected");
         }
         return bytes;
     }
-    
+
     /**
      * Stencil buffer
      * TODO: forge PR
@@ -168,7 +115,6 @@ public class FeatureHackTransformer implements Opcodes, IClassTransformer
         return bytes;
     }
     
-    @SuppressWarnings("unchecked")
     public static void usp(String name)
     {
         int ld = name.lastIndexOf('.');

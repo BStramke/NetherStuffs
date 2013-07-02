@@ -258,20 +258,18 @@ public final class PacketCustom implements MCDataInput, MCDataOutput
             payload.length = payload.data.length;            
             return payload;
         }
-        else
+        
+        NetworkModHandler nmh = FMLNetworkHandler.instance().findNetworkModHandler(channel);
+        if(nmh == null)
         {
-            NetworkModHandler nmh = FMLNetworkHandler.instance().findNetworkModHandler(channel);
-            if(nmh == null)
-            {
-                FMLCommonHandler.instance().raiseException(new IllegalStateException("Invalid mod object for channel: "+channel), "Custom Packet", true);
-                return null;
-            }
-            byte[] data = dataarrayout.toByteArray();       
-            Packet131MapData payload = new Packet131MapData((short) nmh.getNetworkId(), (short) type, Arrays.copyOfRange(data, 1, data.length));
-            payload.isChunkDataPacket = isChunkDataPacket;
-            
-            return payload;
+            FMLCommonHandler.instance().raiseException(new IllegalStateException("Invalid mod object for channel: "+channel), "Custom Packet", true);
+            return null;
         }
+        byte[] data = dataarrayout.toByteArray();       
+        Packet131MapData payload = new Packet131MapData((short) nmh.getNetworkId(), (short) type, Arrays.copyOfRange(data, 1, data.length));
+        payload.isChunkDataPacket = isChunkDataPacket;
+        
+        return payload;
     }
         
     public void writeBoolean(boolean b)
@@ -654,14 +652,10 @@ public final class PacketCustom implements MCDataInput, MCDataOutput
             short var2 = readShort();
     
             if (var2 < 0)
-            {
                 return null;
-            }
-            else
-            {
-                byte[] var3 = readByteArray(var2);
-                return CompressedStreamTools.decompress(var3);
-            }
+            
+            byte[] var3 = readByteArray(var2);
+            return CompressedStreamTools.decompress(var3);
         }
         catch(IOException e)
         {
@@ -676,11 +670,7 @@ public final class PacketCustom implements MCDataInput, MCDataOutput
         short liquidID = readShort();
 
         if (liquidID >= 0)
-        {
-            int amount = readInt();
-            short liquidMeta = readShort();
-            var2 = new LiquidStack(liquidID, amount, liquidMeta);
-        }
+            var2 = new LiquidStack(liquidID, readInt(), readUnsignedShort());
 
         return var2;
     }
@@ -789,7 +779,6 @@ public final class PacketCustom implements MCDataInput, MCDataOutput
         sendToOps(toPacket());
     }
 
-    @SuppressWarnings("unchecked")
     public static void sendToOps(Packet packet)
     {
         for(EntityPlayerMP player : (List<EntityPlayerMP>)MinecraftServer.getServer().getConfigurationManager().playerEntityList)

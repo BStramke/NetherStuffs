@@ -65,11 +65,7 @@ public abstract class TextField extends Widget
     public boolean handleClick(int mousex, int mousey, int button)
     {
         if(button == 1)
-        {
-            String oldText = text;
-            text = "";
-            onTextChange(oldText);
-        }
+            setText("");
         setFocus(true);
         return true;
     }
@@ -79,14 +75,11 @@ public abstract class TextField extends Widget
         if(LayoutManager.getInputFocused() != this)
             return false;
         
-        String oldText = text;
-        
         if(keyID == Keyboard.KEY_BACK)
         {
             if(text.length() > 0)
             {
-                text = text.substring(0, text.length() - 1);
-                onTextChange(oldText);
+                setText(text.substring(0, text.length() - 1));
                 backdowntime = System.currentTimeMillis();
             }
         }
@@ -99,21 +92,14 @@ public abstract class TextField extends Widget
         {
             String pastestring = GuiScreen.getClipboardString();
             if(pastestring == null) 
-            {
                 pastestring = "";
-            }
             
             if(isValid(text + pastestring))
-            {
-                text = text + pastestring;
-                onTextChange(oldText);
-            }            
+                setText(text + pastestring);
         }
         else if(isValid(text+keyChar)) 
-        {
-            text = text+keyChar;
-            onTextChange(oldText);
-        }
+            setText(text+keyChar);
+        
         return true;
     }
     
@@ -137,9 +123,7 @@ public abstract class TextField extends Widget
             {
                 if(System.currentTimeMillis() - backdowntime > 200 / (1+backs * 0.3F))
                 {
-                    String oldText = text;
-                    text = text.substring(0, text.length() - 1);
-                    onTextChange(oldText);
+                    setText(text.substring(0, text.length() - 1));
                     backdowntime = System.currentTimeMillis();
                     backs++;
                 }
@@ -155,8 +139,13 @@ public abstract class TextField extends Widget
     public void setText(String s)
     {
         String oldText = text;
-        text = s;
+        text = filterText(s);
         onTextChange(oldText);
+    }
+    
+    public String filterText(String s)
+    {
+        return s;
     }
     
     private int getMaxTextLength()
@@ -180,11 +169,16 @@ public abstract class TextField extends Widget
     {
         return LayoutManager.getInputFocused() == this;
     }
+    
+    public String text()
+    {
+        return text;
+    }
 
+    private String text = "";
     public boolean centered;
     public long backdowntime;
     public int backs;
-    public String text = "";
     public String identifier;
     public int cursorCounter;
 }

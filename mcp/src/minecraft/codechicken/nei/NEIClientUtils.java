@@ -507,7 +507,7 @@ public class NEIClientUtils extends NEIServerUtils
     public static void setItemQuantity(int i)
     {
         NEIClientConfig.setItemQuantity(i);
-        LayoutManager.quantity.text = Integer.toString(i);
+        LayoutManager.quantity.setText(Integer.toString(i));
     }
 
     public static GuiContainer getGuiContainer()

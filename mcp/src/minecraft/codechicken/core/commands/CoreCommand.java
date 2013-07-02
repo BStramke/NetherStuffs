@@ -105,8 +105,7 @@ public abstract class CoreCommand implements ICommand
             else
                 return false;
         }
-        else
-            return true;
+        return true;
     }
 
     

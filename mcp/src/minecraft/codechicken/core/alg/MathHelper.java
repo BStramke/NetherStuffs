@@ -139,4 +139,9 @@ public class MathHelper
     {
         return net.minecraft.util.MathHelper.cos((float) d);
     }
+
+    public static int floor_double(double d)
+    {
+        return net.minecraft.util.MathHelper.floor_double(d);
+    }
 }

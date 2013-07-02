@@ -1,6 +1,5 @@
 package codechicken.core.data;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 public class MCDataInputStream extends InputStream
@@ -13,7 +12,7 @@ public class MCDataInputStream extends InputStream
     }
     
     @Override
-    public int read() throws IOException
+    public int read()
     {
         return in.readByte()&0xFF;
     }
