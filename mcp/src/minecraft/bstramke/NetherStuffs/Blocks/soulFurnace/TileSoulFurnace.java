@@ -325,7 +325,7 @@ public class TileSoulFurnace extends SoulEnergyTankTileEntity implements ISpecia
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		switch (i) {
 		case nSmeltedSlot:
 			return (DemonicFurnaceRecipes.smelting().getSmeltingResult(itemstack) != null || FurnaceRecipes.smelting().getSmeltingResult(itemstack) != null);
@@ -359,7 +359,7 @@ public class TileSoulFurnace extends SoulEnergyTankTileEntity implements ISpecia
 	 */
 	@Override
 	public boolean canInsertItem(int slot, ItemStack par2ItemStack, int side) {
-		return this.isStackValidForSlot(slot, par2ItemStack);
+		return this.isItemValidForSlot(slot, par2ItemStack);
 	}
 
 	/**

@@ -1,12 +1,9 @@
 package mods.tinker.tconstruct.library.crafting;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.FluidStack;
 
 /* Melting becomes hardened */
 public class LiquidCasting
@@ -22,7 +19,7 @@ public class LiquidCasting
      * @param consume Whether the item should be consumed while casting
      * @param delay Time to cast in ticks
      */
-    public void addCastingRecipe (ItemStack output, LiquidStack metal, ItemStack cast, boolean consume, int delay)
+    public void addCastingRecipe (ItemStack output, FluidStack metal, ItemStack cast, boolean consume, int delay)
     {
         casts.add(new CastingRecipe(output, metal, cast, consume, delay));
     }
@@ -34,7 +31,7 @@ public class LiquidCasting
      * @param cast The empty item to cast with. ex Ingot Cast
      * @param delay Time to cast in ticks
      */
-    public void addCastingRecipe (ItemStack output, LiquidStack metal, ItemStack cast, int delay)
+    public void addCastingRecipe (ItemStack output, FluidStack metal, ItemStack cast, int delay)
     {
         addCastingRecipe(output, metal, cast, false, delay);
     }
@@ -45,12 +42,12 @@ public class LiquidCasting
      * @param metal Liquid to be used in casting. This also decides how much metal is consumed
      * @param delay Time to cast in ticks
      */
-    public void addCastingRecipe (ItemStack output, LiquidStack metal, int delay)
+    public void addCastingRecipe (ItemStack output, FluidStack metal, int delay)
     {
         addCastingRecipe(output, metal, null, false, delay);
     }
 
-    public int getCastingDelay (LiquidStack metal, ItemStack cast)
+    public int getCastingDelay (FluidStack metal, ItemStack cast)
     {
         CastingRecipe recipe = getCastingRecipe(metal, cast);
         if (recipe != null)
@@ -58,7 +55,7 @@ public class LiquidCasting
         return -1;
     }
 
-    public int getCastingAmount (LiquidStack metal, ItemStack cast)
+    public int getCastingAmount (FluidStack metal, ItemStack cast)
     {
         CastingRecipe recipe = getCastingRecipe(metal, cast);
         if (recipe != null)
@@ -66,7 +63,7 @@ public class LiquidCasting
         return 0;
     }
 
-    public CastingRecipe getCastingRecipe (LiquidStack metal, ItemStack cast)
+    public CastingRecipe getCastingRecipe (FluidStack metal, ItemStack cast)
     {
         for (CastingRecipe recipe : casts)
         {

@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -28,7 +29,15 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class RenderSoulEngine extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
-
+	
+	private static final ResourceLocation BaseTexture = new ResourceLocation(CommonProxy.GFXFOLDERPREFIX + "base_soulengine.png");
+	private static final ResourceLocation ChamberTexture = new ResourceLocation(CommonProxy.GFXFOLDERPREFIX+"chamber.png");
+	
+	private static final ResourceLocation TrunkBlue = new ResourceLocation(CommonProxy.GFXFOLDERPREFIX+"trunk_blue.png");
+	private static final ResourceLocation TrunkGreen = new ResourceLocation(CommonProxy.GFXFOLDERPREFIX+"trunk_green.png");
+	private static final ResourceLocation TrunkYellow = new ResourceLocation(CommonProxy.GFXFOLDERPREFIX+"trunk_yellow.png");
+	private static final ResourceLocation TrunkRed = new ResourceLocation(CommonProxy.GFXFOLDERPREFIX+"trunk_red.png");
+	
 	private static int renderId;
 
 	public static RenderSoulEngine instance = new RenderSoulEngine();
@@ -74,22 +83,22 @@ public class RenderSoulEngine extends TileEntitySpecialRenderer implements ISimp
 
 	public RenderSoulEngine(String baseTexture) {
 		this();
-		this.baseTexture = baseTexture;
+		//this.baseTexture = baseTexture;
 		setTileEntityRenderer(TileEntityRenderer.instance);
 	}
 
 	public void inventoryRender(double x, double y, double z, float f, float f1) {
-		render(EnergyStage.Blue, 0.25F, ForgeDirection.UP, baseTexture, x, y, z);
+		render(EnergyStage.Blue, 0.25F, ForgeDirection.UP, x, y, z);
 	}
 
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
 		if (tileentity != null && tileentity instanceof TileSoulEngine) {
-			render(((TileSoulEngine) tileentity).getEnergyStage(), ((TileSoulEngine) tileentity).progress, ((TileSoulEngine) tileentity).orientation, ((TileSoulEngine) tileentity).getTextureFile(), x, y, z);
+			render(((TileSoulEngine) tileentity).getEnergyStage(), ((TileSoulEngine) tileentity).progress, ((TileSoulEngine) tileentity).orientation, x, y, z);
 		}
 	}
 
-	private void render(EnergyStage energy, float progress, ForgeDirection orientation, String baseTexture, double x, double y, double z) {
+	private void render(EnergyStage energy, float progress, ForgeDirection orientation, double x, double y, double z) {
 		GL11.glPushMatrix();
 		GL11.glDisable(2896 /* GL_LIGHTING */);
 
@@ -152,15 +161,15 @@ public class RenderSoulEngine extends TileEntitySpecialRenderer implements ISimp
 
 		float factor = (float) (1.0 / 16.0);
 
-		bindTextureByName(baseTexture);
-
+		this.func_110628_a(BaseTexture);
+		
 		box.render(factor);
 
 		GL11.glTranslatef(translate[0] * translatefact, translate[1] * translatefact, translate[2] * translatefact);
 		movingBox.render(factor);
 		GL11.glTranslatef(-translate[0] * translatefact, -translate[1] * translatefact, -translate[2] * translatefact);
 
-		bindTextureByName(CommonProxy.GFXFOLDERPREFIX+"chamber.png");
+		this.func_110628_a(ChamberTexture);
 
 		float chamberf = 2F / 16F;
 
@@ -173,24 +182,22 @@ public class RenderSoulEngine extends TileEntitySpecialRenderer implements ISimp
 			GL11.glTranslatef(-translate[0] * chamberf, -translate[1] * chamberf, -translate[2] * chamberf);
 		}
 
-		String texture = "";
-
 		switch (energy) {
 		case Blue:
-			texture = CommonProxy.GFXFOLDERPREFIX+"trunk_blue.png";
+			this.func_110628_a(TrunkBlue);
 			break;
 		case Green:
-			texture = CommonProxy.GFXFOLDERPREFIX+"trunk_green.png";
+			this.func_110628_a(TrunkGreen);
 			break;
 		case Yellow:
-			texture = CommonProxy.GFXFOLDERPREFIX+"trunk_yellow.png";
+			this.func_110628_a(TrunkYellow);
 			break;
 		default:
-			texture = CommonProxy.GFXFOLDERPREFIX+"trunk_red.png";
+			this.func_110628_a(TrunkRed);
 			break;
 		}
 
-		bindTextureByName(texture);
+		this.func_110628_a(ChamberTexture);
 
 		trunk.render(factor);
 

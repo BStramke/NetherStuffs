@@ -12,6 +12,7 @@ import bstramke.NetherStuffs.Blocks.soulWorkBench.TileSoulWorkBench;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -42,9 +43,9 @@ public abstract class GuiContainerSoulTank extends GuiContainer {
 		int nBottomLeftY = TopY + TankHeight;
 
 		int nFillState = tile.getFillingScaled(TankHeight);
-		this.mc.renderEngine.bindTexture("/terrain.png");
-		
-		Icon LiquidIcon = BlockRegistry.LiquidStill.getIcon(BlockRegistry.sideTop, 0);
+		//this.mc.renderEngine.bindTexture("/terrain.png");
+		mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
+		Icon LiquidIcon = BlockRegistry.SoulEnergyFluidBlock.getIcon(BlockRegistry.sideTop, 0);
 		int y = 0;
 		for (int x = 16; x <= 32 && x <= nFillState; x += 16) {
 			drawTexturedModelRectFromIcon(TopX, nBottomLeftY - x, LiquidIcon, 16, 16);
@@ -57,7 +58,7 @@ public abstract class GuiContainerSoulTank extends GuiContainer {
 		}
 	}
 
-	@Override
+	/*@Override
 	public void drawScreen(int mouseX, int mouseY, float par3) {
 		super.drawScreen(mouseX, mouseY, par3);
 		int x = (this.width - this.xSize) / 2 + TankTopXpos;
@@ -69,5 +70,5 @@ public abstract class GuiContainerSoulTank extends GuiContainer {
 			par1ItemStack.setItemDamage(tile.getMaxTankLevel());
 			drawItemStackTooltip(par1ItemStack, mouseX, mouseY);
 		}
-	}
+	}*/
 }

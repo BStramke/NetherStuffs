@@ -1,30 +1,7 @@
 package bstramke.NetherStuffsNEIPlugin;
 
-import java.awt.Rectangle;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.TreeSet;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
-import bstramke.NetherStuffs.Blocks.BlockRegistry;
-import bstramke.NetherStuffs.Blocks.demonicFurnace.DemonicFurnaceRecipes;
-import bstramke.NetherStuffs.Blocks.demonicFurnace.GuiDemonicFurnace;
-import bstramke.NetherStuffs.Blocks.demonicFurnace.TileDemonicFurnace;
-import bstramke.NetherStuffs.Common.CommonProxy;
-import bstramke.NetherStuffs.Items.ItemRegistry;
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.forge.GuiContainerManager;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-import codechicken.nei.recipe.TemplateRecipeHandler.CachedRecipe;
-import codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect;
-
-public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
+public class DemonicFurnaceRecipeHandler{}/* extends TemplateRecipeHandler {
 
 	@Override
 	public String getRecipeName() {
@@ -196,4 +173,4 @@ public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
 	{
 		return "netherdemonicsmelting";
 	}
-}
+}*/

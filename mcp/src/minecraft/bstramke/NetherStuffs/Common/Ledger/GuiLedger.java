@@ -7,6 +7,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
@@ -125,7 +126,7 @@ public abstract class GuiLedger extends GuiContainer {
 	 * Side ledger for guis
 	 */
 	protected abstract class Ledger {
-
+		private final ResourceLocation LedgerTexture = new ResourceLocation(CommonProxy.GFXFOLDERPREFIX + "ledger.png");
 		private boolean open;
 
 		protected int overlayColor = 0xffffff;
@@ -214,7 +215,8 @@ public abstract class GuiLedger extends GuiContainer {
 
 			GL11.glColor4f(colorR, colorG, colorB, 1.0F);
 
-			mc.renderEngine.bindTexture(CommonProxy.GFXFOLDERPREFIX + "ledger.png");
+			//mc.renderEngine.bindTexture(CommonProxy.GFXFOLDERPREFIX + "ledger.png");
+			mc.func_110434_K().func_110577_a(LedgerTexture);
 			drawTexturedModalRect(x, y, 0, 256 - currentHeight, 4, currentHeight);
 			drawTexturedModalRect(x + 4, y, 256 - currentWidth + 4, 0, currentWidth - 4, 4);
 			// Add in top left corner again

@@ -29,7 +29,7 @@ public class SoulWorkBenchRecipes {
 	SoulWorkBenchRecipes() {
 		this.addRecipe(new ItemStack(Block.slowSand, 3), 200, new Object[] { "SSS", "SSS", "SSS", 'S', new ItemStack(Block.sand) });
 
-		this.addRecipe(new ItemStack(BlockRegistry.SoulBomb, 1, 0), 100, new Object[] { "DID", "IDI", "DID", 'D', new ItemStack(Item.lightStoneDust, 1, 0), 'I',
+		this.addRecipe(new ItemStack(BlockRegistry.SoulBomb, 1, 0), 100, new Object[] { "DID", "IDI", "DID", 'D', new ItemStack(Item.glowstone, 1, 0), 'I',
 				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0) });
 
 		this.addRecipe(new ItemStack(ItemRegistry.NetherBow, 1, 0), 150, new Object[] { "SW.", "S.W", "SW.", 'S', new ItemStack(Item.silk, 1, 0), 'W',

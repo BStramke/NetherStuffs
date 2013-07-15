@@ -67,9 +67,9 @@ public class LiquidBase extends Block {
 		if (tile != null && tile instanceof LiquidTextureLogic)
 		{
 			if (side == 1 || side == 0)
-				return stillIcons[((LiquidTextureLogic) tile).getLiquidType()];
+				return stillIcons[((LiquidTextureLogic) tile).getFluidType()];
 			else
-				return flowIcons[((LiquidTextureLogic) tile).getLiquidType()];
+				return flowIcons[((LiquidTextureLogic) tile).getFluidType()];
 		}
 		
 		int meta = par1iBlockAccess.getBlockMetadata(x, y, z);
@@ -89,7 +89,7 @@ public class LiquidBase extends Block {
 
 	@SideOnly(Side.CLIENT)
 	public static double getFlowDirection(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, Material par4Material) {
-		Vec3 var5 = ((LiquidBase) BlockRegistry.LiquidFlowing).getFlowVector(par0IBlockAccess, par1, par2, par3);
+		Vec3 var5 = ((LiquidBase) BlockRegistry.SoulEnergyFluidBlock).getFlowVector(par0IBlockAccess, par1, par2, par3);
 		return var5.xCoord == 0.0D && var5.zCoord == 0.0D ? -1000.0D : Math.atan2(var5.zCoord, var5.xCoord) - (Math.PI / 2D);
 	}
 

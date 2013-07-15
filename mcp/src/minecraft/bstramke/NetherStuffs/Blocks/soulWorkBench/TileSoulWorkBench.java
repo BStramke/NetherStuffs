@@ -1,6 +1,5 @@
 package bstramke.NetherStuffs.Blocks.soulWorkBench;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -8,14 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.ILiquidTank;
-import net.minecraftforge.liquids.ITankContainer;
-import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidTank;
-import bstramke.NetherStuffs.NetherStuffs;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Common.SoulEnergyTankTileEntity;
-import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.inventory.ISpecialInventory;
@@ -323,7 +319,7 @@ public class TileSoulWorkBench extends SoulEnergyTankTileEntity implements ISpec
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		switch (i) {
 		case nOutputSlot:
 			return false;
@@ -352,7 +348,7 @@ public class TileSoulWorkBench extends SoulEnergyTankTileEntity implements ISpec
 	 */
 	@Override
 	public boolean canInsertItem(int slot, ItemStack par2ItemStack, int side) {
-		return this.isStackValidForSlot(slot, par2ItemStack);
+		return this.isItemValidForSlot(slot, par2ItemStack);
 	}
 
 	/**

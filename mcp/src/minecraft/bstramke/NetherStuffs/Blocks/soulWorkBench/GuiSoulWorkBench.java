@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
@@ -16,7 +17,7 @@ import bstramke.NetherStuffs.Common.Gui.GuiContainerSoulTank;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 
 public class GuiSoulWorkBench extends GuiContainerSoulTank {
-
+	private static final ResourceLocation BackgroundTexture = new ResourceLocation(CommonProxy.SOULWORKBENCH_PNG);
 	private TileSoulWorkBench benchInventory;
 
 	public GuiSoulWorkBench(InventoryPlayer player_inventory, TileSoulWorkBench tile_entity) {
@@ -34,7 +35,7 @@ public class GuiSoulWorkBench extends GuiContainerSoulTank {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(CommonProxy.SOULWORKBENCH_PNG);
+		this.mc.func_110434_K().func_110577_a(BackgroundTexture);
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);

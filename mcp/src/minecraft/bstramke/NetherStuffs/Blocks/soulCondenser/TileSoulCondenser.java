@@ -302,7 +302,7 @@ public class TileSoulCondenser extends SoulEnergyTankBottleTileEntity implements
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		if (getBlockMetadata() == 0) {
 			if (i == nTankFillSlot) {
 				return itemstack.itemID == ItemRegistry.SoulEnergyBottle.itemID;
@@ -341,7 +341,7 @@ public class TileSoulCondenser extends SoulEnergyTankBottleTileEntity implements
 	 */
 	@Override
 	public boolean canInsertItem(int slot, ItemStack par2ItemStack, int side) {
-		return this.isStackValidForSlot(slot, par2ItemStack);
+		return this.isItemValidForSlot(slot, par2ItemStack);
 	}
 
 	/**

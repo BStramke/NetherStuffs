@@ -7,6 +7,7 @@ import net.minecraft.block.BlockTNT;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -39,7 +40,7 @@ public class SoulBomb extends BlockTNT {
 		this.PrimeTnt(par1World, par2, par3, par4, par5, (EntityLiving) null);
 	}
 
-	public void PrimeTnt(World par1World, int par2, int par3, int par4, int par5, EntityLiving par6EntityLiving) {
+	public void PrimeTnt(World par1World, int par2, int par3, int par4, int par5, EntityLivingBase par6EntityLiving) {
 		if (!par1World.isRemote) {
 			if ((par5 & 1) == 1) {
 				EntitySoulBombPrimed var6 = new EntitySoulBombPrimed(par1World, (double) ((float) par2 + 0.5F), (double) ((float) par3 + 0.5F), (double) ((float) par4 + 0.5F),

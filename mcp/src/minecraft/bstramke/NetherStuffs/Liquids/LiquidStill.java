@@ -2,27 +2,28 @@ package bstramke.NetherStuffs.Liquids;
 
 import java.util.Random;
 
-import bstramke.NetherStuffs.Blocks.BlockRegistry;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.liquids.ILiquid;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
+import bstramke.NetherStuffs.Blocks.BlockRegistry;
 
-public class LiquidStill extends LiquidBase implements ILiquid {
+public class LiquidStill extends LiquidBase implements IFluidBlock {
 
 	public LiquidStill(int par1, Material par2Material) {
 		super(par1, par2Material);
 	}
 
-	@Override
+	//@Override
 	public int stillLiquidId() {
-		return this.blockID;
+		return BlockRegistry.SoulEnergyFluidBlock.blockID;
 	}
 
 	public int flowingLiquidID() {
-		return BlockRegistry.LiquidFlowing.blockID;
+		return BlockRegistry.SoulEnergyFluidBlock.blockID;
 	}
 
 
@@ -103,7 +104,7 @@ public class LiquidStill extends LiquidBase implements ILiquid {
 
 	private void unsetStationary(World world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
-		int tex = ((LiquidTextureLogic) world.getBlockTileEntity(x, y, z)).getLiquidType();
+		int tex = ((LiquidTextureLogic) world.getBlockTileEntity(x, y, z)).getFluidType();
 		world.setBlock(x, y, z, flowingLiquidID(), meta, 2);
 		world.scheduleBlockUpdate(x, y, z, flowingLiquidID(), this.tickRate(world));
 		((LiquidTextureLogic) world.getBlockTileEntity(x, y, z)).setLiquidType(tex);
@@ -116,5 +117,23 @@ public class LiquidStill extends LiquidBase implements ILiquid {
 	@Override
 	public boolean hasTileEntity(int metadata) {
 		return true;
+	}
+
+	@Override
+	public Fluid getFluid() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public FluidStack drain(World world, int x, int y, int z, boolean doDrain) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canDrain(World world, int x, int y, int z) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

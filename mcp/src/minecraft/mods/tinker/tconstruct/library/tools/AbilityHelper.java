@@ -13,6 +13,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentThorns;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
@@ -85,7 +86,7 @@ public class AbilityHelper
 
                 if (entity instanceof EntityLiving)
                 {
-                    enchantDamage = EnchantmentHelper.getEnchantmentModifierLiving(player, (EntityLiving) entity);
+                    //enchantDamage = EnchantmentHelper.getEnchantmentModifierLiving(player, (EntityLiving) entity);
                     knockback += EnchantmentHelper.getKnockbackModifier(player, (EntityLiving) entity);
                 }
 
@@ -132,7 +133,7 @@ public class AbilityHelper
 
                     if (causedDamage)
                     {
-                        damageTool(stack, 1, player, false);
+                        //damageTool(stack, 1, player, false);
                         int drain = toolTags.getInteger("Necrotic") * 2;
                         if (drain > 0)
                             player.heal(drain);
@@ -161,7 +162,7 @@ public class AbilityHelper
                             player.triggerAchievement(AchievementList.overkill);
                         }
 
-                        player.setLastAttackingEntity(entity);
+                        //player.setLastAttackingEntity(entity);
 
                         if (entity instanceof EntityLiving)
                         {
@@ -204,7 +205,7 @@ public class AbilityHelper
         }
     }
 
-    static void alertPlayerWolves (EntityPlayer player, EntityLiving living, boolean par2)
+    static void alertPlayerWolves (EntityPlayer player, EntityLivingBase living, boolean par2)
     {
         if (!(living instanceof EntityCreeper) && !(living instanceof EntityGhast))
         {
@@ -251,7 +252,7 @@ public class AbilityHelper
         damageTool(stack, -dam, tags, entity, ignoreCharge, updateDamageBar);
     }
 
-    public static void damageTool (ItemStack stack, int dam, NBTTagCompound tags, EntityLiving entity, boolean ignoreCharge, boolean updateDamageBar)
+    public static void damageTool (ItemStack stack, int dam, NBTTagCompound tags, EntityLivingBase entity, boolean ignoreCharge, boolean updateDamageBar)
     {
         if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode)
             return;
@@ -454,7 +455,7 @@ public class AbilityHelper
 
             if (event.getResult() == Result.ALLOW)
             {
-                onBlockChanged(stack, world, 0, x, y, z, player, random);
+                //onBlockChanged(stack, world, 0, x, y, z, player, random);
                 return true;
             }
 
@@ -478,7 +479,7 @@ public class AbilityHelper
                 else
                 {
                     world.setBlock(x, y, z, block.blockID);
-                    onBlockChanged(stack, world, 0, x, y, z, player, random);
+                    //onBlockChanged(stack, world, 0, x, y, z, player, random);
                     return true;
                 }
             }

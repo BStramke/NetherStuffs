@@ -18,6 +18,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -546,9 +547,9 @@ public abstract class ToolCore extends Item implements ICustomElectricItem, IBox
     }
 
     @Override
-    public boolean onBlockDestroyed (ItemStack itemstack, World world, int bID, int x, int y, int z, EntityLiving player)
+    public boolean onBlockDestroyed (ItemStack itemstack, World world, int bID, int x, int y, int z, EntityLivingBase player)
     {
-        return AbilityHelper.onBlockChanged(itemstack, world, bID, x, y, z, player, random);
+        return true;//AbilityHelper.onBlockChanged(itemstack, world, bID, x, y, z, player, random);
     }
 
     @Override
@@ -569,7 +570,7 @@ public abstract class ToolCore extends Item implements ICustomElectricItem, IBox
     }
 
     @Override
-    public boolean hitEntity (ItemStack stack, EntityLiving mob, EntityLiving player)
+    public boolean hitEntity (ItemStack stack, EntityLivingBase mob, EntityLivingBase player)
     {
         return true;
     }

@@ -18,6 +18,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import bstramke.NetherStuffs.NetherStuffsEventHook;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Common.BlockActiveHelper;
@@ -304,7 +307,7 @@ public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecial
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return itemstack.itemID == ItemRegistry.SoulEnergyBottle.itemID;
 	}
 
@@ -326,7 +329,7 @@ public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecial
 	 */
 	@Override
 	public boolean canInsertItem(int slot, ItemStack par2ItemStack, int side) {
-		return this.isStackValidForSlot(slot, par2ItemStack);
+		return this.isItemValidForSlot(slot, par2ItemStack);
 	}
 
 	/**

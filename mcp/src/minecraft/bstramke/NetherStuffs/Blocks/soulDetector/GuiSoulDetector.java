@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -17,7 +18,7 @@ import bstramke.NetherStuffs.Common.ServerPacketHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GuiSoulDetector extends GuiContainer {
-
+	private static final ResourceLocation BackgroundTexture = new ResourceLocation(CommonProxy.SOULDETECTOR_PNG);
 	private TileSoulDetector tile_entity;
 	private GuiButton btnRangeIncZUp;
 	private GuiButton btnRangeDecZUp;
@@ -210,7 +211,7 @@ public class GuiSoulDetector extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(CommonProxy.SOULDETECTOR_PNG);
+		this.mc.func_110434_K().func_110577_a(BackgroundTexture);
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);

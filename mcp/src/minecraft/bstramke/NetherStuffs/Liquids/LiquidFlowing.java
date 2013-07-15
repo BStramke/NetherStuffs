@@ -1,21 +1,16 @@
 package bstramke.NetherStuffs.Liquids;
 
-import java.util.List;
 import java.util.Random;
-
-import bstramke.NetherStuffs.Blocks.BlockRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.liquids.ILiquid;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
 
-public class LiquidFlowing extends LiquidBase implements ILiquid {
+public class LiquidFlowing extends LiquidBase implements IFluidBlock {
 
 	boolean isOptimalFlowDirection[] = new boolean[4];
 	int flowCost[] = new int[4];
@@ -36,8 +31,8 @@ public class LiquidFlowing extends LiquidBase implements ILiquid {
 		((LiquidTextureLogic) world.getBlockTileEntity(x, y, z)).setLiquidType(par9);
 		return 0;
 	}
-	/*
-	@Override
+	
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List list) {
 		for(int i = 0; i < LiquidItemBlock.blockNames.length; i ++)
@@ -46,7 +41,7 @@ public class LiquidFlowing extends LiquidBase implements ILiquid {
 
 	private void updateFlow(World world, int x, int y, int z) {
 		// System.out.println("x: "+x+", y: "+y+", z: "+z);
-		int tex = ((LiquidTextureLogic) world.getBlockTileEntity(x, y, z)).getLiquidType();
+		int tex = ((LiquidTextureLogic) world.getBlockTileEntity(x, y, z)).getFluidType();
 		int meta = world.getBlockMetadata(x, y, z);
 		world.setBlock(x, y, z, stillLiquidId(), meta, 3);
 		world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
@@ -57,7 +52,7 @@ public class LiquidFlowing extends LiquidBase implements ILiquid {
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random random) {
 		// System.out.println("x: "+x+", y: "+y+", z: "+z);
-		int tex = ((LiquidTextureLogic) world.getBlockTileEntity(x, y, z)).getLiquidType();
+		int tex = ((LiquidTextureLogic) world.getBlockTileEntity(x, y, z)).getFluidType();
 		int flow = getFlowDecay(world, x, y, z);
 		byte byte0 = 1;
 		boolean flag = true;
@@ -251,9 +246,10 @@ public class LiquidFlowing extends LiquidBase implements ILiquid {
 		}
 	}
 
-	@Override
+	//@Override
 	public int stillLiquidId() {
-		return BlockRegistry.LiquidStill.blockID;
+		//return BlockRegistry.LiquidStill.blockID;
+		return 0;
 	}
 	
 	@Override
@@ -261,4 +257,22 @@ public class LiquidFlowing extends LiquidBase implements ILiquid {
    {
        return false;
    }
+
+	@Override
+	public Fluid getFluid() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public FluidStack drain(World world, int x, int y, int z, boolean doDrain) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canDrain(World world, int x, int y, int z) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

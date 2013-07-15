@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -56,7 +57,7 @@ public class NetherSword extends ItemSword {
 		else
 			return false;
 	}
-
+/*
 	@Override
 	public int getDamageVsEntity(Entity par1Entity) {
 		if (par1Entity instanceof EntityLiving) {
@@ -76,16 +77,16 @@ public class NetherSword extends ItemSword {
 		}
 		return super.getDamageVsEntity(par1Entity);
 	}
-
+*/
 	@Override
-	public boolean hitEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving) {
+	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
 		super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
 		// par3EntityLiving == attacking entity
 		// par2EntityLiving == attacked entity
 
 		if (!par3EntityLiving.worldObj.isRemote && this.nType != Types.undefined) {
 			InventoryPlayer inventoryPlayer = ((EntityPlayer) par3EntityLiving).inventory;
-			int nAmountToAdd = (getDamageVsEntity(par2EntityLiving) / 2) * 10;
+			int nAmountToAdd = /*(getDamageVsEntity(par2EntityLiving) / 2) * 10*/ 0;
 			for (int i = 0; i < inventoryPlayer.mainInventory.length && nAmountToAdd > 0; i++) {
 				if (inventoryPlayer.mainInventory[i] != null && inventoryPlayer.mainInventory[i].itemID == new ItemStack(ItemRegistry.SoulEnergyBottle.itemID, 1, 0).itemID) {
 					nAmountToAdd = SoulEnergyBottle.addSoulEnergy(nAmountToAdd, inventoryPlayer.mainInventory[i]);

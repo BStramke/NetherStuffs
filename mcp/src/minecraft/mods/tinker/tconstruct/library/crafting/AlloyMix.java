@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class AlloyMix
 {
-	public final LiquidStack result;
-	public final List<LiquidStack> mixers;
+	public final FluidStack result;
+	public final List<FluidStack> mixers;
 
-	public AlloyMix(LiquidStack output, List<LiquidStack> inputs)
+	public AlloyMix(FluidStack output, List<FluidStack> inputs)
 	{
 		result = output;
 		mixers = inputs;
@@ -23,19 +23,19 @@ public class AlloyMix
 		return false;
 	}*/
 
-	public LiquidStack mix (ArrayList<LiquidStack> liquids)
+	public FluidStack mix (ArrayList<FluidStack> liquids)
 	{
-		ArrayList<LiquidStack> copyMix = new ArrayList(mixers);
+		ArrayList<FluidStack> copyMix = new ArrayList(mixers);
 		ArrayList effectiveAmount = new ArrayList();
 
 		for (int i = 0; i < liquids.size(); i++)
 		{
-			LiquidStack liquid = liquids.get(i);
+			FluidStack liquid = liquids.get(i);
 			Iterator iter = copyMix.iterator();
 			while (iter.hasNext())
 			{
-				LiquidStack mixer = (LiquidStack) iter.next();
-				if (mixer.itemID == liquid.itemID && mixer.itemMeta == liquid.itemMeta)
+				FluidStack mixer = (FluidStack) iter.next();
+				if (mixer.fluidID == liquid.fluidID/* && mixer.itemMeta == liquid.itemMeta*/)
 				{
 					int eAmt = liquid.amount / mixer.amount;
 					effectiveAmount.add(eAmt);
@@ -52,16 +52,16 @@ public class AlloyMix
 
 		//Remove old liquids
 		int low = getLowestAmount(effectiveAmount);
-		ArrayList<LiquidStack> copyMix2 = new ArrayList(mixers);
+		ArrayList<FluidStack> copyMix2 = new ArrayList(mixers);
 
 		for (int i = 0; i < liquids.size(); i++)
 		{
-			LiquidStack liquid = liquids.get(i);
+			FluidStack liquid = liquids.get(i);
 			Iterator iter = copyMix2.iterator();
 			while (iter.hasNext())
 			{
-				LiquidStack mixer = (LiquidStack) iter.next();
-				if (mixer.itemID == liquid.itemID && mixer.itemMeta == liquid.itemMeta)
+				FluidStack mixer = (FluidStack) iter.next();
+				if (mixer.fluidID == liquid.fluidID/* && mixer.itemMeta == liquid.itemMeta*/)
 				{
 					int eAmt = low * mixer.amount;
 					liquid.amount -= eAmt;
@@ -76,7 +76,7 @@ public class AlloyMix
 			}
 		}
 
-		return new LiquidStack(result.itemID, result.amount * low, result.itemMeta);
+		return new FluidStack(result.fluidID, result.amount * low/*, result.itemMeta*/);
 	}
 
 	int getLowestAmount (ArrayList list)

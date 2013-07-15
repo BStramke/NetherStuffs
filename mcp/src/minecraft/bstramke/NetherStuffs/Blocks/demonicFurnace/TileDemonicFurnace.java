@@ -384,7 +384,7 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory,
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		switch(i)
 		{
 			case nSmeltedSlot:
@@ -414,7 +414,7 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory,
 	 */
 	@Override
 	public boolean canInsertItem(int slot, ItemStack par2ItemStack, int side) {
-		return this.isStackValidForSlot(slot, par2ItemStack);
+		return this.isItemValidForSlot(slot, par2ItemStack);
 	}
 
 	/**

@@ -2,6 +2,7 @@ package bstramke.NetherStuffs.Blocks.demonicFurnace;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
@@ -10,6 +11,7 @@ import bstramke.NetherStuffs.Common.CommonProxy;
 
 public class GuiDemonicFurnace extends GuiContainer {
 
+	private static final ResourceLocation BackgroundTexture = new ResourceLocation(CommonProxy.FURNANCE_PNG);
 	private TileDemonicFurnace furnaceInventory;
 
 	public GuiDemonicFurnace(InventoryPlayer player_inventory, TileDemonicFurnace tile_entity) {
@@ -26,7 +28,7 @@ public class GuiDemonicFurnace extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(CommonProxy.FURNANCE_PNG);
+		this.mc.func_110434_K().func_110577_a(BackgroundTexture);
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);

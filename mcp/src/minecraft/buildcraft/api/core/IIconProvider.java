@@ -8,11 +8,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 public interface IIconProvider {
 	
 	/**
-	 * @param itemIcon
+	 * @param iconIndex
 	 * @return
 	 */
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int itemIcon);
+	public Icon getIcon(int iconIndex);
 
 	/**
 	 * A call for the provider to register its Icons. This may be called multiple times but should only be executed once per provider

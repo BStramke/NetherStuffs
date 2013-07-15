@@ -2,6 +2,7 @@ package bstramke.NetherStuffs.Blocks.soulDetector;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
@@ -9,6 +10,7 @@ import bstramke.NetherStuffs.Common.CommonProxy;
 
 public class GuiButtonSoulDetector extends GuiButton {
 	private int xButtonOffset;
+	private static final ResourceLocation Texture = new ResourceLocation(CommonProxy.SOULDETECTOR_PNG);
 
 	public GuiButtonSoulDetector(int par1, int par2, int par3, int par4, int par5, boolean isMinus) {
 		super(par1, par2, par3, par4, par5, "");
@@ -22,7 +24,9 @@ public class GuiButtonSoulDetector extends GuiButton {
 	public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
 		if (this.drawButton) {
 			// FontRenderer var4 = par1Minecraft.fontRenderer;
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1Minecraft.renderEngine.getTexture(CommonProxy.SOULDETECTOR_PNG));
+			//GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1Minecraft.renderEngine.getTexture(CommonProxy.SOULDETECTOR_PNG));
+			par1Minecraft.func_110434_K().func_110577_a(Texture);
+			
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
 			int var5 = this.getHoverState(this.field_82253_i);

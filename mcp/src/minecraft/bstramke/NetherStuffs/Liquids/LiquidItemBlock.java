@@ -45,7 +45,7 @@ public class LiquidItemBlock extends ItemBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1) {
-		return BlockRegistry.LiquidStill.getIcon(1, par1);
+		return BlockRegistry.SoulEnergyFluidBlock.getIcon(1, par1);
 	}
 
 	@Override

@@ -1,16 +1,12 @@
 package bstramke.NetherStuffs.Blocks.soulEngine;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidTank;
 import bstramke.NetherStuffs.Common.ActionTriggerIconProvider;
 import buildcraft.api.gates.ITriggerParameter;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.ILiquidTank;
-import net.minecraftforge.liquids.ITankContainer;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
-import net.minecraftforge.liquids.LiquidStack;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 
@@ -49,40 +45,40 @@ public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 
 	@Override
 	public boolean isTriggerActive(ForgeDirection side, TileEntity tile, ITriggerParameter parameter) {
-		if (tile instanceof ITankContainer) {
-			ITankContainer container = (ITankContainer) tile;
+		if (tile instanceof IFluidTank) {
+			IFluidTank container = (IFluidTank) tile;
 
-			LiquidStack searchedLiquid = null;
+			FluidStack searchedLiquid = null;
 
 			if (parameter != null && parameter.getItem() != null) {
-				searchedLiquid = LiquidContainerRegistry.getLiquidForFilledItem(parameter.getItem());
+				searchedLiquid = FluidContainerRegistry.getFluidForFilledItem(parameter.getItem());
 			}
 
 			if (searchedLiquid != null) {
 				searchedLiquid.amount = 1;
 			}
 
-			ILiquidTank[] liquids = container.getTanks(ForgeDirection.UNKNOWN);
-
+			/*IFluidTank[] liquids = container.getTanks(ForgeDirection.UNKNOWN);
+			
 			if (liquids == null || liquids.length == 0)
 				return false;
 
 			switch (state) {
 			case Empty:
-				for (ILiquidTank c : liquids) {
+				for (IFluidTank c : liquids) {
 					if (searchedLiquid != null) {
-						LiquidStack drained = c.drain(1, false);
-						if (drained != null && searchedLiquid.isLiquidEqual(drained))
+						FluidStack drained = c.drain(1, false);
+						if (drained != null && searchedLiquid.isFluidEqual(drained))
 							return false;
-					} else if (c.getLiquid() != null && c.getLiquid().amount > 0)
+					} else if (c.getFluid() != null && c.getFluid().amount > 0)
 						return false;
 				}
 
 				return true;
 			case Contains:
-				for (ILiquidTank c : liquids) {
-					if (c.getLiquid() != null && c.getLiquid().amount != 0) {
-						if (searchedLiquid == null || searchedLiquid.isLiquidEqual(c.getLiquid()))
+				for (IFluidTank c : liquids) {
+					if (c.getFluid() != null && c.getFluid().amount != 0) {
+						if (searchedLiquid == null || searchedLiquid.isFluidEqual(c.getFluid()))
 							return true;
 					}
 				}
@@ -90,33 +86,33 @@ public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 				return false;
 
 			case Space:
-				for (ILiquidTank c : liquids) {
+				for (IFluidTank c : liquids) {
 					if (searchedLiquid != null) {
 						if (c.fill(searchedLiquid, false) > 0)
 							return true;
-					} else if (c.getLiquid() == null || c.getLiquid().amount < c.getCapacity())
+					} else if (c.getFluid() == null || c.getFluid().amount < c.getCapacity())
 						return true;
 				}
 
 				return false;
 			case Full:
-				for (ILiquidTank c : liquids) {
+				for (IFluidTank c : liquids) {
 					if (searchedLiquid != null) {
 						if (c.fill(searchedLiquid, false) > 0)
 							return false;
-					} else if (c.getLiquid() == null || c.getLiquid().amount < c.getCapacity())
+					} else if (c.getFluid() == null || c.getFluid().amount < c.getCapacity())
 						return false;
 				}
 
 				return true;
-			}
+			}*/
 		}
 
 		return false;
 	}
 
 	@Override
-	public int getitemIcon() {
+	public int getIconIndex() {
 		switch (state) {
 		case Empty:
 			return ActionTriggerIconProvider.Trigger_LiquidContainer_Empty;

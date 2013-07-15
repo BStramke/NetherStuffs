@@ -8,7 +8,7 @@ public interface IAction {
 
 	int getId();
 
-    int getitemIcon();
+    int getIconIndex();
     
     @SideOnly(Side.CLIENT)
     IIconProvider getIconProvider();

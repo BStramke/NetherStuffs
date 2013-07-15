@@ -1,15 +1,15 @@
 package bstramke.NetherStuffs.Client.Renderers;
 
-import org.lwjgl.opengl.GL11;
-
-import bstramke.NetherStuffs.Blocks.BlockRegistry;
-import bstramke.NetherStuffs.Blocks.soulBomb.EntitySoulBombPrimed;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityTNTPrimed;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
+import bstramke.NetherStuffs.Blocks.BlockRegistry;
+import bstramke.NetherStuffs.Blocks.soulBomb.EntitySoulBombPrimed;
 
 public class RenderSoulBombPrimed extends Render {
 
@@ -46,8 +46,8 @@ public class RenderSoulBombPrimed extends Render {
            GL11.glScalef(f3, f3, f3);
        }
 
-       f2 = (1.0F - ((float)par1EntityTNTPrimed.fuse - par9 + 1.0F) / 100.0F) * 0.8F;
-       this.loadTexture("/terrain.png");
+       f2 = (1.0F - ((float)par1EntityTNTPrimed.fuse - par9 + 1.0F) / 100.0F) * 0.8F;       
+       this.func_110777_b(par1EntityTNTPrimed);
        this.blockRenderer.renderBlockAsItem(BlockRegistry.SoulBomb, 0, par1EntityTNTPrimed.getBrightness(par9));
 
        if (par1EntityTNTPrimed.fuse / 5 % 2 == 0)
@@ -77,5 +77,11 @@ public class RenderSoulBombPrimed extends Render {
    {
        this.renderPrimedTNT((EntitySoulBombPrimed)par1Entity, par2, par4, par6, par8, par9);
    }
+
+	@Override
+	protected ResourceLocation func_110775_a(Entity entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

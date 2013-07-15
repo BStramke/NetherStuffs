@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.command.ICommand;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.FluidStack;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.LeafItemBlock;
 import bstramke.NetherStuffs.Blocks.Ore;
@@ -128,13 +128,13 @@ public class PluginForestry implements IPlugin {
 	 *           Sapling
 	 */
 	private static void addFermenterRecipeSapling(ItemStack resource) {
-		RecipeManagers.fermenterManager.addRecipe(resource, 800, 1.0f, new LiquidStack(liquidBiomass.itemID, 1, liquidBiomass.getItemDamage()), new LiquidStack(Block.waterStill, 1));
-		RecipeManagers.fermenterManager.addRecipe(resource, 800, 1.5f, new LiquidStack(liquidBiomass.itemID, 1, liquidBiomass.getItemDamage()), new LiquidStack(liquidJuice.itemID,
+		/*RecipeManagers.fermenterManager.addRecipe(resource, 800, 1.0f, new FluidStack(liquidBiomass.itemID, 1, liquidBiomass.getItemDamage()), new FluidStack(Block.waterStill, 1));
+		RecipeManagers.fermenterManager.addRecipe(resource, 800, 1.5f, new FluidStack(liquidBiomass.itemID, 1, liquidBiomass.getItemDamage()), new FluidStack(liquidJuice.itemID,
 				1, liquidJuice.getItemDamage()));
-		RecipeManagers.fermenterManager.addRecipe(resource, 800, 1.5f, new LiquidStack(liquidBiomass.itemID, 1, liquidBiomass.getItemDamage()), new LiquidStack(liquidHoney.itemID,
+		RecipeManagers.fermenterManager.addRecipe(resource, 800, 1.5f, new FluidStack(liquidBiomass.itemID, 1, liquidBiomass.getItemDamage()), new FluidStack(liquidHoney.itemID,
 				1, liquidHoney.getItemDamage()));
 		
-		RecipeManagers.fermenterManager.addRecipe(resource, 1000, 0.5f, new LiquidStack(NetherStuffs.SoulEnergyLiquid.itemID, 1, 0), new LiquidStack(Block.lavaStill, 1));
+		RecipeManagers.fermenterManager.addRecipe(resource, 1000, 0.5f, new FluidStack(NetherStuffs.SoulEnergyLiquid.itemID, 1), new FluidStack(Block.lavaStill, 1));*/
 	}
 
 	private static void addBackpackItems() {

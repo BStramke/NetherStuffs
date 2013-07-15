@@ -1,17 +1,17 @@
 package mods.tinker.tconstruct.library.crafting;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class CastingRecipe
 {
 	public ItemStack output;
-	public LiquidStack castingMetal;
+	public FluidStack castingMetal;
 	public ItemStack cast;
 	public boolean consumeCast;
 	public int coolTime;
 	
-	public CastingRecipe(ItemStack replacement, LiquidStack metal, ItemStack cast, boolean consume, int delay)
+	public CastingRecipe(ItemStack replacement, FluidStack metal, ItemStack cast, boolean consume, int delay)
 	{
 		castingMetal = metal;
 		this.cast = cast;
@@ -20,9 +20,9 @@ public class CastingRecipe
 		coolTime = delay;
 	}
 	
-	public boolean matches(LiquidStack metal, ItemStack cast)
+	public boolean matches(FluidStack metal, ItemStack cast)
 	{
-		if (castingMetal.isLiquidEqual(metal) && ItemStack.areItemStacksEqual(this.cast, cast))
+		if (castingMetal.isFluidEqual(metal) && ItemStack.areItemStacksEqual(this.cast, cast))
 			return true;
 		else
 			return false;

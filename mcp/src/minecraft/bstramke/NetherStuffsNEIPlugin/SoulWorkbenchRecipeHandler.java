@@ -1,30 +1,7 @@
 package bstramke.NetherStuffsNEIPlugin;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-
-import org.lwjgl.opengl.GL11;
-
-import bstramke.NetherStuffs.Blocks.soulWorkBench.GuiSoulWorkBench;
-import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBenchRecipes;
-import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBenchShapedRecipes;
-import bstramke.NetherStuffs.Common.CommonProxy;
-import codechicken.core.ReflectionManager;
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.api.IOverlayHandler;
-import codechicken.nei.forge.GuiContainerManager;
-import codechicken.nei.recipe.RecipeInfo;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-import codechicken.nei.recipe.TemplateRecipeHandler.CachedRecipe;
-import codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect;
-
-public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
+public class SoulWorkbenchRecipeHandler{}/* extends TemplateRecipeHandler {
 
 	public class CachedShapedRecipe extends CachedRecipe {
 		public CachedShapedRecipe(SoulWorkBenchShapedRecipes recipe) {
@@ -39,12 +16,6 @@ public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
 			setIngredients(width, height, items);
 		}
 
-		/**
-		 * @param width
-		 * @param height
-		 * @param items
-		 *            an ItemStack[] or ItemStack[][]
-		 */
 		public void setIngredients(int width, int height, Object[] items) {
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
@@ -207,3 +178,4 @@ public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
 		return "soulcrafting";
 	}
 }
+*/

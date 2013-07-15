@@ -1,19 +1,16 @@
 package bstramke.NetherStuffs.Common;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 public class PlayerDummy extends EntityPlayer {
 
 	public PlayerDummy(World par1World) {
-		super(par1World);
-		this.username = "PlayerDummy";
+		super(par1World, "PlayerDummy");
 	}
 	
-	@Override
-	public void sendChatToPlayer(String var1) {}
-
 	@Override
 	public boolean canCommandSenderUseCommand(int var1, String var2) {
 		return false;
@@ -28,4 +25,7 @@ public class PlayerDummy extends EntityPlayer {
 	public boolean isPlayerSleeping() {
 		return true;
 	}
+
+	@Override
+	public void sendChatToPlayer(ChatMessageComponent chatmessagecomponent) {}
 }

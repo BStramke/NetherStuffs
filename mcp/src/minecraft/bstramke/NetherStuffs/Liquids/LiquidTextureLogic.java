@@ -18,7 +18,7 @@ public class LiquidTextureLogic extends TileEntity {
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 
-	public int getLiquidType() {
+	public int getFluidType() {
 		return texturePos;
 	}
 

@@ -1,9 +1,11 @@
 package bstramke.NetherStuffs.Blocks.soulEngine;
 
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
@@ -13,9 +15,11 @@ import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.NetherStuffsCore;
 import bstramke.NetherStuffs.Common.Ledger.GuiLedger;
+import bstramke.NetherStuffs.Fluid.SoulEnergyFluid;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 
 public class GuiSoulEngine extends GuiLedger {
+	private static final ResourceLocation BackgroundTexture = new ResourceLocation(CommonProxy.SOULENERGYENGINE_PNG);
 
 	protected class EngineLedger extends Ledger {
 
@@ -35,7 +39,9 @@ public class GuiSoulEngine extends GuiLedger {
 			// Draw background
 			drawBackground(x, y);
 			// Draw icon
-			mc.renderEngine.bindTexture("/gui/items.png");
+			//mc.renderEngine.bindTexture("/gui/items.png");
+			mc.func_110434_K().func_110577_a(TextureMap.field_110576_c);
+			
 			drawIcon(NetherStuffsCore.instance.icoEnergy, x + 3, y + 4);
 			if (!isFullyOpened())
 				return;
@@ -80,7 +86,8 @@ public class GuiSoulEngine extends GuiLedger {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int a, int b) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(CommonProxy.SOULENERGYENGINE_PNG);
+		//mc.renderEngine.bindTexture(CommonProxy.SOULENERGYENGINE_PNG);
+		this.mc.func_110434_K().func_110577_a(BackgroundTexture);
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 		drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
@@ -90,8 +97,10 @@ public class GuiSoulEngine extends GuiLedger {
 		int nBottomLeftY = var6 + 77;
 		int nFillState = engine.getScaledTankLevel(58);
 
-		this.mc.renderEngine.bindTexture("/gui/items.png");
-		Icon LiquidIcon = BlockRegistry.LiquidStill.getIcon(BlockRegistry.sideTop, 0);
+		//this.mc.renderEngine.bindTexture("/gui/items.png");
+		mc.func_110434_K().func_110577_a(TextureMap.field_110576_c);
+		Icon LiquidIcon = BlockRegistry.SoulEnergyFluidBlock.getIcon(BlockRegistry.sideTop, 0);
+		
 		int y = 0;
 		for (int x = 16; x <= 32 && x <= nFillState; x += 16) {
 			drawTexturedModelRectFromIcon(var5 + 104, nBottomLeftY - x, LiquidIcon, 16, 16);
@@ -103,11 +112,12 @@ public class GuiSoulEngine extends GuiLedger {
 			drawTexturedModelRectFromIcon(var5 + 104, nBottomLeftY - y - nFillState, LiquidIcon, 16, nFillState);
 		}
 
-		mc.renderEngine.bindTexture(CommonProxy.SOULENERGYENGINE_PNG);
+		//mc.renderEngine.bindTexture(CommonProxy.SOULENERGYENGINE_PNG);
+		this.mc.func_110434_K().func_110577_a(BackgroundTexture);
 		drawTexturedModalRect(var5 + 104, var6 + 19, 176, 0, 16, 60);
 	}
 
-	@Override
+	/*@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		super.drawScreen(par1, par2, par3);
 		int var5 = (this.width - this.xSize) / 2;
@@ -119,5 +129,5 @@ public class GuiSoulEngine extends GuiLedger {
 			par1ItemStack.stackSize = this.tile.getCurrentTankLevel();
 			drawItemStackTooltip(par1ItemStack, par1, par2);
 		}
-	}
+	}*/
 }

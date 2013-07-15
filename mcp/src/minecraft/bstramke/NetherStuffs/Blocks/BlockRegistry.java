@@ -13,8 +13,8 @@ import bstramke.NetherStuffs.Blocks.soulDetector.SoulDetector;
 import bstramke.NetherStuffs.Blocks.soulFurnace.NetherSoulFurnace;
 import bstramke.NetherStuffs.Blocks.soulSiphon.SoulSiphon;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBench;
-import bstramke.NetherStuffs.Liquids.LiquidFlowing;
-import bstramke.NetherStuffs.Liquids.LiquidStill;
+import bstramke.NetherStuffs.Fluid.SoulEnergyFluid;
+import bstramke.NetherStuffs.Fluid.SoulEnergyFluidBlock;
 
 public class BlockRegistry {
 	public static final int sideBottom = 0; 
@@ -58,8 +58,10 @@ public class BlockRegistry {
 	public static final Block SoulBlocker = new SoulBlocker(NetherStuffs.NetherSoulBlockerBlockId);
 	public static final Block SoulSiphon = new SoulSiphon(NetherStuffs.NetherSoulSiphonBlockId);
 	
-	public static Block LiquidFlowing = new LiquidFlowing(NetherStuffs.LiquidBlockFlowingId, Material.water);
-	public static Block LiquidStill = new LiquidStill(NetherStuffs.LiquidBlockStillId, Material.water);
+	//public static Block LiquidFlowing = new LiquidFlowing(NetherStuffs.LiquidBlockFlowingId, Material.water);
+	//public static Block LiquidStill = new LiquidStill(NetherStuffs.LiquidBlockStillId, Material.water);
+	
+	public static Block SoulEnergyFluidBlock = new SoulEnergyFluidBlock(NetherStuffs.LiquidBlockStillId, new SoulEnergyFluid(), Material.water); 
 	
 	//public static final Block Lamp = new BlockLamp(NetherStuffs.NetherLampBlockId, Material.air);
 	

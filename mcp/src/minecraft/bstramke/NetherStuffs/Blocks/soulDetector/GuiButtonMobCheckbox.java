@@ -2,12 +2,14 @@ package bstramke.NetherStuffs.Blocks.soulDetector;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
 import bstramke.NetherStuffs.Common.CommonProxy;
 
 public class GuiButtonMobCheckbox extends GuiButton {
+	private static final ResourceLocation Texture = new ResourceLocation(CommonProxy.MOBBUTTONS_PNG);
 	private int yButtonOffset;
 	private int nMobIndex;
 
@@ -24,7 +26,8 @@ public class GuiButtonMobCheckbox extends GuiButton {
 	public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
 		if (this.drawButton) {
 			// FontRenderer var4 = par1Minecraft.fontRenderer;
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1Minecraft.renderEngine.getTexture(CommonProxy.MOBBUTTONS_PNG));
+			//GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1Minecraft.renderEngine.getTexture(CommonProxy.MOBBUTTONS_PNG));
+			par1Minecraft.func_110434_K().func_110577_a(Texture);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
 			int var5 = this.getHoverState(this.field_82253_i);

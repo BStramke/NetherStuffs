@@ -1,26 +1,26 @@
 package bstramke.NetherStuffs.Common;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.ILiquidTank;
-import net.minecraftforge.liquids.ITankContainer;
-import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidTank;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.IFluidTank;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class SoulEnergyTankTileEntity extends TileEntity implements ISoulEnergyTank, ISidedInventory, ITankContainer {
-	private LiquidTank tank;
+public abstract class SoulEnergyTankTileEntity extends TileEntity implements ISoulEnergyTank, ISidedInventory, IFluidHandler {
+	private FluidTank tank;
 
 	public SoulEnergyTankTileEntity(int MaxTankLevel) {
-		tank = new LiquidTank(MaxTankLevel);
+		tank = new FluidTank(MaxTankLevel);
 	}
 
 	public abstract void fillFuelToTank();
@@ -36,10 +36,10 @@ public abstract class SoulEnergyTankTileEntity extends TileEntity implements ISo
 	}
 
 	public final int getCurrentTankLevel() {
-		if (this.tank.getLiquid() == null || this.tank.getLiquid().amount < 0)
+		if (this.tank.getFluid() == null || this.tank.getFluid().amount < 0)
 			return 0;
 		else
-			return this.tank.getLiquid().amount;
+			return this.tank.getFluid().amount;
 	}
 
 	public final boolean consumeFuelFromTank(int nConsumedFuel) {
@@ -55,63 +55,63 @@ public abstract class SoulEnergyTankTileEntity extends TileEntity implements ISo
 		return (int) (((float) this.getCurrentTankLevel() / (float) this.getMaxTankLevel()) * nPixelMax);
 	}
 
-	public LiquidTank getTank() {
+	public FluidTank getTank() {
 		return tank;
 	}
-
+/*
 	@Override
-	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 		return fill(0, resource, doFill);
 	}
 
 	@Override
-	public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
+	public int fill(int tankIndex, FluidStack resource, boolean doFill) {
 		if (tankIndex == 0)
 			return getTank().fill(resource, doFill);
 		return 0;
 	}
 
 	@Override
-	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 		return drain(0, maxDrain, doDrain);
-	}
+	}/*
 
-	@Override
-	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
+/*	@Override
+	public FluidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
 		if (tankIndex == 0)
 			return getTank().drain(maxDrain, doDrain);
 		return null;
 	}
 
 	@Override
-	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
-		if (type.isLiquidEqual(NetherStuffs.SoulEnergyLiquid))
+	public IFluidTank getTank(ForgeDirection direction, FluidStack type) {
+		if (type.isFluidEqual(NetherStuffs.SoulEnergyLiquid))
 			return getTank();
 		else
 			return null;
 	}
 	
 	@Override
-	public ILiquidTank[] getTanks(ForgeDirection direction) {
-		return new ILiquidTank[] { tank };
-	}
+	public IFluidTank[] getTanks(ForgeDirection direction) {
+		return new IFluidTank[] { tank };
+	}*/
 
 	public final void setCurrentTankLevel(int nAmount) {
-		if (this.tank.getLiquid() != null)
-			this.tank.getLiquid().amount = nAmount;
+		if (this.tank.getFluid() != null)
+			this.tank.getFluid().amount = nAmount;
 		else {
-			LiquidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
+			FluidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
 			liquid.amount = nAmount;
-			this.tank.setLiquid(liquid);
+			this.tank.setFluid(liquid);
 		}
 	}
 
 	public final int addFuelToTank(int nAmount) {
 		int nRest = 0;
-		LiquidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
+		FluidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
 		liquid.amount = nAmount;
 
-		if (tank.getLiquid() == null || tank.getLiquid().amount <= 0)
+		if (tank.getFluid() == null || tank.getFluid().amount <= 0)
 			nRest = tank.fill(liquid, true);
 		else
 			nRest = tank.fill(liquid, true);
@@ -140,4 +140,40 @@ public abstract class SoulEnergyTankTileEntity extends TileEntity implements ISo
 
 	@Override
 	public void closeChest() {}
+	
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

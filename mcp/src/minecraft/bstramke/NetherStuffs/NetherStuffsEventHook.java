@@ -6,9 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityGhast;
@@ -21,10 +18,12 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.fluids.FluidRegistry;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.soulBlocker.TileSoulBlocker;
 import bstramke.NetherStuffs.Common.PlayerDummy;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class NetherStuffsEventHook {
 	public static int nDetectRadius; // will be set from config
@@ -85,8 +84,8 @@ public class NetherStuffsEventHook {
 	@ForgeSubscribe
 	@SideOnly(Side.CLIENT)
 	public void textureHook(TextureStitchEvent.Post event) {
-		LiquidDictionary.getCanonicalLiquid(NetherStuffs.SoulEnergyLiquid).setTextureSheet("/terrain.png").setRenderingIcon(BlockRegistry.LiquidStill.getIcon(0,0));
-		LiquidDictionary.getCanonicalLiquid(NetherStuffs.DemonicIngotLiquid).setTextureSheet("/terrain.png").setRenderingIcon(BlockRegistry.LiquidStill.getIcon(0,1));
+/*		LiquidDictionary.getCanonicalLiquid(NetherStuffs.SoulEnergyLiquid).setTextureSheet("/terrain.png").setRenderingIcon(BlockRegistry.LiquidStill.getIcon(0,0));
+		LiquidDictionary.getCanonicalLiquid(NetherStuffs.DemonicIngotLiquid).setTextureSheet("/terrain.png").setRenderingIcon(BlockRegistry.LiquidStill.getIcon(0,1));*/
 	}
 	
 /*

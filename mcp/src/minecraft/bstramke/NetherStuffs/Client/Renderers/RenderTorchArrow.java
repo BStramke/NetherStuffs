@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -15,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderTorchArrow extends Render {
 	public void renderTorchArrow(EntityTorchArrow par1EntityArrow, double par2, double par4, double par6, float par8, float par9) {
-		this.loadTexture("/item/arrows.png");
+		this.func_110777_b(par1EntityArrow);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) par2, (float) par4, (float) par6);
 		GL11.glRotatef(par1EntityArrow.prevRotationYaw + (par1EntityArrow.rotationYaw - par1EntityArrow.prevRotationYaw) * par9 - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -79,5 +80,11 @@ public class RenderTorchArrow extends Render {
 	 */
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		this.renderTorchArrow((EntityTorchArrow) par1Entity, par2, par4, par6, par8, par9);
+	}
+
+	@Override
+	protected ResourceLocation func_110775_a(Entity entity) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

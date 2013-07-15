@@ -14,7 +14,7 @@ public class CommonProxy {
 	public static String MOBBUTTONS_PNG = GUIFOLDERPREFIX + "mobbuttons.png";
 
 	public static String getIconLocation(String TextureName) {
-		return "NetherStuffs:" + TextureName;
+		return "netherstuffs:" + TextureName;
 	}
 	
 	public void registerRenderThings() {

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import mods.tinker.tconstruct.library.TConstructRegistry;
-import mods.tinker.tconstruct.library.crafting.LiquidCasting;
 import mods.tinker.tconstruct.library.crafting.Smeltery;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -20,9 +19,8 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
-import net.minecraftforge.liquids.LiquidDictionary;
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -90,10 +88,8 @@ import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -216,8 +212,8 @@ public class NetherStuffs extends DummyModContainer {
 	public static boolean bUseNetherOreLapis;
 	public static boolean bUseNetherOreCobblestone;
 
-	public static LiquidStack SoulEnergyLiquid;
-	public static LiquidStack DemonicIngotLiquid;
+	public static FluidStack SoulEnergyLiquid;
+	public static FluidStack DemonicIngotLiquid;
 
 	public static CreativeTabs tabNetherStuffs = new CreativeTabs("tabNetherStuffs") {
 		public ItemStack getIconItemStack() {
@@ -225,7 +221,7 @@ public class NetherStuffs extends DummyModContainer {
 		}
 	};
 	
-	@PreInit
+	@EventHandler
 	public void PreLoad(FMLPreInitializationEvent event) {
 		FMLLog.info("[NetherStuffs] PreLoad");		
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
@@ -435,21 +431,21 @@ public class NetherStuffs extends DummyModContainer {
 		if (bUseTConstruct == false)
 			return;
 
-		FMLLog.info("[NetherStuffs] Trying to register Ores for TConstruct Smelter Recipes");
-
-		LiquidStack liquid = LiquidDictionary.getLiquid("Molten Iron", 216); // actually 1.5 ingots
+		/*FMLLog.info("[NetherStuffs] Trying to register Ores for TConstruct Smelter Recipes");
+		
+		FluidStack liquid = LiquidDictionary.getFluid("Molten Iron", 216); // actually 1.5 ingots
 		if (liquid != null)
 			Smeltery.instance.addMelting(BlockRegistry.netherOre, Ore.netherOreIron, 800, liquid);
 
-		liquid = LiquidDictionary.getLiquid("Molten Gold", 216); // actually 1.5 ingots
+		liquid = LiquidDictionary.getFluid("Molten Gold", 216); // actually 1.5 ingots
 		if (liquid != null)
 			Smeltery.instance.addMelting(BlockRegistry.netherOre, Ore.netherOreGold, 800, liquid);
 
-		liquid = LiquidDictionary.getLiquid("Molten Obsidian", 216); // actually 1.5 ingots
+		liquid = LiquidDictionary.getFluid("Molten Obsidian", 216); // actually 1.5 ingots
 		if (liquid != null)
 			Smeltery.instance.addMelting(BlockRegistry.netherOre, Ore.netherOreObsidian, 800, liquid);
 
-		liquid = LiquidDictionary.getLiquid("Molten DemonicIngot", 216); // actually 1.5 ingots
+		liquid = LiquidDictionary.getFluid("Molten DemonicIngot", 216); // actually 1.5 ingots
 		if (liquid != null) {
 			int nIngotPatternItemId = 0;
 			for (int itemID = 255; itemID < Item.itemsList.length; itemID++) {
@@ -457,13 +453,13 @@ public class NetherStuffs extends DummyModContainer {
 					if (Item.itemsList[itemID].getUnlocalizedName().equalsIgnoreCase("item.tconstruct.MetalPattern")) {
 						Smeltery.instance.addMelting(BlockRegistry.netherOre, Ore.demonicOre, 800, liquid);
 						nIngotPatternItemId = itemID;
-						liquid = LiquidDictionary.getLiquid("Molten DemonicIngot", 144);
+						liquid = LiquidDictionary.getFluid("Molten DemonicIngot", 144);
 						TConstructRegistry.getTableCasting().addCastingRecipe(new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), liquid, new ItemStack(nIngotPatternItemId, 1, 0), 100);
 						break;
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	private void initDecorativeBlocks() {
@@ -640,22 +636,22 @@ public class NetherStuffs extends DummyModContainer {
 		if (bUseSoulEngineBlock == false)
 			return;
 
-		FMLLog.info("[NetherStuffs] adding Stuff for Buildcraft use");
+		/*FMLLog.info("[NetherStuffs] adding Stuff for Buildcraft use");
 		Block SoulEngine = new SoulEngine(NetherStuffs.SoulEngineBlockId).setUnlocalizedName("NetherSoulEngine").setHardness(3.5F).setResistance(5.0F);
 		Item NetherGear = new DemonicGear(NetherGearItemId).setUnlocalizedName("NetherGear");
 
 		GameRegistry.registerBlock(SoulEngine, "SoulEngine");
-		SoulEngineFuel.fuels.add(new SoulEngineFuel(new LiquidStack(BlockRegistry.LiquidStill.blockID, 1, 0), 1, 10000)); // 20000 = Lava
+		SoulEngineFuel.fuels.add(new SoulEngineFuel(new FluidStack(BlockRegistry.LiquidStill.blockID, 1, 0), 1, 10000)); // 20000 = Lava
 		GameRegistry.registerTileEntity(TileSoulEngine.class, "tileEntitySoulEnergyEngine");
 
 		SoulWorkBenchRecipes.instance.addRecipe(new ItemStack(NetherGear, 1, 0), 50, " S ", "SIS", " S ", 'S', new ItemStack(ItemRegistry.NetherWoodStick, 1, 0), 'I', new ItemStack(
 				ItemRegistry.NetherOreIngot, 1, 0));
 
 		SoulWorkBenchRecipes.instance.addRecipe(new ItemStack(SoulEngine, 1, 0), 250, new Object[] { "III", " S ", "GPG", 'I', new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'S',
-				new ItemStack(BlockRegistry.SoulGlass, 1, 0), 'G', new ItemStack(NetherGear, 1, 0), 'P', new ItemStack(Block.pistonBase, 1, 0) });
+				new ItemStack(BlockRegistry.SoulGlass, 1, 0), 'G', new ItemStack(NetherGear, 1, 0), 'P', new ItemStack(Block.pistonBase, 1, 0) });*/
 	}
 
-	@Init
+	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		bBuildcraftAvailable = Loader.isModLoaded("BuildCraft|Core") && Loader.isModLoaded("BuildCraft|Energy");
 		bHarkenScytheAvailable = Loader.isModLoaded("HarkenScythe_Core");
@@ -683,9 +679,9 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(BlockRegistry.SoulSiphon, SoulSiphonItemBlock.class, "NetherSoulSiphonItemBlock");
 		GameRegistry.registerBlock(BlockRegistry.netherWoodPuddle, NetherWoodPuddleItemBlock.class, "NetherWoodPuddleItemBlock");
 
-		GameRegistry.registerBlock(BlockRegistry.LiquidFlowing, LiquidItemBlock.class, "fuelFlow");
+/*		GameRegistry.registerBlock(BlockRegistry.LiquidFlowing, LiquidItemBlock.class, "fuelFlow");
 		GameRegistry.registerBlock(BlockRegistry.LiquidStill, LiquidItemBlock.class, "fuelStill");
-		GameRegistry.registerTileEntity(LiquidTextureLogic.class, "LiquidTextureLogic");
+		GameRegistry.registerTileEntity(LiquidTextureLogic.class, "LiquidTextureLogic");*/
 
 		// set required Stuff to Gather
 		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherOre, Ore.netherOreCobblestone, "pickaxe", 0);
@@ -738,8 +734,8 @@ public class NetherStuffs extends DummyModContainer {
 		OreDictionary.registerOre("logWood", new ItemStack(BlockRegistry.netherWood, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre("plankWood", new ItemStack(BlockRegistry.netherPlank, 1, OreDictionary.WILDCARD_VALUE));
 
-		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new LiquidStack(BlockRegistry.LiquidStill.blockID, LiquidContainerRegistry.BUCKET_VOLUME, 0));
-		DemonicIngotLiquid = LiquidDictionary.getOrCreateLiquid("Molten DemonicIngot", new LiquidStack(BlockRegistry.LiquidStill.blockID, LiquidContainerRegistry.BUCKET_VOLUME, 1));
+//		SoulEnergyLiquid = LiquidDictionary.getOrCreateLiquid("SoulEnergy", new FluidStack(BlockRegistry.LiquidStill.blockID, FluidContainerRegistry.BUCKET_VOLUME, 0));
+//		DemonicIngotLiquid = LiquidDictionary.getOrCreateLiquid("Molten DemonicIngot", new FluidStack(BlockRegistry.LiquidStill.blockID, FluidContainerRegistry.BUCKET_VOLUME, 1));
 		
 		registerWorldGenerators();
 		initRecipes();
@@ -1055,7 +1051,7 @@ public class NetherStuffs extends DummyModContainer {
 		LanguageRegistry.instance().addStringLocalization("itemGroup.tabNetherStuffs", "en_US", "NetherStuffs");
 	}
 
-	@PostInit
+	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		/**
 		 * Init Mod Compatibility
