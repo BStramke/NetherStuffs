@@ -82,4 +82,5 @@ public class ItemRegistry {
 
 	public static final Item NetherBow = new TorchBow(NetherStuffs.NetherBowItemId);
 	public static final Item torchArrow = new TorchArrow(NetherStuffs.TorchArrowItemId);
+	public static final Item SoulEnergyFluidItem = new SoulEnergyFluidItem(NetherStuffs.SoulEnergyFluidItemId);
 }

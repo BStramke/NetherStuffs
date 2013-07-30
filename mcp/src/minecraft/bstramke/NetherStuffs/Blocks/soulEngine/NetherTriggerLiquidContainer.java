@@ -1,6 +1,10 @@
 package bstramke.NetherStuffs.Blocks.soulEngine;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -9,7 +13,7 @@ import bstramke.NetherStuffs.Common.ActionTriggerIconProvider;
 import buildcraft.api.gates.ITriggerParameter;
 
 public class NetherTriggerLiquidContainer extends NetherBCTriggers {
-
+	private Icon iconEmpty, iconSpace, iconContains, iconFull;
 	public enum State {
 		Empty, Contains, Space, Full
 	};
@@ -112,16 +116,37 @@ public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 	}
 
 	@Override
-	public int getIconIndex() {
+	public Icon getIcon() {
 		switch (state) {
 		case Empty:
-			return ActionTriggerIconProvider.Trigger_LiquidContainer_Empty;
+			return iconEmpty;
 		case Contains:
-			return ActionTriggerIconProvider.Trigger_LiquidContainer_Contains;
+			return iconContains;
 		case Space:
-			return ActionTriggerIconProvider.Trigger_LiquidContainer_Space;
+			return iconSpace;
 		default:
-			return ActionTriggerIconProvider.Trigger_LiquidContainer_Full;
+			return iconFull;
 		}
+	}
+
+	@Override
+	public int getLegacyId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getUniqueTag() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister) {
+		iconEmpty = iconRegister.registerIcon("buildcraft:triggers/trigger_liquidcontainer_empty");
+		iconContains = iconRegister.registerIcon("buildcraft:triggers/trigger_liquidcontainer_contains");
+		iconSpace = iconRegister.registerIcon("buildcraft:triggers/trigger_liquidcontainer_space");
+		iconFull = iconRegister.registerIcon("buildcraft:triggers/trigger_liquidcontainer_full");
 	}
 }

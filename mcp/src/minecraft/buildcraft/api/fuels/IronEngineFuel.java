@@ -1,47 +1,50 @@
-/** 
- * Copyright (c) SpaceToad, 2011
- * http://www.mod-buildcraft.com
- * 
- * BuildCraft is distributed under the terms of the Minecraft Mod Public 
- * License 1.0, or MMPL. Please check the contents of the license located in
+/**
+ * Copyright (c) SpaceToad, 2011 http://www.mod-buildcraft.com
+ *
+ * BuildCraft is distributed under the terms of the Minecraft Mod Public License
+ * 1.0, or MMPL. Please check the contents of the license located in
  * http://www.mod-buildcraft.com/MMPL-1.0.txt
  */
-
 package buildcraft.api.fuels;
 
-import java.util.LinkedList;
-
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import java.util.HashMap;
+import java.util.Map;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 public class IronEngineFuel {
 
-	public static LinkedList<IronEngineFuel> fuels = new LinkedList<IronEngineFuel>();
+	public static Map<String, Fuel> fuels = new HashMap<String, Fuel>();
 
-	public static IronEngineFuel getFuelForLiquid(FluidStack liquid) {
-		if (liquid == null)
-			return null;
-		if (liquid.fluidID <= 0)
-			return null;
-
-		for (IronEngineFuel fuel : fuels)
-			if (fuel.liquid.isFluidEqual(liquid))
-				return fuel;
-
-		return null;
+	public static Fuel getFuelForFluid(Fluid liquid) {
+		return liquid == null ? null : fuels.get(liquid.getName());
 	}
 
-	public final FluidStack liquid;
-	public final float powerPerCycle;
-	public final int totalBurningTime;
-
-	public IronEngineFuel(int liquidId, float powerPerCycle, int totalBurningTime) {
-		this(new FluidStack(liquidId, FluidContainerRegistry.BUCKET_VOLUME), powerPerCycle, totalBurningTime);
+	private IronEngineFuel() {
 	}
 
-	public IronEngineFuel(FluidStack liquid, float powerPerCycle, int totalBurningTime) {
-		this.liquid = liquid;
-		this.powerPerCycle = powerPerCycle;
-		this.totalBurningTime = totalBurningTime;
+	public static class Fuel {
+
+		public final Fluid liquid;
+		public final float powerPerCycle;
+		public final int totalBurningTime;
+
+		private Fuel(String fluidName, float powerPerCycle, int totalBurningTime) {
+			this(FluidRegistry.getFluid(fluidName), powerPerCycle, totalBurningTime);
+		}
+
+		private Fuel(Fluid liquid, float powerPerCycle, int totalBurningTime) {
+			this.liquid = liquid;
+			this.powerPerCycle = powerPerCycle;
+			this.totalBurningTime = totalBurningTime;
+		}
+	}
+
+	public static void addFuel(Fluid fluid, float powerPerCycle, int totalBurningTime) {
+		fuels.put(fluid.getName(), new Fuel(fluid, powerPerCycle, totalBurningTime));
+	}
+
+	public static void addFuel(String fluidName, float powerPerCycle, int totalBurningTime) {
+		fuels.put(fluidName, new Fuel(fluidName, powerPerCycle, totalBurningTime));
 	}
 }

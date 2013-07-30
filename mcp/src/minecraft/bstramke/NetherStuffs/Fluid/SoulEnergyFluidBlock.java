@@ -29,7 +29,7 @@ public class SoulEnergyFluidBlock extends BlockFluidClassic {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister) {		
+	public void registerIcons(IconRegister par1IconRegister) {
 		icoStill = par1IconRegister.registerIcon(CommonProxy.getIconLocation("liquid_SoulEnergy"));
 		icoFlowing = par1IconRegister.registerIcon(CommonProxy.getIconLocation("liquid_SoulEnergy_flow"));
 	}

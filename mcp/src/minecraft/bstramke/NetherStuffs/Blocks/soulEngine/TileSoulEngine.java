@@ -10,15 +10,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidTank;
+import bstramke.NetherStuffs.FluidRegistry;
 import bstramke.NetherStuffs.NetherStuffs;
-import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.NetherStuffsCore;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
@@ -28,6 +28,8 @@ import buildcraft.api.gates.ITrigger;
 import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerFramework;
+import buildcraft.api.power.PowerHandler;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerProvider;
 import buildcraft.api.transport.IPipeConnection;
 
@@ -561,9 +563,8 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public void setCurrentTankLevel(int nAmount) {
 		if (this.fuelTank.getFluid() != null)
 			this.fuelTank.getFluid().amount = nAmount;
-		else {
-			FluidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
-			liquid.amount = nAmount;
+		else {			
+			FluidStack liquid = new FluidStack(FluidRegistry.SoulEnergy, nAmount);
 			this.fuelTank.setFluid(liquid);
 		}
 	}
@@ -852,6 +853,24 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 
 	@Override
 	public FluidStack drain(int maxDrain, boolean doDrain) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PowerReceiver getPowerReceiver(ForgeDirection side) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void doWork(PowerHandler workProvider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public World getWorld() {
 		// TODO Auto-generated method stub
 		return null;
 	}

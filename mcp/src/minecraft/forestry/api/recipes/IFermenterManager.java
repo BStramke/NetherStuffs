@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
  * The manager is initialized at the beginning of Forestry's BaseMod.load() cycle. Begin adding recipes in BaseMod.ModsLoaded() and this shouldn't be null even
  * if your mod loads before Forestry.
  * 
- * Accessible via {@link RecipeManagers.fermenterManager}
+ * Accessible via {@link RecipeManagers}
  * 
  * @author SirSengir
  */
@@ -25,9 +25,9 @@ public interface IFermenterManager extends ICraftingProvider {
 	 * @param modifier
 	 *            Modifies the amount of liquid output per work cycle. (water = 1.0f, honey = 1.5f)
 	 * @param output
-	 *            FluidStack representing output liquid. Amount is determined by fermentationValue*modifier.
+	 *            LiquidStack representing output liquid. Amount is determined by fermentationValue*modifier.
 	 * @param liquid
-	 *            FluidStack representing resource liquid and amount.
+	 *            LiquidStack representing resource liquid and amount.
 	 */
 	public void addRecipe(ItemStack resource, int fermentationValue, float modifier, FluidStack output, FluidStack liquid);
 
@@ -41,7 +41,7 @@ public interface IFermenterManager extends ICraftingProvider {
 	 * @param fermentationValue
 	 *            Value of the given resource, i.e. how much needs to be fermented for the output to be deposited into the product tank.
 	 * @param output
-	 *            FluidStack representing output liquid. Amount is determined by fermentationValue*modifier.
+	 *            LiquidStack representing output liquid. Amount is determined by fermentationValue*modifier.
 	 */
 	public void addRecipe(ItemStack resource, int fermentationValue, float modifier, FluidStack output);
 

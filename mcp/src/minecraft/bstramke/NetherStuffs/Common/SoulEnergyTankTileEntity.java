@@ -10,8 +10,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
+import bstramke.NetherStuffs.FluidRegistry;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Common.Gui.ISoulEnergyTank;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -100,16 +101,14 @@ public abstract class SoulEnergyTankTileEntity extends TileEntity implements ISo
 		if (this.tank.getFluid() != null)
 			this.tank.getFluid().amount = nAmount;
 		else {
-			FluidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
-			liquid.amount = nAmount;
-			this.tank.setFluid(liquid);
+			FluidStack liquid = new FluidStack(FluidRegistry.SoulEnergy, nAmount);
+			tank.setFluid(liquid);
 		}
 	}
 
 	public final int addFuelToTank(int nAmount) {
 		int nRest = 0;
-		FluidStack liquid = NetherStuffs.SoulEnergyLiquid.copy();
-		liquid.amount = nAmount;
+		FluidStack liquid = new FluidStack(FluidRegistry.SoulEnergy, nAmount);
 
 		if (tank.getFluid() == null || tank.getFluid().amount <= 0)
 			nRest = tank.fill(liquid, true);

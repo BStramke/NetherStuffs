@@ -181,6 +181,8 @@ public class NetherStuffs extends DummyModContainer {
 	public static int NetherFenceHellfireBlockId;
 	public static int NetherFenceAcidBlockId;
 	public static int NetherFenceDeathBlockId;
+	
+	public static int SoulEnergyFluidItemId;
 
 	public static int LiquidBlockFlowingId;
 	public static int LiquidBlockStillId;
@@ -211,9 +213,6 @@ public class NetherStuffs extends DummyModContainer {
 	public static boolean bUseNetherOreObsidian;
 	public static boolean bUseNetherOreLapis;
 	public static boolean bUseNetherOreCobblestone;
-
-	public static FluidStack SoulEnergyLiquid;
-	public static FluidStack DemonicIngotLiquid;
 
 	public static CreativeTabs tabNetherStuffs = new CreativeTabs("tabNetherStuffs") {
 		public ItemStack getIconItemStack() {
@@ -324,6 +323,8 @@ public class NetherStuffs extends DummyModContainer {
 		NetherDiamondSwordDeathItemId = config.getItem(Configuration.CATEGORY_ITEM, "DiamondSwordDeath", 5221).getInt(5221);
 
 		NetherGearItemId = config.getItem(Configuration.CATEGORY_ITEM, "Gears", 5222).getInt(5222);
+		
+		SoulEnergyFluidItemId = config.getItem(Configuration.CATEGORY_ITEM, "SoulEnergyFluidItem", 5223).getInt(5223);
 
 		SpawnSkeletonsAwayFromNetherFortresses = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsAwayFromNetherFortresses", true).getBoolean(true);
 		IncreaseNetherrackHardness = config.get(Configuration.CATEGORY_GENERAL, "IncreaseNetherrackHardness", true).getBoolean(true);
@@ -729,6 +730,8 @@ public class NetherStuffs extends DummyModContainer {
 		EntityRegistry.registerModEntity(EntityTorchArrow.class, "TorchArrow", 1, instance, 128, 3, true);
 		EntityRegistry.registerModEntity(EntitySoulBombPrimed.class, "SoulBomb", 2, instance, 160, 10, true);
 
+		GameRegistry.registerItem(ItemRegistry.SoulEnergyFluidItem, "Soul Energy");
+		
 		OreDictionary.registerOre("oreDemonic", new ItemStack(BlockRegistry.netherOre, 1, Ore.demonicOre));
 		OreDictionary.registerOre("ingotDemonic", new ItemStack(ItemRegistry.NetherOreIngot));
 		OreDictionary.registerOre("logWood", new ItemStack(BlockRegistry.netherWood, 1, OreDictionary.WILDCARD_VALUE));

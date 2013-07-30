@@ -2,8 +2,13 @@ package forestry.api.core;
 
 import java.util.ArrayList;
 
+/**
+ *  Many things Forestry use temperature and humidity of a biome to determine whether they can or how they can work or spawn at a given location.
+ * 
+ *  This enum concerns humidity. 
+ */
 public enum EnumHumidity {
-	ARID("Arid", 2), NORMAL("Normal", 1), DAMP("Damp", 4);
+	ARID("Arid"), NORMAL("Normal"), DAMP("Damp");
 
 	/**
 	 * Populated by Forestry with vanilla biomes. Add additional arid biomes here. (ex. desert)
@@ -19,19 +24,13 @@ public enum EnumHumidity {
 	public static ArrayList<Integer> normalBiomeIds = new ArrayList<Integer>();
 
 	public final String name;
-	public final int itemIcon;
 
-	private EnumHumidity(String name, int itemIcon) {
+	private EnumHumidity(String name) {
 		this.name = name;
-		this.itemIcon = itemIcon;
 	}
 
 	public String getName() {
 		return this.name;
-	}
-
-	public int getitemIcon() {
-		return this.itemIcon;
 	}
 
 	public static ArrayList<Integer> getBiomeIds(EnumHumidity humidity) {

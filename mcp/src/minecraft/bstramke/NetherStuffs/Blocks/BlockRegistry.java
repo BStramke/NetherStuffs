@@ -3,6 +3,7 @@ package bstramke.NetherStuffs.Blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.material.Material;
+import net.minecraftforge.fluids.Fluid;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.decorative.NetherSlab;
 import bstramke.NetherStuffs.Blocks.demonicFurnace.DemonicFurnace;
@@ -23,7 +24,7 @@ public class BlockRegistry {
 	public static final int sideSouth = 3;
 	public static final int sideWest = 4;
 	public static final int sideEast = 5;
-
+	
 	public static Block StairAcid;
 	public static Block StairHellfire;
 	public static Block StairDeath;

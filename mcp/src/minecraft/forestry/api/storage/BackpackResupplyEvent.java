@@ -5,9 +5,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraftforge.event.Cancelable;
 
 /**
- * Use @ForgeSubscribe on a method taking this event as an argument.
- * Will fire whenever a backpack tries to resupply to a player inventory.
- * Processing will stop if the event is canceled.
+ * Use @ForgeSubscribe on a method taking this event as an argument. Will fire whenever a backpack tries to resupply to a player inventory. Processing will stop
+ * if the event is canceled.
  */
 @Cancelable
 public class BackpackResupplyEvent extends BackpackEvent {

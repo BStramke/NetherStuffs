@@ -2,8 +2,18 @@ package forestry.api.core;
 
 import java.util.ArrayList;
 
+import net.minecraft.util.Icon;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+/**
+ *  Many things Forestry use temperature and humidity of a biome to determine whether they can or how they can work or spawn at a given location.
+ * 
+ *  This enum concerns temperature. 
+ */
 public enum EnumTemperature {
-	NONE("None", 0), ICY("Icy", 8), COLD("Cold", 6), NORMAL("Normal", 1), WARM("Warm", 4), HOT("Hot", 2), HELLISH("Hellish", 10);
+	NONE("None", "habitats/ocean"), ICY("Icy", "habitats/snow"), COLD("Cold", "habitats/taiga"),
+	NORMAL("Normal", "habitats/plains"), WARM("Warm", "habitats/jungle"), HOT("Hot", "habitats/desert"), HELLISH("Hellish", "habitats/nether");
 
 	/**
 	 * Populated by Forestry with vanilla biomes. Add additional icy/snow biomes here. (ex. snow plains)
@@ -31,19 +41,20 @@ public enum EnumTemperature {
 	public static ArrayList<Integer> hellishBiomeIds = new ArrayList<Integer>();
 
 	public final String name;
-	public final int itemIcon;
+	public final String iconIndex;
 
-	private EnumTemperature(String name, int itemIcon) {
+	private EnumTemperature(String name, String iconIndex) {
 		this.name = name;
-		this.itemIcon = itemIcon;
+		this.iconIndex = iconIndex;
 	}
 
 	public String getName() {
 		return this.name;
 	}
 
-	public int getitemIcon() {
-		return this.itemIcon;
+	@SideOnly(Side.CLIENT)
+	public Icon getIcon() {
+		return ForestryAPI.textureManager.getDefault(iconIndex);
 	}
 
 	public static ArrayList<Integer> getBiomeIds(EnumTemperature temperature) {

@@ -19,34 +19,18 @@ public abstract class NetherBCTriggers implements ITrigger {
 	public NetherBCTriggers(int id) {
 		id += 500;
 		this.id = id;
-		ActionManager.triggers[id] = this;
+		ActionManager.registerTrigger(this);
 	}
 
-	@Override
-	public int getId() {
-		return this.id;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIconProvider getIconProvider() {
-		return NetherStuffsCore.instance.actionTriggerIconProvider;
-	}
-
-	@Override
+	/*@Override
 	public boolean hasParameter() {
 		return false;
 	}
 
 	@Override
-	public String getDescription() {
-		return "";
-	}
-
-	@Override
 	public boolean isTriggerActive(ForgeDirection side, TileEntity tile, ITriggerParameter parameter) {
 		return false;
-	}
+	}*/
 
 	@Override
 	public final ITriggerParameter createParameter() {

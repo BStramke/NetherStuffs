@@ -20,7 +20,7 @@ public interface IToolPipette {
 
 	/**
 	 * Fills the pipette with the given liquid stack.
-	 * 
+	 *
 	 * @param pipette
 	 * @param liquid
 	 * @param doFill
@@ -30,11 +30,11 @@ public interface IToolPipette {
 
 	/**
 	 * Drains liquid from the pipette
-	 * 
+	 *
 	 * @param pipette
 	 * @param maxDrain
 	 * @param doDrain
-	 * @return Liquid stack representing the liquid and amount drained from the pipette.
+	 * @return Fluid stack representing the liquid and amount drained from the pipette.
 	 */
 	FluidStack drain(ItemStack pipette, int maxDrain, boolean doDrain);
 }

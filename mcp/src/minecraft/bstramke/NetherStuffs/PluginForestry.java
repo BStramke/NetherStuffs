@@ -1,12 +1,6 @@
 package bstramke.NetherStuffs;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
-import net.minecraft.command.ICommand;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.LeafItemBlock;
 import bstramke.NetherStuffs.Blocks.Ore;
@@ -20,13 +14,7 @@ import bstramke.NetherStuffs.Blocks.soulDetector.SoulDetectorItemBlock;
 import bstramke.NetherStuffs.Blocks.soulSiphon.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.network.IGuiHandler;
-import forestry.api.core.IOreDictionaryHandler;
-import forestry.api.core.IPacketHandler;
-import forestry.api.core.IPickupHandler;
 import forestry.api.core.IPlugin;
-import forestry.api.core.IResupplyHandler;
-import forestry.api.core.ISaveEventHandler;
 import forestry.api.core.ItemInterface;
 import forestry.api.core.PluginInfo;
 import forestry.api.recipes.RecipeManagers;
@@ -79,49 +67,6 @@ public class PluginForestry implements IPlugin {
 
 	@Override
 	public void postInit() {}
-
-	@Override
-	public String getDescription() {
-		return null;
-	}
-
-	@Override
-	public void generateSurface(World world, Random rand, int chunkX, int chunkZ) {}
-
-	@Override
-	public IGuiHandler getGuiHandler() {
-		return null;
-	}
-
-	@Override
-	public IPacketHandler getPacketHandler() {
-		return null;
-	}
-
-	@Override
-	public IPickupHandler getPickupHandler() {
-		return null;
-	}
-
-	@Override
-	public IResupplyHandler getResupplyHandler() {
-		return null;
-	}
-
-	@Override
-	public ISaveEventHandler getSaveEventHandler() {
-		return null;
-	}
-
-	@Override
-	public IOreDictionaryHandler getDictionaryHandler() {
-		return null;
-	}
-
-	@Override
-	public ICommand[] getConsoleCommands() {
-		return null;
-	}
 
 	/**
 	 * @param resource

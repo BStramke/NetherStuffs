@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 
 import org.lwjgl.opengl.GL11;
 
+import bstramke.NetherStuffs.FluidRegistry;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.ContainerSoulWorkBench;
@@ -58,17 +59,17 @@ public abstract class GuiContainerSoulTank extends GuiContainer {
 		}
 	}
 
-	/*@Override
+	@Override
 	public void drawScreen(int mouseX, int mouseY, float par3) {
 		super.drawScreen(mouseX, mouseY, par3);
 		int x = (this.width - this.xSize) / 2 + TankTopXpos;
 		int y = (this.height - this.ySize) / 2 + TankTopYpos;
 
 		if (new Rectangle(x, y, TankWidth, TankHeight).contains(mouseX, mouseY)) {
-			ItemStack par1ItemStack = NetherStuffs.SoulEnergyLiquid.asItemStack().copy();
+			ItemStack par1ItemStack = new ItemStack(ItemRegistry.SoulEnergyFluidItem);
 			par1ItemStack.stackSize = tile.getCurrentTankLevel();
 			par1ItemStack.setItemDamage(tile.getMaxTankLevel());
 			drawItemStackTooltip(par1ItemStack, mouseX, mouseY);
 		}
-	}*/
+	}
 }
