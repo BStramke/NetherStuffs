@@ -1,7 +1,12 @@
 package bstramke.NetherStuffsNEIPlugin;
 
+import codechicken.nei.api.API;
+import codechicken.nei.api.IConfigureNEI;
+import bstramke.NetherStuffs.Blocks.demonicFurnace.GuiDemonicFurnace;
+import bstramke.NetherStuffs.Blocks.soulWorkBench.GuiSoulWorkBench;
 
-public class NEINetherStuffsConfig {}/*implements IConfigureNEI {
+
+public class NEINetherStuffsConfig implements IConfigureNEI {
 
 	@Override
 	public void loadConfig() {
@@ -26,4 +31,4 @@ public class NEINetherStuffsConfig {}/*implements IConfigureNEI {
 		return null;
 	}
 
-}*/
+}

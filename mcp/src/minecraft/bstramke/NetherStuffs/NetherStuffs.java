@@ -101,8 +101,8 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "0.17.6", modid = "NetherStuffs",
-		dependencies = "after:Thaumcraft;after:Forestry;after:BuildCraft|Core;after:TConstruct;after:HarkenScythe_Core;"
+@Mod(name = "NetherStuffs", version = "0.18", modid = "NetherStuffs"/*,
+		dependencies = "after:Thaumcraft;after:Forestry;after:BuildCraft|Core;after:TConstruct;after:HarkenScythe_Core;"*/
 )
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
 public class NetherStuffs extends DummyModContainer {

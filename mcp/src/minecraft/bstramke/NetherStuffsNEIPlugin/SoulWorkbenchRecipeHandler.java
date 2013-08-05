@@ -1,7 +1,34 @@
 package bstramke.NetherStuffsNEIPlugin;
 
+import static codechicken.core.gui.GuiDraw.changeTexture;
+import static codechicken.core.gui.GuiDraw.drawTexturedModalRect;
 
-public class SoulWorkbenchRecipeHandler{}/* extends TemplateRecipeHandler {
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+
+import org.lwjgl.opengl.GL11;
+
+import bstramke.NetherStuffs.Blocks.soulWorkBench.GuiSoulWorkBench;
+import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBenchRecipes;
+import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBenchShapedRecipes;
+import bstramke.NetherStuffs.Common.CommonProxy;
+import codechicken.core.ReflectionManager;
+import codechicken.lib.render.FontUtils;
+import codechicken.nei.NEIClientUtils;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.api.IOverlayHandler;
+import codechicken.nei.forge.GuiContainerManager;
+import codechicken.nei.recipe.RecipeInfo;
+import codechicken.nei.recipe.TemplateRecipeHandler;
+import codechicken.nei.recipe.TemplateRecipeHandler.CachedRecipe;
+import codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect;
+
+public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
 
 	public class CachedShapedRecipe extends CachedRecipe {
 		public CachedShapedRecipe(SoulWorkBenchShapedRecipes recipe) {
@@ -47,7 +74,7 @@ public class SoulWorkbenchRecipeHandler{}/* extends TemplateRecipeHandler {
 
 		@Override
 		public ArrayList<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 20, ingredients);
+			return (ArrayList<PositionedStack>) getCycledIngredients(cycleticks / 20, ingredients);
 		}
 
 		public PositionedStack getResult() {
@@ -160,17 +187,21 @@ public class SoulWorkbenchRecipeHandler{}/* extends TemplateRecipeHandler {
 		return 1;
 	}
 
+
 	@Override
-	public void drawExtras(GuiContainerManager gui, int recipe) {
+	public void drawExtras(int recipe) {
 		int nSoulEnergyRequired = SoulWorkBenchRecipes.getInstance().getCraftingSoulEnergyRequired(getResultStack(recipe).item);
-		gui.drawText(39, 72, "+ " + nSoulEnergyRequired + " Energy", 0x000000, false);
+		
+		FontUtils.drawCenteredString("+ " + nSoulEnergyRequired + " Energy", 39, 72, 0);
+		
+		//gui.drawText(39, 72, "+ " + nSoulEnergyRequired + " Energy", 0x000000, false);
 	}
 
 	@Override
-	public void drawBackground(GuiContainerManager gui, int recipe) {
+	public void drawBackground(int recipe) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		gui.bindTexture(getGuiTexture());
-		gui.drawTexturedModalRect(0, 0, 4, 4, 166, 65);
+		changeTexture(getGuiTexture());
+		drawTexturedModalRect(0, 0, 4, 4, 166, 65);
 	}
 
 	@Override
@@ -178,4 +209,3 @@ public class SoulWorkbenchRecipeHandler{}/* extends TemplateRecipeHandler {
 		return "soulcrafting";
 	}
 }
-*/
