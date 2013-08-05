@@ -14,7 +14,9 @@ xcopy reobf\minecraft\buildcraft reobf\minecraft\bstramke\NetherStuffsBase\build
 xcopy reobf\minecraft\forestry reobf\minecraft\bstramke\NetherStuffsBase\forestry\ /S
 xcopy reobf\minecraft\thaumcraft reobf\minecraft\bstramke\NetherStuffsBase\thaumcraft\ /S
 xcopy reobf\minecraft\ic2 reobf\minecraft\bstramke\NetherStuffsBase\ic2\ /S
-xcopy src\minecraft\assets reobf\minecraft\bstramke\NetherStuffsBase\assets\ /S
+
+mkdir reobf\minecraft\bstramke\NetherStuffsBase\assets
+xcopy src\minecraft\assets\netherstuffs reobf\minecraft\bstramke\NetherStuffsBase\assets\netherstuffs /S
 
 
 
