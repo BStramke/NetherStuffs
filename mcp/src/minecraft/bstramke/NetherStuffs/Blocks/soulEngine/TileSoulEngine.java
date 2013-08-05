@@ -18,19 +18,15 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import bstramke.NetherStuffs.FluidRegistry;
-import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.NetherStuffsCore;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.core.Position;
 import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
-import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerFramework;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerProvider;
 import buildcraft.api.transport.IPipeConnection;
 
 public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInventory, IFluidTank, IOverrideDefaultTriggers, IPipeConnection {
@@ -145,8 +141,8 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 
 	public void initialize() {
 		if (!worldObj.isRemote) {
-			provider = PowerFramework.currentFramework.createPowerProvider();
-			provider.configure(0, minEnergyReceived(), maxEnergyReceived(), 0, maxEnergy);
+			/*provider = PowerFramework.currentFramework.createPowerProvider();
+			provider.configure(0, minEnergyReceived(), maxEnergyReceived(), 0, maxEnergy);*/
 			checkRedstonePower();
 		}
 	}
@@ -155,7 +151,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public void updateEntity() {
 		super.updateEntity();
 
-		if (!init && !isInvalid()) {
+		/*if (!init && !isInvalid()) {
 			initialize();
 			init = true;
 		}
@@ -226,7 +222,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 
 		} else {
 			setActive(false);
-		}
+		}*/
 
 		burn();
 	}
@@ -406,7 +402,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public int getScaledTankLevel(int nPixelMax) {
 		return (int) (((float) this.getCurrentTankLevel() / (float) MAX_LIQUID) * nPixelMax);
 	}
-
+/*
 	@Override
 	public void setPowerProvider(IPowerProvider provider) {
 		this.provider = provider;
@@ -423,7 +419,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 			return;
 
 		addEnergy(provider.useEnergy(1, maxEnergyReceived(), true) * 0.95F);
-	}
+	}*/
 
 	/**
 	 * Checks if the given Tile is able to receive Power. Used for Orientating and Sending Power
@@ -433,10 +429,10 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	 * @return true if the tile is an IPowerReceptor
 	 */
 	public boolean isPoweredTile(TileEntity tile) {
-		if (tile instanceof IPowerReceptor) {
+		/*if (tile instanceof IPowerReceptor) {
 			IPowerProvider receptor = ((IPowerReceptor) tile).getPowerProvider();
 			return receptor != null && receptor.getClass().getSuperclass().equals(PowerProvider.class);
-		}
+		}*/
 
 		return false;
 	}
@@ -815,12 +811,12 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		}
 		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, var1);
 	}
-
+/*
 	@Override
 	public int powerRequest(ForgeDirection from) {
 		return 0;
 	}
-
+*/
 	@Override
 	public FluidStack getFluid() {
 		// TODO Auto-generated method stub
