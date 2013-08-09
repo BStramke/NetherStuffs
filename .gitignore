@@ -6,7 +6,6 @@
 !.gitignore
 !/mcp/src/minecraft/bstramke/*
 !/mcp/src/minecraft/buildcraft/*
-!/mcp/src/minecraft/codechicken/*
 
 !/mcp/src/minecraft/mods/
 
@@ -48,8 +47,7 @@
 /mcp/src/minecraft/paulscode/
 /mcp/src/minecraft/net/
 /mcp/src/minecraft/cpw/
+/mcp/src/minecraft/codechicken
 
-mcp\src\minecraft\codechicken/
-mcp\src\minecraft\assets\codechickencore/
-mcp\src\minecraft\assets\nei/
-mcp\src\minecraft\codechicken
+/mcp/src/minecraft/assets/codechickencore/
+/mcp/src/minecraft/assets/nei/
