@@ -13,7 +13,7 @@ import bstramke.NetherStuffs.Items.ItemRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ContainerSoulSmelter extends Container {
+public class ContainerSoulSmelter{}/* extends Container {
 	protected TileSoulCondenser tile_entity;
 	private int lastTankLevel = 0;
 
@@ -110,3 +110,4 @@ public class ContainerSoulSmelter extends Container {
 		return stack;
 	}
 }
+*/

@@ -4,36 +4,35 @@ import java.util.LinkedList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 import bstramke.NetherStuffs.FluidRegistry;
 import bstramke.NetherStuffs.Common.NetherStuffsCore;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import buildcraft.api.core.Position;
-import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.transport.IPipeConnection;
 
-public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInventory, IFluidTank, IOverrideDefaultTriggers, IPipeConnection {
+public class TileSoulEngine extends TileEngine implements IFluidHandler {
 	public static int MAX_LIQUID = FluidContainerRegistry.BUCKET_VOLUME * 10;
 	private boolean init = false;
-	public ForgeDirection orientation = ForgeDirection.UP;
-	EnergyStage energyStage = EnergyStage.Blue;
+
 	IPowerProvider provider;
 	private FluidTank fuelTank; // the Fuel Tank
 	private SoulEngineFuel currentFuel = null; // the Currently used Fuel inside
@@ -44,92 +43,55 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	// Let buckets Fill the Tank
 	private int energyLossWhenUnpowered = 2;
 
-	/**
-	 * The Energy Stage the Engine goes through. If you need, you can define a Explosion State here
-	 */
-	public enum EnergyStage {
-		Blue, Green, Yellow, Red
-	}
+	// The State of Progress, i think its the State of the moving, i.e. zero, move to the end, onend
 
-	/**
-	 * The State of Progress, i think its the State of the moving, i.e. zero, move to the end, onend
-	 */
 	private enum ProgressState {
 		Off, Calculate, Extracted
 	}
 
-	/**
-	 * Maximum Heat "Storage"
-	 */
-	public static int MAX_HEAT = 10000;
-	/**
-	 * Used for SMP synchronisation
-	 */
-	boolean isActive = false;
-	/**
-	 * Used to detect if the Engine receives a redstone Signal or not
-	 */
+	// Used to detect if the Engine receives a redstone Signal or not
 	public boolean isRedstonePowered = false;
-	/**
-	 * The internal Maximum stored Energy
-	 */
+
+	// The internal Maximum stored Energy
 	public int maxEnergy = 10000;
-	/**
-	 * Current Heat Value
-	 */
+	// Current Heat Value
 	int heat = 0;
-	/**
-	 * The Time the Fuel has left to burn. Lava uses 20, Soul Energy 10 ticks to be used up (coal in a Furnace might have sth. around 1600 cause it lasts 80 seconds? not sure)
-	 */
+
+	// The Time the Fuel has left to burn. Lava uses 20, Soul Energy 10 ticks to be used up (coal in a Furnace might have sth. around 1600 cause it lasts 80 seconds? not sure)
 	int burnTime = 0;
-	/**
-	 * the Energy Output of the Fuel (1MJ for SoulEnergy / Lava, Oil gets 3MJ etc)
-	 */
+
+	// the Energy Output of the Fuel (1MJ for SoulEnergy / Lava, Oil gets 3MJ etc)
 	protected float currentOutput = 0;
-	/**
-	 * How much Energy is Extracted per Cycle (maybe each tick, dont know exactly)
-	 */
+
+	// How much Energy is Extracted per Cycle (maybe each tick, dont know exactly)
 	public int maxEnergyExtracted = 100;
-	/**
-	 * The current amount of Stored Energy
-	 */
+
+	// The current amount of Stored Energy
 	public float energy = 0;
-	/**
-	 * This SHOULD (i dont know it) be the progress of the Piston animation
-	 */
+	// This SHOULD (i dont know it) be the progress of the Piston animation
 	public float progress = 0;
 
-	/**
-	 * This should equal the progressPart variable in default BC source. I switched this to an enum to make it easier to read
-	 */
+	// This should equal the progressPart variable in default BC source. I switched this to an enum to make it easier to read
 	ProgressState lastProgressState = ProgressState.Off;
 
-	/**
-	 * The moving Speed of the Piston animations
-	 */
+	// The moving Speed of the Piston animations
 	float serverPistonSpeed = 0;
 
 	public TileSoulEngine() {
 		fuelTank = new FluidTank(MAX_LIQUID);
 	}
 
-	/*public String getTextureFile() {
-		return CommonProxy.GFXFOLDERPREFIX + "base_soulengine.png";
-	}*/
+	public ResourceLocation getTextureFile() {
+		return SoulengineTexture;
+	}
 
 	public int minEnergyReceived() {
 		return 0;
 	}
 
-	/**
-	 * Max Activation Energy (i.e. Powering through other Engines)
-	 */
-	public int maxEnergyReceived() {
+	// Max Activation Energy (i.e. Powering through other Engines)
+	public float maxEnergyReceived() {
 		return 0;
-	}
-
-	public void sendNetworkUpdate() {
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	public int getCurrentTankLevel() {
@@ -141,9 +103,9 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 
 	public void initialize() {
 		if (!worldObj.isRemote) {
-			/*provider = PowerFramework.currentFramework.createPowerProvider();
-			provider.configure(0, minEnergyReceived(), maxEnergyReceived(), 0, maxEnergy);*/
-			checkRedstonePower();
+			/*
+			 * provider = PowerFramework.currentFramework.createPowerProvider(); provider.configure(0, minEnergyReceived(), maxEnergyReceived(), 0, maxEnergy); checkRedstonePower();
+			 */
 		}
 	}
 
@@ -151,14 +113,14 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public void updateEntity() {
 		super.updateEntity();
 
-		/*if (!init && !isInvalid()) {
+		if (!init && !isInvalid()) {
 			initialize();
 			init = true;
 		}
 
 		if (worldObj.isRemote) {
 			if (lastProgressState != ProgressState.Off) {
-				progress += serverPistonSpeed;
+				progress += getPistonSpeed();
 
 				if (progress > 1) {
 					lastProgressState = ProgressState.Off;
@@ -171,8 +133,30 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		}
 
 		update();
+		
+		if (progressPart != 0) {
+			progress += getPistonSpeed();
 
-		float newPistonSpeed = getPistonSpeed();
+			if (progress > 0.5 && progressPart == 1) {
+				progressPart = 2;
+				sendPower(); // Comment out for constant power
+			} else if (progress >= 1) {
+				progress = 0;
+				progressPart = 0;
+			}
+		} else if (isRedstonePowered && isActive())
+			if (isPoweredTile(this, orientation))
+				if (getPowerToExtract() > 0) {
+					progressPart = 1;
+					setPumping(true);
+				} else
+					setPumping(false);
+			else
+				setPumping(false);
+		else
+			setPumping(false);
+		
+		/*float newPistonSpeed = getPistonSpeed();
 		if (newPistonSpeed != serverPistonSpeed) {
 			serverPistonSpeed = newPistonSpeed;
 			sendNetworkUpdate();
@@ -241,25 +225,6 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		sendNetworkUpdate();
 	}
 
-	public void switchOrientation() {
-		for (int i = orientation.ordinal() + 1; i <= orientation.ordinal() + 6; ++i) {
-			ForgeDirection o = ForgeDirection.values()[i % 6];
-
-			Position pos = new Position(xCoord, yCoord, zCoord, o);
-
-			pos.moveForwards(1);
-
-			TileEntity tile = worldObj.getBlockTileEntity((int) pos.x, (int) pos.y, (int) pos.z);
-
-			if (isPoweredTile(tile)) {
-				orientation = o;
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
-				break;
-			}
-		}
-	}
-
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
@@ -283,16 +248,16 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 
 		if (nbttagcompound.hasKey("energyStage")) {
 			int nStage = nbttagcompound.getInteger("energyStage");
-			if (nStage == EnergyStage.Blue.ordinal())
-				energyStage = EnergyStage.Blue;
-			else if (nStage == EnergyStage.Green.ordinal())
-				energyStage = EnergyStage.Green;
-			else if (nStage == EnergyStage.Yellow.ordinal())
-				energyStage = EnergyStage.Yellow;
-			else if (nStage == EnergyStage.Red.ordinal())
-				energyStage = EnergyStage.Red;
+			if (nStage == EnergyStage.BLUE.ordinal())
+				energyStage = EnergyStage.BLUE;
+			else if (nStage == EnergyStage.GREEN.ordinal())
+				energyStage = EnergyStage.GREEN;
+			else if (nStage == EnergyStage.YELLOW.ordinal())
+				energyStage = EnergyStage.YELLOW;
+			else if (nStage == EnergyStage.RED.ordinal())
+				energyStage = EnergyStage.RED;
 			else
-				energyStage = EnergyStage.Blue;
+				energyStage = EnergyStage.BLUE;
 		}
 
 		heat = nbttagcompound.getInteger("heat");
@@ -325,7 +290,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		}
 	}
 
-	/* IINVENTORY IMPLEMENTATION */
+	// IINVENTORY IMPLEMENTATION
 	@Override
 	public int getSizeInventory() {
 		return 1;
@@ -402,46 +367,6 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public int getScaledTankLevel(int nPixelMax) {
 		return (int) (((float) this.getCurrentTankLevel() / (float) MAX_LIQUID) * nPixelMax);
 	}
-/*
-	@Override
-	public void setPowerProvider(IPowerProvider provider) {
-		this.provider = provider;
-	}
-
-	@Override
-	public IPowerProvider getPowerProvider() {
-		return provider;
-	}
-
-	@Override
-	public void doWork() {
-		if (worldObj.isRemote)
-			return;
-
-		addEnergy(provider.useEnergy(1, maxEnergyReceived(), true) * 0.95F);
-	}*/
-
-	/**
-	 * Checks if the given Tile is able to receive Power. Used for Orientating and Sending Power
-	 * 
-	 * @param tile
-	 *           The Tile to check
-	 * @return true if the tile is an IPowerReceptor
-	 */
-	public boolean isPoweredTile(TileEntity tile) {
-		/*if (tile instanceof IPowerReceptor) {
-			IPowerProvider receptor = ((IPowerReceptor) tile).getPowerProvider();
-			return receptor != null && receptor.getClass().getSuperclass().equals(PowerProvider.class);
-		}*/
-
-		return false;
-	}
-
-	@Override
-	public void openChest() {}
-
-	@Override
-	public void closeChest() {}
 
 	@Override
 	public LinkedList<ITrigger> getTriggers() {
@@ -458,11 +383,6 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		triggers.add(NetherStuffsCore.triggerFullLiquid);
 
 		return triggers;
-	}
-
-	@Override
-	public boolean isPipeConnected(ForgeDirection with) {
-		return with.ordinal() != orientation.ordinal();
 	}
 
 	/**
@@ -489,32 +409,13 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public FluidStack getFuel() {
 		return fuelTank.getFluid();
 	}
-/*
-	@Override
-	public int fill(int tankIndex, FluidStack resource, boolean doFill) {
-		return fill(ForgeDirection.UNKNOWN, resource, doFill);
-	}
+
 
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 		return null;
 	}
 
-	@Override
-	public FluidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
-		return null;
-	}
-
-	@Override
-	public IFluidTank getTank(ForgeDirection direction, FluidStack type) {
-		switch (direction) {
-		case UP:
-		case DOWN:
-			return fuelTank;
-		default:
-			return null;
-		}
-	}*/
 
 	@Override
 	public boolean isInvNameLocalized() {
@@ -524,19 +425,21 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		// TODO Auto-generated method stub
-		return false;
+		if (itemstack == null)
+			return false;
+		
+		return FluidContainerRegistry.getFluidForFilledItem(itemstack) != null;
 	}
 
 	public float getPistonSpeed() {
 		switch (getEnergyStage()) {
-		case Blue:
+		case BLUE:
 			return 0.05F;
-		case Green:
+		case GREEN:
 			return 0.06F;
-		case Yellow:
+		case YELLOW:
 			return 0.07F;
-		case Red:
+		case RED:
 			return 0.08F;
 		default:
 			return 0.0f;
@@ -559,7 +462,7 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 	public void setCurrentTankLevel(int nAmount) {
 		if (this.fuelTank.getFluid() != null)
 			this.fuelTank.getFluid().amount = nAmount;
-		else {			
+		else {
 			FluidStack liquid = new FluidStack(FluidRegistry.SoulEnergy, nAmount);
 			this.fuelTank.setFluid(liquid);
 		}
@@ -638,27 +541,6 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		}
 	}
 
-	/**
-	 * dependent on heat it will set the stage on the engine. You could set your Exploding state here if a specific heat value goes over the maximum or calculate on Energy Stored
-	 * etc.
-	 */
-	public void computeEnergyStage() {
-		double Percentage = ((double) heat / (double) MAX_HEAT) * 100.0;
-		EnergyStage tmp = energyStage;
-
-		if (Percentage <= 25.0)
-			energyStage = EnergyStage.Blue;
-		else if (Percentage <= 50.0)
-			energyStage = EnergyStage.Green;
-		else if (Percentage <= 75.0)
-			energyStage = EnergyStage.Yellow;
-		else
-			energyStage = EnergyStage.Red;
-
-		if (tmp != energyStage)
-			sendNetworkUpdate();
-	}
-
 	public void getGUINetworkData(int i, int j) {
 		switch (i) {
 		case 0:
@@ -691,13 +573,6 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 				fuelTank.setFluid(new FluidStack(j, fuelTank.getFluid().amount));
 			}
 			break;
-		case 9:
-			if (fuelTank.getFluid() == null) {
-				fuelTank.setFluid(new FluidStack(0, 0));
-			} else {
-				fuelTank.setFluid(new FluidStack(fuelTank.getFluid().fluidID, fuelTank.getFluid().amount));
-			}
-			break;
 		}
 	}
 
@@ -708,19 +583,10 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		iCrafting.sendProgressBarUpdate(containerEngine, 3, heat);
 		iCrafting.sendProgressBarUpdate(containerEngine, 5, fuelTank.getFluid() != null ? fuelTank.getFluid().amount : 0);
 		iCrafting.sendProgressBarUpdate(containerEngine, 6, fuelTank.getFluid() != null ? fuelTank.getFluid().fluidID : 0);
-		iCrafting.sendProgressBarUpdate(containerEngine, 9, /*fuelTank.getFluid() != null ? fuelTank.getFluid().itemMeta :*/ 0);
 	}
 
 	public int getHeat() {
 		return heat;
-	}
-
-	public final EnergyStage getEnergyStage() {
-		if (!worldObj.isRemote) {
-			computeEnergyStage();
-		}
-
-		return energyStage;
 	}
 
 	/**
@@ -736,14 +602,6 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 			heat += addition;
 			if (heat > MAX_HEAT)
 				heat = MAX_HEAT;
-		}
-	}
-
-	private void addEnergy(float addition) {
-		energy += addition;
-
-		if (energy > maxEnergy) {
-			energy = maxEnergy;
 		}
 	}
 
@@ -787,14 +645,6 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		return currentOutput;
 	}
 
-	/*
-	@Override
-	public IFluidTank[] getTanks(ForgeDirection direction) {
-		IFluidTank[] tanks = new IFluidTank[1];
-		tanks[0] = fuelTank;
-		return tanks;
-	}*/
-
 	@Override
 	public void onDataPacket(net.minecraft.network.INetworkManager net, Packet132TileEntityData pkt) {
 		this.readFromNBT(pkt.customParam1);
@@ -811,63 +661,67 @@ public class TileSoulEngine extends TileEntity implements IPowerReceptor, IInven
 		}
 		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, var1);
 	}
-/*
-	@Override
-	public int powerRequest(ForgeDirection from) {
-		return 0;
-	}
-*/
-	@Override
-	public FluidStack getFluid() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	private void sendPower() {
+		TileEntity tile = this;
+		if (isPoweredTile(tile, orientation)) {
+			PowerReceiver receptor = ((IPowerReceptor) tile).getPowerReceiver(orientation.getOpposite());
 
-	@Override
-	public int getFluidAmount() {
-		// TODO Auto-generated method stub
-		return 0;
+			float extracted = getPowerToExtract();
+			if (extracted > 0) {
+				float needed = receptor.receiveEnergy(PowerHandler.Type.ENGINE, extracted, orientation.getOpposite());
+				extractEnergy(receptor.getMinEnergyReceived(), needed, true); // Comment out for constant power
+//				currentOutput = extractEnergy(0, needed, true); // Uncomment for constant power
+			}
+		}
 	}
-
-	@Override
-	public int getCapacity() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public FluidTankInfo getInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int fill(FluidStack resource, boolean doFill) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public PowerReceiver getPowerReceiver(ForgeDirection side) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void doWork(PowerHandler workProvider) {
-		// TODO Auto-generated method stub
-		
+	
+	private float getPowerToExtract() {
+		TileEntity tile = this;
+		PowerReceiver receptor = ((IPowerReceptor) tile).getPowerReceiver(orientation.getOpposite());
+		return extractEnergy(receptor.getMinEnergyReceived(), receptor.getMaxEnergyReceived(), false); // Comment out for constant power
+//		return extractEnergy(0, getActualOutput(), false); // Uncomment for constant power
 	}
 
 	@Override
 	public World getWorld() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public float getMaxEnergy() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public float maxEnergyExtracted() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

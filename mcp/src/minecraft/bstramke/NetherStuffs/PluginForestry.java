@@ -1,27 +1,8 @@
 package bstramke.NetherStuffs;
 
-import net.minecraft.item.ItemStack;
-import bstramke.NetherStuffs.Blocks.BlockRegistry;
-import bstramke.NetherStuffs.Blocks.LeafItemBlock;
-import bstramke.NetherStuffs.Blocks.Ore;
-import bstramke.NetherStuffs.Blocks.OreItemBlock;
-import bstramke.NetherStuffs.Blocks.PlankItemBlock;
-import bstramke.NetherStuffs.Blocks.Sapling;
-import bstramke.NetherStuffs.Blocks.SaplingItemBlock;
-import bstramke.NetherStuffs.Blocks.WoodItemBlock;
-import bstramke.NetherStuffs.Blocks.soulBlocker.SoulBlockerItemBlock;
-import bstramke.NetherStuffs.Blocks.soulDetector.SoulDetectorItemBlock;
-import bstramke.NetherStuffs.Blocks.soulSiphon.SoulSiphonItemBlock;
-import bstramke.NetherStuffs.Items.ItemRegistry;
-import cpw.mods.fml.common.FMLLog;
-import forestry.api.core.IPlugin;
-import forestry.api.core.ItemInterface;
-import forestry.api.core.PluginInfo;
-import forestry.api.recipes.RecipeManagers;
-import forestry.api.storage.BackpackManager;
 
-@PluginInfo(name = "NetherStuffs Forestry Plugin", pluginID = "NetherStuffsForestryPlugin", author = "bstramke")
-public class PluginForestry implements IPlugin {
+//@PluginInfo(name = "NetherStuffs Forestry Plugin", pluginID = "NetherStuffsForestryPlugin", author = "bstramke")
+public class PluginForestry {}/*implements IPlugin {
 
 	// forestry backpack numbers
 	private static final int MINER = 0;
@@ -58,28 +39,20 @@ public class PluginForestry implements IPlugin {
 			addFermenterRecipeSapling(new ItemStack(BlockRegistry.Sapling, 1, 2));
 		}
 
-		/*
-		 * RecipeManagers.carpenterManager.addCrating(new ItemStack(NetherBlocks.netherWood, 1, NetherWood.acid)); RecipeManagers.carpenterManager.addCrating(new
-		 * ItemStack(NetherBlocks.netherWood, 1, NetherWood.death)); RecipeManagers.carpenterManager.addCrating(new ItemStack(NetherBlocks.netherWood, 1, NetherWood.hellfire));
-		 */
 
 	}
 
 	@Override
 	public void postInit() {}
 
-	/**
-	 * @param resource
-	 *           Sapling
-	 */
 	private static void addFermenterRecipeSapling(ItemStack resource) {
-		/*RecipeManagers.fermenterManager.addRecipe(resource, 800, 1.0f, new FluidStack(liquidBiomass.itemID, 1, liquidBiomass.getItemDamage()), new FluidStack(Block.waterStill, 1));
+		RecipeManagers.fermenterManager.addRecipe(resource, 800, 1.0f, new FluidStack(liquidBiomass.itemID, 1, liquidBiomass.getItemDamage()), new FluidStack(Block.waterStill, 1));
 		RecipeManagers.fermenterManager.addRecipe(resource, 800, 1.5f, new FluidStack(liquidBiomass.itemID, 1, liquidBiomass.getItemDamage()), new FluidStack(liquidJuice.itemID,
 				1, liquidJuice.getItemDamage()));
 		RecipeManagers.fermenterManager.addRecipe(resource, 800, 1.5f, new FluidStack(liquidBiomass.itemID, 1, liquidBiomass.getItemDamage()), new FluidStack(liquidHoney.itemID,
 				1, liquidHoney.getItemDamage()));
 		
-		RecipeManagers.fermenterManager.addRecipe(resource, 1000, 0.5f, new FluidStack(NetherStuffs.SoulEnergyLiquid.itemID, 1), new FluidStack(Block.lavaStill, 1));*/
+		RecipeManagers.fermenterManager.addRecipe(resource, 1000, 0.5f, new FluidStack(NetherStuffs.SoulEnergyLiquid.itemID, 1), new FluidStack(Block.lavaStill, 1));
 	}
 
 	private static void addBackpackItems() {
@@ -126,3 +99,4 @@ public class PluginForestry implements IPlugin {
 	}
 
 }
+*/

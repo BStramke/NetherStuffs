@@ -3,8 +3,6 @@ package bstramke.NetherStuffs;
 import java.util.HashMap;
 import java.util.List;
 
-import mods.tinker.tconstruct.library.TConstructRegistry;
-import mods.tinker.tconstruct.library.crafting.Smeltery;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,21 +17,16 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import thaumcraft.api.EnumTag;
-import thaumcraft.api.ObjectTags;
-import thaumcraft.api.ThaumcraftApi;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.LeafItemBlock;
 import bstramke.NetherStuffs.Blocks.Ore;
 import bstramke.NetherStuffs.Blocks.OreItemBlock;
 import bstramke.NetherStuffs.Blocks.Plank;
 import bstramke.NetherStuffs.Blocks.PlankItemBlock;
-import bstramke.NetherStuffs.Blocks.Sapling;
 import bstramke.NetherStuffs.Blocks.SaplingItemBlock;
 import bstramke.NetherStuffs.Blocks.Wood;
 import bstramke.NetherStuffs.Blocks.WoodItemBlock;
@@ -52,17 +45,12 @@ import bstramke.NetherStuffs.Blocks.soulBlocker.SoulBlockerItemBlock;
 import bstramke.NetherStuffs.Blocks.soulBlocker.TileSoulBlocker;
 import bstramke.NetherStuffs.Blocks.soulBomb.EntitySoulBombPrimed;
 import bstramke.NetherStuffs.Blocks.soulBomb.SoulBombItemBlock;
-import bstramke.NetherStuffs.Blocks.soulCondenser.SoulCondenser;
-import bstramke.NetherStuffs.Blocks.soulCondenser.SoulCondenserItemBlock;
-import bstramke.NetherStuffs.Blocks.soulCondenser.TileSoulCondenser;
-import bstramke.NetherStuffs.Blocks.soulDetector.SoulDetector;
 import bstramke.NetherStuffs.Blocks.soulDetector.SoulDetectorItemBlock;
 import bstramke.NetherStuffs.Blocks.soulDetector.TileSoulDetector;
 import bstramke.NetherStuffs.Blocks.soulEngine.SoulEngine;
 import bstramke.NetherStuffs.Blocks.soulEngine.SoulEngineFuel;
 import bstramke.NetherStuffs.Blocks.soulEngine.TileSoulEngine;
 import bstramke.NetherStuffs.Blocks.soulFurnace.TileSoulFurnace;
-import bstramke.NetherStuffs.Blocks.soulSiphon.SoulSiphon;
 import bstramke.NetherStuffs.Blocks.soulSiphon.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Blocks.soulSiphon.TileSoulSiphon;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBenchRecipes;
@@ -79,9 +67,6 @@ import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.NetherCharcoal;
 import bstramke.NetherStuffs.Items.PotionBottle;
 import bstramke.NetherStuffs.Items.PotionBowl;
-import bstramke.NetherStuffs.Items.SoulEnergyBottle;
-import bstramke.NetherStuffs.Liquids.LiquidItemBlock;
-import bstramke.NetherStuffs.Liquids.LiquidTextureLogic;
 import bstramke.NetherStuffs.WorldGen.WorldGenDefaultMinable;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.DummyModContainer;
@@ -101,8 +86,8 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "0.18", modid = "NetherStuffs"/*,
-		dependencies = "after:Thaumcraft;after:Forestry;after:BuildCraft|Core;after:TConstruct;after:HarkenScythe_Core;"*/
+@Mod(name = "NetherStuffs", version = "0.18.1", modid = "NetherStuffs",
+		dependencies = /*"after:Thaumcraft;after:Forestry;"*/"after:BuildCraft|Core;"/*after:TConstruct;after:HarkenScythe_Core;"*/
 )
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "NetherStuffs" }, packetHandler = ServerPacketHandler.class))
 public class NetherStuffs extends DummyModContainer {
@@ -187,8 +172,6 @@ public class NetherStuffs extends DummyModContainer {
 	public static int LiquidBlockFlowingId;
 	public static int LiquidBlockStillId;
 	
-	//public static int NetherLampBlockId;
-
 	private static boolean SpawnSkeletonsAwayFromNetherFortresses;
 	private static boolean IncreaseNetherrackHardness;
 	private static boolean SpawnBlazesNaturally;
@@ -255,11 +238,11 @@ public class NetherStuffs extends DummyModContainer {
 		if (bUseSoulEngineBlock)
 			SoulEngineBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulEngine", 1247).getInt(1247);
 
-		if (bUseHarkenScytheCondenserBlock) {
+		/*if (bUseHarkenScytheCondenserBlock) {
 			SoulCondenserBlockId = config.getBlock(Configuration.CATEGORY_BLOCK, "SoulenergyCondenser", 1248).getInt(1248);
 			TileSoulCondenser.nToHarkenScytheRate = config.get("ModCompatibility", "NetherStuffs SoulEnergy to Harken Scythe Souls", 250).getInt(250);
 			TileSoulCondenser.nFromHarkenScytheRate = config.get("ModCompatibility", "HarkenScythe Souls to SoulEnergy Rate", 150).getInt(150);
-		}
+		}*/
 
 		bUseStairBlocks = config.get(Configuration.CATEGORY_GENERAL, "Use Stair Blocks", true).getBoolean(true);
 		bUseSlabBlocks = config.get(Configuration.CATEGORY_GENERAL, "Use Slab Blocks", true).getBoolean(true);
@@ -389,7 +372,7 @@ public class NetherStuffs extends DummyModContainer {
 		if (bUseHarkenScytheCondenserBlock == false)
 			return;
 
-		FMLLog.info("[NetherStuffs] adding Stuff for HarkenScythe use");
+		/*FMLLog.info("[NetherStuffs] adding Stuff for HarkenScythe use");
 		// 90 SoulEnergy should be 1 Soul, but as its working differently i use 250 Energy = 1 Soul
 		int nSoulVessel = 0;
 		int nSoulKeeper = 0;
@@ -425,7 +408,7 @@ public class NetherStuffs extends DummyModContainer {
 				'G', new ItemStack(Block.ice, 1, 0), 'P', new ItemStack(Block.pistonBase, 1, 0) });
 
 		SoulWorkBenchRecipes.instance.addRecipe(new ItemStack(SoulCondenser, 1, 1), 250, new Object[] { "III", "F F", "GPG", 'I', new ItemStack(ItemRegistry.NetherOreIngot, 1, 0),
-				'F', new ItemStack(Item.flintAndSteel), 'G', new ItemStack(nEssenceKeeper, 1, 0), 'P', new ItemStack(Block.pistonBase, 1, 0) });
+				'F', new ItemStack(Item.flintAndSteel), 'G', new ItemStack(nEssenceKeeper, 1, 0), 'P', new ItemStack(Block.pistonBase, 1, 0) });*/
 	}
 
 	private void initTConstruct() {
@@ -555,7 +538,7 @@ public class NetherStuffs extends DummyModContainer {
 		if (bUseThaumcraft == false)
 			return;
 
-		FMLLog.info("[NetherStuffs] adding Stuff for Thaumcraft use");
+		/*FMLLog.info("[NetherStuffs] adding Stuff for Thaumcraft use");
 
 		ThaumcraftApi.registerObjectTag(BlockRegistry.netherOre.blockID, Ore.demonicOre, (new ObjectTags()).add(EnumTag.ROCK, 1).add(EnumTag.DESTRUCTION, 1)
 				.add(EnumTag.EVIL, 4).add(EnumTag.METAL, 2).add(EnumTag.FLUX, 2));
@@ -630,26 +613,26 @@ public class NetherStuffs extends DummyModContainer {
 		ThaumcraftApi.registerComplexObjectTag(BlockRegistry.SoulSiphon.blockID, SoulSiphon.mk3, (new ObjectTags()).add(EnumTag.TRAP, 7).add(EnumTag.WEAPON, 7).add(EnumTag.SPIRIT, 9)
 				.add(EnumTag.VOID, 3));
 		ThaumcraftApi.registerComplexObjectTag(BlockRegistry.SoulSiphon.blockID, SoulSiphon.mk4,
-				(new ObjectTags()).add(EnumTag.TRAP, 10).add(EnumTag.WEAPON, 10).add(EnumTag.SPIRIT, 12).add(EnumTag.VOID, 4));
+				(new ObjectTags()).add(EnumTag.TRAP, 10).add(EnumTag.WEAPON, 10).add(EnumTag.SPIRIT, 12).add(EnumTag.VOID, 4));*/
 	}
 
 	private void initBuildcraftStuff() {
 		if (bUseSoulEngineBlock == false)
 			return;
 
-		/*FMLLog.info("[NetherStuffs] adding Stuff for Buildcraft use");
+		FMLLog.info("[NetherStuffs] adding Stuff for Buildcraft use");
 		Block SoulEngine = new SoulEngine(NetherStuffs.SoulEngineBlockId).setUnlocalizedName("NetherSoulEngine").setHardness(3.5F).setResistance(5.0F);
 		Item NetherGear = new DemonicGear(NetherGearItemId).setUnlocalizedName("NetherGear");
 
 		GameRegistry.registerBlock(SoulEngine, "SoulEngine");
-		SoulEngineFuel.fuels.add(new SoulEngineFuel(new FluidStack(BlockRegistry.LiquidStill.blockID, 1, 0), 1, 10000)); // 20000 = Lava
+		SoulEngineFuel.fuels.add(new SoulEngineFuel(new FluidStack(FluidRegistry.SoulEnergy, 1), 1, 15000)); // 20000 = Lava
 		GameRegistry.registerTileEntity(TileSoulEngine.class, "tileEntitySoulEnergyEngine");
 
 		SoulWorkBenchRecipes.instance.addRecipe(new ItemStack(NetherGear, 1, 0), 50, " S ", "SIS", " S ", 'S', new ItemStack(ItemRegistry.NetherWoodStick, 1, 0), 'I', new ItemStack(
 				ItemRegistry.NetherOreIngot, 1, 0));
 
 		SoulWorkBenchRecipes.instance.addRecipe(new ItemStack(SoulEngine, 1, 0), 250, new Object[] { "III", " S ", "GPG", 'I', new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'S',
-				new ItemStack(BlockRegistry.SoulGlass, 1, 0), 'G', new ItemStack(NetherGear, 1, 0), 'P', new ItemStack(Block.pistonBase, 1, 0) });*/
+				new ItemStack(BlockRegistry.SoulGlass, 1, 0), 'G', new ItemStack(NetherGear, 1, 0), 'P', new ItemStack(Block.pistonBase, 1, 0) });
 	}
 
 	@EventHandler
@@ -666,8 +649,6 @@ public class NetherStuffs extends DummyModContainer {
 		GameRegistry.registerBlock(BlockRegistry.DemonicFurnace, "NetherDemonicFurnace");
 		GameRegistry.registerBlock(BlockRegistry.SoulFurnace, "NetherSoulFurnace");
 		GameRegistry.registerBlock(BlockRegistry.SoulWorkBench, "NetherSoulWorkBench");
-
-		//GameRegistry.registerBlock(BlockRegistry.Lamp, "NetherLamp");
 		
 		GameRegistry.registerBlock(BlockRegistry.netherOre, OreItemBlock.class, "NetherOreItemBlock");
 		GameRegistry.registerBlock(BlockRegistry.netherWood, WoodItemBlock.class, "NetherWoodItemBlock");

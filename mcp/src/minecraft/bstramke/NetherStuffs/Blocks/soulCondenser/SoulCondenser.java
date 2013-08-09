@@ -21,7 +21,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class SoulCondenser extends BlockContainer {
+public class SoulCondenser{}/* extends BlockContainer {
 	public static int HSSoulKeeperItemId;
 	public static int HSSoulVesselItemId;
 	public static int HSEssenceKeeperItemId;
@@ -153,3 +153,4 @@ public class SoulCondenser extends BlockContainer {
 		}
 	}
 }
+*/

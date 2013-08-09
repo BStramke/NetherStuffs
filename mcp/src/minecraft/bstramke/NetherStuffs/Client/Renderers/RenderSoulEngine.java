@@ -18,12 +18,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
-
-import org.lwjgl.opengl.GL11;
-
-import bstramke.NetherStuffs.Blocks.soulEngine.TileSoulEngine;
-import bstramke.NetherStuffs.Blocks.soulEngine.TileSoulEngine.EnergyStage;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -88,19 +82,19 @@ public class RenderSoulEngine extends TileEntitySpecialRenderer implements ISimp
 	}
 
 	public void inventoryRender(double x, double y, double z, float f, float f1) {
-		render(EnergyStage.Blue, 0.25F, ForgeDirection.UP, x, y, z);
+		//render(EnergyStage.Blue, 0.25F, ForgeDirection.UP, x, y, z);
 	}
 
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
-		if (tileentity != null && tileentity instanceof TileSoulEngine) {
+		/*if (tileentity != null && tileentity instanceof TileSoulEngine) {
 			render(((TileSoulEngine) tileentity).getEnergyStage(), ((TileSoulEngine) tileentity).progress, ((TileSoulEngine) tileentity).orientation, x, y, z);
-		}
+		}*/
 	}
 
-	private void render(EnergyStage energy, float progress, ForgeDirection orientation, double x, double y, double z) {
+	/*private void render(EnergyStage energy, float progress, ForgeDirection orientation, double x, double y, double z) {
 		GL11.glPushMatrix();
-		GL11.glDisable(2896 /* GL_LIGHTING */);
+		GL11.glDisable(2896);
 
 		GL11.glTranslatef((float) x, (float) y, (float) z);
 
@@ -201,9 +195,9 @@ public class RenderSoulEngine extends TileEntitySpecialRenderer implements ISimp
 
 		trunk.render(factor);
 
-		GL11.glEnable(2896 /* GL_LIGHTING */);
+		GL11.glEnable(2896);
 		GL11.glPopMatrix();
-	}
+	}*/
 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {

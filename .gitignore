@@ -49,3 +49,6 @@
 /mcp/src/minecraft/net/
 /mcp/src/minecraft/cpw/
 
+mcp\src\minecraft\codechicken/
+mcp\src\minecraft\assets\codechickencore/
+mcp\src\minecraft\assets\nei/

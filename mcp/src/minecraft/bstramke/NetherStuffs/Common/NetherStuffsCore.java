@@ -6,19 +6,18 @@ import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.soulEngine.NetherBCTriggers;
 import bstramke.NetherStuffs.Blocks.soulEngine.NetherTriggerEngineHeat;
 import bstramke.NetherStuffs.Blocks.soulEngine.NetherTriggerLiquidContainer;
-import bstramke.NetherStuffs.Blocks.soulEngine.TileSoulEngine;
-import buildcraft.api.core.IIconProvider;
+import bstramke.NetherStuffs.Blocks.soulEngine.TileEngine;
 
 public class NetherStuffsCore {
 	public static Icon icoEnergy;
 	
 	public static NetherStuffsCore instance = new NetherStuffsCore();
 	
-	public static IIconProvider actionTriggerIconProvider = new ActionTriggerIconProvider();
-	public static NetherBCTriggers triggerBlueEngineHeat = new NetherTriggerEngineHeat(ActionTriggerIconProvider.Trigger_EngineHeat_Blue, TileSoulEngine.EnergyStage.Blue);
-	public static NetherBCTriggers triggerGreenEngineHeat = new NetherTriggerEngineHeat(ActionTriggerIconProvider.Trigger_EngineHeat_Green, TileSoulEngine.EnergyStage.Green);
-	public static NetherBCTriggers triggerYellowEngineHeat = new NetherTriggerEngineHeat(ActionTriggerIconProvider.Trigger_EngineHeat_Yellow, TileSoulEngine.EnergyStage.Yellow);
-	public static NetherBCTriggers triggerRedEngineHeat = new NetherTriggerEngineHeat(ActionTriggerIconProvider.Trigger_EngineHeat_Red, TileSoulEngine.EnergyStage.Red);
+	//public static IIconProvider actionTriggerIconProvider = new ActionTriggerIconProvider();
+	public static NetherBCTriggers triggerBlueEngineHeat = new NetherTriggerEngineHeat(ActionTriggerIconProvider.Trigger_EngineHeat_Blue, TileEngine.EnergyStage.BLUE, "netherstuffs.engine.stage.blue");
+	public static NetherBCTriggers triggerGreenEngineHeat = new NetherTriggerEngineHeat(ActionTriggerIconProvider.Trigger_EngineHeat_Green, TileEngine.EnergyStage.GREEN, "netherstuffs.engine.stage.green");
+	public static NetherBCTriggers triggerYellowEngineHeat = new NetherTriggerEngineHeat(ActionTriggerIconProvider.Trigger_EngineHeat_Yellow, TileEngine.EnergyStage.YELLOW, "netherstuffs.engine.stage.yellow");
+	public static NetherBCTriggers triggerRedEngineHeat = new NetherTriggerEngineHeat(ActionTriggerIconProvider.Trigger_EngineHeat_Red, TileEngine.EnergyStage.RED, "netherstuffs.engine.stage.red");
 	
 	public static NetherBCTriggers triggerEmptyLiquid = new NetherTriggerLiquidContainer(ActionTriggerIconProvider.Trigger_LiquidContainer_Empty, NetherTriggerLiquidContainer.State.Empty);
 	public static NetherBCTriggers triggerContainsLiquid = new NetherTriggerLiquidContainer(ActionTriggerIconProvider.Trigger_LiquidContainer_Contains, NetherTriggerLiquidContainer.State.Contains);

@@ -17,10 +17,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import bstramke.NetherStuffs.NetherStuffsEventHook;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Common.BlockActiveHelper;
@@ -28,9 +24,8 @@ import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.SoulEnergyTankTileEntity;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
-import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecialInventory, ISidedInventory {
+public class TileSoulSiphon extends SoulEnergyTankTileEntity implements /*ISpecialInventory,*/ ISidedInventory {
 	private static int nTickCounter = 0;
 	public int nTankFillSlot = 1;
 	public int nTankDrainSlot = 0;
@@ -250,7 +245,7 @@ public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecial
 		}
 	}
 
-	@Override
+	/*@Override
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
 		if (from == ForgeDirection.DOWN || from == ForgeDirection.UP) {
 			if (stack.itemID == ItemRegistry.SoulEnergyBottle.itemID && getStackInSlot(this.nTankFillSlot) == null) {
@@ -299,7 +294,7 @@ public class TileSoulSiphon extends SoulEnergyTankTileEntity implements ISpecial
 			}
 		}
 		return null;
-	}
+	}*/
 
 	@Override
 	public boolean isInvNameLocalized() {

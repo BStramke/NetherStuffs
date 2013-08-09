@@ -6,18 +6,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.Wood;
 import bstramke.NetherStuffs.Blocks.WoodItemBlock;
 import bstramke.NetherStuffs.Common.BlockActiveHelper;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Items.NetherCharcoal;
-import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileDemonicFurnace extends TileEntity implements ISpecialInventory, ISidedInventory {
+public class TileDemonicFurnace extends TileEntity implements /*ISpecialInventory,*/ ISidedInventory {
 	public static final int nSmeltedSlot = 0;
 	public static final int nFuelSlot = 1;
 	public static final int nOutputSlot = 2;
@@ -317,7 +315,7 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory,
 	public String getInvName() {
 		return "container.demonicfurnace";
 	}
-
+/*
 	@Override
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
 		int nTargetSlot = 0;
@@ -376,7 +374,7 @@ public class TileDemonicFurnace extends TileEntity implements ISpecialInventory,
 		} else
 			return null;
 	}
-
+*/
 	@Override
 	public boolean isInvNameLocalized() {
 		// TODO Auto-generated method stub

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -25,7 +26,9 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class Leaf extends Block implements IShearable {
+
+
+public class Leaf extends BlockLeavesBase implements IShearable {
 	public static final int hellfire = 0;
 	public static final int acid = 1;
 	public static final int death = 2;
@@ -36,7 +39,7 @@ public class Leaf extends Block implements IShearable {
 	private Icon icoLeafDeath;
 
 	public Leaf(int par1) {
-		super(par1, NetherMaterials.netherLeaves);
+		super(par1, NetherMaterials.netherLeaves, false);
 		setStepSound(Block.soundGrassFootstep);
 		setTickRandomly(true);
 		setCreativeTab(NetherStuffs.tabNetherStuffs);

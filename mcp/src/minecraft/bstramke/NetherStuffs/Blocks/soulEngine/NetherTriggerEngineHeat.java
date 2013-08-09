@@ -1,13 +1,13 @@
 package bstramke.NetherStuffs.Blocks.soulEngine;
 
-import bstramke.NetherStuffs.Common.ActionTriggerIconProvider;
-import buildcraft.api.gates.ITriggerParameter;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
+import buildcraft.api.gates.ITriggerParameter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 
 public class NetherTriggerEngineHeat extends NetherBCTriggers {
 
@@ -15,20 +15,19 @@ public class NetherTriggerEngineHeat extends NetherBCTriggers {
 	
 	public TileSoulEngine.EnergyStage stage;
 
-	public NetherTriggerEngineHeat(int id, TileSoulEngine.EnergyStage stage) {
-		super(id);
-
+	public NetherTriggerEngineHeat(int id, TileSoulEngine.EnergyStage stage, String uniqueTag) {
+		super(id, uniqueTag);
 		this.stage = stage;
 	}
 
 	@Override
 	public String getDescription() {
 		switch (stage) {
-		case Blue:
+		case BLUE:
 			return "Engine Blue";
-		case Green:
+		case GREEN:
 			return "Engine Green";
-		case Yellow:
+		case YELLOW:
 			return "Engine Yellow";
 		default:
 			return "Engine Red";
@@ -48,27 +47,15 @@ public class NetherTriggerEngineHeat extends NetherBCTriggers {
 	public
 	Icon getIcon() {
 		switch (stage) {
-		case Blue:
+		case BLUE:
 			return iconBlue;
-		case Green:
+		case GREEN:
 			return iconGreen;
-		case Yellow:
+		case YELLOW:
 			return iconYellow;
 		default:
 			return iconRed;
 		}
-	}
-
-	@Override
-	public int getLegacyId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String getUniqueTag() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -79,10 +66,5 @@ public class NetherTriggerEngineHeat extends NetherBCTriggers {
 		iconGreen = iconRegister.registerIcon("buildcraft:triggers/trigger_engineheat_green");
 		iconYellow = iconRegister.registerIcon("buildcraft:triggers/trigger_engineheat_yellow");
 		iconRed = iconRegister.registerIcon("buildcraft:triggers/trigger_engineheat_red");
-	}
-
-	@Override
-	public boolean hasParameter() {
-		return false;
 	}
 }

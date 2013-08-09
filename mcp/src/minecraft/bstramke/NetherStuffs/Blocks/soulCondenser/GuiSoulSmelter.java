@@ -15,7 +15,7 @@ import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.Gui.GuiContainerSoulTank;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 
-public class GuiSoulSmelter extends GuiContainerSoulTank {
+public class GuiSoulSmelter{}/* extends GuiContainerSoulTank {
 	private static final ResourceLocation BackgroundTexture = new ResourceLocation(CommonProxy.SOULSMELTER_PNG);
 	private TileSoulCondenser tile_entity;
 
@@ -40,3 +40,4 @@ public class GuiSoulSmelter extends GuiContainerSoulTank {
 		drawTankScale();
 	}
 }
+*/

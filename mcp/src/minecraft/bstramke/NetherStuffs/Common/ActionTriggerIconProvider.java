@@ -6,7 +6,9 @@ import buildcraft.api.core.IIconProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+
 public class ActionTriggerIconProvider implements IIconProvider {
+	public static ActionTriggerIconProvider INSTANCE = new ActionTriggerIconProvider();
 	public static final int Trigger_EngineHeat_Blue = 0;
 	public static final int Trigger_EngineHeat_Green = 1;
 	public static final int Trigger_EngineHeat_Yellow = 2;
@@ -18,6 +20,8 @@ public class ActionTriggerIconProvider implements IIconProvider {
 	public static final int Trigger_LiquidContainer_Full = 7;
 
 	private boolean registered = false;
+	
+	private ActionTriggerIconProvider(){}
 	
 	@SideOnly(Side.CLIENT)
 	private static Icon[] icons = new Icon[8];

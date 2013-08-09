@@ -16,6 +16,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import bstramke.NetherStuffs.Common.ContainerWithPlayerInventory;
 
+
 public class ContainerSoulEngine extends ContainerWithPlayerInventory {
 
 	private int inventorySize = 1;

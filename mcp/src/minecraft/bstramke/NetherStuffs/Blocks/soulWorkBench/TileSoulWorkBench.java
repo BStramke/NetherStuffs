@@ -6,19 +6,14 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Common.SoulEnergyTankTileEntity;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
-import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileSoulWorkBench extends SoulEnergyTankTileEntity implements ISpecialInventory, ISidedInventory  {
+public class TileSoulWorkBench extends SoulEnergyTankTileEntity implements /*ISpecialInventory,*/ ISidedInventory  {
 	public static final int nTankFillSlot = 9;
 	public static final int nOutputSlot = 10;
 
@@ -202,7 +197,7 @@ public class TileSoulWorkBench extends SoulEnergyTankTileEntity implements ISpec
 	public int getSoulEnergyRequired() {
 		return this.nSoulEnergyRequired;
 	}
-
+/*
 	@Override
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
 		int nTargetSlot = 0;
@@ -296,7 +291,7 @@ public class TileSoulWorkBench extends SoulEnergyTankTileEntity implements ISpec
 			if (doRemove)
 				decrStackSize(this.nTankFillSlot, 1);
 			return new ItemStack[] { outputStack };
-		} else if (from != ForgeDirection.UP && from != ForgeDirection.DOWN/* && getStackInSlot(this.nOutputSlot) != null/* && this.nSoulEnergyRequired <= this.currentTankLevel */) {
+		} else if (from != ForgeDirection.UP && from != ForgeDirection.DOWN/* && getStackInSlot(this.nOutputSlot) != null/* && this.nSoulEnergyRequired <= this.currentTankLevel ) {
 			ItemStack outputStack = SoulWorkBenchRecipes.getInstance().getCraftingResult(this);
 			if (outputStack == null || !hasEnoughFuel(outputStack))
 				return null;
@@ -312,7 +307,7 @@ public class TileSoulWorkBench extends SoulEnergyTankTileEntity implements ISpec
 		} else
 			return null;
 	}
-
+*/
 	@Override
 	public boolean isInvNameLocalized() {
 		return false;

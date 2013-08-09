@@ -1,19 +1,23 @@
 package bstramke.NetherStuffs.Blocks.soulEngine;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.Locale;
+
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
-import bstramke.NetherStuffs.Common.ActionTriggerIconProvider;
 import buildcraft.api.gates.ITriggerParameter;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 	private Icon iconEmpty, iconSpace, iconContains, iconFull;
+
 	public enum State {
 		Empty, Contains, Space, Full
 	};
@@ -21,7 +25,7 @@ public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 	public State state;
 
 	public NetherTriggerLiquidContainer(int id, State state) {
-		super(id);
+		super(id, "netherstuffs.fluid." + state.name().toLowerCase(Locale.ENGLISH));
 		this.state = state;
 	}
 
@@ -50,66 +54,55 @@ public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 	@Override
 	public boolean isTriggerActive(ForgeDirection side, TileEntity tile, ITriggerParameter parameter) {
 		if (tile instanceof IFluidTank) {
-			IFluidTank container = (IFluidTank) tile;
+			IFluidHandler container = (IFluidHandler) tile;
 
-			FluidStack searchedLiquid = null;
+			FluidStack searchedFluid = null;
 
 			if (parameter != null && parameter.getItem() != null) {
-				searchedLiquid = FluidContainerRegistry.getFluidForFilledItem(parameter.getItem());
+				searchedFluid = FluidContainerRegistry.getFluidForFilledItem(parameter.getItem());
 			}
 
-			if (searchedLiquid != null) {
-				searchedLiquid.amount = 1;
+			if (searchedFluid != null) {
+				searchedFluid.amount = 1;
 			}
 
-			/*IFluidTank[] liquids = container.getTanks(ForgeDirection.UNKNOWN);
-			
+			FluidTankInfo[] liquids = container.getTankInfo(ForgeDirection.UNKNOWN);
+
 			if (liquids == null || liquids.length == 0)
 				return false;
 
 			switch (state) {
 			case Empty:
-				for (IFluidTank c : liquids) {
-					if (searchedLiquid != null) {
-						FluidStack drained = c.drain(1, false);
-						if (drained != null && searchedLiquid.isFluidEqual(drained))
-							return false;
-					} else if (c.getFluid() != null && c.getFluid().amount > 0)
+				for (FluidTankInfo c : liquids) {
+					if (c.fluid != null && c.fluid.amount > 0 && (searchedFluid == null || searchedFluid.isFluidEqual(c.fluid)))
 						return false;
 				}
-
 				return true;
 			case Contains:
-				for (IFluidTank c : liquids) {
-					if (c.getFluid() != null && c.getFluid().amount != 0) {
-						if (searchedLiquid == null || searchedLiquid.isFluidEqual(c.getFluid()))
-							return true;
-					}
-				}
-
-				return false;
-
-			case Space:
-				for (IFluidTank c : liquids) {
-					if (searchedLiquid != null) {
-						if (c.fill(searchedLiquid, false) > 0)
-							return true;
-					} else if (c.getFluid() == null || c.getFluid().amount < c.getCapacity())
+				for (FluidTankInfo c : liquids) {
+					if (c.fluid != null && c.fluid.amount > 0 && (searchedFluid == null || searchedFluid.isFluidEqual(c.fluid)))
 						return true;
 				}
-
 				return false;
-			case Full:
-				for (IFluidTank c : liquids) {
-					if (searchedLiquid != null) {
-						if (c.fill(searchedLiquid, false) > 0)
-							return false;
-					} else if (c.getFluid() == null || c.getFluid().amount < c.getCapacity())
-						return false;
+			case Space:
+				if (searchedFluid == null) {
+					for (FluidTankInfo c : liquids) {
+						if (c.fluid == null || c.fluid.amount < c.capacity)
+							return true;
+					}
+					return false;
 				}
-
-				return true;
-			}*/
+				return container.fill(side, searchedFluid, false) > 0;
+			case Full:
+				if (searchedFluid == null) {
+					for (FluidTankInfo c : liquids) {
+						if (c.fluid == null || c.fluid.amount < c.capacity)
+							return false;
+					}
+					return true;
+				}
+				return container.fill(side, searchedFluid, false) <= 0;
+			}
 		}
 
 		return false;
@@ -128,7 +121,7 @@ public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 			return iconFull;
 		}
 	}
-
+/*
 	@Override
 	public int getLegacyId() {
 		// TODO Auto-generated method stub
@@ -148,5 +141,5 @@ public class NetherTriggerLiquidContainer extends NetherBCTriggers {
 		iconContains = iconRegister.registerIcon("buildcraft:triggers/trigger_liquidcontainer_contains");
 		iconSpace = iconRegister.registerIcon("buildcraft:triggers/trigger_liquidcontainer_space");
 		iconFull = iconRegister.registerIcon("buildcraft:triggers/trigger_liquidcontainer_full");
-	}
+	}*/
 }

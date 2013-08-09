@@ -16,7 +16,7 @@ xcopy reobf\minecraft\thaumcraft reobf\minecraft\bstramke\NetherStuffsBase\thaum
 xcopy reobf\minecraft\ic2 reobf\minecraft\bstramke\NetherStuffsBase\ic2\ /S
 
 mkdir reobf\minecraft\bstramke\NetherStuffsBase\assets
-xcopy src\minecraft\assets\netherstuffs reobf\minecraft\bstramke\NetherStuffsBase\assets\netherstuffs /S
+xcopy src\minecraft\assets\netherstuffs reobf\minecraft\bstramke\NetherStuffsBase\assets\netherstuffs\ /S
 
 
 

@@ -49,14 +49,14 @@ public class GuiHandler implements IGuiHandler {
 			return new ContainerSoulBlocker();
 		} else if (tile_entity instanceof TileSoulSiphon) {
 			return new ContainerSoulSiphon((TileSoulSiphon) tile_entity, player.inventory);
-		} else if (tile_entity instanceof TileSoulEngine) {
+		} /*else if (tile_entity instanceof TileSoulEngine) {
 			return new ContainerSoulEngine((TileSoulEngine) tile_entity, player.inventory);
 		} else if (tile_entity instanceof TileSoulCondenser) {
 			if (world.getBlockMetadata(x, y, z) == 0)
 				return new ContainerSoulCondenser((TileSoulCondenser) tile_entity, player.inventory);
 			else if (world.getBlockMetadata(x, y, z) == 1)
 				return new ContainerSoulSmelter((TileSoulCondenser) tile_entity, player.inventory);
-		}
+		}*/
 
 		return null;
 	}
@@ -76,7 +76,7 @@ public class GuiHandler implements IGuiHandler {
 			return new GuiSoulDetector((TileSoulDetector) tile_entity, player);
 		} else if (tile_entity instanceof TileSoulSiphon) {
 			return new GuiSoulSiphon(player.inventory, (TileSoulSiphon) tile_entity);
-		} else if (tile_entity instanceof TileSoulEngine) {
+		}/* else if (tile_entity instanceof TileSoulEngine) {
 			return new GuiSoulEngine(player.inventory, (TileSoulEngine) tile_entity);
 		} else if (tile_entity instanceof TileSoulCondenser) {
 			if (world.getBlockMetadata(x, y, z) == 0)
@@ -84,7 +84,7 @@ public class GuiHandler implements IGuiHandler {
 			else if (world.getBlockMetadata(x, y, z) == 1)
 				return new GuiSoulSmelter(player.inventory, (TileSoulCondenser) tile_entity);
 
-		}
+		}*/
 
 		return null;
 	}

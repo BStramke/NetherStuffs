@@ -1,17 +1,7 @@
 package bstramke.NetherStuffs.Blocks.soulCondenser;
 
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.ForgeDirection;
-import bstramke.NetherStuffs.Blocks.BlockRegistry;
-import bstramke.NetherStuffs.Common.SoulEnergyTankBottleTileEntity;
-import bstramke.NetherStuffs.Items.ItemRegistry;
-import bstramke.NetherStuffs.Items.SoulEnergyBottle;
-import buildcraft.api.inventory.ISpecialInventory;
 
-public class TileSoulCondenser extends SoulEnergyTankBottleTileEntity implements ISpecialInventory, ISidedInventory {
+public class TileSoulCondenser{}/* extends SoulEnergyTankBottleTileEntity implements ISpecialInventory, ISidedInventory {
 	private static int nTickCounter = 0;
 
 	public static int nToHarkenScytheRate = 250;
@@ -323,9 +313,7 @@ public class TileSoulCondenser extends SoulEnergyTankBottleTileEntity implements
 		return false;
 	}
 
-	/**
-	 * Get the size of the side inventory.
-	 */
+
 	@Override
 	public int[] getAccessibleSlotsFromSide(int par1) {
 		if (par1 == BlockRegistry.sideTop)
@@ -336,17 +324,13 @@ public class TileSoulCondenser extends SoulEnergyTankBottleTileEntity implements
 			return new int[] { nTankFillSlot }; // sides
 	}
 
-	/**
-	 * Description : Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item, side
-	 */
+
 	@Override
 	public boolean canInsertItem(int slot, ItemStack par2ItemStack, int side) {
 		return this.isItemValidForSlot(slot, par2ItemStack);
 	}
 
-	/**
-	 * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item, side
-	 */
+
 	@Override
 	public boolean canExtractItem(int slot, ItemStack par2ItemStack, int side) {
 
@@ -361,4 +345,4 @@ public class TileSoulCondenser extends SoulEnergyTankBottleTileEntity implements
 
 		return false;
 	}
-}
+}*/

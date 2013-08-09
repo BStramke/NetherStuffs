@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.demonicFurnace.DemonicFurnaceRecipes;
 import bstramke.NetherStuffs.Common.BlockActiveHelper;
@@ -13,11 +12,10 @@ import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.SoulEnergyTankTileEntity;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
-import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileSoulFurnace extends SoulEnergyTankTileEntity implements ISpecialInventory, ISidedInventory {
+public class TileSoulFurnace extends SoulEnergyTankTileEntity implements /*ISpecialInventory,*/ ISidedInventory {
 	public static final int nSmeltedSlot = 0;
 	public static final int nTankFillSlot = 1;
 	public static final int nOutputSlot = 2;
@@ -257,7 +255,7 @@ public class TileSoulFurnace extends SoulEnergyTankTileEntity implements ISpecia
 	public String getInvName() {
 		return "container.soulfurnace";
 	}
-
+/*
 	@Override
 	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
 		int nTargetSlot = 0;
@@ -318,7 +316,7 @@ public class TileSoulFurnace extends SoulEnergyTankTileEntity implements ISpecia
 		} else
 			return null;
 	}
-
+*/
 	@Override
 	public boolean isInvNameLocalized() {
 		return false;

@@ -2,21 +2,16 @@ package bstramke.NetherStuffs.Blocks.soulEngine;
 
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.NetherStuffsCore;
 import bstramke.NetherStuffs.Common.Ledger.GuiLedger;
-import bstramke.NetherStuffs.Fluid.SoulEnergyFluid;
-import bstramke.NetherStuffs.Items.ItemRegistry;
 
 public class GuiSoulEngine extends GuiLedger {
 	private static final ResourceLocation BackgroundTexture = new ResourceLocation(CommonProxy.SOULENERGYENGINE_PNG);
