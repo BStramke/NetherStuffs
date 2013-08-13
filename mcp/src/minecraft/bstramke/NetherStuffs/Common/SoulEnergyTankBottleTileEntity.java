@@ -1,5 +1,7 @@
 package bstramke.NetherStuffs.Common;
 
+import bstramke.NetherStuffs.Items.ItemRegistry;
+import bstramke.NetherStuffs.Items.SoulEnergyBottle;
 import net.minecraft.item.ItemStack;
 
 public abstract class SoulEnergyTankBottleTileEntity extends SoulEnergyTankTileEntity {

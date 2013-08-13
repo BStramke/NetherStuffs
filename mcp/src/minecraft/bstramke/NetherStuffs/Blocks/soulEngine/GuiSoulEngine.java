@@ -1,7 +1,10 @@
 package bstramke.NetherStuffs.Blocks.soulEngine;
 
+import java.awt.Rectangle;
+
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -12,6 +15,7 @@ import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.NetherStuffsCore;
 import bstramke.NetherStuffs.Common.Ledger.GuiLedger;
+import bstramke.NetherStuffs.Items.ItemRegistry;
 
 public class GuiSoulEngine extends GuiLedger {
 	private static final ResourceLocation BackgroundTexture = new ResourceLocation(CommonProxy.SOULENERGYENGINE_PNG);
@@ -93,7 +97,8 @@ public class GuiSoulEngine extends GuiLedger {
 		int nFillState = engine.getScaledTankLevel(58);
 
 		//this.mc.renderEngine.bindTexture("/gui/items.png");
-		mc.func_110434_K().func_110577_a(TextureMap.field_110576_c);
+		//mc.func_110434_K().func_110577_a(TextureMap.field_110576_c);
+		mc.func_110434_K().func_110577_a(TextureMap.field_110575_b);
 		Icon LiquidIcon = BlockRegistry.SoulEnergyFluidBlock.getIcon(BlockRegistry.sideTop, 0);
 		
 		int y = 0;
@@ -111,18 +116,18 @@ public class GuiSoulEngine extends GuiLedger {
 		this.mc.func_110434_K().func_110577_a(BackgroundTexture);
 		drawTexturedModalRect(var5 + 104, var6 + 19, 176, 0, 16, 60);
 	}
-
-	/*@Override
+	
+	@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		super.drawScreen(par1, par2, par3);
 		int var5 = (this.width - this.xSize) / 2;
 		int var6 = (this.height - this.ySize) / 2;
 
 		if (par1 > var5 + 104 && par1 < var5 + 104 + 16 && par2 > var6 + 75 - 58 && par2 < var6 + 77) {
-			ItemStack par1ItemStack = NetherStuffs.SoulEnergyLiquid.asItemStack().copy();
+			ItemStack par1ItemStack = new ItemStack(ItemRegistry.SoulEnergyFluidItem);
 			par1ItemStack.setItemDamage(tile.MAX_LIQUID);
 			par1ItemStack.stackSize = this.tile.getCurrentTankLevel();
 			drawItemStackTooltip(par1ItemStack, par1, par2);
 		}
-	}*/
+	}
 }

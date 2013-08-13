@@ -29,4 +29,8 @@ public class NetherStuffsCore {
 			icoEnergy = iconRegister.registerIcon("buildcraft:icons/energy");
 		
 	}
+	public static RenderMode render = RenderMode.Full;
+	public static enum RenderMode {
+		Full, NoDynamic
+	};
 }

@@ -57,27 +57,27 @@ public class NetherSword extends ItemSword {
 		else
 			return false;
 	}
-/*
+
 	@Override
-	public int getDamageVsEntity(Entity par1Entity) {
+	public float getDamageVsEntity(Entity par1Entity, ItemStack stack) {
 		if (par1Entity instanceof EntityLiving) {
 			
 			if(par1Entity instanceof EntityPlayerMP && !((EntityPlayerMP)par1Entity).mcServer.isPVPEnabled()) //if target is a Player and PVP is off, dont apply dots
-				return super.getDamageVsEntity(par1Entity);
+				return super.getDamageVsEntity(par1Entity, stack);
 			
 			if (this.nType == Types.acid) {
-				((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.wither.id, 20 * 5, 4));
-			} else if (this.nType == Types.death) {
 				((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.hunger.id, 20 * 60, 8));
-				((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.poison.id, 20 * 5, 8));
+				((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.poison.id, 20 * 5, 8));				
+			} else if (this.nType == Types.death) {
+				((EntityLiving) par1Entity).addPotionEffect(new PotionEffect(Potion.wither.id, 20 * 5, 4));
 			} else if (this.nType == Types.hellfire) {
 				((EntityLiving) par1Entity).attackEntityFrom(DamageSource.lava, 2);
 				((EntityLiving) par1Entity).setFire(8);
 			}
 		}
-		return super.getDamageVsEntity(par1Entity);
+		return super.getDamageVsEntity(par1Entity, stack);
 	}
-*/
+
 	@Override
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
 		super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);

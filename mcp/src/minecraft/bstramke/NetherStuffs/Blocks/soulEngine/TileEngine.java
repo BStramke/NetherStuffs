@@ -8,10 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
 import bstramke.NetherStuffs.Common.NetherStuffsCore;
+import bstramke.NetherStuffs.Common.SoulEnergyTankBottleTileEntity;
 import buildcraft.api.core.Position;
 import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
@@ -22,7 +24,7 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.transport.IPipeConnection;
 import buildcraft.api.transport.IPipeTile.PipeType;
 
-public abstract class TileEngine extends TileEntity implements IInventory, IPowerEmitter, IPowerReceptor, IOverrideDefaultTriggers, IPipeConnection {
+public abstract class TileEngine extends SoulEnergyTankBottleTileEntity implements IInventory, IPowerEmitter, IPowerReceptor, IOverrideDefaultTriggers, IPipeConnection {
 	public static final ResourceLocation SoulengineTexture = new ResourceLocation("netherstuffs:textures/gfx/base_soulengine.png");
 
 	// The Energy Stage the Engine goes through. If you need, you can define a Explosion State here
@@ -44,9 +46,10 @@ public abstract class TileEngine extends TileEntity implements IInventory, IPowe
 	public float progress;
 	public float energy;
 	public float heat = 0;
-	private ItemStack itemInInventory;
+	public ItemStack[] inventory = new ItemStack[1];
 
-	public TileEngine() {
+	public TileEngine(int nCapacity) {
+		super(0, 0, nCapacity);
 		powerHandler = new PowerHandler(this, PowerHandler.Type.ENGINE);
 		powerHandler.configurePowerPerdition(0, 0);
 	}
@@ -83,7 +86,7 @@ public abstract class TileEngine extends TileEntity implements IInventory, IPowe
 			return;
 		addEnergy(powerHandler.useEnergy(1, maxEnergyReceived(), true) * 0.95F);
 	}
-	
+
 	public boolean switchOrientation() {
 		for (int i = orientation.ordinal() + 1; i <= orientation.ordinal() + 6; ++i) {
 			ForgeDirection o = ForgeDirection.VALID_DIRECTIONS[i % 6];
@@ -102,7 +105,6 @@ public abstract class TileEngine extends TileEntity implements IInventory, IPowe
 		}
 		return false;
 	}
-
 
 	public void addEnergy(float addition) {
 		energy += addition;
@@ -179,13 +181,22 @@ public abstract class TileEngine extends TileEntity implements IInventory, IPowe
 		data.setFloat("energyF", energy);
 		data.setFloat("heat", heat);
 
-		if (itemInInventory != null) {
-			NBTTagCompound cpt = new NBTTagCompound();
-			itemInInventory.writeToNBT(cpt);
-			data.setTag("itemInInventory", cpt);
+		NBTTagList itemList = new NBTTagList();
+
+		for (int i = 0; i < inventory.length; i++) {
+
+			if (this.inventory[i] != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+
+				tag.setByte("Slot", (byte) i);
+				this.inventory[i].writeToNBT(tag);
+				itemList.appendTag(tag);
+			}
 		}
+
+		data.setTag("Inventory", itemList);
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound data) {
 		super.readFromNBT(data);
@@ -195,12 +206,21 @@ public abstract class TileEngine extends TileEntity implements IInventory, IPowe
 		NBTBase tag = data.getTag("heat");
 		if (tag instanceof NBTTagFloat)
 			heat = data.getFloat("heat");
-		
-		itemInInventory.readFromNBT(data);
+
+		NBTTagList tagList = data.getTagList("Inventory");
+
+		for (int i = 0; i < tagList.tagCount(); i++) {
+			NBTTagCompound tagcmp = (NBTTagCompound) tagList.tagAt(i);
+
+			byte slot = tagcmp.getByte("Slot");
+
+			if (slot >= 0 && slot < inventory.length) {
+				inventory[slot] = ItemStack.loadItemStackFromNBT(tagcmp);
+			}
+		}
 	}
-	
-	protected void burn() {
-	}
+
+	protected void burn() {}
 
 	protected void engineUpdate() {
 		if (!isRedstonePowered)
@@ -221,28 +241,28 @@ public abstract class TileEngine extends TileEntity implements IInventory, IPowe
 		this.isActive = isActive;
 		sendNetworkUpdate();
 	}
-	
+
 	public void getGUINetworkData(int id, int value) {
 		switch (id) {
-			case 0:
-				int iEnergy = Math.round(energy * 10);
-				iEnergy = (iEnergy & 0xffff0000) | (value & 0xffff);
-				energy = iEnergy / 10;
-				break;
-			case 1:
-				iEnergy = Math.round(energy * 10);
-				iEnergy = (iEnergy & 0xffff) | ((value & 0xffff) << 16);
-				energy = iEnergy / 10;
-				break;
-			case 2:
-				currentOutput = value / 10F;
-				break;
-			case 3:
-				heat = value / 100F;
-				break;
+		case 0:
+			int iEnergy = Math.round(energy * 10);
+			iEnergy = (iEnergy & 0xffff0000) | (value & 0xffff);
+			energy = iEnergy / 10;
+			break;
+		case 1:
+			iEnergy = Math.round(energy * 10);
+			iEnergy = (iEnergy & 0xffff) | ((value & 0xffff) << 16);
+			energy = iEnergy / 10;
+			break;
+		case 2:
+			currentOutput = value / 10F;
+			break;
+		case 3:
+			heat = value / 100F;
+			break;
 		}
 	}
-	
+
 	public float getEnergyStored() {
 		return energy;
 	}
@@ -251,17 +271,21 @@ public abstract class TileEngine extends TileEntity implements IInventory, IPowe
 		isRedstonePowered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 	}
 
+	public float getCurrentOutput() {
+		return currentOutput;
+	}
+	
 	public boolean isPoweredTile(TileEntity tile, ForgeDirection side) {
 		if (tile instanceof IPowerReceptor)
 			return ((IPowerReceptor) tile).getPowerReceiver(side.getOpposite()) != null;
 
 		return false;
 	}
-	
+
 	public void sendNetworkUpdate() {
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
-	
+
 	/**
 	 * dependent on heat it will set the stage on the engine. You could set your Exploding state here if a specific heat value goes over the maximum or calculate on Energy Stored
 	 * etc.
@@ -290,8 +314,7 @@ public abstract class TileEngine extends TileEntity implements IInventory, IPowe
 
 		return energyStage;
 	}
-	
-	
+
 	public abstract float maxEnergyReceived();
 
 	public abstract float getMaxEnergy();

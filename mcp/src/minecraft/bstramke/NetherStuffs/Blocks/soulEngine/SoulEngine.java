@@ -18,7 +18,6 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
 public class SoulEngine extends BlockContainer {
 
 	public SoulEngine(int par1) {
@@ -26,7 +25,7 @@ public class SoulEngine extends BlockContainer {
 		setCreativeTab(NetherStuffs.tabNetherStuffs);
 		LanguageRegistry.instance().addStringLocalization("tile.NetherSoulEngine.name", "Soul Engine");
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
@@ -35,9 +34,9 @@ public class SoulEngine extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister) {
-		//there should not be an icon here. thats on purpose
+		// there should not be an icon here. thats on purpose
 	}
-	
+
 	@Override
 	public boolean renderAsNormalBlock() {
 		return false;
@@ -79,6 +78,7 @@ public class SoulEngine extends BlockContainer {
 			((IToolWrench) equipped).wrenchUsed(entityplayer, i, j, k);
 			return true;
 		} else {
+
 			FMLNetworkHandler.openGui(entityplayer, NetherStuffs.instance, 0, world, i, j, k);
 			return true;
 		}

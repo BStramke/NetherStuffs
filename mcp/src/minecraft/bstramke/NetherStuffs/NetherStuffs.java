@@ -624,8 +624,9 @@ public class NetherStuffs extends DummyModContainer {
 		Block SoulEngine = new SoulEngine(NetherStuffs.SoulEngineBlockId).setUnlocalizedName("NetherSoulEngine").setHardness(3.5F).setResistance(5.0F);
 		Item NetherGear = new DemonicGear(NetherGearItemId).setUnlocalizedName("NetherGear");
 
-		GameRegistry.registerBlock(SoulEngine, "SoulEngine");
-		SoulEngineFuel.fuels.add(new SoulEngineFuel(new FluidStack(FluidRegistry.SoulEnergy, 1), 1, 15000)); // 20000 = Lava
+		GameRegistry.registerBlock(SoulEngine, "SoulEngine");		
+		SoulEngineFuel.addFuel("soulenergy", 1, 15000);
+		
 		GameRegistry.registerTileEntity(TileSoulEngine.class, "tileEntitySoulEnergyEngine");
 
 		SoulWorkBenchRecipes.instance.addRecipe(new ItemStack(NetherGear, 1, 0), 50, " S ", "SIS", " S ", 'S', new ItemStack(ItemRegistry.NetherWoodStick, 1, 0), 'I', new ItemStack(

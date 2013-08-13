@@ -2,10 +2,13 @@ package bstramke.NetherStuffs.Blocks.soulEngine;
 
 import java.util.LinkedList;
 
+import codechicken.core.fluid.TankAccess;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
@@ -18,12 +21,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
-import bstramke.NetherStuffs.FluidRegistry;
+import bstramke.NetherStuffs.Blocks.soulEngine.SoulEngineFuel.Fuel;
 import bstramke.NetherStuffs.Common.NetherStuffsCore;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 import bstramke.NetherStuffs.Items.SoulEnergyBottle;
-import buildcraft.api.core.Position;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
@@ -33,13 +34,12 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 	public static int MAX_LIQUID = FluidContainerRegistry.BUCKET_VOLUME * 10;
 	private boolean init = false;
 
-	IPowerProvider provider;
-	private FluidTank fuelTank; // the Fuel Tank
-	private SoulEngineFuel currentFuel = null; // the Currently used Fuel inside
+	//private FluidTank fuelTank; // the Fuel Tank
+	private Fuel currentFuel = null; // the Currently used Fuel inside
 	// the Engine (its moved from
 	// the Tank to here to get
 	// burned i guess)
-	private ItemStack itemInInventory; // the Inventory. This might be used to
+	// private ItemStack itemInInventory; // the Inventory. This might be used to
 	// Let buckets Fill the Tank
 	private int energyLossWhenUnpowered = 2;
 
@@ -78,7 +78,7 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 	float serverPistonSpeed = 0;
 
 	public TileSoulEngine() {
-		fuelTank = new FluidTank(MAX_LIQUID);
+		super(MAX_LIQUID);
 	}
 
 	public ResourceLocation getTextureFile() {
@@ -94,18 +94,11 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 		return 0;
 	}
 
-	public int getCurrentTankLevel() {
-		if (fuelTank.getFluid() == null || fuelTank.getFluid().amount < 0)
-			return 0;
-		else
-			return fuelTank.getFluid().amount;
-	}
-
 	public void initialize() {
 		if (!worldObj.isRemote) {
-			/*
-			 * provider = PowerFramework.currentFramework.createPowerProvider(); provider.configure(0, minEnergyReceived(), maxEnergyReceived(), 0, maxEnergy); checkRedstonePower();
-			 */
+			// provider = PowerFramework.currentFramework.createPowerProvider(); provider.configure(0, minEnergyReceived(), maxEnergyReceived(), 0, maxEnergy); checkRedstonePower();
+			powerHandler.configure(minEnergyReceived(), maxEnergyReceived(), 1, getMaxEnergy());
+			checkRedstonePower();
 		}
 	}
 
@@ -133,7 +126,7 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 		}
 
 		update();
-		
+
 		if (progressPart != 0) {
 			progress += getPistonSpeed();
 
@@ -155,58 +148,6 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 				setPumping(false);
 		else
 			setPumping(false);
-		
-		/*float newPistonSpeed = getPistonSpeed();
-		if (newPistonSpeed != serverPistonSpeed) {
-			serverPistonSpeed = newPistonSpeed;
-			sendNetworkUpdate();
-		}
-
-		if (lastProgressState != ProgressState.Off) {
-			progress += getPistonSpeed();
-
-			if (progress > 0.5 && lastProgressState == ProgressState.Calculate) {
-				lastProgressState = ProgressState.Extracted;
-
-				Position pos = new Position(xCoord, yCoord, zCoord, orientation);
-				pos.moveForwards(1.0);
-				TileEntity tile = worldObj.getBlockTileEntity((int) pos.x, (int) pos.y, (int) pos.z);
-
-				if (isPoweredTile(tile)) {
-					IPowerProvider receptor = ((IPowerReceptor) tile).getPowerProvider();
-
-					float extracted = extractEnergy(receptor.getMinEnergyReceived(), receptor.getMaxEnergyReceived(), true);
-
-					if (extracted > 0) {
-						receptor.receiveEnergy(extracted, orientation.getOpposite());
-					}
-				}
-			} else if (progress >= 1 && (lastProgressState != ProgressState.Off)) {
-				progress = 0;
-				lastProgressState = ProgressState.Off;
-			}
-		} else if (isRedstonePowered) {
-
-			Position pos = new Position(xCoord, yCoord, zCoord, orientation);
-			pos.moveForwards(1.0);
-			TileEntity tile = worldObj.getBlockTileEntity((int) pos.x, (int) pos.y, (int) pos.z);
-
-			if (isPoweredTile(tile)) {
-				IPowerProvider receptor = ((IPowerReceptor) tile).getPowerProvider();
-
-				if (extractEnergy(receptor.getMinEnergyReceived(), receptor.getMaxEnergyReceived(), false) > 0) {
-					lastProgressState = ProgressState.Calculate;
-					setActive(true);
-				} else {
-					setActive(false);
-				}
-			} else {
-				setActive(false);
-			}
-
-		} else {
-			setActive(false);
-		}*/
 
 		burn();
 	}
@@ -234,9 +175,9 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 		orientation = ForgeDirection.values()[nbttagcompound.getInteger("orientation")];
 
 		if (nbttagcompound.hasKey("liquidId")) {
-			fuelTank.setFluid(new FluidStack(nbttagcompound.getInteger("liquidId"), nbttagcompound.getInteger("liquidQty")/*, nbttagcompound.getInteger("liquidMeta")*/));
+			tank.setFluid(new FluidStack(nbttagcompound.getInteger("liquidId"), nbttagcompound.getInteger("liquidQty")/* , nbttagcompound.getInteger("liquidMeta") */));
 		} else if (nbttagcompound.hasKey("fuelTank")) {
-			fuelTank.setFluid(FluidStack.loadFluidStackFromNBT(nbttagcompound.getCompoundTag("fuelTank")));
+			tank.setFluid(FluidStack.loadFluidStackFromNBT(nbttagcompound.getCompoundTag("fuelTank")));
 		}
 
 		burnTime = nbttagcompound.getInteger("burnTime");
@@ -262,9 +203,13 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 
 		heat = nbttagcompound.getInteger("heat");
 
-		if (nbttagcompound.hasKey("itemInInventory")) {
-			NBTTagCompound cpt = nbttagcompound.getCompoundTag("itemInInventory");
-			itemInInventory = ItemStack.loadItemStackFromNBT(cpt);
+		NBTTagList tagList = nbttagcompound.getTagList("Inventory");
+		for (int i = 0; i < tagList.tagCount(); i++) {
+			NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
+			byte slot = tag.getByte("Slot");
+			if (slot >= 0 && slot < inventory.length) {
+				inventory[slot] = ItemStack.loadItemStackFromNBT(tag);
+			}
 		}
 	}
 
@@ -276,18 +221,25 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 		nbttagcompound.setFloat("progress", progress);
 		nbttagcompound.setFloat("energyF", energy);
 
-		if (fuelTank.getFluid() != null) {
-			nbttagcompound.setTag("fuelTank", fuelTank.getFluid().writeToNBT(new NBTTagCompound()));
+		if (tank.getFluid() != null) {
+			nbttagcompound.setTag("fuelTank", tank.getFluid().writeToNBT(new NBTTagCompound()));
 		}
 
 		nbttagcompound.setInteger("burnTime", burnTime);
 		nbttagcompound.setInteger("heat", heat);
 
-		if (itemInInventory != null) {
-			NBTTagCompound cpt = new NBTTagCompound();
-			itemInInventory.writeToNBT(cpt);
-			nbttagcompound.setTag("itemInInventory", cpt);
+		NBTTagList itemList = new NBTTagList();
+
+		for (int i = 0; i < inventory.length; i++) {
+			if (this.inventory[i] != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+
+				tag.setByte("Slot", (byte) i);
+				this.inventory[i].writeToNBT(tag);
+				itemList.appendTag(tag);
+			}
 		}
+		nbttagcompound.setTag("Inventory", itemList);
 	}
 
 	// IINVENTORY IMPLEMENTATION
@@ -298,26 +250,26 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return itemInInventory;
+		return inventory[0];
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		itemInInventory = itemstack;
+		inventory[0] = itemstack;
 	}
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		if (itemInInventory != null) {
-			if (itemInInventory.stackSize <= 0) {
-				itemInInventory = null;
+		if (inventory[0] != null) {
+			if (inventory[0].stackSize <= 0) {
+				inventory[0] = null;
 				return null;
 			}
-			ItemStack newStack = itemInInventory;
+			ItemStack newStack = inventory[0];
 			if (amount >= newStack.stackSize) {
-				itemInInventory = null;
+				inventory[0] = null;
 			} else {
-				newStack = itemInInventory.splitStack(amount);
+				newStack = inventory[0].splitStack(amount);
 			}
 
 			return newStack;
@@ -327,10 +279,10 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int var1) {
-		if (itemInInventory == null)
+		if (inventory[0] == null)
 			return null;
-		ItemStack toReturn = itemInInventory;
-		itemInInventory = null;
+		ItemStack toReturn = inventory[0];
+		inventory[0] = null;
 		return toReturn;
 	}
 
@@ -353,7 +305,7 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 	 * Running Device which has a Signal and Fuel
 	 */
 	public boolean isBurning() {
-		FluidStack fuel = fuelTank.getFluid();
+		FluidStack fuel = tank.getFluid();
 		return fuel != null && fuel.amount > 0 && isRedstonePowered;
 	}
 
@@ -396,26 +348,24 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 	}
 
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		if (SoulEngineFuel.getFuelForLiquid(resource) != null)
-			return fuelTank.fill(resource, doFill);
+		if (SoulEngineFuel.getFuelForFluid(resource.getFluid()) != null)
+			return tank.fill(resource, doFill);
 
 		return 0;
 	}
 
 	public FluidTank[] getFluidSlots() {
-		return new FluidTank[] { fuelTank };
+		return new FluidTank[] { tank };
 	}
 
 	public FluidStack getFuel() {
-		return fuelTank.getFluid();
+		return tank.getFluid();
 	}
-
 
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 		return null;
 	}
-
 
 	@Override
 	public boolean isInvNameLocalized() {
@@ -427,7 +377,7 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		if (itemstack == null)
 			return false;
-		
+
 		return FluidContainerRegistry.getFluidForFilledItem(itemstack) != null;
 	}
 
@@ -459,27 +409,6 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 		}
 	}
 
-	public void setCurrentTankLevel(int nAmount) {
-		if (this.fuelTank.getFluid() != null)
-			this.fuelTank.getFluid().amount = nAmount;
-		else {
-			FluidStack liquid = new FluidStack(FluidRegistry.SoulEnergy, nAmount);
-			this.fuelTank.setFluid(liquid);
-		}
-	}
-
-	private void fillFuelToTank() {
-		if (itemInInventory != null && itemInInventory.itemID == ItemRegistry.SoulEnergyBottle.itemID && this.getCurrentTankLevel() < MAX_LIQUID) {
-			if (this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(itemInInventory) > MAX_LIQUID) {
-				SoulEnergyBottle.decreaseSoulEnergyAmount(itemInInventory, MAX_LIQUID - this.getCurrentTankLevel());
-				this.setCurrentTankLevel(MAX_LIQUID);
-			} else {
-				this.setCurrentTankLevel(this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(itemInInventory));
-				SoulEnergyBottle.setSoulEnergyAmount(itemInInventory, 0);
-			}
-		}
-	}
-
 	public void update() {
 		// energy loss when the engine is not running
 		if (!isRedstonePowered) {
@@ -499,9 +428,9 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 
 	public void burn() {
 		currentOutput = 0;
-		FluidStack fuel = this.fuelTank.getFluid();
-		if (currentFuel == null) {
-			currentFuel = SoulEngineFuel.getFuelForLiquid(fuel);
+		FluidStack fuel = this.tank.getFluid();
+		if (currentFuel == null && fuel != null) {
+			currentFuel = SoulEngineFuel.getFuelForFluid(fuel.getFluid());
 		}
 
 		if (currentFuel == null)
@@ -510,6 +439,7 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 		if (isRedstonePowered) {
 			// Check if the engine burns or atleast has fuel to be burned
 			if (burnTime > 0 || fuel.amount > 0) {
+				isActive = true;
 				// the burnTime is set when a Fuel "Part" is being burned. this
 				// means it decreases the burntime counter (i.e a coal may burn
 				// for 100 Ticks (not accurate, just an
@@ -521,7 +451,7 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 				if (burnTime <= 0) { // burntime is NOW zero, we have to burn fuel if its available
 					if (fuel != null) {
 						if (--fuel.amount <= 0) {
-							fuelTank.setFluid(null);
+							tank.setFluid(null);
 						}
 						// set the burnTime to the value it gets from the currentFuel. Lava has a Burntime of 20000, SoulEnergy 10000, whcih gets devided by Bucket_Volume (which is
 						// 1000). This means Lava gets a Value of 20, SoulEnergy a Value of 10 ==> Lava burns every 20 Ticks, Soul Energy every 10 Ticks
@@ -560,17 +490,17 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 			heat = j;
 			break;
 		case 5:
-			if (fuelTank.getFluid() == null) {
-				fuelTank.setFluid(new FluidStack(0, j));
+			if (tank.getFluid() == null) {
+				tank.setFluid(new FluidStack(0, j));
 			} else {
-				fuelTank.getFluid().amount = j;
+				tank.getFluid().amount = j;
 			}
 			break;
 		case 6:
-			if (fuelTank.getFluid() == null) {
-				fuelTank.setFluid(new FluidStack(j, 0));
+			if (tank.getFluid() == null) {
+				tank.setFluid(new FluidStack(j, 0));
 			} else {
-				fuelTank.setFluid(new FluidStack(j, fuelTank.getFluid().amount));
+				tank.setFluid(new FluidStack(j, tank.getFluid().amount));
 			}
 			break;
 		}
@@ -581,8 +511,8 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 		iCrafting.sendProgressBarUpdate(containerEngine, 1, (Math.round(energy * 10) & 0xffff0000) >> 16);
 		iCrafting.sendProgressBarUpdate(containerEngine, 2, Math.round(currentOutput * 10));
 		iCrafting.sendProgressBarUpdate(containerEngine, 3, heat);
-		iCrafting.sendProgressBarUpdate(containerEngine, 5, fuelTank.getFluid() != null ? fuelTank.getFluid().amount : 0);
-		iCrafting.sendProgressBarUpdate(containerEngine, 6, fuelTank.getFluid() != null ? fuelTank.getFluid().fluidID : 0);
+		iCrafting.sendProgressBarUpdate(containerEngine, 5, tank.getFluid() != null ? tank.getFluid().amount : 0);
+		iCrafting.sendProgressBarUpdate(containerEngine, 6, tank.getFluid() != null ? tank.getFluid().fluidID : 0);
 	}
 
 	public int getHeat() {
@@ -640,9 +570,13 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 	public float getEnergyStored() {
 		return energy;
 	}
-
+	
+	@Override
 	public float getCurrentOutput() {
-		return currentOutput;
+		if (currentFuel == null) {
+			return 0;
+		}
+		return currentFuel.powerPerCycle;
 	}
 
 	@Override
@@ -661,7 +595,7 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 		}
 		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, var1);
 	}
-	
+
 	private void sendPower() {
 		TileEntity tile = this;
 		if (isPoweredTile(tile, orientation)) {
@@ -671,39 +605,37 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 			if (extracted > 0) {
 				float needed = receptor.receiveEnergy(PowerHandler.Type.ENGINE, extracted, orientation.getOpposite());
 				extractEnergy(receptor.getMinEnergyReceived(), needed, true); // Comment out for constant power
-//				currentOutput = extractEnergy(0, needed, true); // Uncomment for constant power
+				// currentOutput = extractEnergy(0, needed, true); // Uncomment for constant power
 			}
 		}
 	}
-	
+
 	private float getPowerToExtract() {
 		TileEntity tile = this;
 		PowerReceiver receptor = ((IPowerReceptor) tile).getPowerReceiver(orientation.getOpposite());
 		return extractEnergy(receptor.getMinEnergyReceived(), receptor.getMaxEnergyReceived(), false); // Comment out for constant power
-//		return extractEnergy(0, getActualOutput(), false); // Uncomment for constant power
+		// return extractEnergy(0, getActualOutput(), false); // Uncomment for constant power
 	}
 
 	@Override
 	public World getWorld() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.worldObj;
 	}
 
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		// TODO Auto-generated method stub
+		if (SoulEngineFuel.getFuelForFluid(fluid) != null)
+			return true;
 		return false;
 	}
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -715,13 +647,50 @@ public class TileSoulEngine extends TileEngine implements IFluidHandler {
 
 	@Override
 	public float getMaxEnergy() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 2000;
 	}
 
 	@Override
 	public float maxEnergyExtracted() {
+		return 500;
+	}
+
+	@Override
+	public int[] getAccessibleSlotsFromSide(int var1) {
+		int[] inv = new int[] { 0 };
+		return inv;
+	}
+
+	@Override
+	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
 		// TODO Auto-generated method stub
-		return 0;
+		return false;
+	}
+
+	@Override
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void fillFuelToBottle() {
+		return;
+	}
+
+	@Override
+	public void fillFuelToTank() {
+		if (this.getCurrentTankLevel() < this.getMaxTankLevel() && this.inventory[this.nTankFillSlot] != null
+				&& this.inventory[this.nTankFillSlot].itemID == ItemRegistry.SoulEnergyBottle.itemID) {
+			if (this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]) > this.getMaxTankLevel()) {
+				SoulEnergyBottle.decreaseSoulEnergyAmount(this.inventory[this.nTankFillSlot], this.getMaxTankLevel() - this.getCurrentTankLevel());
+				this.setCurrentTankLevel(this.getMaxTankLevel());
+			} else {
+				this.setCurrentTankLevel(this.getCurrentTankLevel() + SoulEnergyBottle.getSoulEnergyAmount(this.inventory[this.nTankFillSlot]));
+				SoulEnergyBottle.setSoulEnergyAmount(this.inventory[this.nTankFillSlot], 0);
+			}
+			
+			sendNetworkUpdate();
+		}
 	}
 }

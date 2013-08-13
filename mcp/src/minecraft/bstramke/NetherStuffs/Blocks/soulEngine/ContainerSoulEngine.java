@@ -12,10 +12,10 @@ package bstramke.NetherStuffs.Blocks.soulEngine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import bstramke.NetherStuffs.Common.ContainerWithPlayerInventory;
-
 
 public class ContainerSoulEngine extends ContainerWithPlayerInventory {
 
@@ -27,10 +27,10 @@ public class ContainerSoulEngine extends ContainerWithPlayerInventory {
 		engine = tileEngine;
 
 		addSlotToContainer(new Slot(tileEngine, 0, 52, 41));
-		
+
 		bindPlayerInventory(inventoryplayer);
 	}
-	
+
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
@@ -42,9 +42,7 @@ public class ContainerSoulEngine extends ContainerWithPlayerInventory {
 
 	@Override
 	public void updateProgressBar(int i, int j) {
-		if (engine != null) {
-			engine.getGUINetworkData(i, j);
-		}
+		engine.getGUINetworkData(i, j);
 	}
 
 	public boolean isUsableByPlayer(EntityPlayer entityplayer) {
@@ -55,7 +53,7 @@ public class ContainerSoulEngine extends ContainerWithPlayerInventory {
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return engine.isUseableByPlayer(entityplayer);
 	}
-	
+
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer pl, int i) {
 		ItemStack itemstack = null;

@@ -8,11 +8,6 @@ import bstramke.NetherStuffs.Blocks.demonicFurnace.GuiDemonicFurnace;
 import bstramke.NetherStuffs.Blocks.demonicFurnace.TileDemonicFurnace;
 import bstramke.NetherStuffs.Blocks.soulBlocker.ContainerSoulBlocker;
 import bstramke.NetherStuffs.Blocks.soulBlocker.TileSoulBlocker;
-import bstramke.NetherStuffs.Blocks.soulCondenser.ContainerSoulCondenser;
-import bstramke.NetherStuffs.Blocks.soulCondenser.ContainerSoulSmelter;
-import bstramke.NetherStuffs.Blocks.soulCondenser.GuiSoulCondenser;
-import bstramke.NetherStuffs.Blocks.soulCondenser.GuiSoulSmelter;
-import bstramke.NetherStuffs.Blocks.soulCondenser.TileSoulCondenser;
 import bstramke.NetherStuffs.Blocks.soulDetector.ContainerSoulDetector;
 import bstramke.NetherStuffs.Blocks.soulDetector.GuiSoulDetector;
 import bstramke.NetherStuffs.Blocks.soulDetector.TileSoulDetector;
@@ -49,9 +44,9 @@ public class GuiHandler implements IGuiHandler {
 			return new ContainerSoulBlocker();
 		} else if (tile_entity instanceof TileSoulSiphon) {
 			return new ContainerSoulSiphon((TileSoulSiphon) tile_entity, player.inventory);
-		} /*else if (tile_entity instanceof TileSoulEngine) {
+		} else if (tile_entity instanceof TileSoulEngine) {
 			return new ContainerSoulEngine((TileSoulEngine) tile_entity, player.inventory);
-		} else if (tile_entity instanceof TileSoulCondenser) {
+		} /*else if (tile_entity instanceof TileSoulCondenser) {
 			if (world.getBlockMetadata(x, y, z) == 0)
 				return new ContainerSoulCondenser((TileSoulCondenser) tile_entity, player.inventory);
 			else if (world.getBlockMetadata(x, y, z) == 1)
@@ -76,9 +71,9 @@ public class GuiHandler implements IGuiHandler {
 			return new GuiSoulDetector((TileSoulDetector) tile_entity, player);
 		} else if (tile_entity instanceof TileSoulSiphon) {
 			return new GuiSoulSiphon(player.inventory, (TileSoulSiphon) tile_entity);
-		}/* else if (tile_entity instanceof TileSoulEngine) {
+		} else if (tile_entity instanceof TileSoulEngine) {
 			return new GuiSoulEngine(player.inventory, (TileSoulEngine) tile_entity);
-		} else if (tile_entity instanceof TileSoulCondenser) {
+		}/* else if (tile_entity instanceof TileSoulCondenser) {
 			if (world.getBlockMetadata(x, y, z) == 0)
 				return new GuiSoulCondenser(player.inventory, (TileSoulCondenser) tile_entity);
 			else if (world.getBlockMetadata(x, y, z) == 1)
