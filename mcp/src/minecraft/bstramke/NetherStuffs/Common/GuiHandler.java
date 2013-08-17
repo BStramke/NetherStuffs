@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import bstramke.NetherStuffs.Blocks.demonicFurnace.ContainerDemonicFurnace;
 import bstramke.NetherStuffs.Blocks.demonicFurnace.GuiDemonicFurnace;
 import bstramke.NetherStuffs.Blocks.demonicFurnace.TileDemonicFurnace;
-import bstramke.NetherStuffs.Blocks.soulSiphon.TileSoulSiphon;
+import bstramke.NetherStuffs.Blocks.soulRipper.TileSoulRipper;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.ContainerSoulWorkBench;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.GuiSoulWorkBench;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.TileSoulWorkBench;

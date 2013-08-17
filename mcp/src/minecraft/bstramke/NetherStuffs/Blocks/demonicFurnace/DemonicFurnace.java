@@ -38,7 +38,6 @@ public class DemonicFurnace extends BlockContainerBase {
 	private Icon icoFurnaceFrontInactive;
 	private Icon icoFurnaceFrontActive;
 
-	
 	/**
 	 * This flag is used to prevent the furnace inventory to be dropped upon block removal, is used internally when the furnace block changes from idle to active and vice-versa.
 	 */
@@ -72,9 +71,6 @@ public class DemonicFurnace extends BlockContainerBase {
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
 		super.onBlockAdded(par1World, par2, par3, par4);
 		this.setDefaultDirection(par1World, par2, par3, par4);
-
-		// int metadata = unmarkedMetadata(par1World.getBlockMetadata(par2, par3, par4));
-		// par1World.setBlockMetadataWithNotify(par2, par3, par4, clearActiveOnMetadata(metadata));
 	}
 
 	/**

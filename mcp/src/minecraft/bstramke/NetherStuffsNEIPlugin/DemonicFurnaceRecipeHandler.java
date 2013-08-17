@@ -174,7 +174,7 @@ public class DemonicFurnaceRecipeHandler extends TemplateRecipeHandler {
 		afuels = new ArrayList<FuelPair>();
 
 		try {
-			afuels.add(new FuelPair(new ItemStack(ItemRegistry.NetherWoodCharcoal), (Integer) getBurnTime.invoke(afurnace, new ItemStack(ItemRegistry.NetherWoodCharcoal))));
+			afuels.add(new FuelPair(new ItemStack(ItemRegistry.NetherCoal), (Integer) getBurnTime.invoke(afurnace, new ItemStack(ItemRegistry.NetherCoal))));
 			afuels.add(new FuelPair(new ItemStack(BlockRegistry.netherWood, 1, 0), (Integer) getBurnTime.invoke(afurnace, new ItemStack(BlockRegistry.netherWood, 1, 0))));
 			afuels.add(new FuelPair(new ItemStack(BlockRegistry.netherWood, 1, 1), (Integer) getBurnTime.invoke(afurnace, new ItemStack(BlockRegistry.netherWood, 1, 1))));
 			afuels.add(new FuelPair(new ItemStack(BlockRegistry.netherWood, 1, 2), (Integer) getBurnTime.invoke(afurnace, new ItemStack(BlockRegistry.netherWood, 1, 2))));

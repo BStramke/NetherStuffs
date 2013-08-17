@@ -15,7 +15,7 @@ import bstramke.NetherStuffs.Items.NetherCoal;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileDemonicFurnace extends TileEntity implements /*ISpecialInventory,*/ ISidedInventory {
+public class TileDemonicFurnace extends TileEntity implements ISidedInventory {
 	public static final int nSmeltedSlot = 0;
 	public static final int nFuelSlot = 1;
 	public static final int nOutputSlot = 2;

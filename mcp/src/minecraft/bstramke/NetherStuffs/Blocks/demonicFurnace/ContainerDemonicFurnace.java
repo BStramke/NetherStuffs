@@ -101,16 +101,20 @@ public class ContainerDemonicFurnace extends ContainerWithPlayerInventory {
 					return null;
 				}
 				slot.onSlotChange(itemstack1, itemstack);
-				
+
 			} else if (slot_index != 1 && slot_index != 0) { // player inventory
-				if (itemstack1.itemID == ItemRegistry.NetherWoodCharcoal.itemID) {
+				if (itemstack1.itemID == ItemRegistry.NetherCoal.itemID) {
 					if (!this.mergeItemStack(itemstack1, this.furnace.nFuelSlot, this.furnace.nFuelSlot + 1, false)) {
 						return null;
 					}
 				} else if (itemstack1.itemID == new ItemStack(bstramke.NetherStuffs.NetherStuffs.NetherOreBlockId, 0, 0).itemID) {
 					if (!this.mergeItemStack(itemstack1, this.furnace.nSmeltedSlot, this.furnace.nSmeltedSlot + 1, false)) {
 						return null;
-					}				
+					}
+				} else if (itemstack1.itemID == new ItemStack(bstramke.NetherStuffs.NetherStuffs.NetherOreExtendedBlockId, 0, 0).itemID) {
+					if (!this.mergeItemStack(itemstack1, this.furnace.nSmeltedSlot, this.furnace.nSmeltedSlot + 1, false)) {
+						return null;
+					}
 				} else if (slot_index >= 3 && slot_index < 30) {
 					if (!this.mergeItemStack(itemstack1, 30, 39, false)) {
 						return null;
@@ -121,7 +125,7 @@ public class ContainerDemonicFurnace extends ContainerWithPlayerInventory {
 			} else if (!this.mergeItemStack(itemstack1, 3, 39, false)) {
 				return null;
 			}
-				
+
 			if (itemstack1.stackSize == 0) {
 				slot.putStack((ItemStack) null);
 			} else {

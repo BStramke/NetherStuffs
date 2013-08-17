@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
