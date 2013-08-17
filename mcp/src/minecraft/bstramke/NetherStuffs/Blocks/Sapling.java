@@ -105,10 +105,7 @@ public class Sapling extends BlockSapling /* implements IPlantable */{
 	 */
 	@Override
 	public boolean canBlockStay(World par1World, int par2, int par3, int par4) {
-		if (par1World.provider.isHellWorld)
-			return this.canThisPlantGrowOnThisBlockID(par1World.getBlockId(par2, par3 - 1, par4));
-		else
-			return false;
+		return this.canThisPlantGrowOnThisBlockID(par1World.getBlockId(par2, par3 - 1, par4));
 	}
 
 	@Override

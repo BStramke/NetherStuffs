@@ -81,15 +81,6 @@ public class WorldGenDefaultMinable implements IWorldGenerator {
 
 								Block block = Block.blocksList[par1World.getBlockId(var38, var41, var44)];
 								if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && (block != null && block.blockID == Block.netherrack.blockID)) {
-									if (NetherStuffs.ShowOreDistributions) {
-										if (arrMap.get(new String(this.minableBlockId + ":" + minableBlockMeta)) != null)
-											arrMap.put(new String(this.minableBlockId + ":" + minableBlockMeta),
-													new Integer(arrMap.get(new String(this.minableBlockId + ":" + minableBlockMeta))) + 1);
-										else
-											arrMap.put(new String(this.minableBlockId + ":" + minableBlockMeta), 1);
-
-										System.out.println(arrMap);
-									}
 									par1World.setBlock(var38, var41, var44, this.minableBlockId, minableBlockMeta, BlockNotifyType.CLIENT_SERVER);
 								}
 							}

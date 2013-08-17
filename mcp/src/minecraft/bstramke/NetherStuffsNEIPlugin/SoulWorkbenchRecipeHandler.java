@@ -153,9 +153,6 @@ public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
 	// custom "?" handling necessary
 	@Override
 	public IOverlayHandler getOverlayHandler(GuiContainer gui, int recipe) {
-		
-		
-		
 		return RecipeInfo.getOverlayHandler(gui, getOverlayIdentifier());
 	}
 
@@ -184,17 +181,7 @@ public class SoulWorkbenchRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public int recipiesPerPage() {
-		return 1;
-	}
-
-
-	@Override
-	public void drawExtras(int recipe) {
-		int nSoulEnergyRequired = SoulWorkBenchRecipes.getInstance().getCraftingSoulEnergyRequired(getResultStack(recipe).item);
-		
-		FontUtils.drawCenteredString("+ " + nSoulEnergyRequired + " Energy", 39, 72, 0);
-		
-		//gui.drawText(39, 72, "+ " + nSoulEnergyRequired + " Energy", 0x000000, false);
+		return 2;
 	}
 
 	@Override

@@ -12,16 +12,12 @@ import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class NetherCharcoal extends Item {
-	
-	public static String[] itemDisplayNames = new String[] { "Nether Charcoal", "Nether Coal" };
-	
-	public static int charcoal = 0;
-	public static int coal = 1;
-	protected NetherCharcoal(int par1) {
+public class NetherCoal extends Item {
+
+	protected NetherCoal(int par1) {
 		super(par1);
 		this.setCreativeTab(NetherStuffs.tabNetherStuffs);
-		setUnlocalizedName("NetherWoodCharcoal");
+		setUnlocalizedName("NetherCoal");
 	}
 	
 	@Override
@@ -32,17 +28,12 @@ public class NetherCharcoal extends Item {
 	
 	@Override
 	public String getItemDisplayName(ItemStack is) {
-		if (is.getItemDamage() < itemDisplayNames.length && is.getItemDamage() >= 0)
-			return itemDisplayNames[is.getItemDamage()];
-		else
-			return  itemDisplayNames[0];
+		return "Nether Coal";
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(int par1, CreativeTabs tab, List list) {
-		for (int metaNumber = 0; metaNumber < itemDisplayNames.length; metaNumber++) {
-			list.add(new ItemStack(par1, 1, metaNumber));
-		}
+			list.add(new ItemStack(par1, 1, 0));
 	}
 }

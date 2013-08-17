@@ -15,8 +15,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ContainerSoulWorkBench extends ContainerWithPlayerInventory {
 	public IInventory craftResult = new InventoryCraftResult();
 	protected TileSoulWorkBench soulworkbench;
-	private int lastTankLevel = 0;
-	private int lastProcessTime = 0;
 
 	public ContainerSoulWorkBench(TileSoulWorkBench tile_entity, InventoryPlayer player_inventory) {
 		this.soulworkbench = tile_entity;
@@ -31,7 +29,6 @@ public class ContainerSoulWorkBench extends ContainerWithPlayerInventory {
 				this.addSlotToContainer(new Slot(this.soulworkbench, i, 46 + (i - 6) * 18, 53 - offsetY));
 		}
 
-		this.addSlotToContainer(new SlotSoulEnergyContainer(this.soulworkbench, tile_entity.nTankFillSlot, 12, 9));
 		this.addSlotToContainer(new SlotCraftingSoulWorkBench(player_inventory.player, this.soulworkbench, this.soulworkbench, this.soulworkbench.nOutputSlot, 140, 35 - offsetY));
 
 		bindPlayerInventory(player_inventory, 97, 155);
@@ -42,25 +39,6 @@ public class ContainerSoulWorkBench extends ContainerWithPlayerInventory {
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return soulworkbench.isUseableByPlayer(player);
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void updateProgressBar(int par1, int par2) {
-		if (par1 == 0) {
-			this.soulworkbench.setCurrentTankLevel(par2);
-		}
-
-		if (par1 == 1) {
-			this.soulworkbench.processTime = par2;
-		}
-	}
-
-	@Override
-	public void addCraftingToCrafters(ICrafting par1ICrafting) {
-		super.addCraftingToCrafters(par1ICrafting);
-		par1ICrafting.sendProgressBarUpdate(this, 0, this.soulworkbench.getCurrentTankLevel());
-		par1ICrafting.sendProgressBarUpdate(this, 1, this.soulworkbench.processTime);
 	}
 
 	@Override
@@ -77,11 +55,7 @@ public class ContainerSoulWorkBench extends ContainerWithPlayerInventory {
 				}
 				slot_object.onSlotChange(stack_in_slot, stack);
 			} else if (slot_index >= 11 && slot_index <= 37) { // player inventory
-				if (stack_in_slot.itemID == ItemRegistry.SoulEnergyBottle.itemID) {
-					if (!this.mergeItemStack(stack_in_slot, this.soulworkbench.nTankFillSlot, this.soulworkbench.nTankFillSlot + 1, false)) {
-						return null;
-					}
-				} else if (!this.mergeItemStack(stack_in_slot, 38, 46, false)) {
+				if (!this.mergeItemStack(stack_in_slot, 38, 46, false)) {
 					return null;
 				}
 			} else if (!this.mergeItemStack(stack_in_slot, 11, 37, false)) {

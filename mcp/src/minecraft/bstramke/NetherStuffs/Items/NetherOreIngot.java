@@ -11,7 +11,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
-import bstramke.NetherStuffs.Common.NetherStuffsCore;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -32,10 +31,6 @@ public class NetherOreIngot extends Item {
 	public void registerIcons(IconRegister iconRegister)
 	{
 		itemIcon = iconRegister.registerIcon(CommonProxy.getIconLocation("IngotDemonic"));
-		/*if(NetherStuffs.bBuildcraftAvailable)
-			NetherStuffsCore.instance.actionTriggerIconProvider.registerIcons(iconRegister);*/
-		//the lower one might stay
-		NetherStuffsCore.instance.registerItemIcons(iconRegister);
 	}
 	
 	@Override

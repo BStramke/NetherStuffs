@@ -10,16 +10,11 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
-import bstramke.NetherStuffs.Blocks.Plank;
 import bstramke.NetherStuffs.Blocks.Wood;
-import bstramke.NetherStuffs.Blocks.soulDetector.SoulDetector;
-import bstramke.NetherStuffs.Blocks.soulDetector.SoulDetectorItemBlock;
+import bstramke.NetherStuffs.Blocks.soulSiphon.SoulSiphon;
 import bstramke.NetherStuffs.Blocks.soulSiphon.SoulSiphonItemBlock;
 import bstramke.NetherStuffs.Items.ItemRegistry;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class SoulWorkBenchRecipes {
 	public static final SoulWorkBenchRecipes instance = new SoulWorkBenchRecipes();
@@ -35,39 +30,17 @@ public class SoulWorkBenchRecipes {
 		this.addRecipe(new ItemStack(ItemRegistry.NetherBow, 1, 0), 150, new Object[] { "SW.", "S.W", "SW.", 'S', new ItemStack(Item.silk, 1, 0), 'W',
 				new ItemStack(ItemRegistry.NetherWoodStick, 1, 0) });
 
-		this.addRecipe(new ItemStack(BlockRegistry.SoulDetector, 1, SoulDetector.mk1), 250, new Object[] { "IBI", "BTB", "IBI", 'I',
+		this.addRecipe(new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk1), 250, new Object[] { "IBI", "BTB", "IBI", 'I',
 				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'B', new ItemStack(Block.netherBrick, 1, 0), 'T', new ItemStack(Block.torchRedstoneActive, 1, 0) });
 
-		this.addRecipe(new ItemStack(BlockRegistry.SoulDetector, 1, SoulDetector.mk2), 500, new Object[] { "IGI", "GDG", "IGI", 'I',
-				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'G', new ItemStack(Item.ingotIron, 1, 0), 'D', new ItemStack(BlockRegistry.SoulDetector, 1, SoulDetector.mk1) });
+		this.addRecipe(new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk2), 500, new Object[] { "IGI", "GDG", "IGI", 'I',
+				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'G', new ItemStack(Item.ingotIron, 1, 0), 'D', new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk1) });
 
-		this.addRecipe(new ItemStack(BlockRegistry.SoulDetector, 1, SoulDetector.mk3), 750, new Object[] { "IGI", "GDG", "IGI", 'I',
-				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'G', new ItemStack(Item.ingotGold, 1, 0), 'D', new ItemStack(BlockRegistry.SoulDetector, 1, SoulDetector.mk2) });
+		this.addRecipe(new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk3), 750, new Object[] { "IGI", "GDG", "IGI", 'I',
+				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'G', new ItemStack(Item.ingotGold, 1, 0), 'D', new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk2) });
 
-		this.addRecipe(new ItemStack(BlockRegistry.SoulDetector, 1, SoulDetector.mk4), 1000, new Object[] { "IBI", "BDB", "IBI", 'I',
-				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'B', new ItemStack(Item.diamond, 1, 0), 'D', new ItemStack(BlockRegistry.SoulDetector, 1, SoulDetector.mk3) });
-
-		this.addRecipe(new ItemStack(BlockRegistry.SoulFurnace, 1), 300, new Object[] { "IBI", "IFI", "IBI", 'I', new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'F',
-				new ItemStack(BlockRegistry.DemonicFurnace, 1), 'B', new ItemStack(ItemRegistry.SoulEnergyBottle, 1) });
-
-		for (int i = 0; i < 3; i++) {
-			this.addRecipe(new ItemStack(ItemRegistry.NetherWoodStick, 4), 0, new Object[] { "#..", "#..", "...", '#', new ItemStack(BlockRegistry.netherPlank, 1, i) });
-			this.addRecipe(new ItemStack(ItemRegistry.NetherWoodStick, 4), 0, new Object[] { ".#.", ".#.", "...", '#', new ItemStack(BlockRegistry.netherPlank, 1, i) });
-			this.addRecipe(new ItemStack(ItemRegistry.NetherWoodStick, 4), 0, new Object[] { "..#", "..#", "...", '#', new ItemStack(BlockRegistry.netherPlank, 1, i) });
-			this.addRecipe(new ItemStack(ItemRegistry.NetherWoodStick, 4), 0, new Object[] { "...", "#..", "#..", '#', new ItemStack(BlockRegistry.netherPlank, 1, i) });
-			this.addRecipe(new ItemStack(ItemRegistry.NetherWoodStick, 4), 0, new Object[] { "...", ".#.", ".#.", '#', new ItemStack(BlockRegistry.netherPlank, 1, i) });
-			this.addRecipe(new ItemStack(ItemRegistry.NetherWoodStick, 4), 0, new Object[] { "...", "..#", "..#", '#', new ItemStack(BlockRegistry.netherPlank, 1, i) });			
-		}
-
-		// field_94583_ca = netherquartz item
-		this.addRecipe(new ItemStack(Item.netherQuartz), 100, new Object[] { "BB", "BB", 'B', new ItemStack(Block.sandStone) });
-
-		// Add 4 Soul Siphons with the same Metadatas as Soul Detectors
-		for (int i = 0; i < SoulSiphonItemBlock.getMetadataSize() && i < SoulDetectorItemBlock.getMetadataSize(); i++) {
-			this.addRecipe(new ItemStack(BlockRegistry.SoulSiphon, 1, i), 250, new Object[] { "WWW", "BDB", "WWW", 'W',
-					new ItemStack(BlockRegistry.netherWood, 1, Wood.death), 'B', new ItemStack(ItemRegistry.SoulEnergyBottle, 1), 'D',
-					new ItemStack(BlockRegistry.SoulDetector, 1, i) });
-		}
+		this.addRecipe(new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk4), 1000, new Object[] { "IBI", "BDB", "IBI", 'I',
+				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'B', new ItemStack(Item.diamond, 1, 0), 'D', new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk3) });
 	}
 
 	public List getRecipeList() {

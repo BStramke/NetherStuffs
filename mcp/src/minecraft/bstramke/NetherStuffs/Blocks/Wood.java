@@ -134,18 +134,6 @@ public class Wood extends BlockBase {
 		return icoWoodHellfireTopBottom;
 
 	}
-
-	@Override
-	public void onBlockAdded(World par1World, int x, int y, int z) {
-		super.onBlockAdded(par1World, x, y, z);
-		if (!par1World.isRemote) {
-			if (par1World.rand.nextInt(100) + 1 <= 15) // chance of being able to spawn a puddled block
-			{
-				int meta = par1World.getBlockMetadata(x, y, z) & 3;
-				par1World.setBlock(x, y, z, NetherStuffs.NetherWoodPuddleBlockId, meta, BlockNotifyType.ALL);
-			}
-		}
-	}
 	
 	//this does the block sideway placement
 	@Override

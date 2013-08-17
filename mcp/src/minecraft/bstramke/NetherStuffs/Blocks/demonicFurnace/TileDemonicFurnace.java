@@ -11,7 +11,7 @@ import bstramke.NetherStuffs.Blocks.Wood;
 import bstramke.NetherStuffs.Blocks.WoodItemBlock;
 import bstramke.NetherStuffs.Common.BlockActiveHelper;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
-import bstramke.NetherStuffs.Items.NetherCharcoal;
+import bstramke.NetherStuffs.Items.NetherCoal;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -253,7 +253,7 @@ public class TileDemonicFurnace extends TileEntity implements /*ISpecialInventor
 					return 1600;
 			}
 
-			if (par0ItemStack.getItem() instanceof NetherCharcoal) {
+			if (par0ItemStack.getItem() instanceof NetherCoal) {
 				return 6400;
 			}
 
@@ -315,66 +315,7 @@ public class TileDemonicFurnace extends TileEntity implements /*ISpecialInventor
 	public String getInvName() {
 		return "container.demonicfurnace";
 	}
-/*
-	@Override
-	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
-		int nTargetSlot = 0;
-		if (from == ForgeDirection.UP && DemonicFurnaceRecipes.smelting().getSmeltingResult(stack) != null)
-			nTargetSlot = nSmeltedSlot;
-		else if (from == ForgeDirection.DOWN && isItemFuel(stack))
-			nTargetSlot = nFuelSlot;
-		else
-			return 0;
 
-		ItemStack targetStack = getStackInSlot(nTargetSlot);
-		if (targetStack == null) {
-			if (doAdd) {
-				targetStack = stack.copy();
-				setInventorySlotContents(nTargetSlot, targetStack);
-			}
-			return stack.stackSize;
-		}
-
-		if (!targetStack.isItemEqual(stack))
-			return 0;
-
-		int nFreeStackSize = this.getInventoryStackLimit() - targetStack.stackSize;
-		if (nFreeStackSize >= stack.stackSize) {
-			if (doAdd)
-				targetStack.stackSize += stack.stackSize;
-			return stack.stackSize;
-		} else {
-			if (doAdd)
-				targetStack.stackSize = getInventoryStackLimit();
-			return nFreeStackSize;
-		}
-	}
-
-	@Override
-	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from, int maxItemCount) {
-		if (from == ForgeDirection.UP && getStackInSlot(this.nSmeltedSlot) != null) {
-			ItemStack outputStack = getStackInSlot(this.nSmeltedSlot).copy();
-			outputStack.stackSize = 1;
-			if (doRemove)
-				decrStackSize(this.nSmeltedSlot, 1);
-			return new ItemStack[] { outputStack };
-		} else if (from == ForgeDirection.DOWN && getStackInSlot(this.nFuelSlot) != null) {
-			ItemStack outputStack = getStackInSlot(this.nFuelSlot).copy();
-			outputStack.stackSize = 1;
-			if (doRemove)
-				decrStackSize(this.nFuelSlot, 1);
-			return new ItemStack[] { outputStack };
-		} else if (from != ForgeDirection.UP && from != ForgeDirection.DOWN && getStackInSlot(this.nOutputSlot) != null) {
-			ItemStack outputStack = this.getStackInSlot(this.nOutputSlot);
-			outputStack = outputStack.copy();
-			outputStack.stackSize = 1;
-			if (doRemove)
-				decrStackSize(this.nOutputSlot, 1);
-			return new ItemStack[] { outputStack };
-		} else
-			return null;
-	}
-*/
 	@Override
 	public boolean isInvNameLocalized() {
 		// TODO Auto-generated method stub
