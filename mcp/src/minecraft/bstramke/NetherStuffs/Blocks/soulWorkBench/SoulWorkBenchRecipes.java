@@ -12,8 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.Wood;
-import bstramke.NetherStuffs.Blocks.soulSiphon.SoulSiphon;
-import bstramke.NetherStuffs.Blocks.soulSiphon.SoulSiphonItemBlock;
+import bstramke.NetherStuffs.Blocks.soulRipper.SoulRipper;
+import bstramke.NetherStuffs.Blocks.soulRipper.SoulRipperItemBlock;
 import bstramke.NetherStuffs.Items.ItemRegistry;
 
 public class SoulWorkBenchRecipes {
@@ -27,20 +27,17 @@ public class SoulWorkBenchRecipes {
 		this.addRecipe(new ItemStack(BlockRegistry.SoulBomb, 1, 0), 100, new Object[] { "DID", "IDI", "DID", 'D', new ItemStack(Item.glowstone, 1, 0), 'I',
 				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0) });
 
-		this.addRecipe(new ItemStack(ItemRegistry.NetherBow, 1, 0), 150, new Object[] { "SW.", "S.W", "SW.", 'S', new ItemStack(Item.silk, 1, 0), 'W',
-				new ItemStack(ItemRegistry.NetherWoodStick, 1, 0) });
-
-		this.addRecipe(new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk1), 250, new Object[] { "IBI", "BTB", "IBI", 'I',
+		this.addRecipe(new ItemStack(BlockRegistry.SoulRipper, 1, SoulRipper.mk1), 250, new Object[] { "IBI", "BTB", "IBI", 'I',
 				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'B', new ItemStack(Block.netherBrick, 1, 0), 'T', new ItemStack(Block.torchRedstoneActive, 1, 0) });
 
-		this.addRecipe(new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk2), 500, new Object[] { "IGI", "GDG", "IGI", 'I',
-				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'G', new ItemStack(Item.ingotIron, 1, 0), 'D', new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk1) });
+		this.addRecipe(new ItemStack(BlockRegistry.SoulRipper, 1, SoulRipper.mk2), 500, new Object[] { "IGI", "GDG", "IGI", 'I',
+				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'G', new ItemStack(Item.ingotIron, 1, 0), 'D', new ItemStack(BlockRegistry.SoulRipper, 1, SoulRipper.mk1) });
 
-		this.addRecipe(new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk3), 750, new Object[] { "IGI", "GDG", "IGI", 'I',
-				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'G', new ItemStack(Item.ingotGold, 1, 0), 'D', new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk2) });
+		this.addRecipe(new ItemStack(BlockRegistry.SoulRipper, 1, SoulRipper.mk3), 750, new Object[] { "IGI", "GDG", "IGI", 'I',
+				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'G', new ItemStack(Item.ingotGold, 1, 0), 'D', new ItemStack(BlockRegistry.SoulRipper, 1, SoulRipper.mk2) });
 
-		this.addRecipe(new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk4), 1000, new Object[] { "IBI", "BDB", "IBI", 'I',
-				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'B', new ItemStack(Item.diamond, 1, 0), 'D', new ItemStack(BlockRegistry.SoulSiphon, 1, SoulSiphon.mk3) });
+		this.addRecipe(new ItemStack(BlockRegistry.SoulRipper, 1, SoulRipper.mk4), 1000, new Object[] { "IBI", "BDB", "IBI", 'I',
+				new ItemStack(ItemRegistry.NetherOreIngot, 1, 0), 'B', new ItemStack(Item.diamond, 1, 0), 'D', new ItemStack(BlockRegistry.SoulRipper, 1, SoulRipper.mk3) });
 	}
 
 	public List getRecipeList() {

@@ -11,7 +11,7 @@ public class NetherStuffsFuel implements IFuelHandler {
 
 	@Override
 	public int getBurnTime(ItemStack fuel) {
-		if (fuel.itemID == ItemRegistry.NetherWoodCharcoal.itemID)
+		if (fuel.itemID == ItemRegistry.NetherCoal.itemID)
 			return 3200;
 
 		if (fuel.itemID == new ItemStack(BlockRegistry.netherWood, 0, Wood.hellfire).itemID) {
@@ -23,6 +23,7 @@ public class NetherStuffsFuel implements IFuelHandler {
 
 		if (fuel.itemID == new ItemStack(BlockRegistry.netherPlank, 0, Plank.hellfire).itemID)
 			return 100;
+
 
 		return 0;
 	}

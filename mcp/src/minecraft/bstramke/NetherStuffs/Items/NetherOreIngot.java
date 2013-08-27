@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import cpw.mods.fml.relauncher.Side;
