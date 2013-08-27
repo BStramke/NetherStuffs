@@ -44,6 +44,7 @@ public class WorldGenDefaultMinable implements IWorldGenerator {
 				this.generate(world, random, chunkX * 16 + random.nextInt(16), random.nextInt(108) + 10, chunkZ * 16 + random.nextInt(16));
 		}
 	}
+	
 
 	public void generate(World par1World, Random par2Random, int par3, int par4, int par5) {
 		float var6 = par2Random.nextFloat() * (float) Math.PI;

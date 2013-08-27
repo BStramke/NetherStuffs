@@ -12,6 +12,6 @@ public class NetherWoodMaterial extends Material {
 		this.setNoPushMobility();
 		this.setBurning();
 		this.isTranslucent = true;
-		this.setRequiresTool();
+		//this.setRequiresTool();
 	}
 }

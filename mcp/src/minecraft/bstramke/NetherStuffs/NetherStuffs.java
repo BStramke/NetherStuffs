@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -45,9 +46,9 @@ import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Common.GuiHandler;
 import bstramke.NetherStuffs.Common.NetherStuffsFuel;
 import bstramke.NetherStuffs.Common.Materials.NetherMaterials;
+import bstramke.NetherStuffs.Enchantments.WeaponEnchantments;
 import bstramke.NetherStuffs.Items.EntityTorchArrow;
 import bstramke.NetherStuffs.Items.ItemRegistry;
-import bstramke.NetherStuffs.Items.NetherCoal;
 import bstramke.NetherStuffs.WorldGen.WorldGenDefaultMinable;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.DummyModContainer;
@@ -79,6 +80,10 @@ public class NetherStuffs extends DummyModContainer {
 	public static CommonProxy proxy;
 
 	public static boolean bTConstructAvailable = false;
+
+	public static int EnchantmentHellfireId;
+	public static int EnchantmentAcidId;
+	public static int EnchantmentDeathId;
 
 	public static int NetherOreBlockId;
 	public static int NetherWoodBlockId;
@@ -198,10 +203,20 @@ public class NetherStuffs extends DummyModContainer {
 		TorchArrowItemId = config.getItem(Configuration.CATEGORY_ITEM, "TorchArrow", 5217).getInt(5217);
 		NetherWoodStickItemId = config.getItem(Configuration.CATEGORY_ITEM, "NetherWoodStick", 5203).getInt(5203);
 
+		int startEnchantId = 52;
+		for (; startEnchantId < Enchantment.enchantmentsList.length && Enchantment.enchantmentsList[startEnchantId] != null; startEnchantId++) {}
+		EnchantmentHellfireId = config.get("Enchantments", "Hellfire", startEnchantId).getInt(startEnchantId);
+		for (++startEnchantId; startEnchantId < Enchantment.enchantmentsList.length && Enchantment.enchantmentsList[startEnchantId] != null; startEnchantId++) {}
+		EnchantmentAcidId = config.get("Enchantments", "Acid", startEnchantId).getInt(startEnchantId);
+		for (++startEnchantId; startEnchantId < Enchantment.enchantmentsList.length && Enchantment.enchantmentsList[startEnchantId] != null; startEnchantId++) {}
+		EnchantmentDeathId = config.get("Enchantments", "Death", startEnchantId).getInt(startEnchantId);
+
 		SpawnSkeletonsAwayFromNetherFortresses = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsAwayFromNetherFortresses", true).getBoolean(true);
 		IncreaseNetherrackHardness = config.get(Configuration.CATEGORY_GENERAL, "IncreaseNetherrackHardness", true).getBoolean(true);
 		SpawnBlazesNaturally = config.get(Configuration.CATEGORY_GENERAL, "SpawnBlazesNaturally", false).getBoolean(false);
 
+		config.addCustomCategoryComment("NetherOreGeneration",
+				"Here you can set the ores to not generate or generate. Keep in mind that they will only generate when you actually have a Mod that uses the Ore");
 		bUseNetherOreDemonic = config.get("NetherOreGeneration", "Demonic", true).getBoolean(true);
 		bUseNetherOreCoal = config.get("NetherOreGeneration", "NetherCoal", true).getBoolean(true);
 		bUseNetherOreIron = config.get("NetherOreGeneration", "Iron", true).getBoolean(true);
@@ -241,7 +256,6 @@ public class NetherStuffs extends DummyModContainer {
 
 		FMLLog.info("[NetherStuffs] Blocked Nether Spawns on Block IDs: %s", NetherStuffsEventHook.lBlockSpawnListForced.toString());
 		config.save();
-
 	}
 
 	private void initTConstruct() {
@@ -387,17 +401,17 @@ public class NetherStuffs extends DummyModContainer {
 		MinecraftForge.setBlockHarvestLevel(BlockRegistry.SoulSiphon, "pickaxe", 1);
 
 		MinecraftForge.setBlockHarvestLevel(BlockRegistry.SoulWorkBench, "axe", 0);
-		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherWood, "axe", 1);
 
-		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherWood, Wood.acid, "axe", 1);
-		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherWood, Wood.hellfire, "axe", 1);
-		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherWood, Wood.death, "axe", 1);
+		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherWood, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherWood, Wood.acid, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherWood, Wood.hellfire, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherWood, Wood.death, "axe", 0);
 
-		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherPlank, "axe", 1);
+		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherPlank, "axe", 0);
 
-		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherPlank, Plank.acid, "axe", 1);
-		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherPlank, Plank.hellfire, "axe", 1);
-		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherPlank, Plank.death, "axe", 1);
+		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherPlank, Plank.acid, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherPlank, Plank.hellfire, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(BlockRegistry.netherPlank, Plank.death, "axe", 0);
 
 		MinecraftForge.removeBlockEffectiveness(BlockRegistry.netherOre, "pickaxe");
 
@@ -440,6 +454,8 @@ public class NetherStuffs extends DummyModContainer {
 			EntityRegistry.addSpawn(EntitySkeleton.class, 40, 4, 4, EnumCreatureType.monster, BiomeGenBase.hell);
 		if (SpawnBlazesNaturally)
 			EntityRegistry.addSpawn(EntityBlaze.class, 5, 1, 1, EnumCreatureType.monster, BiomeGenBase.hell);
+
+		WeaponEnchantments tmp = new WeaponEnchantments();
 	}
 
 	private void registerWorldGenerators() {
