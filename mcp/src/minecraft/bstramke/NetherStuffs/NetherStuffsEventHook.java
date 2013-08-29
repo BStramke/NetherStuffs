@@ -26,6 +26,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import bstramke.NetherStuffs.Common.PlayerDummy;
+import bstramke.NetherStuffs.WorldGen.WorldGenDefaultMinable;
 
 public class NetherStuffsEventHook {
 	public static int nDetectRadius; // will be set from config
@@ -101,7 +102,8 @@ public class NetherStuffsEventHook {
 		nbt = nbt.getCompoundTag("netherstuffs");
 		if(nbt.getBoolean("generated") == false)
 		{
-			nbt.setBoolean("generated", true);
+			
+			//nbt.setBoolean("generated", true);
 		}
 	}
 }

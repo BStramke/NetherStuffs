@@ -143,6 +143,31 @@ public class NetherStuffs extends DummyModContainer {
 	public static boolean bUseNetherOreApatite;
 	public static boolean bUseNetherOreUranium;
 
+	public static class WorldGen {
+		public static WorldGenDefaultMinable demonicOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 8, Ore.demonicOre, 10);
+		public static WorldGenDefaultMinable coalOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 16, Ore.netherOreCoal, 10);
+		public static WorldGenDefaultMinable ironOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 8, Ore.netherOreIron, 15);
+		public static WorldGenDefaultMinable goldOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 8, Ore.netherOreGold, 4);
+		public static WorldGenDefaultMinable diamondOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 7, Ore.netherOreDiamond, 1);
+		public static WorldGenDefaultMinable emeraldOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 7, Ore.netherOreEmerald, 1);
+		public static WorldGenDefaultMinable redstoneOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 7, Ore.netherOreRedstone, 6);
+		public static WorldGenDefaultMinable obsidianOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 8, Ore.netherOreObsidian, 8);
+		public static WorldGenDefaultMinable lapisOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 8, Ore.netherOreLapis, 1);
+		public static WorldGenDefaultMinable cobblestoneOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 13, Ore.netherOreCobblestone, 10);
+		public static WorldGenDefaultMinable copperOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 6, Ore.netherOreCopper, 12);
+		public static WorldGenDefaultMinable tinOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 6, Ore.netherOreTin, 12);
+		public static WorldGenDefaultMinable silverOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 3, Ore.netherOreSilver, 8);
+		public static WorldGenDefaultMinable leadOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 6, Ore.netherOreLead, 8);
+		public static WorldGenDefaultMinable certusQuartzOre = new WorldGenDefaultMinable(BlockRegistry.netherOreExtended.blockID, 4, OreExtended.netherOreCertusQuartz, 8);
+		public static WorldGenDefaultMinable nickelOre = new WorldGenDefaultMinable(BlockRegistry.netherOreExtended.blockID, 4, OreExtended.netherOreFerrous, 8);
+		public static WorldGenDefaultMinable apatiteOre = new WorldGenDefaultMinable(BlockRegistry.netherOreExtended.blockID, 8, OreExtended.netherOreApatite, 8);
+		public static WorldGenDefaultMinable uraniumOre = new WorldGenDefaultMinable(BlockRegistry.netherOreExtended.blockID, 2, OreExtended.netherOreUranium, 8);
+		
+		public static WorldGenNetherStuffsTrees trees = new WorldGenNetherStuffsTrees(false, 4, false);
+	}
+
+	
+
 	public static CreativeTabs tabNetherStuffs = new CreativeTabs("tabNetherStuffs") {
 		public ItemStack getIconItemStack() {
 			return new ItemStack(BlockRegistry.SoulWorkBench, 1, 0);
@@ -441,27 +466,27 @@ public class NetherStuffs extends DummyModContainer {
 
 	private void registerWorldGenerators() {
 		if (bUseNetherOreDemonic)
-			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 8, Ore.demonicOre, 10));
+			GameRegistry.registerWorldGenerator(WorldGen.demonicOre);
 		if (bUseNetherOreCoal)
-			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 16, Ore.netherOreCoal, 10));
+			GameRegistry.registerWorldGenerator(WorldGen.coalOre);
 		if (bUseNetherOreIron)
-			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 8, Ore.netherOreIron, 15));
+			GameRegistry.registerWorldGenerator(WorldGen.ironOre);
 		if (bUseNetherOreGold)
-			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 8, Ore.netherOreGold, 4));
+			GameRegistry.registerWorldGenerator(WorldGen.goldOre);
 		if (bUseNetherOreDiamond)
-			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 7, Ore.netherOreDiamond, 1));
+			GameRegistry.registerWorldGenerator(WorldGen.diamondOre);
 		if (bUseNetherOreEmerald)
-			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 7, Ore.netherOreEmerald, 1));
+			GameRegistry.registerWorldGenerator(WorldGen.emeraldOre);
 		if (bUseNetherOreRedstone)
-			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 7, Ore.netherOreRedstone, 6));
+			GameRegistry.registerWorldGenerator(WorldGen.redstoneOre);
 		if (bUseNetherOreObsidian)
-			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 8, Ore.netherOreObsidian, 8));
+			GameRegistry.registerWorldGenerator(WorldGen.obsidianOre);
 		if (bUseNetherOreLapis)
-			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 8, Ore.netherOreLapis, 1));
+			GameRegistry.registerWorldGenerator(WorldGen.lapisOre);
 		if (bUseNetherOreCobblestone)
-			GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 13, Ore.netherOreCobblestone, 10));
+			GameRegistry.registerWorldGenerator(WorldGen.cobblestoneOre);
 
-		GameRegistry.registerWorldGenerator(new WorldGenNetherStuffsTrees(false, 4, false));
+		GameRegistry.registerWorldGenerator(WorldGen.trees);
 	}
 
 	private void initRecipes() {
@@ -617,7 +642,7 @@ public class NetherStuffs extends DummyModContainer {
 				FMLLog.log("NetherStuffs", Level.INFO, "Adding Copper to Nether Worldgenerator");
 				ItemStack result = OreDictionary.getOres("oreCopper").get(0);
 				result.stackSize = 1;
-				GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 6, Ore.netherOreCopper, 12));
+				GameRegistry.registerWorldGenerator(WorldGen.copperOre);
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOre.blockID, Ore.netherOreCopper, result, 0.25F);
 				OreDictionary.registerOre("oreNetherCopper", new ItemStack(BlockRegistry.netherOre, 1, Ore.netherOreCopper));
 			}
@@ -628,7 +653,7 @@ public class NetherStuffs extends DummyModContainer {
 				FMLLog.log("NetherStuffs", Level.INFO, "Adding Tin to Nether Worldgenerator");
 				ItemStack result = OreDictionary.getOres("oreTin").get(0);
 				result.stackSize = 1;
-				GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 6, Ore.netherOreTin, 12));
+				GameRegistry.registerWorldGenerator(WorldGen.tinOre);
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOre.blockID, Ore.netherOreTin, result, 0.25F);
 				OreDictionary.registerOre("oreNetherTin", new ItemStack(BlockRegistry.netherOre, 1, Ore.netherOreTin));
 			}
@@ -639,7 +664,7 @@ public class NetherStuffs extends DummyModContainer {
 				FMLLog.log("NetherStuffs", Level.INFO, "Adding Silver to Nether Worldgenerator");
 				ItemStack result = OreDictionary.getOres("oreSilver").get(0);
 				result.stackSize = 1;
-				GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 3, Ore.netherOreSilver, 8));
+				GameRegistry.registerWorldGenerator(WorldGen.silverOre);
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOre.blockID, Ore.netherOreSilver, result, 0.25F);
 				OreDictionary.registerOre("oreNetherSilver", new ItemStack(BlockRegistry.netherOre, 1, Ore.netherOreSilver));
 			}
@@ -650,7 +675,7 @@ public class NetherStuffs extends DummyModContainer {
 				FMLLog.log("NetherStuffs", Level.INFO, "Adding Lead to Nether Worldgenerator");
 				ItemStack result = OreDictionary.getOres("oreLead").get(0);
 				result.stackSize = 1;
-				GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 6, Ore.netherOreLead, 8));
+				GameRegistry.registerWorldGenerator(WorldGen.leadOre);
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOre.blockID, Ore.netherOreLead, result, 0.25F);
 				OreDictionary.registerOre("oreNetherLead", new ItemStack(BlockRegistry.netherOre, 1, Ore.netherOreLead));
 			}
@@ -661,7 +686,7 @@ public class NetherStuffs extends DummyModContainer {
 				FMLLog.log("NetherStuffs", Level.INFO, "Adding CertusQuartz to Nether Worldgenerator");
 				ItemStack result = OreDictionary.getOres("oreCertusQuartz").get(0);
 				result.stackSize = 1;
-				GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOreExtended.blockID, 4, OreExtended.netherOreCertusQuartz, 8));
+				GameRegistry.registerWorldGenerator(WorldGen.certusQuartzOre);
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOreExtended.blockID, OreExtended.netherOreCertusQuartz, result, 0.25F);
 				OreDictionary.registerOre("oreNetherCertusQuartz", new ItemStack(BlockRegistry.netherOreExtended, 1, OreExtended.netherOreCertusQuartz));
 			}
@@ -672,7 +697,7 @@ public class NetherStuffs extends DummyModContainer {
 				FMLLog.log("NetherStuffs", Level.INFO, "Adding Ferrous Ore to Nether Worldgenerator");
 				ItemStack result = OreDictionary.getOres("oreNickel").get(0);
 				result.stackSize = 1;
-				GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOreExtended.blockID, 4, OreExtended.netherOreFerrous, 8));
+				GameRegistry.registerWorldGenerator(WorldGen.nickelOre);
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOreExtended.blockID, OreExtended.netherOreFerrous, result, 0.25F);
 				OreDictionary.registerOre("oreNetherFerrous", new ItemStack(BlockRegistry.netherOreExtended, 1, OreExtended.netherOreFerrous));
 			}
@@ -683,7 +708,7 @@ public class NetherStuffs extends DummyModContainer {
 				FMLLog.log("NetherStuffs", Level.INFO, "Adding Apatite to Nether Worldgenerator");
 				ItemStack result = OreDictionary.getOres("oreApatite").get(0);
 				result.stackSize = 1;
-				GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOreExtended.blockID, 8, OreExtended.netherOreApatite, 8));
+				GameRegistry.registerWorldGenerator(WorldGen.apatiteOre);
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOreExtended.blockID, OreExtended.netherOreApatite, result, 0.25F);
 				OreDictionary.registerOre("oreNetherApatite", new ItemStack(BlockRegistry.netherOreExtended, 1, OreExtended.netherOreApatite));
 			}
@@ -694,7 +719,7 @@ public class NetherStuffs extends DummyModContainer {
 				FMLLog.log("NetherStuffs", Level.INFO, "Adding Uranium to Nether Worldgenerator");
 				ItemStack result = OreDictionary.getOres("oreUranium").get(0);
 				result.stackSize = 1;
-				GameRegistry.registerWorldGenerator(new WorldGenDefaultMinable(BlockRegistry.netherOreExtended.blockID, 2, OreExtended.netherOreUranium, 8));
+				GameRegistry.registerWorldGenerator(WorldGen.uraniumOre);
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOreExtended.blockID, OreExtended.netherOreUranium, result, 0.25F);
 				OreDictionary.registerOre("oreNetherUranium", new ItemStack(BlockRegistry.netherOreExtended, 1, OreExtended.netherOreUranium));
 			}
