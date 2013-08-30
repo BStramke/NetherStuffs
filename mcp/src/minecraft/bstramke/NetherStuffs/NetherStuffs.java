@@ -143,6 +143,35 @@ public class NetherStuffs extends DummyModContainer {
 	public static boolean bUseNetherOreApatite;
 	public static boolean bUseNetherOreUranium;
 
+	public static boolean bForceGenCopper;
+	public static boolean bForceGenTin;
+	public static boolean bForceGenSilver;
+	public static boolean bForceGenLead;
+	public static boolean bForceGenCertusQuartz;
+	public static boolean bForceGenFerrous;
+	public static boolean bForceGenApatite;
+	public static boolean bForceGenUranium;
+	
+	
+	public static boolean bRegenerateDemonic;
+	public static boolean bRegenerateCoal;
+	public static boolean bRegenerateIron;
+	public static boolean bRegenerateGold;
+	public static boolean bRegenerateDiamond;
+	public static boolean bRegenerateEmerald;
+	public static boolean bRegenerateRedstone;
+	public static boolean bRegenerateObsidian;
+	public static boolean bRegenerateLapis;
+	public static boolean bRegenerateCobblestone;
+	public static boolean bRegenerateCopper;
+	public static boolean bRegenerateTin;
+	public static boolean bRegenerateSilver;
+	public static boolean bRegenerateLead;
+	public static boolean bRegenerateCertusQuartz;
+	public static boolean bRegenerateFerrous;
+	public static boolean bRegenerateApatite;
+	public static boolean bRegenerateUranium;
+
 	public static class WorldGen {
 		public static WorldGenDefaultMinable demonicOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 8, Ore.demonicOre, 10);
 		public static WorldGenDefaultMinable coalOre = new WorldGenDefaultMinable(BlockRegistry.netherOre.blockID, 16, Ore.netherOreCoal, 10);
@@ -162,11 +191,9 @@ public class NetherStuffs extends DummyModContainer {
 		public static WorldGenDefaultMinable nickelOre = new WorldGenDefaultMinable(BlockRegistry.netherOreExtended.blockID, 4, OreExtended.netherOreFerrous, 8);
 		public static WorldGenDefaultMinable apatiteOre = new WorldGenDefaultMinable(BlockRegistry.netherOreExtended.blockID, 8, OreExtended.netherOreApatite, 8);
 		public static WorldGenDefaultMinable uraniumOre = new WorldGenDefaultMinable(BlockRegistry.netherOreExtended.blockID, 2, OreExtended.netherOreUranium, 8);
-		
+
 		public static WorldGenNetherStuffsTrees trees = new WorldGenNetherStuffsTrees(false, 4, false);
 	}
-
-	
 
 	public static CreativeTabs tabNetherStuffs = new CreativeTabs("tabNetherStuffs") {
 		public ItemStack getIconItemStack() {
@@ -258,6 +285,39 @@ public class NetherStuffs extends DummyModContainer {
 		bUseNetherOreFerrous = config.get("NetherOreGeneration", "FerrousOre", true).getBoolean(true);
 		bUseNetherOreApatite = config.get("NetherOreGeneration", "ApatiteOre", true).getBoolean(true);
 		bUseNetherOreUranium = config.get("NetherOreGeneration", "Uranium Ore", true).getBoolean(true);
+
+		config.addCustomCategoryComment("NetherOreGeneration",
+				"If you want to forcefully generate an Ore in the Nether, for example you don't have that mod yet but plan on Using it later, you can enable that here");
+		bForceGenCopper = config.get("ForceOreGeneration", "Copper", false).getBoolean(false);
+		bForceGenTin = config.get("ForceOreGeneration", "Tin", false).getBoolean(false);
+		bForceGenSilver = config.get("ForceOreGeneration", "Silver", false).getBoolean(false);
+		bForceGenLead = config.get("ForceOreGeneration", "Lead", false).getBoolean(false);
+		bForceGenCertusQuartz = config.get("ForceOreGeneration", "CertusQuartz", false).getBoolean(false);
+		bForceGenFerrous = config.get("ForceOreGeneration", "Ferrous", false).getBoolean(false);
+		bForceGenApatite = config.get("ForceOreGeneration", "Apatite", false).getBoolean(false);
+		bForceGenUranium = config.get("ForceOreGeneration", "Uranium", false).getBoolean(false);
+		
+		config.addCustomCategoryComment("Nether Ore Regeneration", "In case you want to regenerate the existing Nether chunks, make that settings here.");
+		
+		bRegenerateDemonic = config.get("Nether Ore Regeneration", "Demonic", false).getBoolean(false);
+		bRegenerateCoal = config.get("Nether Ore Regeneration", "NetherCoal", false).getBoolean(false);
+		bRegenerateIron = config.get("Nether Ore Regeneration", "Iron", false).getBoolean(false);
+		bRegenerateGold = config.get("Nether Ore Regeneration", "Gold", false).getBoolean(false);
+		bRegenerateDiamond = config.get("Nether Ore Regeneration", "Diamond", false).getBoolean(false);
+		bRegenerateEmerald = config.get("Nether Ore Regeneration", "Emerald", false).getBoolean(false);
+		bRegenerateRedstone = config.get("Nether Ore Regeneration", "Redstone", false).getBoolean(false);
+		bRegenerateObsidian = config.get("Nether Ore Regeneration", "Obsidian", false).getBoolean(false);
+		bRegenerateLapis = config.get("Nether Ore Regeneration", "Lapis", false).getBoolean(false);
+		bRegenerateCobblestone = config.get("Nether Ore Regeneration", "Cobblestone", false).getBoolean(false);
+		
+		bRegenerateCopper = config.get("Nether Ore Regeneration", "Copper", false).getBoolean(false);
+		bRegenerateTin = config.get("Nether Ore Regeneration", "Tin", false).getBoolean(false);
+		bRegenerateSilver = config.get("Nether Ore Regeneration", "Silver", false).getBoolean(false);
+		bRegenerateLead = config.get("Nether Ore Regeneration", "Lead", false).getBoolean(false);
+		bRegenerateCertusQuartz = config.get("Nether Ore Regeneration", "CertusQuartz", false).getBoolean(false);
+		bRegenerateFerrous = config.get("Nether Ore Regeneration", "Ferrous", false).getBoolean(false);
+		bRegenerateApatite = config.get("Nether Ore Regeneration", "Apatite", false).getBoolean(false);
+		bRegenerateUranium = config.get("Nether Ore Regeneration", "Uranium", false).getBoolean(false);
 
 		NetherStuffsEventHook.nDetectRadius = config.get(Configuration.CATEGORY_GENERAL, "SoulBlockerRadius", 8).getInt();
 
@@ -647,6 +707,16 @@ public class NetherStuffs extends DummyModContainer {
 				OreDictionary.registerOre("oreNetherCopper", new ItemStack(BlockRegistry.netherOre, 1, Ore.netherOreCopper));
 			}
 		}
+		else if(bForceGenCopper)
+		{
+			if(bUseNetherOreCopper)
+			{
+				FMLLog.log("NetherStuffs", Level.INFO, "Adding FORCED Copper Ore to Nether Worldgenerator");
+				GameRegistry.registerWorldGenerator(WorldGen.copperOre);
+			}
+			else
+				FMLLog.log("NetherStuffs", Level.INFO, "Can't Add FORCED Copper Ore generation to the Nether, Copper Ore generation is disabled");
+		}
 
 		if (OreDictionary.getOres("oreTin").isEmpty() == false) {
 			if (bUseNetherOreTin) {
@@ -657,6 +727,16 @@ public class NetherStuffs extends DummyModContainer {
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOre.blockID, Ore.netherOreTin, result, 0.25F);
 				OreDictionary.registerOre("oreNetherTin", new ItemStack(BlockRegistry.netherOre, 1, Ore.netherOreTin));
 			}
+		}
+		else if(bForceGenTin)
+		{
+			if(bUseNetherOreTin)
+			{
+				FMLLog.log("NetherStuffs", Level.INFO, "Adding FORCED Tin Ore to Nether Worldgenerator");
+				GameRegistry.registerWorldGenerator(WorldGen.tinOre);
+			}
+			else
+				FMLLog.log("NetherStuffs", Level.INFO, "Can't Add FORCED Tin Ore generation to the Nether, Tin Ore generation is disabled");
 		}
 
 		if (OreDictionary.getOres("oreSilver").isEmpty() == false) {
@@ -669,6 +749,16 @@ public class NetherStuffs extends DummyModContainer {
 				OreDictionary.registerOre("oreNetherSilver", new ItemStack(BlockRegistry.netherOre, 1, Ore.netherOreSilver));
 			}
 		}
+		else if(bForceGenSilver)
+		{
+			if(bUseNetherOreSilver)
+			{
+				FMLLog.log("NetherStuffs", Level.INFO, "Adding FORCED Silver Ore to Nether Worldgenerator");
+				GameRegistry.registerWorldGenerator(WorldGen.silverOre);
+			}
+			else
+				FMLLog.log("NetherStuffs", Level.INFO, "Can't Add FORCED Silver Ore generation to the Nether, Silver Ore generation is disabled");
+		}
 
 		if (OreDictionary.getOres("oreLead").isEmpty() == false) {
 			if (bUseNetherOreLead) {
@@ -679,6 +769,16 @@ public class NetherStuffs extends DummyModContainer {
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOre.blockID, Ore.netherOreLead, result, 0.25F);
 				OreDictionary.registerOre("oreNetherLead", new ItemStack(BlockRegistry.netherOre, 1, Ore.netherOreLead));
 			}
+		}
+		else if(bForceGenLead)
+		{
+			if(bUseNetherOreLead)
+			{
+				FMLLog.log("NetherStuffs", Level.INFO, "Adding FORCED Lead Ore to Nether Worldgenerator");
+				GameRegistry.registerWorldGenerator(WorldGen.leadOre);
+			}
+			else
+				FMLLog.log("NetherStuffs", Level.INFO, "Can't Add FORCED Lead Ore generation to the Nether, Lead Ore generation is disabled");
 		}
 
 		if (OreDictionary.getOres("oreCertusQuartz").isEmpty() == false) {
@@ -691,6 +791,16 @@ public class NetherStuffs extends DummyModContainer {
 				OreDictionary.registerOre("oreNetherCertusQuartz", new ItemStack(BlockRegistry.netherOreExtended, 1, OreExtended.netherOreCertusQuartz));
 			}
 		}
+		else if(bForceGenCertusQuartz)
+		{
+			if(bUseNetherOreCertusQuartz)
+			{
+				FMLLog.log("NetherStuffs", Level.INFO, "Adding FORCED CertusQuartz to Nether Worldgenerator");
+				GameRegistry.registerWorldGenerator(WorldGen.certusQuartzOre);
+			}
+			else
+				FMLLog.log("NetherStuffs", Level.INFO, "Can't Add FORCED CertusQuartz generation to the Nether, CertusQuartz Ore generation is disabled");
+		}
 
 		if (OreDictionary.getOres("oreNickel").isEmpty() == false) {
 			if (bUseNetherOreFerrous) {
@@ -701,6 +811,16 @@ public class NetherStuffs extends DummyModContainer {
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOreExtended.blockID, OreExtended.netherOreFerrous, result, 0.25F);
 				OreDictionary.registerOre("oreNetherFerrous", new ItemStack(BlockRegistry.netherOreExtended, 1, OreExtended.netherOreFerrous));
 			}
+		}
+		else if(bForceGenFerrous)
+		{
+			if(bUseNetherOreFerrous)
+			{
+				FMLLog.log("NetherStuffs", Level.INFO, "Adding FORCED Ferrous Ore to Nether Worldgenerator");
+				GameRegistry.registerWorldGenerator(WorldGen.nickelOre);
+			}
+			else
+				FMLLog.log("NetherStuffs", Level.INFO, "Can't Add FORCED Ferrous Ore generation to the Nether, Ferrous Ore generation is disabled");
 		}
 
 		if (OreDictionary.getOres("oreApatite").isEmpty() == false) {
@@ -713,6 +833,16 @@ public class NetherStuffs extends DummyModContainer {
 				OreDictionary.registerOre("oreNetherApatite", new ItemStack(BlockRegistry.netherOreExtended, 1, OreExtended.netherOreApatite));
 			}
 		}
+		else if(bForceGenApatite)
+		{
+			if(bUseNetherOreApatite)
+			{
+				FMLLog.log("NetherStuffs", Level.INFO, "Adding FORCED Apatite to Nether Worldgenerator");
+				GameRegistry.registerWorldGenerator(WorldGen.apatiteOre);
+			}
+			else
+				FMLLog.log("NetherStuffs", Level.INFO, "Can't Add FORCED Apatite generation to the Nether, Apatite Ore generation is disabled");
+		}
 
 		if (OreDictionary.getOres("oreUranium").isEmpty() == false) {
 			if (bUseNetherOreUranium) {
@@ -723,6 +853,16 @@ public class NetherStuffs extends DummyModContainer {
 				DemonicFurnaceRecipes.smelting().addSmelting(BlockRegistry.netherOreExtended.blockID, OreExtended.netherOreUranium, result, 0.25F);
 				OreDictionary.registerOre("oreNetherUranium", new ItemStack(BlockRegistry.netherOreExtended, 1, OreExtended.netherOreUranium));
 			}
+		}
+		else if(bForceGenUranium)
+		{
+			if(bUseNetherOreUranium)
+			{
+				FMLLog.log("NetherStuffs", Level.INFO, "Adding FORCED Uranium to Nether Worldgenerator");
+				GameRegistry.registerWorldGenerator(WorldGen.uraniumOre);
+			}
+			else
+				FMLLog.log("NetherStuffs", Level.INFO, "Can't Add FORCED Uranium generation to the Nether, Uranium Ore generation is disabled");
 		}
 	}
 }

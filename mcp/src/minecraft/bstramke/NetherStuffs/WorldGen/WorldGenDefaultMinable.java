@@ -39,12 +39,15 @@ public class WorldGenDefaultMinable implements IWorldGenerator {
 	}
 
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+		generate(random, chunkX, chunkZ, world);
+	}
+	
+	public void generate(Random random, int chunkX, int chunkZ, World world) {
 		if (world.provider.isHellWorld) {
 			for (int i = 0; i < generationAttempts; ++i)
 				this.generate(world, random, chunkX * 16 + random.nextInt(16), random.nextInt(108) + 10, chunkZ * 16 + random.nextInt(16));
 		}
 	}
-	
 
 	public void generate(World par1World, Random par2Random, int par3, int par4, int par5) {
 		float var6 = par2Random.nextFloat() * (float) Math.PI;
@@ -54,7 +57,7 @@ public class WorldGenDefaultMinable implements IWorldGenerator {
 		double var13 = (double) ((float) (par5 + 8) - MathHelper.cos(var6) * (float) this.numberOfBlocks / 8.0F);
 		double var15 = (double) (par4 + par2Random.nextInt(3) - 2);
 		double var17 = (double) (par4 + par2Random.nextInt(3) - 2);
-
+		
 		for (int var19 = 0; var19 <= this.numberOfBlocks; ++var19) {
 			double var20 = var7 + (var9 - var7) * (double) var19 / (double) this.numberOfBlocks;
 			double var22 = var15 + (var17 - var15) * (double) var19 / (double) this.numberOfBlocks;
