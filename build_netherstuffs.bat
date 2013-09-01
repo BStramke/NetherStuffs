@@ -10,10 +10,10 @@ mkdir reobf\minecraft\bstramke\NetherStuffsBase\bstramke
 move reobf\minecraft\bstramke\NetherStuffs reobf\minecraft\bstramke\NetherStuffsBase\bstramke
 move reobf\minecraft\bstramke\NetherStuffsNEIPlugin reobf\minecraft\bstramke\NetherStuffsBase\bstramke
 
-xcopy reobf\minecraft\buildcraft reobf\minecraft\bstramke\NetherStuffsBase\buildcraft\ /S
-xcopy reobf\minecraft\forestry reobf\minecraft\bstramke\NetherStuffsBase\forestry\ /S
-xcopy reobf\minecraft\thaumcraft reobf\minecraft\bstramke\NetherStuffsBase\thaumcraft\ /S
-xcopy reobf\minecraft\ic2 reobf\minecraft\bstramke\NetherStuffsBase\ic2\ /S
+rem xcopy reobf\minecraft\buildcraft reobf\minecraft\bstramke\NetherStuffsBase\buildcraft\ /S
+rem xcopy reobf\minecraft\forestry reobf\minecraft\bstramke\NetherStuffsBase\forestry\ /S
+rem xcopy reobf\minecraft\thaumcraft reobf\minecraft\bstramke\NetherStuffsBase\thaumcraft\ /S
+rem xcopy reobf\minecraft\ic2 reobf\minecraft\bstramke\NetherStuffsBase\ic2\ /S
 
 mkdir reobf\minecraft\bstramke\NetherStuffsBase\assets
 xcopy src\minecraft\assets\netherstuffs reobf\minecraft\bstramke\NetherStuffsBase\assets\netherstuffs\ /S

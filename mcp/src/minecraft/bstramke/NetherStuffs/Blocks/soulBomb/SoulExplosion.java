@@ -50,7 +50,6 @@ public class SoulExplosion {
 		double var15;
 		double var17;
 		double var19;
-		System.out.println("doExplosionA");
 		for (var3 = 0; var3 < this.field_77289_h; ++var3) {
 			for (var4 = 0; var4 < this.field_77289_h; ++var4) {
 				for (var5 = 0; var5 < this.field_77289_h; ++var5) {
@@ -74,8 +73,8 @@ public class SoulExplosion {
 							int var25 = 0;// this.worldObj.getBlockId(var22, var23, var24);
 
 							/*
-							 * if (var25 > 0) { Block var26 = Block.blocksList[var25]; float var27 = var26.getExplosionResistance(this.exploder, worldObj, var22, var23, var24, explosionX, explosionY,
-							 * explosionZ); var14 -= (var27 + 0.3F) * var21; }
+							 * if (var25 > 0) { Block var26 = Block.blocksList[var25]; float var27 = var26.getExplosionResistance(this.exploder, worldObj, var22, var23, var24, explosionX,
+							 * explosionY, explosionZ); var14 -= (var27 + 0.3F) * var21; }
 							 */
 
 							if (var14 > 0.0F) {
@@ -114,7 +113,7 @@ public class SoulExplosion {
 				double var33 = (double) MathHelper.sqrt_double(var15 * var15 + var17 * var17 + var19 * var19);
 
 				if (var33 != 0.0D) {
-					var31.attackEntityFrom( DamageSource.generic.setDifficultyScaled().setExplosion(), 100);//DamageSource.explosion
+					var31.attackEntityFrom(DamageSource.generic.setDifficultyScaled().setExplosion(), 100);// DamageSource.explosion
 				}
 			}
 		}
@@ -123,8 +122,8 @@ public class SoulExplosion {
 	}
 
 	public void doExplosionB(boolean par1) {
-		this.worldObj
-				.playSoundEffect(this.explosionX, this.explosionY, this.explosionZ, "random.explode", 4.0F, (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
+		this.worldObj.playSoundEffect(this.explosionX, this.explosionY, this.explosionZ, "random.explode", 4.0F,
+				(1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
 
 		if (this.explosionSize >= 2.0F) {
 			this.worldObj.spawnParticle("hugeexplosion", this.explosionX, this.explosionY, this.explosionZ, 1.0D, 0.0D, 0.0D);
@@ -132,8 +131,6 @@ public class SoulExplosion {
 			this.worldObj.spawnParticle("largeexplode", this.explosionX, this.explosionY, this.explosionZ, 1.0D, 0.0D, 0.0D);
 		}
 
-		System.out.println("doExplosionB");
-		
 		Iterator var2;
 		ChunkPosition var3;
 		int var4;
@@ -166,7 +163,8 @@ public class SoulExplosion {
 				var14 *= var22;
 				var16 *= var22;
 				var18 *= var22;
-				this.worldObj.spawnParticle("explode", (var8 + this.explosionX * 1.0D) / 2.0D, (var10 + this.explosionY * 1.0D) / 2.0D, (var12 + this.explosionZ * 1.0D) / 2.0D, var14, var16, var18);
+				this.worldObj.spawnParticle("explode", (var8 + this.explosionX * 1.0D) / 2.0D, (var10 + this.explosionY * 1.0D) / 2.0D, (var12 + this.explosionZ * 1.0D) / 2.0D, var14,
+						var16, var18);
 				this.worldObj.spawnParticle("smoke", var8, var10, var12, var14, var16, var18);
 			}
 			/*

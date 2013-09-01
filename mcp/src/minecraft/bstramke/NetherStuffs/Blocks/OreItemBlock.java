@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 
 public class OreItemBlock extends ItemBlock {
 
-	public static String[] blockNames = new String[] { "DemonicOre", "NetherStone", "NetherOreIron", "NetherOreGold", "NetherOreDiamond", "NetherOreRedstone", "NetherOreEmerald", "NetherOreCoal", "NetherOreObsidian", "NetherOreLapis", "NetherCobblestone", "NetherOreCopper", "NetherOreTin"};
-	public static String[] blockDisplayNames = new String[] { "Demonic Ore", "Nether Stone", "Nether Iron Ore", "Nether Gold Ore", "Nether Diamond Ore", "Nether Redstone Ore", "Nether Emerald Ore", "Nether Coal Ore", "Nether Obsidian Ore", "Nether Lapis Ore", "Encrusted Cobblestone",  "Nether Copper Ore", "Nether Tin Ore"};
+	public static String[] blockNames = new String[] { "DemonicOre", "NetherStone", "NetherOreIron", "NetherOreGold", "NetherOreDiamond", "NetherOreRedstone", "NetherOreEmerald", "NetherOreCoal", "NetherOreObsidian", "NetherOreLapis", "NetherCobblestone", "NetherOreCopper", "NetherOreTin", "NetherOreSilver", "NetherOreLead"};
+	public static String[] blockDisplayNames = new String[] { "Demonic Ore", "Nether Stone", "Nether Iron Ore", "Nether Gold Ore", "Nether Diamond Ore", "Nether Redstone Ore", "Nether Emerald Ore", "Nether Coal Ore", "Nether Obsidian Ore", "Nether Lapis Ore", "Encrusted Cobblestone",  "Nether Copper Ore", "Nether Tin Ore", "Nether Silver Ore", "Nether Lead Ore"};
 	
 	public OreItemBlock(int id) {
 		super(id);
