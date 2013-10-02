@@ -69,7 +69,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "0.19", modid = "NetherStuffs", dependencies = ""/* "after:Thaumcraft; */)
+@Mod(name = "NetherStuffs", version = "0.21", modid = "NetherStuffs", dependencies = ""/* "after:Thaumcraft; */)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class NetherStuffs extends DummyModContainer {
 	@Instance

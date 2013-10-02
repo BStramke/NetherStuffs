@@ -43,7 +43,7 @@ public class RenderSoulBombPrimed extends Render {
 		}
 
 		f2 = (1.0F - ((float) par1EntityTNTPrimed.fuse - par9 + 1.0F) / 100.0F) * 0.8F;
-		this.func_110777_b(par1EntityTNTPrimed);
+		this.bindEntityTexture(par1EntityTNTPrimed);
 		this.blockRenderer.renderBlockAsItem(BlockRegistry.SoulBomb, 0, par1EntityTNTPrimed.getBrightness(par9));
 
 		if (par1EntityTNTPrimed.fuse / 5 % 2 == 0) {
@@ -72,8 +72,8 @@ public class RenderSoulBombPrimed extends Render {
 	}
 
 	@Override
-	protected ResourceLocation func_110775_a(Entity entity) {
-		return TextureMap.field_110575_b;
+	protected ResourceLocation getEntityTexture(Entity entity) {
+		return TextureMap.locationBlocksTexture;
 	}
 
 }
