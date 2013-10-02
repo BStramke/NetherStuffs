@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+
+import cpw.mods.fml.common.FMLLog;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -97,11 +100,12 @@ public class NetherStuffsEventHook {
 		}
 	}
 
-	@ForgeSubscribe
-	public void onChunkDataEvent(ChunkDataEvent.Load evt) {
+	/*@ForgeSubscribe
+	public void onChunkDataEvent(ChunkDataEvent.Save evt) {
+		if(evt.world.isRemote)
+			return;
 		NBTTagCompound nbt = evt.getData();
-		nbt = nbt.getCompoundTag("netherstuffs");
-
+		
 		int demonic = 1;
 		int netherCoal = 2;
 		int iron = 4;
@@ -121,7 +125,8 @@ public class NetherStuffsEventHook {
 		int apatite = 65536;
 		int uranium = 131072;
 
-		int generation = nbt.getInteger("generation");
+		int generation = nbt.getInteger("netherstuffs_oreregen");
+		int generation_original = generation;
 		int chunkX = evt.getChunk().xPosition;
 		int chunkZ = evt.getChunk().zPosition;
 		World world = evt.getChunk().worldObj;
@@ -203,6 +208,7 @@ public class NetherStuffsEventHook {
 		}
 
 		if ((generation & ferrous) == 0 && NetherStuffs.bRegenerateFerrous) {
+			FMLLog.log("NetherStuffs", Level.INFO, "Regenerationg Ferrous Ore in chunkX: " + chunkX + " chunkZ: "+chunkZ);
 			NetherStuffs.WorldGen.nickelOre.generate(random, chunkX, chunkZ, world);
 			generation |= ferrous;
 		}
@@ -213,10 +219,14 @@ public class NetherStuffsEventHook {
 		}
 
 		if ((generation & uranium) == 0 && NetherStuffs.bRegenerateUranium) {
+			FMLLog.log("NetherStuffs", Level.INFO, "Regenerationg Uranium Ore in chunkX: " + chunkX + " chunkZ: "+chunkZ);
 			NetherStuffs.WorldGen.uraniumOre.generate(random, chunkX, chunkZ, world);
 			generation |= uranium;
 		}
 
-		nbt.setInteger("generation", generation);
-	}
+		if(generation != generation_original)
+			nbt.setInteger("netherstuffs_oreregen", generation);
+
+		//System.out.println("test");
+	}*/
 }
