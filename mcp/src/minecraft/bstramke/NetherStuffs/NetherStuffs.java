@@ -69,7 +69,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(name = "NetherStuffs", version = "0.20", modid = "NetherStuffs", dependencies = ""/* "after:Thaumcraft; */)
+@Mod(name = "NetherStuffs", version = "0.21", modid = "NetherStuffs", dependencies = ""/* "after:Thaumcraft; */)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class NetherStuffs extends DummyModContainer {
 	@Instance
@@ -296,7 +296,7 @@ public class NetherStuffs extends DummyModContainer {
 		bForceGenFerrous = config.get("ForceOreGeneration", "Ferrous", false).getBoolean(false);
 		bForceGenApatite = config.get("ForceOreGeneration", "Apatite", false).getBoolean(false);
 		bForceGenUranium = config.get("ForceOreGeneration", "Uranium", false).getBoolean(false);
-		/*
+		
 		config.addCustomCategoryComment("Nether Ore Regeneration", "In case you want to regenerate the existing Nether chunks, make that settings here.");
 		
 		bRegenerateDemonic = config.get("Nether Ore Regeneration", "Demonic", false).getBoolean(false);
@@ -318,7 +318,7 @@ public class NetherStuffs extends DummyModContainer {
 		bRegenerateFerrous = config.get("Nether Ore Regeneration", "Ferrous", false).getBoolean(false);
 		bRegenerateApatite = config.get("Nether Ore Regeneration", "Apatite", false).getBoolean(false);
 		bRegenerateUranium = config.get("Nether Ore Regeneration", "Uranium", false).getBoolean(false);
-*/
+
 		NetherStuffsEventHook.nDetectRadius = config.get(Configuration.CATEGORY_GENERAL, "SoulBlockerRadius", 8).getInt();
 
 		NetherStuffsEventHook.SpawnSkeletonsOnlyOnNaturalNetherBlocks = config.get(Configuration.CATEGORY_GENERAL, "SpawnSkeletonsOnlyOnNaturalNetherBlocks", false)

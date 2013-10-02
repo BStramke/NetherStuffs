@@ -216,7 +216,7 @@ public abstract class GuiLedger extends GuiContainer {
 			GL11.glColor4f(colorR, colorG, colorB, 1.0F);
 
 			//mc.renderEngine.bindTexture(CommonProxy.GFXFOLDERPREFIX + "ledger.png");
-			mc.func_110434_K().func_110577_a(LedgerTexture);
+			mc.getTextureManager().bindTexture(LedgerTexture);
 			drawTexturedModalRect(x, y, 0, 256 - currentHeight, 4, currentHeight);
 			drawTexturedModalRect(x + 4, y, 256 - currentWidth + 4, 0, currentWidth - 4, 4);
 			// Add in top left corner again
