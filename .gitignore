@@ -52,3 +52,6 @@
 /mcp/src/minecraft/assets/codechickencore/
 /mcp/src/minecraft/assets/nei/
 mcp/src/minecraft/META-INF/MANIFEST.MF
+mcp/src/minecraft/assets/forge/lang/en_US.lang
+mcp/src/minecraft/assets/forge/lang/es_ES.lang
+mcp/src/minecraft/assets/forge/lang/fr_FR.lang
