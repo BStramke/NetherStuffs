@@ -11,6 +11,7 @@ import bstramke.NetherStuffs.Blocks.demonicFurnace.DemonicFurnace;
 import bstramke.NetherStuffs.Blocks.soulBomb.SoulBomb;
 import bstramke.NetherStuffs.Blocks.soulRipper.SoulRipper;
 import bstramke.NetherStuffs.Blocks.soulWorkBench.SoulWorkBench;
+import bstramke.NetherStuffs.NetherStuffs.IDs;
 
 public class BlockRegistry {
 	public static final int sideBottom = 0;
@@ -34,21 +35,21 @@ public class BlockRegistry {
 	public static Block FenceAcid;
 	public static Block FenceDeath;
 
-	public static final Block netherOre = new Ore(NetherStuffs.NetherOreBlockId);
-	public static final Block netherOreExtended = new OreExtended(NetherStuffs.NetherOreExtendedBlockId);
-	public static final Block netherWood = new Wood(NetherStuffs.NetherWoodBlockId);
-	public static final Block netherLeaves = new Leaf(NetherStuffs.NetherLeavesBlockId);
-	public static final Block netherPlank = new Plank(NetherStuffs.NetherPlankBlockId);
+	public static final Block netherOre = new Ore(NetherStuffs.IDs.Blocks.NetherOreBlockId);
+	public static final Block netherOreExtended = new OreExtended(NetherStuffs.IDs.Blocks.NetherOreExtendedBlockId);
+	public static final Block netherWood = new Wood(NetherStuffs.IDs.Blocks.NetherWoodBlockId);
+	public static final Block netherLeaves = new Leaf(NetherStuffs.IDs.Blocks.NetherLeavesBlockId);
+	public static final Block netherPlank = new Plank(NetherStuffs.IDs.Blocks.NetherPlankBlockId);
 
-	public static final BlockSapling Sapling = (BlockSapling) new Sapling(NetherStuffs.NetherSaplingBlockId);
-	public static final Block SoulWorkBench = new SoulWorkBench(NetherStuffs.SoulWorkBenchBlockId);
-	public static final Block SoulBomb = new SoulBomb(NetherStuffs.NetherSoulBombBlockId);
+	public static final BlockSapling Sapling = (BlockSapling) new Sapling(NetherStuffs.IDs.Blocks.NetherSaplingBlockId);
+	public static final Block SoulWorkBench = new SoulWorkBench(NetherStuffs.IDs.Blocks.SoulWorkBenchBlockId);
+	public static final Block SoulBomb = new SoulBomb(NetherStuffs.IDs.Blocks.NetherSoulBombBlockId);
 
-	public static final Block DemonicFurnace = new DemonicFurnace(NetherStuffs.NetherDemonicFurnaceBlockId);
-	public static final Block SoulGlass = new SoulGlass(NetherStuffs.NetherSoulGlassBlockid, Material.glass, false);
-	public static final Block SoulGlassPane = new SoulGlassPane(NetherStuffs.NetherSoulGlassPaneBlockid, Material.glass, false);
+	public static final Block DemonicFurnace = new DemonicFurnace(NetherStuffs.IDs.Blocks.NetherDemonicFurnaceBlockId);
+	public static final Block SoulGlass = new SoulGlass(NetherStuffs.IDs.Blocks.NetherSoulGlassBlockid, Material.glass, false);
+	public static final Block SoulGlassPane = new SoulGlassPane(NetherStuffs.IDs.Blocks.NetherSoulGlassPaneBlockid, Material.glass, false);
 
-	public static final Block SoulRipper = new SoulRipper(NetherStuffs.NetherSoulRipperBlockId);
+	public static final Block SoulRipper = new SoulRipper(NetherStuffs.IDs.Blocks.NetherSoulRipperBlockId);
 	
 	public static void initOreDictionary() {
 		OreDictionary.registerOre("oreDemonic", new ItemStack(BlockRegistry.netherOre, 1, Ore.demonicOre));

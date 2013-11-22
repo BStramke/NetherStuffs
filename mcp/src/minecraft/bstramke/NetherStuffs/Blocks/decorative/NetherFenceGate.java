@@ -7,6 +7,7 @@ import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.Plank;
 import bstramke.NetherStuffs.Items.ItemRegistry;
+import bstramke.NetherStuffs.NetherStuffs.IDs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.item.ItemStack;
@@ -20,13 +21,13 @@ public class NetherFenceGate extends BlockFenceGate {
 		super(par1);
 		setHardness(2.0F);
 		setResistance(10.0F);
-		if(par1 == NetherStuffs.NetherFenceGateHellfireBlockId)
+		if(par1 == NetherStuffs.IDs.Blocks.NetherFenceGateHellfireBlockId)
 			type = Plank.hellfire;
-		else if(par1 == NetherStuffs.NetherFenceGateAcidBlockId)
+		else if(par1 == NetherStuffs.IDs.Blocks.NetherFenceGateAcidBlockId)
 			type = Plank.acid;
-		else if(par1 == NetherStuffs.NetherFenceGateDeathBlockId)
+		else if(par1 == NetherStuffs.IDs.Blocks.NetherFenceGateDeathBlockId)
 			type = Plank.death;
-		else if(par1 == NetherStuffs.NetherFenceGateNetherBricksBlockId)
+		else if(par1 == NetherStuffs.IDs.Blocks.NetherFenceGateNetherBricksBlockId)
 			type = 4;
 		else
 			type = Plank.hellfire;

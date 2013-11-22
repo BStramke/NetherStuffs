@@ -20,6 +20,7 @@ import bstramke.NetherStuffs.Blocks.BlockContainerBase;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import bstramke.NetherStuffs.NetherStuffs.IDs;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,7 +58,7 @@ public class SoulWorkBench extends BlockContainerBase {
 	 */
 	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
-		return NetherStuffs.SoulWorkBenchBlockId;
+		return NetherStuffs.IDs.Blocks.SoulWorkBenchBlockId;
 	}
 
 	@Override

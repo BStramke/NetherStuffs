@@ -17,6 +17,7 @@ import net.minecraftforge.common.EnumPlantType;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import bstramke.NetherStuffs.NetherStuffs.IDs;
 import bstramke.NetherStuffs.WorldGen.WorldGenNetherStuffsTrees;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -152,7 +153,7 @@ public class Sapling extends BlockSapling /* implements IPlantable */{
 
 		par1World.setBlockToAir(par2, par3, par4);
 		if ((new WorldGenNetherStuffsTrees(true, meta)).generate(par1World, par5Random, par2, par3, par4)) {
-			par1World.setBlock(par2, par3, par4, NetherStuffs.NetherWoodBlockId, meta, BlockNotifyType.ALL);
+			par1World.setBlock(par2, par3, par4, NetherStuffs.IDs.Blocks.NetherWoodBlockId, meta, BlockNotifyType.ALL);
 		}
 	}
 

@@ -9,8 +9,10 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.OreConfig;
 import bstramke.NetherStuffs.Client.Renderers.NetherOreRenderingHelper;
 import bstramke.NetherStuffs.Common.CommonProxy;
 import bstramke.NetherStuffs.Items.ItemRegistry;
@@ -37,23 +39,23 @@ public class Ore extends BlockBase {
 
 	private Icon icoNetherOre;
 	private Icon icoNetherStone;
-	
+
 	private Icon icoNetherOreOverlay[];
-	
+
 	public Ore(int par1) {
 		super(par1, Material.rock);
 		this.setStepSound(soundStoneFootstep);
 		setUnlocalizedName("NetherOre");
-		
+
 		for (int i = 0; i < OreItemBlock.getMetadataSize(); i++) {
 			LanguageRegistry.instance().addStringLocalization("tile.NetherOre." + OreItemBlock.blockNames[i] + ".name", OreItemBlock.blockDisplayNames[i]);
 		}
 	}
-	
+
 	public int getMetadataSize() {
 		return OreItemBlock.blockNames.length;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
@@ -78,14 +80,13 @@ public class Ore extends BlockBase {
 		blockIcon = icoNetherOre;
 	}
 
-	public Icon getIconOreOverlay(int meta)
-	{
-		if(meta >=0 && meta < icoNetherOreOverlay.length)
+	public Icon getIconOreOverlay(int meta) {
+		if (meta >= 0 && meta < icoNetherOreOverlay.length)
 			return icoNetherOreOverlay[meta];
 		else
 			return icoNetherOre;
 	}
-	
+
 	@Override
 	public Icon getIcon(int side, int meta) {
 		switch (meta) {
@@ -110,26 +111,59 @@ public class Ore extends BlockBase {
 			return icoNetherOre;
 		}
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() {
 		return NetherOreRenderingHelper.instance.getRenderId();
 	}
+	
+	private int quantityDropped(int meta, Random random) {
+		OreConfig oc = NetherStuffs.OreConfiguration.get(OreItemBlock.blockNames[meta]);
+		return MathHelper.getRandomIntegerInRange(random, oc.DropFragmentCountMin, oc.DropFragmentCountMax);
+	}
+	
+	@Override
+	public int quantityDropped(int meta, int fortune, Random random) {
+		OreConfig oc = NetherStuffs.OreConfiguration.get(OreItemBlock.blockNames[meta]);
+		
+		if(oc.DoOreDropFragments)
+			return quantityDropped(meta, random) + random.nextInt(1 + fortune);
+		else
+			return 1;
+	}
+	
+
+	@Override
+	public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7) {
+		super.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5, par6, par7);
+
+		OreConfig oc = NetherStuffs.OreConfiguration.get(OreItemBlock.blockNames[par1World.getBlockMetadata(par2, par3, par4)]);
+		this.dropXpOnBlockBreak(par1World, par2, par3, par4, MathHelper.getRandomIntegerInRange(par1World.rand, oc.HarvestXPMin, oc.HarvestXPMax));
+	}
 
 	@Override
 	public int idDropped(int meta, Random par2Random, int par3) {
-		if(meta == netherOreCobblestone) //cobble may drop as cobble
-			return Block.cobblestone.blockID;
-		else if(meta == netherOreCoal) //drop coal directly as Charcoal
-			return ItemRegistry.NetherCoal.itemID;
-		else
-			return super.idDropped(meta, par2Random, par3);
+		OreConfig oc = NetherStuffs.OreConfiguration.get(OreItemBlock.blockNames[meta]);
+		if (oc.DoOreDropFragments)
+			return oc.FragmentId;
+		else {
+			if (meta == netherOreCobblestone) // cobble may drop as cobble
+				return Block.cobblestone.blockID;
+			else if (meta == netherOreCoal) // drop coal directly as item
+				return ItemRegistry.NetherCoal.itemID;
+			else
+				return super.idDropped(meta, par2Random, par3);
+		}
 	}
 
 	@Override
 	public int damageDropped(int meta) {
-		return meta;
+		OreConfig oc = NetherStuffs.OreConfiguration.get(OreItemBlock.blockNames[meta]);
+		if (oc.DoOreDropFragments)
+			return oc.FragmentMeta;
+		else
+			return meta;
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -22,6 +22,7 @@ import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Common.BlockActiveHelper;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
 import bstramke.NetherStuffs.Common.CommonProxy;
+import bstramke.NetherStuffs.NetherStuffs.IDs;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -61,7 +62,7 @@ public class DemonicFurnace extends BlockContainerBase {
 	 */
 	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
-		return NetherStuffs.NetherDemonicFurnaceBlockId;
+		return NetherStuffs.IDs.Blocks.NetherDemonicFurnaceBlockId;
 	}
 
 	/**

@@ -12,6 +12,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.Wood;
 import bstramke.NetherStuffs.Common.BlockNotifyType;
+import bstramke.NetherStuffs.NetherStuffs.IDs;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldGenerator {
@@ -108,7 +109,7 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 
 								if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0)
 										&& (block == null || block.canBeReplacedByLeaves(par1World, var14, var11, var16))) {
-									this.setBlockAndMetadata(par1World, var14, var11, var16, NetherStuffs.NetherLeavesBlockId, this.metaLeaves);
+									this.setBlockAndMetadata(par1World, var14, var11, var16, NetherStuffs.IDs.Blocks.NetherLeavesBlockId, this.metaLeaves);
 									if (this.metaWood == Wood.hellfire)
 										leavePositions.add(Arrays.asList(var14, var11, var16));
 								}
@@ -139,42 +140,9 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 
 						if (var12 == 0 || block == null || block.isLeaves(par1World, xCoord, yCoord + var11, zCoord)) {
 
-							this.setBlockAndMetadata(par1World, xCoord, yCoord + var11, zCoord, NetherStuffs.NetherWoodBlockId, this.metaWood);
-
-							/*
-							 * if (this.vinesGrow && var11 > 0) { if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(xcoord - 1, yCoord + var11, zCoord)) { this.setBlockAndMetadata(par1World, xcoord - 1,
-							 * yCoord + var11, zCoord, Block.vine.blockID, 8); }
-							 * 
-							 * if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(xcoord + 1, yCoord + var11, zCoord)) { this.setBlockAndMetadata(par1World, xcoord + 1, yCoord + var11, zCoord,
-							 * Block.vine.blockID, 2); }
-							 * 
-							 * if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(xcoord, yCoord + var11, zCoord - 1)) { this.setBlockAndMetadata(par1World, xcoord, yCoord + var11, zCoord - 1,
-							 * Block.vine.blockID, 1); }
-							 * 
-							 * if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(xcoord, yCoord + var11, zCoord + 1)) { this.setBlockAndMetadata(par1World, xcoord, yCoord + var11, zCoord + 1,
-							 * Block.vine.blockID, 4); } }
-							 */
+							this.setBlockAndMetadata(par1World, xCoord, yCoord + var11, zCoord, NetherStuffs.IDs.Blocks.NetherWoodBlockId, this.metaWood);
 						}
 					}
-
-					/*
-					 * if (this.vinesGrow) { for (var11 = yCoord - 3 + var6; var11 <= yCoord + var6; ++var11) { var12 = var11 - (yCoord + var6); var13 = 2 - var12 / 2;
-					 * 
-					 * for (var14 = xcoord - var13; var14 <= xcoord + var13; ++var14) { for (var15 = zCoord - var13; var15 <= zCoord + var13; ++var15) { Block block =
-					 * Block.blocksList[par1World.getBlockId(var14, var11, var15)]; if (block != null && block.isLeaves(par1World, var14, var11, var15)) { if (par2Random.nextInt(4) == 0 &&
-					 * par1World.getBlockId(var14 - 1, var11, var15) == 0) { this.growVines(par1World, var14 - 1, var11, var15, 8); }
-					 * 
-					 * if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14 + 1, var11, var15) == 0) { this.growVines(par1World, var14 + 1, var11, var15, 2); }
-					 * 
-					 * if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14, var11, var15 - 1) == 0) { this.growVines(par1World, var14, var11, var15 - 1, 1); }
-					 * 
-					 * if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14, var11, var15 + 1) == 0) { this.growVines(par1World, var14, var11, var15 + 1, 4); } } } } }
-					 * 
-					 * if (par2Random.nextInt(5) == 0 && var6 > 5) { for (var11 = 0; var11 < 2; ++var11) { for (var12 = 0; var12 < 4; ++var12) { if (par2Random.nextInt(4 - var11) == 0) { var13 =
-					 * par2Random.nextInt(3); this.setBlockAndMetadata(par1World, xcoord + Direction.offsetX[Direction.footInvisibleFaceRemap[var12]], yCoord + var6 - 5 + var11, zCoord +
-					 * Direction.offsetZ[Direction.footInvisibleFaceRemap[var12]], Block.cocoaPlant.blockID, var13 << 2 | var12); } } } } }
-					 */
-
 					return true;
 				} else {
 					return false;
@@ -205,7 +173,6 @@ public class WorldGenNetherStuffsTrees extends WorldGenerator implements IWorldG
 							if (bValid) {
 								this.metaWood = random.nextInt(3); // random guess what wood we will place
 								this.metaLeaves = this.metaWood; // this should contain the matching Leaves Damage Value
-								// System.out.println(Xcoordinate+","+ y+","+ Zcoordinate);
 								generate(world, random, Xcoordinate, y, Zcoordinate);
 								y = 256; // exit the loop
 							}

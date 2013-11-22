@@ -8,6 +8,7 @@ import bstramke.NetherStuffs.NetherStuffs;
 import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.Plank;
 import bstramke.NetherStuffs.Items.ItemRegistry;
+import bstramke.NetherStuffs.NetherStuffs.IDs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.material.Material;
@@ -26,17 +27,17 @@ public class NetherFence extends BlockFence {
 		setResistance(10.0F);
 		setStepSound(Block.soundWoodFootstep);
 
-		if (par1 == NetherStuffs.NetherFenceHellfireBlockId)
+		if (par1 == NetherStuffs.IDs.Blocks.NetherFenceHellfireBlockId)
 		{
 			LanguageRegistry.instance().addStringLocalization("tile.NetherFenceHellfire.name", "Hellfirewood Fence");
 			type = Plank.hellfire;
 		}
-		else if (par1 == NetherStuffs.NetherFenceAcidBlockId)
+		else if (par1 == NetherStuffs.IDs.Blocks.NetherFenceAcidBlockId)
 		{
 			LanguageRegistry.instance().addStringLocalization("tile.NetherFenceAcid.name", "Acidwood Fence");
 			type = Plank.acid;
 		}
-		else if (par1 == NetherStuffs.NetherFenceDeathBlockId)
+		else if (par1 == NetherStuffs.IDs.Blocks.NetherFenceDeathBlockId)
 		{
 			LanguageRegistry.instance().addStringLocalization("tile.NetherFenceDeath.name", "Deathwood Fence");
 			type = Plank.death;
@@ -68,16 +69,16 @@ public class NetherFence extends BlockFence {
 	public boolean canConnectFenceTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
 		int l = par1IBlockAccess.getBlockId(par2, par3, par4);
 
-		if(l == NetherStuffs.NetherFenceGateHellfireBlockId && this.blockID == NetherStuffs.NetherFenceHellfireBlockId)
+		if(l == NetherStuffs.IDs.Blocks.NetherFenceGateHellfireBlockId && this.blockID == NetherStuffs.IDs.Blocks.NetherFenceHellfireBlockId)
 			return true;
 		
-		if(l == NetherStuffs.NetherFenceGateDeathBlockId && this.blockID == NetherStuffs.NetherFenceDeathBlockId)
+		if(l == NetherStuffs.IDs.Blocks.NetherFenceGateDeathBlockId && this.blockID == NetherStuffs.IDs.Blocks.NetherFenceDeathBlockId)
 			return true;
 		
-		if(l == NetherStuffs.NetherFenceGateAcidBlockId && this.blockID == NetherStuffs.NetherFenceAcidBlockId)
+		if(l == NetherStuffs.IDs.Blocks.NetherFenceGateAcidBlockId && this.blockID == NetherStuffs.IDs.Blocks.NetherFenceAcidBlockId)
 			return true;
 		
-		if(l == NetherStuffs.NetherFenceGateNetherBricksBlockId && this.blockID == Block.netherFence.blockID)
+		if(l == NetherStuffs.IDs.Blocks.NetherFenceGateNetherBricksBlockId && this.blockID == Block.netherFence.blockID)
 			return true;
 		
 		if (l != this.blockID && l != Block.fenceGate.blockID) {
@@ -89,6 +90,6 @@ public class NetherFence extends BlockFence {
 	}
 
 	public static boolean isIdAFence(int par0) {
-		return par0 == NetherStuffs.NetherFenceHellfireBlockId || par0 == NetherStuffs.NetherFenceDeathBlockId || par0 == NetherStuffs.NetherFenceAcidBlockId;
+		return par0 == NetherStuffs.IDs.Blocks.NetherFenceHellfireBlockId || par0 == NetherStuffs.IDs.Blocks.NetherFenceDeathBlockId || par0 == NetherStuffs.IDs.Blocks.NetherFenceAcidBlockId;
 	}
 }

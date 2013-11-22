@@ -28,6 +28,7 @@ import bstramke.NetherStuffs.Blocks.BlockRegistry;
 import bstramke.NetherStuffs.Blocks.Ore;
 import bstramke.NetherStuffs.Common.PlayerDummy;
 import bstramke.NetherStuffs.Items.ItemRegistry;
+import bstramke.NetherStuffs.NetherStuffs.IDs;
 
 public class NetherStuffsEventHook {
 	public static int nDetectRadius; // will be set from config
@@ -81,16 +82,16 @@ public class NetherStuffsEventHook {
 
 		if (attacker.getEntity() instanceof EntityLivingBase) {
 			ItemStack item = ((EntityLivingBase) attacker.getEntity()).getCurrentItemOrArmor(0);
-			if (EnchantmentHelper.getEnchantmentLevel(NetherStuffs.EnchantmentAcidId, item) > 0) {
+			if (EnchantmentHelper.getEnchantmentLevel(NetherStuffs.IDs.Enchantments.EnchantmentAcidId, item) > 0) {
 				attacked.addPotionEffect(new PotionEffect(Potion.hunger.id, 20 * 60, 8));
 				attacked.addPotionEffect(new PotionEffect(Potion.poison.id, 20 * 5, 8));
 			}
 
-			if (EnchantmentHelper.getEnchantmentLevel(NetherStuffs.EnchantmentDeathId, item) > 0) {
+			if (EnchantmentHelper.getEnchantmentLevel(NetherStuffs.IDs.Enchantments.EnchantmentDeathId, item) > 0) {
 				attacked.addPotionEffect(new PotionEffect(Potion.wither.id, 20 * 5, 4));
 			}
 
-			if (EnchantmentHelper.getEnchantmentLevel(NetherStuffs.EnchantmentHellfireId, item) > 0) {
+			if (EnchantmentHelper.getEnchantmentLevel(NetherStuffs.IDs.Enchantments.EnchantmentHellfireId, item) > 0) {
 				attacked.attackEntityFrom(DamageSource.lava, 8);
 				attacked.setFire(20);
 			}

@@ -9,6 +9,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import bstramke.NetherStuffs.Common.ContainerWithPlayerInventory;
 import bstramke.NetherStuffs.Items.ItemRegistry;
+import bstramke.NetherStuffs.NetherStuffs;
+import bstramke.NetherStuffs.NetherStuffs.IDs;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -107,11 +109,11 @@ public class ContainerDemonicFurnace extends ContainerWithPlayerInventory {
 					if (!this.mergeItemStack(itemstack1, this.furnace.nFuelSlot, this.furnace.nFuelSlot + 1, false)) {
 						return null;
 					}
-				} else if (itemstack1.itemID == new ItemStack(bstramke.NetherStuffs.NetherStuffs.NetherOreBlockId, 0, 0).itemID) {
+				} else if (itemstack1.itemID == new ItemStack(NetherStuffs.IDs.Blocks.NetherOreBlockId, 0, 0).itemID) {
 					if (!this.mergeItemStack(itemstack1, this.furnace.nSmeltedSlot, this.furnace.nSmeltedSlot + 1, false)) {
 						return null;
 					}
-				} else if (itemstack1.itemID == new ItemStack(bstramke.NetherStuffs.NetherStuffs.NetherOreExtendedBlockId, 0, 0).itemID) {
+				} else if (itemstack1.itemID == new ItemStack(NetherStuffs.IDs.Blocks.NetherOreExtendedBlockId, 0, 0).itemID) {
 					if (!this.mergeItemStack(itemstack1, this.furnace.nSmeltedSlot, this.furnace.nSmeltedSlot + 1, false)) {
 						return null;
 					}

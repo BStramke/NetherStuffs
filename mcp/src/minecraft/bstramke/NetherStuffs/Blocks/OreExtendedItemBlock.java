@@ -14,7 +14,6 @@ public class OreExtendedItemBlock extends ItemBlock {
 		setHasSubtypes(true);
 	}
 
-
 	public static int getMetadataSize() {
 		return blockNames.length;
 	}
